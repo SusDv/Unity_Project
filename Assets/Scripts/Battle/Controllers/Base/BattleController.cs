@@ -1,0 +1,78 @@
+using BattleModule;
+using BattleModule.ActionCore.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class BattleController : MonoBehaviour
+{
+    private BattleStateMachine _battleStateMachine;
+
+    public BattleCamera BattleCamera;
+
+    public BattleInput BattleInput;
+
+    public BattleStatesData Data;
+
+    public BattleCharactersOnScene BattleCharactersOnScene;
+
+    public BattleCharacterSpawner BattleCharacterSpawner;
+
+    public BattleUICharactersInTurn BattleCharactersInTurn;
+
+    public LayerMask CharacterLayerMask;
+
+    public Action<Vector3> OnCharacterTargetChanged;
+
+    public Action OnBattleAction;
+
+    public List<Character> PlayerCharacters;
+    public List<Character> EnemyCharacters;
+
+    private void Awake()
+    {
+        _battleStateMachine = new BattleStateMachine(this);
+
+        BattleInput = GetComponent<BattleInput>();
+
+        BattleCharactersOnScene = new BattleCharactersOnScene();
+
+        Data = new BattleStatesData();
+
+        BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
+
+        BattleStart();
+    }
+    private void Start()
+    {
+        _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
+    }
+    private void Update()
+    {
+        _battleStateMachine.OnUpdate();
+    }
+    private void FixedUpdate()
+    {
+        _battleStateMachine.OnFixedUpdate();
+    }
+
+    private void BattleStart()
+    {
+        BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(PlayerCharacters));
+        BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
+
+        BattleCharactersInTurn = new BattleUICharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
+
+        BattleGlobalActionEvent.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
+    }
+
+    private void OnDestroy()
+    {
+        OnCharacterTargetChanged = null;
+    }
+    public Camera GetBattleCamera() 
+    {
+        return Camera.main;
+    }
+}
