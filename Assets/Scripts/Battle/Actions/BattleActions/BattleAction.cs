@@ -9,7 +9,6 @@
             ActionObject = actionObject;
         }
 
-
         public abstract void PerformAction(Character source, Character target);
     }
 }

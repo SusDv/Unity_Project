@@ -1,23 +1,28 @@
-public class BattleStateMachine : StateMachine
+using BattleModule.StateMachineBase.States;
+using BattleModule.Controllers.Core;
+
+namespace BattleModule.StateMachineBase 
 {
-    public IState CurrentState;
-    public BattleController BattleController { get; }
-
-    public BattleIdleState BattleIdleState { get; }
-
-    public BattleTargetingState BattleTargetingState { get; }
-
-    public BattleEnemyAttackState BattleEnemyAttackState { get; }
-
-
-    public BattleStateMachine(BattleController battleController) 
+    public class BattleStateMachine : StateMachine
     {
-        BattleController = battleController;
+        public IState CurrentState;
+        public BattleController BattleController { get; }
 
-        BattleIdleState = new BattleIdleState(this);
+        public BattleIdleState BattleIdleState { get; }
 
-        BattleTargetingState = new BattleTargetingState(this);
+        public BattleTargetingState BattleTargetingState { get; }
 
-        BattleEnemyAttackState = new BattleEnemyAttackState(this);
+        public BattleEnemyAttackState BattleEnemyAttackState { get; }
+
+        public BattleStateMachine(BattleController battleController)
+        {
+            BattleController = battleController;
+
+            BattleIdleState = new BattleIdleState(this);
+
+            BattleTargetingState = new BattleTargetingState(this);
+
+            BattleEnemyAttackState = new BattleEnemyAttackState(this);
+        }
     }
 }

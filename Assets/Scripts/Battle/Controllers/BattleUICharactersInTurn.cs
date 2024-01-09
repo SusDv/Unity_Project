@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace BattleModule
+namespace BattleModule.Controllers
 {
     public class BattleUICharactersInTurn
     {
@@ -13,13 +13,13 @@ namespace BattleModule
 
         public Action OnCharacterInTurnChanged;
 
-        public BattleUICharactersInTurn(List<Character> characters) 
+        public BattleUICharactersInTurn(List<Character> characters)
         {
             _charactersInTurn = new List<Character>(characters);
 
             SetupBattleActions();
         }
-        
+
         private void SetupBattleActions()
         {
             BattleGlobalActionEvent.OnTurnEnded += UpdateCharactersBattlePoints;
@@ -27,7 +27,7 @@ namespace BattleModule
 
         private void UpdateCharactersBattlePoints()
         {
-            foreach(Character character in _charactersInTurn) 
+            foreach (Character character in _charactersInTurn)
             {
                 float battlePoints = character.GetStats().GetStatFinalValue(StatType.BATTLE_POINTS);
 

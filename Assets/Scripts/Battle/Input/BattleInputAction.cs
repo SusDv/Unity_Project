@@ -43,7 +43,7 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""MousePosition"",
@@ -62,6 +62,15 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a54c39d-da11-4884-b83b-ea5391444db5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -108,6 +117,17 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""LeftMouseButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1fc5c35f-b030-409a-865c-e9ebd57628be"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +140,7 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
         m_BattleInput_RightArrow = m_BattleInput.FindAction("RightArrow", throwIfNotFound: true);
         m_BattleInput_MousePosition = m_BattleInput.FindAction("MousePosition", throwIfNotFound: true);
         m_BattleInput_LeftMouseButton = m_BattleInput.FindAction("LeftMouseButton", throwIfNotFound: true);
+        m_BattleInput_Cancel = m_BattleInput.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,6 +206,7 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_BattleInput_RightArrow;
     private readonly InputAction m_BattleInput_MousePosition;
     private readonly InputAction m_BattleInput_LeftMouseButton;
+    private readonly InputAction m_BattleInput_Cancel;
     public struct BattleInputActions
     {
         private @BattleInputAction m_Wrapper;
@@ -193,6 +215,7 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
         public InputAction @RightArrow => m_Wrapper.m_BattleInput_RightArrow;
         public InputAction @MousePosition => m_Wrapper.m_BattleInput_MousePosition;
         public InputAction @LeftMouseButton => m_Wrapper.m_BattleInput_LeftMouseButton;
+        public InputAction @Cancel => m_Wrapper.m_BattleInput_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_BattleInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -214,6 +237,9 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             @LeftMouseButton.started += instance.OnLeftMouseButton;
             @LeftMouseButton.performed += instance.OnLeftMouseButton;
             @LeftMouseButton.canceled += instance.OnLeftMouseButton;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IBattleInputActions instance)
@@ -230,6 +256,9 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             @LeftMouseButton.started -= instance.OnLeftMouseButton;
             @LeftMouseButton.performed -= instance.OnLeftMouseButton;
             @LeftMouseButton.canceled -= instance.OnLeftMouseButton;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IBattleInputActions instance)
@@ -253,5 +282,6 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
         void OnRightArrow(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnLeftMouseButton(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

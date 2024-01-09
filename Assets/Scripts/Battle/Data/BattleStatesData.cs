@@ -1,8 +1,7 @@
-using InventorySystem.Item;
-
-public class BattleStatesData
+namespace BattleModule.Data
 {
-    public Character SelectedCharacter { get; set; } = null;
-
-    public BaseItem SelectedItem { get; set; } = null;
+    public class BattleStatesData
+    {
+        public Character SelectedCharacter { get; set; } = null;
+    }
 }

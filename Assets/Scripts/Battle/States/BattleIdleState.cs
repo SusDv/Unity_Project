@@ -1,31 +1,35 @@
 using BattleModule.ActionCore.Events;
+using BattleModule.StateMachineBase.States.Core;
 
-public class BattleIdleState : BattleState
+namespace BattleModule.StateMachineBase.States
 {
-    public BattleIdleState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+    public class BattleIdleState : BattleState
     {
-    }
+        public BattleIdleState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+        {
+        }
 
-    public override void OnEnter()
-    {
-        battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(UnityEngine.Vector3.zero);
+        public override void OnEnter()
+        {
+            battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(UnityEngine.Vector3.zero);
 
-        BattleGlobalActionEvent.OnBattleAction += BattleActionHandler;
-        base.OnEnter();       
-    }
-    public override void OnExit()
-    {
-        BattleGlobalActionEvent.OnBattleAction -= BattleActionHandler;
-        base.OnExit();
-    }
+            BattleGlobalActionEvent.OnBattleAction += BattleActionHandler;
+            base.OnEnter();
+        }
+        public override void OnExit()
+        {
+            BattleGlobalActionEvent.OnBattleAction -= BattleActionHandler;
+            base.OnExit();
+        }
 
-    public override void OnUpdate()
-    {
-        base.OnUpdate();
-    }
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+        }
 
-    private void BattleActionHandler() 
-    {
-        battleStateMachine.ChangeState(battleStateMachine.BattleTargetingState);
+        private void BattleActionHandler()
+        {
+            battleStateMachine.ChangeState(battleStateMachine.BattleTargetingState);
+        }
     }
 }

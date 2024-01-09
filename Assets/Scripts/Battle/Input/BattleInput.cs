@@ -1,39 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleInput : MonoBehaviour
+namespace BattleModule.Input
 {
-    public BattleInputAction BattleInputAction { get; private set; }
-
-    public BattleInputAction.BattleInputActions BattleActions { get; private set; }
-
-    public Vector2 MousePosition { get; private set; }
-
-
-    private void Awake()
+    public class BattleInput : MonoBehaviour
     {
-        BattleInputAction = new BattleInputAction();
+        public BattleInputAction BattleInputAction { get; private set; }
 
-        BattleActions = BattleInputAction.BattleInput;
-    }
+        public BattleInputAction.BattleInputActions BattleActions { get; private set; }
 
-    private void OnEnable()
-    {
-        BattleActions.Enable();
+        public Vector2 MousePosition { get; private set; }
 
-        BattleActions.MousePosition.performed += MousePosition_Changed;
-    }
 
-    private void MousePosition_Changed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-    {
-        MousePosition = ctx.ReadValue<Vector2>();
-    }
+        private void Awake()
+        {
+            BattleInputAction = new BattleInputAction();
 
-    private void OnDisable()
-    {
-        BattleActions.Disable();
+            BattleActions = BattleInputAction.BattleInput;
+        }
 
-        BattleActions.MousePosition.performed -= MousePosition_Changed;
+        private void OnEnable()
+        {
+            BattleActions.Enable();
+
+            BattleActions.MousePosition.performed += MousePosition_Changed;
+        }
+
+        private void MousePosition_Changed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        {
+            MousePosition = ctx.ReadValue<Vector2>();
+        }
+
+        private void OnDisable()
+        {
+            BattleActions.Disable();
+
+            BattleActions.MousePosition.performed -= MousePosition_Changed;
+        }
     }
 }
