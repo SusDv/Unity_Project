@@ -1,0 +1,30 @@
+using System;
+using UnityEngine;
+using StatModule.Modifier;
+
+namespace InventorySystem.Item 
+{
+    public class BaseItem : ScriptableObject
+    {
+        public int ID => GetInstanceID();
+
+        [field: SerializeField]
+        public string ItemName { get; private set; }
+
+        [field: SerializeField]
+        public Sprite ItemImage { get; private set; }
+
+        [field: SerializeField, TextArea]
+        public string ItemDescription { get; private set; }
+
+        [field: SerializeField]
+        public bool IsStackable { get; private set; } = false;
+
+        [field: SerializeField]
+        public StatModifiers BaseModifiers { get; private set; }
+
+        public Action<BaseItem> OnItemAction { get; set; }
+
+    }
+}
+
