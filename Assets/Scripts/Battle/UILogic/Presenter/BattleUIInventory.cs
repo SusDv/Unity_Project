@@ -97,7 +97,7 @@ namespace BattleModule.UI.Presenter
 
             if (_selectedItem == null)
             {
-                BattleGlobalActionEvent.BattleAction = new BattleDefaultAction();
+                BattleGlobalActionEvent.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
                 return;
             }
 

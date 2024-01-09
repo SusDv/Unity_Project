@@ -1,17 +1,20 @@
 using Cinemachine;
 using UnityEngine;
 
-public class BattleCamera
+namespace BattleModule.Controllers 
 {
-    private CinemachineVirtualCamera _battleCamera;
-
-    public BattleCamera(CinemachineVirtualCamera battleCamera) 
+    public class BattleCamera
     {
-        _battleCamera = battleCamera;
-    }
+        private CinemachineVirtualCamera _battleCamera;   
 
-    public void SetBattleCameraTarget(Transform targetTransform) 
-    {
-        _battleCamera.Follow = targetTransform;
+        public BattleCamera(CinemachineVirtualCamera battleCamera)
+        {
+            _battleCamera = battleCamera;
+        }
+
+        public void SetBattleCameraTarget(Transform targetTransform)
+        {
+            _battleCamera.Follow = targetTransform;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace BattleModule.ActionCore.Events
 
         public static Action OnCycleEnded;
 
-        public static BattleAction BattleAction { get; set; } = new BattleDefaultAction();
+        public static BattleAction BattleAction { get; set; } = BattleDefaultAction.GetBattleDefaultActionInstance();
 
         private static int MaximumTurnsInCycle;
 

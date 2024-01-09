@@ -3,60 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BattleCharactersOnScene
+namespace BattleModule.Controllers
 {
-    private List<Character> _charactersOnScene;
-
-    public BattleCharactersOnScene() 
+    public class BattleCharactersOnScene
     {
-        _charactersOnScene = new List<Character>();
-    }
+        private List<Character> _charactersOnScene;
 
-    private int GetNearbyCharacterIndex(float desiredIndex, float listSize)
-    {
-        return (int)(desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
-    }
-
-    public void AddCharactersOnScene(List<Character> characters) 
-    {
-        foreach(Character character in characters) 
+        public BattleCharactersOnScene()
         {
-            _charactersOnScene.Add(character);
+            _charactersOnScene = new List<Character>();
         }
-    }
 
-    public Character GetMiddleEnemyOnScene(Type enemyCharacterType)
-    {
-        List<Character> enemyCharacters = 
-            _charactersOnScene
-                .Where(character => 
-                    !character.GetType().Equals(enemyCharacterType))
+        private int GetNearbyCharacterIndex(float desiredIndex, float listSize)
+        {
+            return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
+        }
+
+        public void AddCharactersOnScene(List<Character> characters)
+        {
+            foreach (Character character in characters)
+            {
+                _charactersOnScene.Add(character);
+            }
+        }
+
+        public Character GetMiddleEnemyOnScene(Type enemyCharacterType)
+        {
+            List<Character> enemyCharacters =
+                _charactersOnScene
+                    .Where(character =>
+                        !character.GetType().Equals(enemyCharacterType))
+                            .ToList();
+
+            return enemyCharacters[Mathf.RoundToInt(enemyCharacters.Count / 2)];
+        }
+
+        public Character GetNearbyCharacter(Character selectedCharacter, int direction)
+        {
+            List<Character> characters =
+                _charactersOnScene
+                    .Where(character => character.GetType().Equals(selectedCharacter.GetType()))
                         .ToList();
 
-        return enemyCharacters[Mathf.RoundToInt(enemyCharacters.Count / 2)];   
-    }
+            return characters[GetNearbyCharacterIndex(
+                characters.IndexOf(selectedCharacter) + direction, characters.Count)];
+        }
 
-    public Character GetNearbyCharacter(Character selectedCharacter, int direction)
-    {
-        List<Character> characters = 
-            _charactersOnScene
-                .Where(character => character.GetType().Equals(selectedCharacter.GetType()))
-                .ToList();
-
-        return characters[GetNearbyCharacterIndex(
-            characters.IndexOf(selectedCharacter) + direction, characters.Count)];
-    }
-
-    public List<Character> GetCharactersOnScene() 
-    {
-        return _charactersOnScene;
-    }
-
-    public IList<Character> GetPlayersOnScene() 
-    {
-        return _charactersOnScene
-                .Where((character) => character.GetType().Equals(typeof(Player)))
-                    .ToList()
-                    .AsReadOnly();
+        public List<Character> GetCharactersOnScene()
+        {
+            return _charactersOnScene;
+        }
     }
 }

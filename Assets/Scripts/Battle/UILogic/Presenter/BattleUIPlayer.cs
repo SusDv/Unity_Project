@@ -23,7 +23,8 @@ namespace BattleModule.UI.Presenter
         {
             _battleUIPlayers = new List<BattleUIPlayerView>();
 
-            _playerCharacters = playerCharacters;
+            _playerCharacters = new List<Character>(playerCharacters
+                .Where((character) => character is Player));
 
             CreateBattleUICharacters();
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Controllers.Core;
 using BattleModule.UI.Presenter;
 using InventorySystem.Core;
 using InventorySystem.Item;
@@ -60,7 +61,7 @@ namespace BattleModule.UI.Core
             BattleUIAction.InitBattleUIAction();
 
             BattleUIPlayer.InitBattleUICharacter(
-                _battleController.BattleCharactersOnScene.GetPlayersOnScene().ToList());
+                _battleController.BattleCharactersOnScene.GetCharactersOnScene());
         }      
     }
 }

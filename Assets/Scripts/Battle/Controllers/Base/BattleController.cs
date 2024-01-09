@@ -1,78 +1,82 @@
-using BattleModule;
-using BattleModule.ActionCore.Events;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using BattleModule.ActionCore.Events;
+using BattleModule.Data;
+using BattleModule.Input;
+using BattleModule.StateMachineBase;
 using UnityEngine;
 
-public class BattleController : MonoBehaviour
+namespace BattleModule.Controllers.Core
 {
-    private BattleStateMachine _battleStateMachine;
-
-    public BattleCamera BattleCamera;
-
-    public BattleInput BattleInput;
-
-    public BattleStatesData Data;
-
-    public BattleCharactersOnScene BattleCharactersOnScene;
-
-    public BattleCharacterSpawner BattleCharacterSpawner;
-
-    public BattleUICharactersInTurn BattleCharactersInTurn;
-
-    public LayerMask CharacterLayerMask;
-
-    public Action<Vector3> OnCharacterTargetChanged;
-
-    public Action OnBattleAction;
-
-    public List<Character> PlayerCharacters;
-    public List<Character> EnemyCharacters;
-
-    private void Awake()
+    public class BattleController : MonoBehaviour
     {
-        _battleStateMachine = new BattleStateMachine(this);
+        private BattleStateMachine _battleStateMachine;
 
-        BattleInput = GetComponent<BattleInput>();
+        public BattleCamera BattleCamera;
 
-        BattleCharactersOnScene = new BattleCharactersOnScene();
+        public BattleInput BattleInput;
 
-        Data = new BattleStatesData();
+        public BattleStatesData Data;
 
-        BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
+        public BattleCharactersOnScene BattleCharactersOnScene;
 
-        BattleStart();
-    }
-    private void Start()
-    {
-        _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
-    }
-    private void Update()
-    {
-        _battleStateMachine.OnUpdate();
-    }
-    private void FixedUpdate()
-    {
-        _battleStateMachine.OnFixedUpdate();
-    }
+        public BattleCharacterSpawner BattleCharacterSpawner;
 
-    private void BattleStart()
-    {
-        BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(PlayerCharacters));
-        BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
+        public BattleUICharactersInTurn BattleCharactersInTurn;
 
-        BattleCharactersInTurn = new BattleUICharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
+        public LayerMask CharacterLayerMask;
 
-        BattleGlobalActionEvent.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
-    }
+        public Action<Vector3> OnCharacterTargetChanged;
 
-    private void OnDestroy()
-    {
-        OnCharacterTargetChanged = null;
-    }
-    public Camera GetBattleCamera() 
-    {
-        return Camera.main;
+        public Action OnBattleAction;
+
+        public List<Character> PlayerCharacters;
+        public List<Character> EnemyCharacters;
+
+        private void Awake()
+        {
+            _battleStateMachine = new BattleStateMachine(this);
+
+            BattleInput = GetComponent<BattleInput>();
+
+            BattleCharactersOnScene = new BattleCharactersOnScene();
+
+            Data = new BattleStatesData();
+
+            BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
+
+            BattleStart();
+        }
+        private void Start()
+        {
+            _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
+        }
+        private void Update()
+        {
+            _battleStateMachine.OnUpdate();
+        }
+        private void FixedUpdate()
+        {
+            _battleStateMachine.OnFixedUpdate();
+        }
+
+        private void BattleStart()
+        {
+            BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(PlayerCharacters));
+            BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
+
+            BattleCharactersInTurn = new BattleUICharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
+
+            BattleGlobalActionEvent.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
+        }
+
+        private void OnDestroy()
+        {
+            OnCharacterTargetChanged = null;
+        }
+        public Camera GetBattleCamera()
+        {
+            return Camera.main;
+        }
     }
 }

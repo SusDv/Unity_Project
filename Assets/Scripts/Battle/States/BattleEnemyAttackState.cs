@@ -1,9 +1,12 @@
-using UnityEngine;
+using BattleModule.StateMachineBase.States.Core;
 
-public class BattleEnemyAttackState : BattleState
+namespace BattleModule.StateMachineBase.States
 {
-    public BattleEnemyAttackState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+    public class BattleEnemyAttackState : BattleState
     {
+        public BattleEnemyAttackState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+        {
 
+        }
     }
 }
