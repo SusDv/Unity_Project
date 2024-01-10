@@ -35,6 +35,7 @@ namespace BattleModule.ActionCore.Events
                 AdvanceCycle();
                 TurnsLeft = MaximumTurnsInCycle;
             }
+            BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
         }
 
         private static void AdvanceCycle()

@@ -6,6 +6,9 @@ using BattleModule.UI.View;
 using UnityEngine;
 using BattleModule.ActionCore;
 using BattleModule.ActionCore.Events;
+using BattleModule.Utility.Enums;
+using InventorySystem.Inventory.Interfaces;
+using InventorySystem.Item;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -95,24 +98,21 @@ namespace BattleModule.UI.Presenter
 
             _selectedItem = _selectedItem == battleUIItem ? null : battleUIItem;
 
-            if (_selectedItem == null)
-            {
-                BattleGlobalActionEvent.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
-                return;
-            }
-
             SetupBattleItemAction();
         }
 
         private void SetupBattleItemAction() 
         {
-            BattleItemAction battleItemAction = new BattleItemAction();
+            if (_selectedItem == null)
+            {
+                BattleGlobalActionEvent.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
+                return;
+            }
+            InventoryItem selectedItem = GetSelectedItem();
+            TargetType targetType = ((selectedItem.inventoryItem) as ITargetable).TargetType;
 
-            battleItemAction.SetupAction(GetSelectedItem());
-
-            BattleGlobalActionEvent.BattleAction = battleItemAction;
+            BattleGlobalActionEvent.BattleAction = BattleItemAction.GetBattleItemActionInstance(selectedItem, targetType);
         }
-
 
         public void BattleInventoryVisibility()
         {

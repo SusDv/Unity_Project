@@ -11,7 +11,7 @@ namespace BattleModule.StateMachineBase.States
 
         public override void OnEnter()
         {
-            battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(UnityEngine.Vector3.zero);
+            _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(UnityEngine.Vector3.zero);
 
             BattleGlobalActionEvent.OnBattleAction += BattleActionHandler;
             base.OnEnter();
@@ -29,7 +29,7 @@ namespace BattleModule.StateMachineBase.States
 
         private void BattleActionHandler()
         {
-            battleStateMachine.ChangeState(battleStateMachine.BattleTargetingState);
+            _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
         }
     }
 }
