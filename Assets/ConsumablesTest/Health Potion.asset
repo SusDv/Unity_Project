@@ -18,8 +18,9 @@ MonoBehaviour:
   <IsStackable>k__BackingField: 1
   <BaseModifiers>k__BackingField:
     _instantModifiers:
-    - <StatType>k__BackingField: 0
+    - <StatType>k__BackingField: 1
       <ValueModifierType>k__BackingField: 0
       <Value>k__BackingField: 50
     _temporaryModifiers: []
     _permanentModifiers: []
+  <ItemType>k__BackingField: 0

@@ -27,15 +27,16 @@ namespace BattleModule.Controllers
             }
         }
 
-        public Character GetMiddleEnemyOnScene(Type enemyCharacterType)
+        public Character GetMiddleTargetOnScene(Type characterInTurnType, Func<Type, Type, bool> targetFunction)
         {
-            List<Character> enemyCharacters =
+            List<Character> characters =
                 _charactersOnScene
-                    .Where(character =>
-                        !character.GetType().Equals(enemyCharacterType))
+                    .Where((character) => 
+                    targetFunction.Invoke(
+                        character.GetType(), characterInTurnType))
                             .ToList();
 
-            return enemyCharacters[Mathf.RoundToInt(enemyCharacters.Count / 2)];
+            return characters[Mathf.RoundToInt(characters.Count / 2)];
         }
 
         public Character GetNearbyCharacter(Character selectedCharacter, int direction)

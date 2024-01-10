@@ -2,20 +2,20 @@ namespace BattleModule.StateMachineBase.States.Core
 {
     public class BattleState : IState
     {
-        protected BattleStateMachine battleStateMachine;
+        protected BattleStateMachine _battleStateMachine;
 
-        protected int ArrowKeysInput;
+        protected int _arrowKeysInput;
 
-        protected bool CancelKeyPressed;
+        protected bool _cancelKeyPressed;
 
         public BattleState(BattleStateMachine battleStateMachine)
         {
-            this.battleStateMachine = battleStateMachine;
+            _battleStateMachine = battleStateMachine;
         }
 
         public virtual void OnEnter()
         {
-            battleStateMachine.CurrentState = this;
+            _battleStateMachine.CurrentState = this;
         }
 
         public virtual void OnExit() { }
@@ -24,19 +24,19 @@ namespace BattleModule.StateMachineBase.States.Core
 
         public virtual void OnUpdate()
         {
-            ArrowKeysInput = GetArrowKeyInput();
-            CancelKeyPressed = GetCancelKeyInput();
+            _arrowKeysInput = GetArrowKeyInput();
+            _cancelKeyPressed = GetCancelKeyInput();
         }
 
         private int GetArrowKeyInput()
         {
-            return battleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.RightArrow.WasPressedThisFrame() ? 1 :
-               battleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.LeftArrow.WasPressedThisFrame() ? -1 : 0;
+            return _battleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.RightArrow.WasPressedThisFrame() ? 1 :
+               _battleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.LeftArrow.WasPressedThisFrame() ? -1 : 0;
         }
 
         private bool GetCancelKeyInput() 
         {
-            return battleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.Cancel.WasPressedThisFrame() ? true : false;
+            return _battleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.Cancel.WasPressedThisFrame() ? true : false;
         }
     }
 }

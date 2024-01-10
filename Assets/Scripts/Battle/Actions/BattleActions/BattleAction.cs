@@ -1,12 +1,22 @@
-﻿namespace BattleModule.ActionCore
+﻿using BattleModule.Utility.Enums;
+
+namespace BattleModule.ActionCore
 {
     public abstract class BattleAction
     {
-        protected object ActionObject;
+        protected object _actionObject;
 
-        public void SetupAction(object actionObject) 
+        protected TargetType _targetType;
+
+        protected BattleAction(object actionObject, TargetType targetType)
         {
-            ActionObject = actionObject;
+            _actionObject = actionObject;
+            _targetType = targetType;
+        }
+
+        public TargetType GetTargetType() 
+        {
+            return _targetType;
         }
 
         public abstract void PerformAction(Character source, Character target);

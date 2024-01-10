@@ -38,7 +38,7 @@ MonoBehaviour:
     <BaseValuePrescaler>k__BackingField: 0
     <IsMaxStat>k__BackingField: 0
   - <StatType>k__BackingField: 6
-    <BaseValue>k__BackingField: 100
+    <BaseValue>k__BackingField: 50
     <BaseValuePrescaler>k__BackingField: 0
     <IsMaxStat>k__BackingField: 0
   - <StatType>k__BackingField: 7

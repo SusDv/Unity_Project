@@ -1,3 +1,5 @@
+using BattleModule.Utility.Enums;
+using InventorySystem.Inventory.Interfaces;
 using InventorySystem.Item.Interfaces;
 using StatModule.Core;
 using StatModule.Modifier;
@@ -6,8 +8,11 @@ using UnityEngine;
 namespace InventorySystem.Item 
 {
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
-    public class Consumable : BaseItem, IItemAction
+    public class Consumable : BaseItem, IItemAction, ITargetable
     {
+        [field: SerializeField]
+        public TargetType TargetType { get; set; }
+
         public void PerformAction(Character character)
         {
             Stats characterStats = character.GetStats();
