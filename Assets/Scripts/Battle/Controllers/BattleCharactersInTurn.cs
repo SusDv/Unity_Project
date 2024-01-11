@@ -69,10 +69,11 @@ namespace BattleModule.Controllers
         {
             Stats characterInTurnStats = GetCharacterInTurn().GetStats();
 
-            characterInTurnStats.GetBaseStatModifiers().Where((statModifier) =>
-                (statModifier as TemporaryStatModifier).AppliedEveryTurn)
+            characterInTurnStats.GetBaseStatModifiers().Where((statModifier) => 
+                statModifier is TemporaryStatModifier)
                     .ToList()
-                        .ForEach((temporaryStatModifier) => characterInTurnStats.ApplyStatModifier(temporaryStatModifier));
+                        .ForEach((temporaryStatModifier) => 
+                            characterInTurnStats.ApplyStatModifier(temporaryStatModifier));
         }
 
         public IList<Character> GetCharactersInTurn()
@@ -81,7 +82,7 @@ namespace BattleModule.Controllers
                     .OrderBy(character =>
                         character.GetStats().GetStatFinalValue(StatType.BATTLE_POINTS))
                             .ToList()
-                            .AsReadOnly();
+                                .AsReadOnly();
         }
 
         public Character GetCharacterInTurn()
