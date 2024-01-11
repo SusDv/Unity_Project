@@ -21,7 +21,7 @@ namespace BattleModule.UI.Presenter
 
         private void BattleActionPointerClick()
         {
-            BattleGlobalActionEvent.InvokeBattleAction();
+            BattleGlobalActionEventProcessor.InvokeBattleAction();
         }
     }
 }

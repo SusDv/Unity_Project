@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using StatModule.Settings;
 using StatModule.Utility.Enums;
 using StatModule.Modifier;
+using StatModule.Interfaces;
 
 namespace StatModule.Core
 {
@@ -32,32 +33,26 @@ namespace StatModule.Core
             }
         }
 
-        private void AddStatModifier(BaseStatModifier statModifier) 
+        private void AddStatModifierCallback(BaseStatModifier statModifier) 
         {
-            _modifiersInUse.Add(statModifier);
-            ApplyStatModifier(statModifier);
+            _modifiersInUse.Add(statModifier.Clone() as BaseStatModifier);
         }
 
-        private void RemoveStatModifier(BaseStatModifier statModifier) 
+        private void RemoveStatModifierCallback(BaseStatModifier statModifier) 
         {
             _modifiersInUse.Remove(statModifier);
         }
 
-        private void ApplyStatModifier(BaseStatModifier statModifier) 
+        public void ApplyStatModifier(BaseStatModifier statModifier) 
         {
-            statModifier.Modify(_stats[statModifier.StatType], RemoveStatModifier);
+            statModifier.Modify(_stats[statModifier.StatType], AddStatModifierCallback, RemoveStatModifierCallback);
 
             OnStatsModified?.Invoke(this);
         }
 
-        public void ModifyStat(BaseStatModifier statModifier) 
+        public void ApplyStatModifier(StatType statType, float value) 
         {
-            AddStatModifier(statModifier.Clone() as BaseStatModifier);
-        }
-
-        public void ModifyStat(StatType statType, float value) 
-        {
-            AddStatModifier(InstantStatModifier.GetInstantStatModifierInstance(
+            ApplyStatModifier(InstantStatModifier.GetInstantStatModifierInstance(
                 statType, ValueModifierType.ADDITIVE, value));
         }
 
@@ -74,6 +69,11 @@ namespace StatModule.Core
         public float GetStatFinalValuesRatio(StatType numeratorStat, StatType denominatorStat) 
         {
             return GetStatFinalValue(numeratorStat) / GetStatFinalValue(denominatorStat);
+        }
+
+        public IList<BaseStatModifier> GetBaseStatModifiers() 
+        {
+            return _modifiersInUse.AsReadOnly();
         }
     
     }

@@ -38,7 +38,7 @@ namespace StatModule.Modifier
 
         private bool _modified;
 
-        public override void Modify(IStat statToModify, Action<BaseStatModifier> removeModifierCallback) 
+        public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback) 
         {
             Duration = _modified ? Duration - 1 : Duration;
 
@@ -50,6 +50,7 @@ namespace StatModule.Modifier
                 }
 
                 _modified = true;
+                addModifierCallback?.Invoke(this);
             }
             else 
             {

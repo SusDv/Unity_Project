@@ -27,7 +27,7 @@ namespace BattleModule.Controllers
             }
         }
 
-        public Character GetMiddleTargetOnScene(Type characterInTurnType, Func<Type, Type, bool> targetFunction)
+        public Character GetMiddleCharacterOnScene(Type characterInTurnType, Func<Type, Type, bool> targetFunction)
         {
             List<Character> characters =
                 _charactersOnScene
@@ -39,7 +39,7 @@ namespace BattleModule.Controllers
             return characters[Mathf.RoundToInt(characters.Count / 2)];
         }
 
-        public Character GetNearbyCharacter(Character selectedCharacter, int direction)
+        public Character GetNearbyCharacterOnScene(Character selectedCharacter, int direction)
         {
             List<Character> characters =
                 _charactersOnScene

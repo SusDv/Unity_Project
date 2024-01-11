@@ -15,13 +15,15 @@ namespace StatModule.Modifier
 
         private bool _modified;
 
-        public override void Modify(IStat statToModify, Action<BaseStatModifier> modifierCallback)
+        public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
         {
             if (!_modified)
             {
                 ValueModifierProcessor.ModifyStatValue(statToModify, this);
 
                 _modified = true;
+
+                addModifierCallback?.Invoke(this);
             }
         }
 

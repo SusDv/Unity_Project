@@ -40,6 +40,8 @@ namespace BattleModule.Controllers
 
                 Character character = Instantiate(charactersToSpawn[i], spawnPosition, Quaternion.identity);
 
+                character.gameObject.name = $"{(character is Enemy ? "Enemy" : "Player")} {i + 1}";
+
                 _spawnedCharacters.Add(character);
             }
 

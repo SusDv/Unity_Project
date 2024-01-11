@@ -14,11 +14,9 @@ namespace StatModule.Modifier
             ValueModifierType valueModifierType, 
             float value) : base (statType, valueModifierType, value) {}
 
-        public override void Modify(IStat statToModify, Action<BaseStatModifier> removeModifierCallback)
+        public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
         {
             ValueModifierProcessor.ModifyStatValue(statToModify, this);
-
-            removeModifierCallback?.Invoke(this);
         }
 
         public static InstantStatModifier GetInstantStatModifierInstance(

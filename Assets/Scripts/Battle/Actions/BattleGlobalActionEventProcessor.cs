@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BattleModule.ActionCore.Context;
+using System;
 
 namespace BattleModule.ActionCore.Events
 {
-    public static class BattleGlobalActionEvent
+    public static class BattleGlobalActionEventProcessor
     {
         public static Action OnBattleAction;
 
@@ -10,7 +11,8 @@ namespace BattleModule.ActionCore.Events
 
         public static Action OnCycleEnded;
 
-        public static BattleAction BattleAction { get; set; } = BattleDefaultAction.GetBattleDefaultActionInstance();
+        public static BattleAction BattleAction { get; set; } = 
+            BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, Utility.Enums.TargetType.ENEMY));
 
         private static int MaximumTurnsInCycle;
 
@@ -35,7 +37,8 @@ namespace BattleModule.ActionCore.Events
                 AdvanceCycle();
                 TurnsLeft = MaximumTurnsInCycle;
             }
-            BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
+
+            BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, Utility.Enums.TargetType.ENEMY));
         }
 
         private static void AdvanceCycle()

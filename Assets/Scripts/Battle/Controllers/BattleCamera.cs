@@ -15,6 +15,7 @@ namespace BattleModule.Controllers
         public void SetBattleCameraTarget(Transform targetTransform)
         {
             _battleCamera.Follow = targetTransform;
+            _battleCamera.transform.forward = targetTransform.forward;
         }
     }
 }
