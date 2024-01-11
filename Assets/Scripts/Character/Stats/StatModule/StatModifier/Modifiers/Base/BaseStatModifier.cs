@@ -27,7 +27,7 @@ namespace StatModule.Modifier
         [field: SerializeField]
         public float Value { get; set; }
 
-        public abstract void Modify(IStat statToModify, Action<BaseStatModifier> removeModifierCallback);
+        public abstract void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback);
         
         public abstract object Clone();
 

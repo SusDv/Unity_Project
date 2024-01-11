@@ -22,7 +22,7 @@ namespace BattleModule.Controllers.Core
 
         public BattleCharacterSpawner BattleCharacterSpawner;
 
-        public BattleUICharactersInTurn BattleCharactersInTurn;
+        public BattleCharactersInTurn BattleCharactersInTurn;
 
         public LayerMask CharacterLayerMask;
 
@@ -65,9 +65,9 @@ namespace BattleModule.Controllers.Core
             BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(PlayerCharacters));
             BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
 
-            BattleCharactersInTurn = new BattleUICharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
+            BattleCharactersInTurn = new BattleCharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
 
-            BattleGlobalActionEvent.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
+            BattleGlobalActionEventProcessor.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
         }
 
         private void OnDestroy()

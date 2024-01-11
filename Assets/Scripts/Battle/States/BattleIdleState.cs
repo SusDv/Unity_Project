@@ -12,13 +12,15 @@ namespace BattleModule.StateMachineBase.States
         public override void OnEnter()
         {
             _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(UnityEngine.Vector3.zero);
+            
+            _battleStateMachine.BattleController.BattleCharactersInTurn.TriggetCharacterInTurnTemporaryModifiers();
 
-            BattleGlobalActionEvent.OnBattleAction += BattleActionHandler;
+            BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
             base.OnEnter();
         }
         public override void OnExit()
         {
-            BattleGlobalActionEvent.OnBattleAction -= BattleActionHandler;
+            BattleGlobalActionEventProcessor.OnBattleAction -= BattleActionHandler;
             base.OnExit();
         }
 

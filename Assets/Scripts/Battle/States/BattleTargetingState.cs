@@ -1,4 +1,5 @@
 using BattleModule.ActionCore;
+using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.StateMachineBase.States.Core;
 using BattleModule.Utility.Enums;
@@ -22,13 +23,13 @@ namespace BattleModule.StateMachineBase.States
 
         public override void OnEnter()
         {
-            BattleGlobalActionEvent.OnBattleAction += BattleActionHandler;
+            BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
             AutoSelectEnemy();
             base.OnEnter();
         }
         public override void OnExit()
         {
-            BattleGlobalActionEvent.OnBattleAction -= BattleActionHandler;
+            BattleGlobalActionEventProcessor.OnBattleAction -= BattleActionHandler;
             base.OnExit();
         }
 
@@ -70,9 +71,9 @@ namespace BattleModule.StateMachineBase.States
         private void AutoSelectEnemy()
         {
             _battleStateMachine.BattleController.Data.SelectedCharacter = _battleStateMachine.BattleController.BattleCharactersOnScene
-                .GetMiddleTargetOnScene(
+                .GetMiddleCharacterOnScene(
                 _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), 
-                    _targetedCharacters[BattleGlobalActionEvent.BattleAction.GetTargetType()]);
+                    _targetedCharacters[BattleGlobalActionEventProcessor.BattleAction.GetBattleActionContext().TargetType]);
         }
         private Character SelectCharacterUsingKeys()
         {
@@ -81,13 +82,13 @@ namespace BattleModule.StateMachineBase.States
                 return _battleStateMachine.BattleController.Data.SelectedCharacter;
             }
 
-            return _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacter(_battleStateMachine.BattleController.Data.SelectedCharacter, _arrowKeysInput);
+            return _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacterOnScene(_battleStateMachine.BattleController.Data.SelectedCharacter, _arrowKeysInput);
         }
         private void BattleActionHandler()
         {
-            BattleGlobalActionEvent.BattleAction.PerformAction(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn(), _battleStateMachine.BattleController.Data.SelectedCharacter);
+            BattleGlobalActionEventProcessor.BattleAction.PerformAction(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn(), _battleStateMachine.BattleController.Data.SelectedCharacter);
 
-            BattleGlobalActionEvent.AdvanceTurn();
+            BattleGlobalActionEventProcessor.AdvanceTurn();
 
             _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
         }
@@ -95,7 +96,7 @@ namespace BattleModule.StateMachineBase.States
         {
             if (_cancelKeyPressed)
             {
-                BattleGlobalActionEvent.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
+                BattleGlobalActionEventProcessor.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, TargetType.ENEMY));
 
                 _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
             }

@@ -1,4 +1,6 @@
 ﻿using BattleModule.ActionCore.Events;
+using StatModule.Core;
+using StatModule.Modifier;
 using StatModule.Utility.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,13 +9,13 @@ using UnityEngine;
 
 namespace BattleModule.Controllers
 {
-    public class BattleUICharactersInTurn
+    public class BattleCharactersInTurn
     {
         private List<Character> _charactersInTurn;
 
         public Action OnCharacterInTurnChanged;
 
-        public BattleUICharactersInTurn(List<Character> characters)
+        public BattleCharactersInTurn(List<Character> characters)
         {
             _charactersInTurn = new List<Character>(characters);
 
@@ -22,10 +24,10 @@ namespace BattleModule.Controllers
 
         private void SetupBattleActions()
         {
-            BattleGlobalActionEvent.OnTurnEnded += UpdateCharactersBattlePoints;
+            BattleGlobalActionEventProcessor.OnTurnEnded += UpdateCharactersInTurn;
         }
 
-        private void UpdateCharactersBattlePoints()
+        private void UpdateCharactersInTurn()
         {
             foreach (Character character in _charactersInTurn)
             {
@@ -57,10 +59,20 @@ namespace BattleModule.Controllers
                     deduction = 2 * (int)Mathf.Ceil(battlePoints / 10);
                 }
 
-                character.GetStats().ModifyStat(StatType.BATTLE_POINTS, -deduction);
+                character.GetStats().ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
 
             OnCharacterInTurnChanged?.Invoke();
+        }
+
+        public void TriggetCharacterInTurnTemporaryModifiers() 
+        {
+            Stats characterInTurnStats = GetCharacterInTurn().GetStats();
+
+            characterInTurnStats.GetBaseStatModifiers().Where((statModifier) =>
+                (statModifier as TemporaryStatModifier).AppliedEveryTurn)
+                    .ToList()
+                        .ForEach((temporaryStatModifier) => characterInTurnStats.ApplyStatModifier(temporaryStatModifier));
         }
 
         public IList<Character> GetCharactersInTurn()

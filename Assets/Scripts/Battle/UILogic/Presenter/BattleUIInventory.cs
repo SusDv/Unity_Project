@@ -9,6 +9,7 @@ using BattleModule.ActionCore.Events;
 using BattleModule.Utility.Enums;
 using InventorySystem.Inventory.Interfaces;
 using InventorySystem.Item;
+using BattleModule.ActionCore.Context;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -105,13 +106,14 @@ namespace BattleModule.UI.Presenter
         {
             if (_selectedItem == null)
             {
-                BattleGlobalActionEvent.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance();
+                BattleGlobalActionEventProcessor.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, TargetType.ENEMY));
                 return;
             }
+
             InventoryItem selectedItem = GetSelectedItem();
             TargetType targetType = ((selectedItem.inventoryItem) as ITargetable).TargetType;
 
-            BattleGlobalActionEvent.BattleAction = BattleItemAction.GetBattleItemActionInstance(selectedItem, targetType);
+            BattleGlobalActionEventProcessor.BattleAction = BattleItemAction.GetBattleItemActionInstance(BattleActionContext.GetBattleActionContextInstance(selectedItem, targetType));
         }
 
         public void BattleInventoryVisibility()
