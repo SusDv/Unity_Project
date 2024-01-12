@@ -38,7 +38,7 @@ namespace BattleModule.Controllers
             {
                 Vector3 spawnPosition = new Vector3(characterInfo.spawnPoint.localPosition.x - _characterSeperatorLength + (_characterSeperatorLength * i), characterInfo.spawnPoint.localPosition.y, characterInfo.spawnPoint.position.z);
 
-                Character character = Instantiate(charactersToSpawn[i], spawnPosition, Quaternion.identity);
+                Character character = Instantiate(charactersToSpawn[i], spawnPosition, charactersToSpawn[i].transform.rotation);
 
                 character.gameObject.name = $"{(character is Enemy ? "Enemy" : "Player")} {i + 1}";
 

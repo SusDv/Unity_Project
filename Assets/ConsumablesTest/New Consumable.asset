@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156ccdb6fbff61f4ca93aa7c21056737, type: 3}
-  m_Name: Sword
+  m_Script: {fileID: 11500000, guid: 60b8f6b198fc1474da808e2c73b7d915, type: 3}
+  m_Name: New Consumable
   m_EditorClassIdentifier: 
-  <ItemName>k__BackingField: Sword
+  <ItemName>k__BackingField: 
   <ItemImage>k__BackingField: {fileID: 0}
   <ItemDescription>k__BackingField: 
   <IsStackable>k__BackingField: 0
@@ -20,7 +20,5 @@ MonoBehaviour:
   <BaseModifiers>k__BackingField:
     _instantModifiers: []
     _temporaryModifiers: []
-    _permanentModifiers:
-    - <StatType>k__BackingField: 4
-      <ValueModifierType>k__BackingField: 0
-      <Value>k__BackingField: 100
+    _permanentModifiers: []
+  <TargetType>k__BackingField: 0

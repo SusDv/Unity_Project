@@ -12,6 +12,7 @@ namespace BattleModule.StateMachineBase.States
     public class BattleTargetingState : BattleState
     {
         private Dictionary<TargetType, Func<Type, Type, bool>> _targetedCharacters;
+        
         public BattleTargetingState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
             _targetedCharacters = new Dictionary<TargetType, Func<Type, Type, bool>>
