@@ -19,7 +19,7 @@ namespace InventorySystem.Item
 
             foreach (BaseStatModifier modifier in BaseModifiers.BaseModifiers)
             {
-                characterStats.ApplyStatModifier(modifier);
+                characterStats.ApplyStatModifier(modifier.Clone() as BaseStatModifier);
             }
 
             OnItemAction?.Invoke(this);

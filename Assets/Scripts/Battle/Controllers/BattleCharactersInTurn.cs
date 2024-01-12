@@ -13,7 +13,7 @@ namespace BattleModule.Controllers
     {
         private List<Character> _charactersInTurn;
 
-        public Action OnCharacterInTurnChanged;
+        public Action<List<Character>> OnCharacterInTurnChanged;
 
         public BattleCharactersInTurn(List<Character> characters)
         {
@@ -62,27 +62,41 @@ namespace BattleModule.Controllers
                 character.GetStats().ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
 
-            OnCharacterInTurnChanged?.Invoke();
+            SortCharactersByBattlePoints();
+        }
+
+        private void SortCharactersByBattlePoints() 
+        {
+            _charactersInTurn = _charactersInTurn
+                .OrderBy(characterInTurn => characterInTurn.GetStats().GetStatFinalValue(StatType.BATTLE_POINTS))
+                    .ToList();
+
+            OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+        }
+
+        public void ResetCharacterInTurnBattlePoints()
+        {
+            Stats characterInTurnStats = (GetCharacterInTurn().GetStats());
+
+            characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
+
+            OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
         }
 
         public void TriggetCharacterInTurnTemporaryModifiers() 
         {
             Stats characterInTurnStats = GetCharacterInTurn().GetStats();
 
-            characterInTurnStats.GetBaseStatModifiers().Where((statModifier) => 
-                statModifier is TemporaryStatModifier)
+            characterInTurnStats.GetBaseStatModifiers().Where((statModifier) =>
+                (statModifier as TemporaryStatModifier).AppliedEveryTurn || ((statModifier as TemporaryStatModifier).AppliedOnce))
                     .ToList()
-                        .ForEach((temporaryStatModifier) => 
-                            characterInTurnStats.ApplyStatModifier(temporaryStatModifier));
+                        .ForEach((temporaryStatModifier) =>
+                            characterInTurnStats.ApplyStatModifier(temporaryStatModifier)); 
         }
 
         public IList<Character> GetCharactersInTurn()
         {
-            return _charactersInTurn
-                    .OrderBy(character =>
-                        character.GetStats().GetStatFinalValue(StatType.BATTLE_POINTS))
-                            .ToList()
-                                .AsReadOnly();
+            return _charactersInTurn.AsReadOnly();
         }
 
         public Character GetCharacterInTurn()

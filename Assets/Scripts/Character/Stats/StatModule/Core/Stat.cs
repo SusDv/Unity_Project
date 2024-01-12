@@ -59,7 +59,7 @@ namespace StatModule.Core
                 }
                 else 
                 {
-                    _finalValue = value;
+                    _finalValue = Mathf.Clamp(value, 0f , value);
                 }
             } 
         }

@@ -14,15 +14,11 @@ namespace BattleModule.UI.Presenter
         [Header("View")]
         [SerializeField] private BattleUICharacterInTurnView _battleUICharacterInTurnView;
 
-        private List<Character> _charactersInTurn;
-
-        public void InitCharactersInTurn(ref Action characterInTurnChanged, List<Character> charactersInTurn)
+        public void InitCharactersInTurn(ref Action<List<Character>> characterInTurnChanged, List<Character> charactersInTurn)
         {
-            _charactersInTurn = new List<Character>(charactersInTurn);
-
             characterInTurnChanged += BattleCharacterInTurnUpdate;
 
-            BattleCharacterInTurnUpdate();
+            BattleCharacterInTurnUpdate(charactersInTurn);
         }
 
         private void BattleCharacterInTurnClear()
@@ -33,11 +29,11 @@ namespace BattleModule.UI.Presenter
             }
         }
 
-        private void BattleCharacterInTurnUpdate()
+        private void BattleCharacterInTurnUpdate(List<Character> charactersInTurn)
         {
             BattleCharacterInTurnClear();
 
-            foreach (Character character in _charactersInTurn.OrderBy((character) => character.GetStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS)))
+            foreach (Character character in charactersInTurn)
             {
                 BattleUICharacterInTurnView battleUICharacterInTurn = Instantiate(_battleUICharacterInTurnView,
                     _battleCharacterInTurnPanel.transform.position, Quaternion.identity,
