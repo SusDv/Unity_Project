@@ -25,18 +25,18 @@ namespace StatModule.Modifier
         }
 
         [field: SerializeField]
-        public bool AppliedOnce { get; private set; } = false;
+        public bool AppliedOnce { get; private set; }
 
         [field: SerializeField]
-        public bool AppliedEveryTurn { get; private set; } = false;
+        public bool AppliedEveryTurn { get; private set; }
 
         [field: SerializeField]
-        public bool AppliedEveryCycle { get; private set; } = false;
+        public bool AppliedEveryCycle { get; private set; }
 
         [field: SerializeField]
-        public int Duration { get; set; } = -1;
+        public int Duration { get; set; }
 
-        private bool _modified;
+        private bool _modified = false;
 
         public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback) 
         {

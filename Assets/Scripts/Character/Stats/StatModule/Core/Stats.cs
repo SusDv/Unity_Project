@@ -34,7 +34,7 @@ namespace StatModule.Core
 
         private void AddStatModifierCallback(BaseStatModifier statModifier) 
         {
-            _modifiersInUse.Add(statModifier.Clone() as BaseStatModifier);
+            _modifiersInUse.Add(statModifier);
         }
 
         private void RemoveStatModifierCallback(BaseStatModifier statModifier) 
