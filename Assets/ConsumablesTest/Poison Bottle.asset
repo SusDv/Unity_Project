@@ -17,6 +17,7 @@ MonoBehaviour:
   <ItemDescription>k__BackingField: Curse enemy with poison. Deals 30 damage for
     2 turns
   <IsStackable>k__BackingField: 1
+  <BattlePoints>k__BackingField: 5
   <BaseModifiers>k__BackingField:
     _instantModifiers: []
     _temporaryModifiers:

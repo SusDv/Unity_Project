@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using StatModule.Settings;
 using StatModule.Utility.Enums;
 using StatModule.Modifier;
-using StatModule.Interfaces;
 
 namespace StatModule.Core
 {
