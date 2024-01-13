@@ -13,22 +13,18 @@ namespace StatModule.Modifier
             ValueModifierType valueModifierType,
             float value) : base(statType, valueModifierType, value) { }
 
-        private bool _modified;
-
         public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
         {
-            if (!_modified)
+            if (!_isModified)
             {
                 ValueModifierProcessor.ModifyStatValue(statToModify, this);
 
-                _modified = true;
+                _isModified = true;
 
                 addModifierCallback?.Invoke(this);
             }
             else 
             {
-                _modified = false;
-
                 ValueModifierProcessor.ModifyStatValue(statToModify, -this);
 
                 removeModifierCallback?.Invoke(this);
@@ -46,6 +42,14 @@ namespace StatModule.Modifier
         public override object Clone()
         {
             return new PermanentStatModifier(StatType, ValueModifierType, Value);
+        }
+
+        public override bool Equals(BaseStatModifier other)
+        {
+            return other.Value == Value
+                && other.ValueModifierType == ValueModifierType
+                && other.SourceID == SourceID
+                && other.StatType == StatType;
         }
     }
 }

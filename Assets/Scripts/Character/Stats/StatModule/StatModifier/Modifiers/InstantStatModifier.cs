@@ -31,5 +31,13 @@ namespace StatModule.Modifier
         {
             return new InstantStatModifier(StatType, ValueModifierType, Value);
         }
+
+        public override bool Equals(BaseStatModifier other)
+        {
+            return other.Value == Value
+                && other.ValueModifierType == ValueModifierType
+                && other.SourceID == SourceID
+                && other.StatType == StatType;
+        }
     }
 }

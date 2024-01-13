@@ -29,20 +29,15 @@ namespace InventorySystem.Item
             
             foreach (BaseStatModifier baseStatModifier in BaseModifiers.BaseModifiers) 
             {
-                characterStats.ApplyStatModifier(baseStatModifier.Clone() as BaseStatModifier);
+                characterStats.AddStatModifier(baseStatModifier.Clone() as BaseStatModifier);
             }
         }
-
+        
         private void UnequipItem(Character character) 
         {
             Stats characterStats = character.GetCharacterStats();
-            
-            foreach (BaseStatModifier baseStatModifier in BaseModifiers.BaseModifiers) 
-            {
-                characterStats.ApplyStatModifier(characterStats.GetBaseStatModifiers()
-                                .Where((statModifier) => statModifier.Equals(baseStatModifier))
-                                    .First());
-            }
+
+            characterStats.ApplyStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
         }
     }
 }

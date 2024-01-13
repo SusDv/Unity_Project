@@ -1,8 +1,5 @@
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
-using StatModule.Core;
-using StatModule.Modifier;
-using UnityEngine;
 
 namespace CharacterModule.Weapon 
 {
