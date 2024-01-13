@@ -49,7 +49,7 @@ namespace BattleModule.Controllers.Core
         }
         private void Start()
         {
-            _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
+            _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
         }
         private void Update()
         {

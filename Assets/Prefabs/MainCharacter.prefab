@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5189477213429672573}
   - component: {fileID: 5189477213429672834}
   - component: {fileID: 5189477213429672574}
-  - component: {fileID: 5189477213429672575}
   m_Layer: 7
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -97,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ddb50d3810fb44bae9f20a26bd6a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseStats: {fileID: 11400000, guid: 5119b190281ace44889dc93b123935f0, type: 2}
+  _characterSettings: {fileID: 0}
   InteractibleObjectMask:
     serializedVersion: 2
     m_Bits: 256
@@ -105,16 +104,3 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   BulletSpawnPosition: {fileID: 0}
---- !u!114 &5189477213429672575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5189477213429672832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6880991e4b57d54a8d420813f6d4f24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EquipmentItem: {fileID: 0}

@@ -1788,9 +1788,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   PlayerCharacters:
-  - {fileID: 8864825913896344431, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  - {fileID: 8864825913896344431, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  - {fileID: 8864825913896344431, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  - {fileID: 5625005941891779630, guid: b82a12b7c7ed39d43bcf5e38491a0a9c, type: 3}
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
   EnemyCharacters:
   - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
   - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}

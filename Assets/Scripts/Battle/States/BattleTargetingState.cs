@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
 using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.StateMachineBase.States.Core;
 using BattleModule.Utility.Enums;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BattleModule.StateMachineBase.States
@@ -24,7 +24,12 @@ namespace BattleModule.StateMachineBase.States
 
         public override void OnEnter()
         {
+            _battleStateMachine.BattleController.BattleCharactersInTurn.ResetCharacterInTurnBattlePoints();
+
+            _battleStateMachine.BattleController.BattleCharactersInTurn.TriggerCharacterInTurnTemporaryModifiers();
+
             BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
+            
             AutoSelectEnemy();
             base.OnEnter();
         }
@@ -91,7 +96,7 @@ namespace BattleModule.StateMachineBase.States
 
             BattleGlobalActionEventProcessor.AdvanceTurn();
 
-            _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
+            _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
         }
         private void CheckCancelKeyPressed() 
         {
@@ -99,7 +104,7 @@ namespace BattleModule.StateMachineBase.States
             {
                 BattleGlobalActionEventProcessor.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, TargetType.ENEMY));
 
-                _battleStateMachine.ChangeState(_battleStateMachine.BattleIdleState);
+                _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using BattleModule.UI.View;
+using UnityEngine.TextCore.Text;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -33,13 +34,12 @@ namespace BattleModule.UI.Presenter
         {
             BattleCharacterInTurnClear();
 
-            foreach (Character character in charactersInTurn)
+            for(int i = 0; i < charactersInTurn.Count; i++) 
             {
                 BattleUICharacterInTurnView battleUICharacterInTurn = Instantiate(_battleUICharacterInTurnView,
                     _battleCharacterInTurnPanel.transform.position, Quaternion.identity,
                     _battleCharacterInTurnPanel.transform);
-
-                battleUICharacterInTurn.SetData(character.gameObject.name, character.GetCharacterStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS).ToString());
+                battleUICharacterInTurn.SetData(charactersInTurn[i].gameObject.name, charactersInTurn[i].GetCharacterStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS).ToString(), (i == 0) ? true : false);
             }
         }
     }

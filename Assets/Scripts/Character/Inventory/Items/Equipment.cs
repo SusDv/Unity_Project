@@ -27,7 +27,7 @@ namespace InventorySystem.Item
         {
             Stats characterStats = character.GetCharacterStats();
             
-            foreach (BaseStatModifier baseStatModifier in BaseModifiers.BaseModifiers) 
+            foreach (BaseStatModifier baseStatModifier in StatModifiers.BaseModifiers) 
             {
                 characterStats.AddStatModifier(baseStatModifier.Clone() as BaseStatModifier);
             }
