@@ -16,11 +16,12 @@ MonoBehaviour:
   <ItemImage>k__BackingField: {fileID: 21300000, guid: 8f3f21dcd06fd2946996c0f25675d2ca, type: 3}
   <ItemDescription>k__BackingField: Instantly restores 50 Health to the Character
   <IsStackable>k__BackingField: 1
-  <BaseModifiers>k__BackingField:
+  <BattlePoints>k__BackingField: 5
+  <StatModifiers>k__BackingField:
     _instantModifiers:
     - <StatType>k__BackingField: 1
       <ValueModifierType>k__BackingField: 0
       <Value>k__BackingField: 50
     _temporaryModifiers: []
     _permanentModifiers: []
-  <ItemType>k__BackingField: 0
+  <TargetType>k__BackingField: 0

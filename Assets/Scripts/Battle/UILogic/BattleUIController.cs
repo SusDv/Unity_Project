@@ -32,6 +32,9 @@ namespace BattleModule.UI.Core
         [Header("Battle Player Controller")]
         public BattleUIPlayer BattleUIPlayer;
 
+        [Header("Battle Enemy Controller")]
+        public BattleUIEnemy BattleUIEnemy;
+
         [Header("Battle Controller Reference")]
         [SerializeField] private BattleController _battleController;
 
@@ -61,6 +64,9 @@ namespace BattleModule.UI.Core
             BattleUIAction.InitBattleUIAction();
 
             BattleUIPlayer.InitBattleUICharacter(
+                _battleController.BattleCharactersOnScene.GetCharactersOnScene());
+
+            BattleUIEnemy.InitBattleUIEnemy(
                 _battleController.BattleCharactersOnScene.GetCharactersOnScene());
         }      
     }
