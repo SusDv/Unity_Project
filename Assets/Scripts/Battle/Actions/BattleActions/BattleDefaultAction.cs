@@ -12,13 +12,13 @@ namespace BattleModule.ActionCore
         public override void PerformAction(Character source, Character target)
         {
             float damage = -BattleAttackDamageProcessor.CalculateAttackDamage(
-                    source.GetStats().GetStatFinalValue(StatType.ATTACK),
-                    target.GetStats().GetStatFinalValue(StatType.DEFENSE));
+                    source.GetCharacterStats().GetStatFinalValue(StatType.ATTACK),
+                    target.GetCharacterStats().GetStatFinalValue(StatType.DEFENSE));
 
-            target.GetStats().ApplyStatModifier(StatType.HEALTH,
+            target.GetCharacterStats().ApplyStatModifier(StatType.HEALTH,
                 damage);
             
-            source.GetStats().ApplyStatModifier(StatType.BATTLE_POINTS, 10);
+            source.GetCharacterStats().ApplyStatModifier(StatType.BATTLE_POINTS, source.GetCharacterWeapon().GetWeaponAttackCost());
         }
 
         public static BattleDefaultAction GetBattleDefaultActionInstance(

@@ -23,7 +23,7 @@ namespace InventorySystem.Core
         {
             var existingItem = FindItem(item);
 
-            item.OnItemAction = item is Consumable ? InventoryItemUsed : null;
+            item.OnItemAction = item.IsStackable ? StackableItemUsed : null;
 
             if (existingItem.item.Equals(InventoryItem.GetEmptyItem()))
             {
@@ -59,7 +59,7 @@ namespace InventorySystem.Core
             OnInventoryChanged?.Invoke(_inventoryItems);
         }
 
-        public void InventoryItemUsed(BaseItem inventoryItem)
+        public void StackableItemUsed(BaseItem inventoryItem)
         {
             var itemToUse = FindItem(inventoryItem);
 

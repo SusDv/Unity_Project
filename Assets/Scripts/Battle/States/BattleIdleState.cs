@@ -7,6 +7,7 @@ namespace BattleModule.StateMachineBase.States
     {
         public BattleIdleState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
+
         }
 
         public override void OnEnter()
@@ -15,7 +16,7 @@ namespace BattleModule.StateMachineBase.States
 
             _battleStateMachine.BattleController.BattleCharactersInTurn.ResetCharacterInTurnBattlePoints();
 
-            _battleStateMachine.BattleController.BattleCharactersInTurn.TriggetCharacterInTurnTemporaryModifiers();
+            _battleStateMachine.BattleController.BattleCharactersInTurn.TriggerCharacterInTurnTemporaryModifiers();
 
             BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
             base.OnEnter();

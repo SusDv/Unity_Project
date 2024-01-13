@@ -39,7 +39,7 @@ namespace BattleModule.UI.Presenter
                     _battleCharacterInTurnPanel.transform.position, Quaternion.identity,
                     _battleCharacterInTurnPanel.transform);
 
-                battleUICharacterInTurn.SetData(character.gameObject.name, character.GetStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS).ToString());
+                battleUICharacterInTurn.SetData(character.gameObject.name, character.GetCharacterStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS).ToString());
             }
         }
     }

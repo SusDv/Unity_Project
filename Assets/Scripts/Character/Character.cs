@@ -1,4 +1,5 @@
 using StatModule.Core;
+using CharacterModule.Weapon;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -11,14 +12,20 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        _characterWeapon = GetComponent<CharacterWeapon>();
         _characterStats = new Stats(_characterSettings.BaseStats);
-        
-        //_characterWeapon?.InitCharacterWeapon(_characterStats, _characterSettings.BaseWeapon);
+
+        _characterWeapon = new CharacterWeapon(this);
+
+        _characterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
     }
 
-    public Stats GetStats() 
+    public Stats GetCharacterStats() 
     {
         return _characterStats;
+    }
+
+    public CharacterWeapon GetCharacterWeapon() 
+    {
+        return _characterWeapon;
     }
 }

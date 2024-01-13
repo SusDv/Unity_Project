@@ -1,22 +1,41 @@
 using InventorySystem.Item;
+using InventorySystem.Item.Interfaces;
 using StatModule.Core;
 using StatModule.Modifier;
 using UnityEngine;
 
-public class CharacterWeapon : MonoBehaviour
+namespace CharacterModule.Weapon 
 {
-    public Equipment WeaponItem;
-
-    private Stats _characterStats;
-
-    public void InitCharacterWeapon(Stats stats, Equipment baseWeapon) 
+    public class CharacterWeapon
     {
-        _characterStats = stats;
-        EquipWeapon(baseWeapon);
-    }
+        private Equipment _weaponItem;
 
-    public void EquipWeapon(Equipment item) 
-    {
-        WeaponItem = item;
+        private Character _characterWithWeapon;
+
+        public bool HaveWeapon { get; set; } = false;
+
+        public CharacterWeapon (Character character)
+        {
+            _characterWithWeapon = character;
+        }
+
+        public void EquipWeapon(Equipment equipmentItem) 
+        {
+            _weaponItem = equipmentItem;
+
+            (_weaponItem as IItemAction).PerformAction(_characterWithWeapon);
+        }
+
+        public void UnequipItem(Equipment equipmentItem) 
+        {
+            (_weaponItem as IItemAction).PerformAction(_characterWithWeapon);
+
+            _weaponItem = null;
+        }
+
+        public float GetWeaponAttackCost() 
+        {
+            return _weaponItem.BattlePoints;
+        }
     }
 }

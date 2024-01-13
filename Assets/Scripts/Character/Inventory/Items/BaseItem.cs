@@ -23,13 +23,13 @@ namespace InventorySystem.Item
         [field: SerializeField]
         public float BattlePoints { get; private set; }
 
-        [field: Header("--------------Target modifiers--------------")]
-        [field: Space()]
+        [field: Header("[Target modifiers]")]
+        [field: Space(10f)]
+
         [field: SerializeField]
         public StatModifiers BaseModifiers { get; private set; }
 
         public Action<BaseItem> OnItemAction { get; set; }
-
     }
 }
 

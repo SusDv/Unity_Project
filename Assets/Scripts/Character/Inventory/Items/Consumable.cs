@@ -15,7 +15,7 @@ namespace InventorySystem.Item
 
         public void PerformAction(Character character)
         {
-            Stats characterStats = character.GetStats();
+            Stats characterStats = character.GetCharacterStats();
 
             foreach (BaseStatModifier modifier in BaseModifiers.BaseModifiers)
             {
