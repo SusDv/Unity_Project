@@ -15,10 +15,10 @@ namespace BattleModule.ActionCore
                     source.GetCharacterStats().GetStatFinalValue(StatType.ATTACK),
                     target.GetCharacterStats().GetStatFinalValue(StatType.DEFENSE));
 
-            target.GetCharacterStats().ApplyStatModifier(StatType.HEALTH,
+            target.GetCharacterStats().AddStatModifier(StatType.HEALTH,
                 damage);
             
-            source.GetCharacterStats().ApplyStatModifier(StatType.BATTLE_POINTS, source.GetCharacterWeapon().GetWeaponAttackCost());
+            source.GetCharacterStats().AddStatModifier(StatType.BATTLE_POINTS, source.GetCharacterWeapon().GetWeaponAttackCost());
         }
 
         public static BattleDefaultAction GetBattleDefaultActionInstance(

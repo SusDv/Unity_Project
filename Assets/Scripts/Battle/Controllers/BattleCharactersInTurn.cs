@@ -59,7 +59,7 @@ namespace BattleModule.Controllers
                     deduction = 2 * (int)Mathf.Ceil(battlePoints / 10);
                 }
 
-                character.GetCharacterStats().ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
+                character.GetCharacterStats().AddStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
 
             SortCharactersByBattlePoints();
@@ -76,22 +76,21 @@ namespace BattleModule.Controllers
 
         public void ResetCharacterInTurnBattlePoints()
         {
-            Stats characterInTurnStats = (GetCharacterInTurn().GetCharacterStats());
+            Stats characterInTurnStats = GetCharacterInTurn().GetCharacterStats();
 
-            characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
+            characterInTurnStats.AddStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
 
             OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
         }
 
         public void TriggerCharacterInTurnTemporaryModifiers() 
         {
-            Stats characterInTurnStats = GetCharacterInTurn().GetCharacterStats();
+            Character characterInTurn = GetCharacterInTurn();
 
-            characterInTurnStats.GetBaseStatModifiers().Where((statModifier) =>
-                statModifier is TemporaryStatModifier)
-                    .ToList()
-                        .ForEach((temporaryStatModifier) =>
-                            characterInTurnStats.ApplyStatModifier(temporaryStatModifier)); 
+            Stats characterInTurnStats = characterInTurn.GetCharacterStats();
+            
+            characterInTurnStats.ApplyStatModifiersByCondition((statModifier) =>
+                statModifier is TemporaryStatModifier);
         }
 
         public IList<Character> GetCharactersInTurn()

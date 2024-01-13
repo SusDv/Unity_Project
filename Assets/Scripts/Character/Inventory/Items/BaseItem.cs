@@ -30,6 +30,11 @@ namespace InventorySystem.Item
         public StatModifiers BaseModifiers { get; private set; }
 
         public Action<BaseItem> OnItemAction { get; set; }
+
+        private void OnValidate()
+        {
+            BaseModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
+        }
     }
 }
 

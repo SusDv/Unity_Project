@@ -38,4 +38,11 @@ namespace StatModule.Utility.Enums
         ADDITIVE,
         PERCENTAGE
     }
+
+    public enum TemporaryStatModifierType 
+    {
+        APPLIED_ONCE,
+        APPLIED_EVERY_TURN,
+        APPLIED_EVERY_CYCLE
+    }
 }

@@ -17,7 +17,7 @@ namespace BattleModule.ActionCore
             BaseItem itemToUse = ((InventoryItem)_battleActionContext.ActionObject).inventoryItem;
             (itemToUse as IItemAction).PerformAction(target);
 
-            source.GetCharacterStats().ApplyStatModifier(InstantStatModifier.GetInstantStatModifierInstance(StatModule.Utility.Enums.StatType.BATTLE_POINTS, StatModule.Utility.Enums.ValueModifierType.ADDITIVE, itemToUse.BattlePoints));
+            source.GetCharacterStats().AddStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
         }
 
         public static BattleItemAction GetBattleItemActionInstance(BattleActionContext battleActionContext)

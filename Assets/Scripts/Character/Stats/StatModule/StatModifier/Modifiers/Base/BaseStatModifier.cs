@@ -6,7 +6,7 @@ using StatModule.Utility.Enums;
 namespace StatModule.Modifier
 {
     [Serializable]
-    public abstract class BaseStatModifier : IModifier, ICloneable
+    public abstract class BaseStatModifier : IModifier, ICloneable, IEquatable<BaseStatModifier>
     {
         protected BaseStatModifier(
             StatType statType, 
@@ -18,6 +18,8 @@ namespace StatModule.Modifier
             Value = value;
         }
 
+        protected bool _isModified;
+
         [field: SerializeField]
         public StatType StatType { get; set; }
 
@@ -27,9 +29,13 @@ namespace StatModule.Modifier
         [field: SerializeField]
         public float Value { get; set; }
 
+        public int SourceID { get; set; }
+
         public abstract void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback);
         
         public abstract object Clone();
+
+        public abstract bool Equals(BaseStatModifier other);
 
         public static BaseStatModifier operator -(BaseStatModifier baseModifier) 
         {

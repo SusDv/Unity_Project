@@ -13,48 +13,39 @@ namespace StatModule.Modifier
             StatType statType,
             ValueModifierType valueModifierType,
             float value,
-            bool appliedOnce,
-            bool appliedEveryTurn,
-            bool appliedEveryCycle,
+            TemporaryStatModifierType temporaryStatModifierType,
             int duration) : base(statType, valueModifierType, value) 
         {
-            AppliedOnce = appliedOnce;
-            AppliedEveryTurn = appliedEveryTurn;               
-            AppliedEveryCycle = appliedEveryCycle;
+            TemporaryStatModifierType = temporaryStatModifierType;
             Duration = duration;
         }
 
         [field: SerializeField]
-        public bool AppliedOnce { get; private set; }
-
-        [field: SerializeField]
-        public bool AppliedEveryTurn { get; private set; }
-
-        [field: SerializeField]
-        public bool AppliedEveryCycle { get; private set; }
+        public TemporaryStatModifierType TemporaryStatModifierType { get; private set; }
 
         [field: SerializeField]
         public int Duration { get; set; }
 
-        private bool _modified = false;
-
-        public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback) 
+        public override void Modify(IStat statToModify, 
+            Action<BaseStatModifier> addModifierCallback, 
+            Action<BaseStatModifier> removeModifierCallback) 
         {
-            Duration = _modified ? Duration - 1 : Duration;
+            Duration = _isModified ? Duration - 1 : Duration;
 
-            if (!_modified)
+            if (!_isModified)
             {
-                if (AppliedOnce)
+                if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
                 {
                     ValueModifierProcessor.ModifyStatValue(statToModify, this);
                 }
 
-                _modified = true;
+                _isModified = true;
                 addModifierCallback?.Invoke(this);
             }
             else 
             {
-                if(AppliedEveryTurn || AppliedEveryCycle) 
+                if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN) 
+                    || TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_CYCLE))
                 {
                     ValueModifierProcessor.ModifyStatValue(statToModify, this);
                 }
@@ -62,7 +53,7 @@ namespace StatModule.Modifier
 
             if (Duration <= 0) 
             {
-                if (AppliedOnce) 
+                if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE)) 
                 {
                     ValueModifierProcessor.ModifyStatValue(statToModify, -this);
                 }
@@ -75,17 +66,24 @@ namespace StatModule.Modifier
             StatType statType,
             ValueModifierType valueModifierType,
             float value,
-            bool appliedOnce,
-            bool appliedEveryTurn,
-            bool appliedEveryCycle,
+            TemporaryStatModifierType temporaryStatModifierType,
             int duration)
         {
-            return new TemporaryStatModifier(statType, valueModifierType, value, appliedOnce, appliedEveryTurn, appliedEveryCycle, duration);
+            return new TemporaryStatModifier(statType, valueModifierType, value, temporaryStatModifierType, duration);
         }
 
         public override object Clone()
         {
-            return  new TemporaryStatModifier(StatType, ValueModifierType, Value, AppliedOnce, AppliedEveryTurn, AppliedEveryCycle, Duration);
+            return  new TemporaryStatModifier(StatType, ValueModifierType, Value, TemporaryStatModifierType, Duration);
+        }
+
+        public override bool Equals(BaseStatModifier other)
+        {
+            return other.Value == Value
+                && other.ValueModifierType == ValueModifierType
+                && other.SourceID == SourceID
+                && other.StatType == StatType
+                && (other as TemporaryStatModifier).TemporaryStatModifierType == TemporaryStatModifierType;
         }
     }
 }

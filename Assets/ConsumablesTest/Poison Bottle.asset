@@ -24,9 +24,7 @@ MonoBehaviour:
     - <StatType>k__BackingField: 1
       <ValueModifierType>k__BackingField: 0
       <Value>k__BackingField: -30
-      <AppliedOnce>k__BackingField: 0
-      <AppliedEveryTurn>k__BackingField: 1
-      <AppliedEveryCycle>k__BackingField: 0
+      <TemporaryStatModifierType>k__BackingField: 1
       <Duration>k__BackingField: 2
     _permanentModifiers: []
   <TargetType>k__BackingField: 1
