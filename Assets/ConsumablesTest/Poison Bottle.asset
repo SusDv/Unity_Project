@@ -18,7 +18,7 @@ MonoBehaviour:
     2 turns
   <IsStackable>k__BackingField: 1
   <BattlePoints>k__BackingField: 5
-  <BaseModifiers>k__BackingField:
+  <StatModifiers>k__BackingField:
     _instantModifiers: []
     _temporaryModifiers:
     - <StatType>k__BackingField: 1

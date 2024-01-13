@@ -17,6 +17,7 @@ public class Character : MonoBehaviour
         _characterWeapon = new CharacterWeapon(this);
 
         _characterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
+    
     }
 
     public Stats GetCharacterStats() 

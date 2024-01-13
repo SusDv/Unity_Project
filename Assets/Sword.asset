@@ -17,7 +17,7 @@ MonoBehaviour:
   <ItemDescription>k__BackingField: 
   <IsStackable>k__BackingField: 0
   <BattlePoints>k__BackingField: 10
-  <BaseModifiers>k__BackingField:
+  <StatModifiers>k__BackingField:
     _instantModifiers: []
     _temporaryModifiers: []
     _permanentModifiers:
