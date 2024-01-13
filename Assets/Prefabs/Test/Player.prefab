@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 615298889553136413}
   - component: {fileID: 615298889553136412}
   - component: {fileID: 615298889553136415}
+  - component: {fileID: 4799456234493601572}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -131,22 +132,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450ca21841b2904e998428d8bc4935f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInputSpace: {fileID: 0}
-  maxSpeed: 10
-  maxAcceleration: 10
-  maxAirAcceleration: 1
-  jumpHeight: 2
-  maxAirJumps: 0
-  maxGroundAngle: 60
-  maxStairsAngle: 50
-  maxSnapSpeed: 100
-  probeDistance: 1
-  probeMask:
-    serializedVersion: 2
-    m_Bits: 1167
-  stairsMask:
-    serializedVersion: 2
-    m_Bits: 1024
+  <Data>k__BackingField: {fileID: 0}
+  <ColliderUtility>k__BackingField:
+    <DefaultColliderData>k__BackingField:
+      <Height>k__BackingField: 1.8
+      <CenterY>k__BackingField: 0.8
+      <Radius>k__BackingField: 0.2
+      <FloatHeightPercentage>k__BackingField: 0.25
+      <SkinWidth>k__BackingField: 0.05
+  <PhysicsUtility>k__BackingField:
+    GravityData:
+      <MinimumFallGravity>k__BackingField: 20
+      <MaximumFallGravity>k__BackingField: 30
+      <GravityFallIncrementTime>k__BackingField: 0.05
+      <GravityFallIncrementAmount>k__BackingField: 5
+      <GravityFallIncerementTimer>k__BackingField: 0
+      <CurrentFallGravity>k__BackingField: 0
+      <IsFalling>k__BackingField: 0
+    SlopeData:
+      <MaximumSlopeAngle>k__BackingField: 45
+      <OnSlope>k__BackingField: 0
+      <SlidingOffSlope>k__BackingField: 0
+    GroundCheckData:
+      <GroundCheckBuffer>k__BackingField: 0.02
+      <FloatForceMultiplier>k__BackingField: 5
+      <FloatVelocityMultiplier>k__BackingField: 5
+      <GroundCheckTolerance>k__BackingField: 0.05
+      <OnGround>k__BackingField: 0
+    <RigidBodyVelocity>k__BackingField: {x: 0, y: 0, z: 0}
+    <RigidBodyVelocityMagnitude>k__BackingField: 0
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!54 &615298889553136413
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -188,3 +203,17 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &4799456234493601572
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615298889553136423}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15
+  m_Height: 1.3499999
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.0250001, z: 0}

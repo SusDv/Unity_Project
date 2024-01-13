@@ -27,13 +27,13 @@ namespace InventorySystem.Item
         [field: Space(10f)]
 
         [field: SerializeField]
-        public StatModifiers BaseModifiers { get; private set; }
+        public StatModifiers StatModifiers { get; private set; }
 
         public Action<BaseItem> OnItemAction { get; set; }
 
         private void OnValidate()
         {
-            BaseModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
+            StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
         }
     }
 }

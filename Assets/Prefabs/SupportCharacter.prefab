@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2370377084227571780}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.01999998, y: 0.41000003, z: 0.14200002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7499820200133482555}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2370377084227571784
 MeshFilter:
@@ -95,8 +95,6 @@ GameObject:
   - component: {fileID: 7499820200133482554}
   - component: {fileID: 7499820200133482949}
   - component: {fileID: 7499820200133482553}
-  - component: {fileID: 7499820200133482552}
-  - component: {fileID: 2760079380848874791}
   m_Layer: 7
   m_Name: SupportCharacter
   m_TagString: Untagged
@@ -111,7 +109,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7499820200133482951}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -119,6 +116,7 @@ Transform:
   m_Children:
   - {fileID: 2370377084227571783}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7499820200133482554
 MeshFilter:
@@ -182,8 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ddb50d3810fb44bae9f20a26bd6a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseStats: {fileID: 0}
-  Inventory: {fileID: 0}
+  _characterSettings: {fileID: 0}
   InteractibleObjectMask:
     serializedVersion: 2
     m_Bits: 0
@@ -191,32 +188,3 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   BulletSpawnPosition: {fileID: 0}
---- !u!114 &7499820200133482552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7499820200133482951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6880991e4b57d54a8d420813f6d4f24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EquipmentItem: {fileID: 0}
---- !u!114 &2760079380848874791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7499820200133482951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f74e87e123f4a17489cfc7f0c013c9b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EquipmentInventory: {fileID: 11400000, guid: 3a3cf30400e6cfd469386324d8ef1ca6, type: 2}
-  WeaponInventory: {fileID: 11400000, guid: 666c2c6536ccb244686cc8ec1fcf104e, type: 2}
-  ConsumableInventory: {fileID: 11400000, guid: 9e8a8c9b83032eb49af74de4d68030f6, type: 2}
-  QuestInventory: {fileID: 11400000, guid: 5945da514b510e7498c25e721a7b7ce5, type: 2}

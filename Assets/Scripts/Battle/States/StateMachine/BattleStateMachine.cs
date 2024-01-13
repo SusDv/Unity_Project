@@ -8,8 +8,6 @@ namespace BattleModule.StateMachineBase
         public IState CurrentState;
         public BattleController BattleController { get; }
 
-        public BattleIdleState BattleIdleState { get; }
-
         public BattleTargetingState BattleTargetingState { get; }
 
         public BattleEnemyAttackState BattleEnemyAttackState { get; }
@@ -17,8 +15,6 @@ namespace BattleModule.StateMachineBase
         public BattleStateMachine(BattleController battleController)
         {
             BattleController = battleController;
-
-            BattleIdleState = new BattleIdleState(this);
 
             BattleTargetingState = new BattleTargetingState(this);
 

@@ -1,5 +1,4 @@
-﻿using BattleModule.ActionCore;
-using BattleModule.ActionCore.Events;
+﻿using BattleModule.ActionCore.Events;
 using BattleModule.UI.Button;
 using BattleModule.UI.View;
 using UnityEngine;
