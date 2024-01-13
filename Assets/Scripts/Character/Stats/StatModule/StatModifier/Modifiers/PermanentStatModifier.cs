@@ -25,6 +25,14 @@ namespace StatModule.Modifier
 
                 addModifierCallback?.Invoke(this);
             }
+            else 
+            {
+                _modified = false;
+
+                ValueModifierProcessor.ModifyStatValue(statToModify, -this);
+
+                removeModifierCallback?.Invoke(this);
+            }
         }
 
         public static PermanentStatModifier GetPermanentStatModifierInstance(

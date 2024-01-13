@@ -37,11 +37,11 @@ namespace BattleModule.UI.Presenter
                     _battleUIPlayerView, _battleUIPlayersPanel.transform.position,
                     Quaternion.identity, _battleUIPlayersPanel.transform);
 
-                character.GetStats().OnStatsModified += UpdatePlayerPanels;
+                character.GetCharacterStats().OnStatsModified += UpdatePlayerPanels;
 
                 _battleUIPlayers.Add(battleUICharacterView);
 
-                UpdatePlayerPanels(character.GetStats());
+                UpdatePlayerPanels(character.GetCharacterStats());
             }
             
         }
@@ -49,7 +49,7 @@ namespace BattleModule.UI.Presenter
         {
             int characterToUpdateIndex = _playerCharacters.IndexOf(
                 _playerCharacters.Where((character) =>
-                    character.GetStats().Equals(stats)).First());
+                    character.GetCharacterStats().Equals(stats)).First());
 
             _battleUIPlayers[characterToUpdateIndex].SetData(
                     null,

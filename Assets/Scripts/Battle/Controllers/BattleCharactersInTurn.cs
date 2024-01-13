@@ -31,7 +31,7 @@ namespace BattleModule.Controllers
         {
             foreach (Character character in _charactersInTurn)
             {
-                float battlePoints = character.GetStats().GetStatFinalValue(StatType.BATTLE_POINTS);
+                float battlePoints = character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS);
 
                 int deduction;
 
@@ -59,7 +59,7 @@ namespace BattleModule.Controllers
                     deduction = 2 * (int)Mathf.Ceil(battlePoints / 10);
                 }
 
-                character.GetStats().ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
+                character.GetCharacterStats().ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
 
             SortCharactersByBattlePoints();
@@ -68,7 +68,7 @@ namespace BattleModule.Controllers
         private void SortCharactersByBattlePoints() 
         {
             _charactersInTurn = _charactersInTurn
-                .OrderBy(characterInTurn => characterInTurn.GetStats().GetStatFinalValue(StatType.BATTLE_POINTS))
+                .OrderBy(characterInTurn => characterInTurn.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS))
                     .ToList();
 
             OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
@@ -76,19 +76,19 @@ namespace BattleModule.Controllers
 
         public void ResetCharacterInTurnBattlePoints()
         {
-            Stats characterInTurnStats = (GetCharacterInTurn().GetStats());
+            Stats characterInTurnStats = (GetCharacterInTurn().GetCharacterStats());
 
             characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
 
             OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
         }
 
-        public void TriggetCharacterInTurnTemporaryModifiers() 
+        public void TriggerCharacterInTurnTemporaryModifiers() 
         {
-            Stats characterInTurnStats = GetCharacterInTurn().GetStats();
+            Stats characterInTurnStats = GetCharacterInTurn().GetCharacterStats();
 
             characterInTurnStats.GetBaseStatModifiers().Where((statModifier) =>
-                (statModifier as TemporaryStatModifier).AppliedEveryTurn || ((statModifier as TemporaryStatModifier).AppliedOnce))
+                statModifier is TemporaryStatModifier)
                     .ToList()
                         .ForEach((temporaryStatModifier) =>
                             characterInTurnStats.ApplyStatModifier(temporaryStatModifier)); 
