@@ -11,18 +11,23 @@ namespace StatModule.Settings
         [field: SerializeField]
         private List<Stat> _statList { get; set; } = new List<Stat>();
 
-        private Dictionary<StatType, Stat> _stats = new Dictionary<StatType, Stat>();
-
+#if UNITY_EDITOR
         private void OnValidate()
         {
-            _stats = new Dictionary<StatType, Stat>();
-
             foreach (Stat stat in _statList) 
             {
                 stat.FinalValue = stat.BaseValue;
-                _stats.TryAdd(stat.StatType, stat);
             }
         }
+#else
+        private void Awake()
+        {
+            foreach (Stat stat in _statList)
+            {
+                stat.FinalValue = stat.BaseValue;
+            }
+        }
+#endif
 
         private void SetStatDependancy(Dictionary<StatType, Stat> stats, StatType stat, StatType dependendOnStat) 
         {
@@ -39,7 +44,7 @@ namespace StatModule.Settings
         {
             Dictionary<StatType, Stat> stats = new Dictionary<StatType, Stat>();
 
-            foreach(Stat stat in _stats.Values) 
+            foreach(Stat stat in _statList) 
             {
                 stats.Add(stat.StatType, stat.Clone() as Stat);
             }

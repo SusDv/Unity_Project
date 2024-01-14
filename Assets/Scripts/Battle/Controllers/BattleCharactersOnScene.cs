@@ -27,7 +27,7 @@ namespace BattleModule.Controllers
             }
         }
 
-        public Character GetMiddleCharacterOnScene(Type characterInTurnType, Func<Type, Type, bool> targetFunction)
+        public Character GetMiddleCharacterOnScene(Type characterInTurnType, Func<Type, Type, bool> targetFunction, int specificTargetIndex = -1)
         {
             List<Character> characters =
                 _charactersOnScene
@@ -36,18 +36,19 @@ namespace BattleModule.Controllers
                         character.GetType(), characterInTurnType))
                             .ToList();
 
-            return characters[Mathf.RoundToInt(characters.Count / 2)];
+            return characters[specificTargetIndex == -1 ? Mathf.RoundToInt(characters.Count / 2) : specificTargetIndex];
         }
 
-        public Character GetNearbyCharacterOnScene(Character selectedCharacter, int direction)
+        public (int, Character) GetNearbyCharacterOnScene(Character selectedCharacter, int direction)
         {
             List<Character> characters =
                 _charactersOnScene
                     .Where(character => character.GetType().Equals(selectedCharacter.GetType()))
                         .ToList();
 
-            return characters[GetNearbyCharacterIndex(
-                characters.IndexOf(selectedCharacter) + direction, characters.Count)];
+            int nearbyCharacterIndex = GetNearbyCharacterIndex(characters.IndexOf(selectedCharacter) + direction, characters.Count);
+
+            return (nearbyCharacterIndex, characters[nearbyCharacterIndex]);
         }
 
         public List<Character> GetCharactersOnScene()

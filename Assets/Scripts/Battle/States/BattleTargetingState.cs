@@ -12,7 +12,9 @@ namespace BattleModule.StateMachineBase.States
     public class BattleTargetingState : BattleState
     {
         private Dictionary<TargetType, Func<Type, Type, bool>> _targetedCharacters;
-        
+
+        private int _currentTargetIndex;
+
         public BattleTargetingState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
             _targetedCharacters = new Dictionary<TargetType, Func<Type, Type, bool>>
@@ -24,18 +26,25 @@ namespace BattleModule.StateMachineBase.States
 
         public override void OnEnter()
         {
+            _currentTargetIndex = -1;
+
             _battleStateMachine.BattleController.BattleCharactersInTurn.ResetCharacterInTurnBattlePoints();
 
             _battleStateMachine.BattleController.BattleCharactersInTurn.TriggerCharacterInTurnTemporaryModifiers();
 
             BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
-            
+
+            BattleGlobalActionEventProcessor.OnBattleActionChanged += AutoSelectEnemy;
+
             AutoSelectEnemy();
             base.OnEnter();
         }
         public override void OnExit()
         {
             BattleGlobalActionEventProcessor.OnBattleAction -= BattleActionHandler;
+            
+            BattleGlobalActionEventProcessor.OnBattleActionChanged -= AutoSelectEnemy;
+            
             base.OnExit();
         }
 
@@ -49,7 +58,7 @@ namespace BattleModule.StateMachineBase.States
         {
             Character selectedCharacter = _battleStateMachine.BattleController.Data.SelectedCharacter;
 
-            selectedCharacter = SelectCharacterUsingKeys();
+            (_currentTargetIndex, selectedCharacter) = SelectCharacterUsingKeys();
 
             if (!_battleStateMachine.BattleController.BattleInput.BattleActions.LeftMouseButton.WasPressedThisFrame())
             {
@@ -79,13 +88,13 @@ namespace BattleModule.StateMachineBase.States
             _battleStateMachine.BattleController.Data.SelectedCharacter = _battleStateMachine.BattleController.BattleCharactersOnScene
                 .GetMiddleCharacterOnScene(
                 _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), 
-                    _targetedCharacters[BattleGlobalActionEventProcessor.BattleAction.GetBattleActionContext().TargetType]);
+                    _targetedCharacters[BattleGlobalActionEventProcessor.BattleAction.GetBattleActionContext().TargetType], _currentTargetIndex);
         }
-        private Character SelectCharacterUsingKeys()
+        private (int, Character) SelectCharacterUsingKeys()
         {
             if (_arrowKeysInput == 0)
             {
-                return _battleStateMachine.BattleController.Data.SelectedCharacter;
+                return (_currentTargetIndex, _battleStateMachine.BattleController.Data.SelectedCharacter);
             }
 
             return _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacterOnScene(_battleStateMachine.BattleController.Data.SelectedCharacter, _arrowKeysInput);

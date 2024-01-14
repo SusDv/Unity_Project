@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using BattleModule.UI.View;
-using UnityEngine.TextCore.Text;
 
 namespace BattleModule.UI.Presenter 
 {

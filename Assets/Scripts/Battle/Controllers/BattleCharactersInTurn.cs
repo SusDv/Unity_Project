@@ -35,34 +35,31 @@ namespace BattleModule.Controllers
 
                 int deduction;
 
-                if (battlePoints > 10)
+                int tierNumber = (int) GetTierNumber(battlePoints);
+
+                if (battlePoints <= 10 * tierNumber)
                 {
-                    if (battlePoints <= 12)
-                    {
-                        deduction = 2;
-                    }
-                    else if (battlePoints <= 24)
-                    {
-                        deduction = 4;
-                    }
-                    else if (battlePoints <= 36)
-                    {
-                        deduction = 6;
-                    }
-                    else
-                    {
-                        deduction = 8;
-                    }
+                    deduction = 2 * tierNumber;
                 }
-                else
+                else if (battlePoints > 10 * tierNumber &&
+                        battlePoints < 10 * tierNumber + 2 * tierNumber)
                 {
-                    deduction = 2 * (int)Mathf.Ceil(battlePoints / 10);
+                    deduction = 3 + (2 * (tierNumber - 1));
+                }
+                else 
+                {
+                    deduction = 4 + (2 * (tierNumber - 1));
                 }
 
                 character.GetCharacterStats().AddStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
 
             SortCharactersByBattlePoints();
+        }
+
+        private float GetTierNumber(float battlePoints) 
+        {
+            return Mathf.Floor(battlePoints / 10);
         }
 
         private void SortCharactersByBattlePoints() 
