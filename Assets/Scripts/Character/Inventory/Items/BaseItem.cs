@@ -31,10 +31,17 @@ namespace InventorySystem.Item
 
         public Action<BaseItem> OnItemAction { get; set; }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
         }
+#else
+        private void Awake()
+        {
+            StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
+        }
+#endif
     }
 }
 

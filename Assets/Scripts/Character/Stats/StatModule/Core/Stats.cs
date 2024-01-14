@@ -98,10 +98,11 @@ namespace StatModule.Core
 
         public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
         {
-            var temp = _modifiersInUse.Where(statModifier =>
-                conditionFunction.Invoke(statModifier)).ToList();
+            List<BaseStatModifier> modifiersListByCondition = _modifiersInUse
+                .Where(statModifier =>
+                    conditionFunction.Invoke(statModifier)).ToList();
 
-            foreach (BaseStatModifier statModifier in temp) 
+            foreach (BaseStatModifier statModifier in modifiersListByCondition) 
             {
                 statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
             }

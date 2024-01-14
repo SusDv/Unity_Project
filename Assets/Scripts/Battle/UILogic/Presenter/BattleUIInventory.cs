@@ -107,13 +107,19 @@ namespace BattleModule.UI.Presenter
             if (_selectedItem == null)
             {
                 BattleGlobalActionEventProcessor.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, TargetType.ENEMY));
+                
+                BattleGlobalActionEventProcessor.BattleActionChanged();
+                
                 return;
             }
 
             InventoryItem selectedItem = GetSelectedItem();
+
             TargetType targetType = ((selectedItem.inventoryItem) as ITargetable).TargetType;
 
             BattleGlobalActionEventProcessor.BattleAction = BattleItemAction.GetBattleItemActionInstance(BattleActionContext.GetBattleActionContextInstance(selectedItem, targetType));
+            
+            BattleGlobalActionEventProcessor.BattleActionChanged();
         }
 
         public void BattleInventoryVisibility()

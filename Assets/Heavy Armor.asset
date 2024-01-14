@@ -16,9 +16,8 @@ MonoBehaviour:
   <ItemImage>k__BackingField: {fileID: 0}
   <ItemDescription>k__BackingField: GIGA ARMOR
   <IsStackable>k__BackingField: 0
-  <Max_Stack>k__BackingField: 1
-  <statModifiers>k__BackingField:
-  - <StatModifierBase>k__BackingField: {fileID: 11400000, guid: 608059159b019f544a8571ae037ed07d, type: 2}
-    <Value>k__BackingField: 0
-  - <StatModifierBase>k__BackingField: {fileID: 0}
-    <Value>k__BackingField: 0
+  <BattlePoints>k__BackingField: 0
+  <StatModifiers>k__BackingField:
+    _instantModifiers: []
+    _temporaryModifiers: []
+    _permanentModifiers: []

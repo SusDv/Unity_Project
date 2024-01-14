@@ -11,6 +11,8 @@ namespace BattleModule.ActionCore.Events
 
         public static Action OnCycleEnded;
 
+        public static Action OnBattleActionChanged;
+
         public static BattleAction BattleAction { get; set; } = 
             BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, Utility.Enums.TargetType.ENEMY));
 
@@ -39,6 +41,11 @@ namespace BattleModule.ActionCore.Events
             }
 
             BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, Utility.Enums.TargetType.ENEMY));
+        }
+
+        public static void BattleActionChanged() 
+        {
+            OnBattleActionChanged?.Invoke();
         }
 
         private static void AdvanceCycle()
