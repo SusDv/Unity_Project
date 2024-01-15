@@ -1,5 +1,5 @@
 using BattleModule.Utility.Enums;
-using InventorySystem.Inventory.Interfaces;
+using BattleModule.Utility.Interfaces;
 using InventorySystem.Item.Interfaces;
 using StatModule.Core;
 using StatModule.Modifier;
@@ -12,6 +12,13 @@ namespace InventorySystem.Item
     {
         [field: SerializeField]
         public TargetType TargetType { get; set; }
+
+        [field: SerializeField]
+        public TargetSearchType TargetSearchType { get; set; }
+
+        [field: SerializeField]
+        [field: Range(1, 3)]
+        public int TargetCount { get; set; } = 1;
 
         public void PerformAction(Character character)
         {

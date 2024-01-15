@@ -96,16 +96,25 @@ namespace StatModule.Core
             return GetStatFinalValue(numeratorStat) / GetStatFinalValue(denominatorStat);
         }
 
-        public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
+        public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction, Func<BaseStatModifier, bool> additionalCondition = null) 
         {
-            List<BaseStatModifier> modifiersListByCondition = _modifiersInUse
+            List<BaseStatModifier> modifiersByCondition = _modifiersInUse
                 .Where(statModifier =>
-                    conditionFunction.Invoke(statModifier)).ToList();
+                    conditionFunction.Invoke(statModifier))
+                .ToList();
 
-            foreach (BaseStatModifier statModifier in modifiersListByCondition) 
+            if (additionalCondition != null) 
             {
-                statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+                modifiersByCondition = modifiersByCondition
+                    .Where(statModifier => 
+                        additionalCondition.Invoke(statModifier))
+                        .ToList();
             }
+
+            modifiersByCondition.ForEach(statModifier => 
+                {
+                    statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+                });
 
             OnStatsModified?.Invoke(this);
         }

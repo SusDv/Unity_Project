@@ -7,8 +7,7 @@ using UnityEngine;
 using BattleModule.ActionCore;
 using BattleModule.ActionCore.Events;
 using BattleModule.Utility.Enums;
-using InventorySystem.Inventory.Interfaces;
-using InventorySystem.Item;
+using BattleModule.Utility.Interfaces;
 using BattleModule.ActionCore.Context;
 
 namespace BattleModule.UI.Presenter 
@@ -106,10 +105,11 @@ namespace BattleModule.UI.Presenter
         {
             if (_selectedItem == null)
             {
-                BattleGlobalActionEventProcessor.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, TargetType.ENEMY));
-                
-                BattleGlobalActionEventProcessor.BattleActionChanged();
-                
+                BattleGlobalActionEventProcessor.SetBattleAction(
+                    BattleDefaultAction.GetBattleDefaultActionInstance(
+                        BattleActionContext.GetBattleActionContextInstance(
+                            null, TargetType.ENEMY)));
+
                 return;
             }
 
@@ -117,9 +117,10 @@ namespace BattleModule.UI.Presenter
 
             TargetType targetType = ((selectedItem.inventoryItem) as ITargetable).TargetType;
 
-            BattleGlobalActionEventProcessor.BattleAction = BattleItemAction.GetBattleItemActionInstance(BattleActionContext.GetBattleActionContextInstance(selectedItem, targetType));
-            
-            BattleGlobalActionEventProcessor.BattleActionChanged();
+            BattleGlobalActionEventProcessor.SetBattleAction(
+                BattleItemAction.GetBattleItemActionInstance(
+                    BattleActionContext.GetBattleActionContextInstance(
+                        selectedItem, targetType)));
         }
 
         public void BattleInventoryVisibility()

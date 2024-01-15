@@ -7,7 +7,8 @@ namespace BattleModule.ActionCore
     public class BattleDefaultAction : BattleAction 
     {
         private BattleDefaultAction(BattleActionContext battleActionContext) 
-            : base(battleActionContext) {}
+            : base(battleActionContext) 
+        {}
 
         public override void PerformAction(Character source, Character target)
         {
