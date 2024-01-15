@@ -2,7 +2,6 @@
 using InventorySystem.Core;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
-using StatModule.Modifier;
 
 namespace BattleModule.ActionCore
 {

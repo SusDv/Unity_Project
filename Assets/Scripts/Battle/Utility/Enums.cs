@@ -11,4 +11,10 @@ namespace BattleModule.Utility.Enums
         ALLY,
         ENEMY
     }
+
+    public enum TargetSearchType 
+    {
+        AOE,
+        SEQUENCE
+    }
 }

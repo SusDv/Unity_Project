@@ -1,15 +1,25 @@
-using CharacterModule.Weapon;
+using BattleModule.Utility.Enums;
+using BattleModule.Utility.Interfaces;
 using InventorySystem.Item.Interfaces;
 using StatModule.Core;
 using StatModule.Modifier;
-using System.Linq;
 using UnityEngine;
 
 namespace InventorySystem.Item 
 {
     [CreateAssetMenu(fileName = "New Equipment", menuName = "Character/Items/Equipment")]
-    public class Equipment : BaseItem, IItemAction
+    public class Equipment : BaseItem, IItemAction, ITargetable
     {
+        [field: SerializeField]
+        public TargetType TargetType { get; set; }
+
+        [field: SerializeField]
+        public TargetSearchType TargetSearchType { get; set; }
+
+        [field: SerializeField]
+        [field: Range(1, 3)]
+        public int TargetCount { get; set; } = 1;
+
         public void PerformAction(Character character)
         {
             if (character.GetCharacterWeapon().HaveWeapon)

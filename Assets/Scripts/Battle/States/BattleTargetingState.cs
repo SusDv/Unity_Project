@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using BattleModule.ActionCore;
-using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.StateMachineBase.States.Core;
 using BattleModule.Utility.Enums;
@@ -11,17 +9,25 @@ namespace BattleModule.StateMachineBase.States
 {
     public class BattleTargetingState : BattleState
     {
-        private Dictionary<TargetType, Func<Type, Type, bool>> _targetedCharacters;
+        private readonly Dictionary<TargetType, Func<Type, Type, bool>> 
+            _charactersToTarget
+                = new Dictionary<TargetType, Func<Type, Type, bool>>
+                {
+                    { TargetType.ALLY, 
+                        (selectedCharacterType, characterInTurnType) => 
+                            selectedCharacterType.Equals(characterInTurnType)},
+                    { TargetType.ENEMY, 
+                        (selectedCharacterType, characterInTurnType) => 
+                        !selectedCharacterType.Equals(characterInTurnType)}
+                };
 
         private int _currentTargetIndex;
 
-        public BattleTargetingState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+
+        public BattleTargetingState(BattleStateMachine battleStateMachine) 
+            : base(battleStateMachine)
         {
-            _targetedCharacters = new Dictionary<TargetType, Func<Type, Type, bool>>
-            {
-                { TargetType.ALLY, (selectedCharacterType, characterInTurnType) => selectedCharacterType.Equals(characterInTurnType)},
-                { TargetType.ENEMY, (selectedCharacterType, characterInTurnType) => !selectedCharacterType.Equals(characterInTurnType)}
-            };
+
         }
 
         public override void OnEnter()
@@ -30,20 +36,20 @@ namespace BattleModule.StateMachineBase.States
 
             _battleStateMachine.BattleController.BattleCharactersInTurn.ResetCharacterInTurnBattlePoints();
 
-            _battleStateMachine.BattleController.BattleCharactersInTurn.TriggerCharacterInTurnTemporaryModifiers();
+            _battleStateMachine.BattleController.BattleCharactersInTurn.TriggerCharacterInTurnTemporaryTurnModifiers();
 
             BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
 
-            BattleGlobalActionEventProcessor.OnBattleActionChanged += AutoSelectEnemy;
+            BattleGlobalActionEventProcessor.OnBattleActionChanged += SelectCharacter;
 
-            AutoSelectEnemy();
+            SelectCharacter();
             base.OnEnter();
         }
         public override void OnExit()
         {
             BattleGlobalActionEventProcessor.OnBattleAction -= BattleActionHandler;
             
-            BattleGlobalActionEventProcessor.OnBattleActionChanged -= AutoSelectEnemy;
+            BattleGlobalActionEventProcessor.OnBattleActionChanged -= SelectCharacter;
             
             base.OnExit();
         }
@@ -51,7 +57,9 @@ namespace BattleModule.StateMachineBase.States
         public override void OnUpdate()
         {
             base.OnUpdate();
+
             _battleStateMachine.BattleController.Data.SelectedCharacter = SelectEnemyOnScene();
+            
             CheckCancelKeyPressed();
         }
         protected Character SelectEnemyOnScene()
@@ -83,12 +91,12 @@ namespace BattleModule.StateMachineBase.States
             return selectedCharacter;
         }
 
-        private void AutoSelectEnemy()
+        private void SelectCharacter()
         {
             _battleStateMachine.BattleController.Data.SelectedCharacter = _battleStateMachine.BattleController.BattleCharactersOnScene
-                .GetMiddleCharacterOnScene(
-                _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), 
-                    _targetedCharacters[BattleGlobalActionEventProcessor.BattleAction.GetBattleActionContext().TargetType], _currentTargetIndex);
+                .GetCharacterOnScene(
+                _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn(), 
+                    _charactersToTarget[BattleGlobalActionEventProcessor.BattleAction.GetBattleActionContext().TargetType], _currentTargetIndex);
         }
         private (int, Character) SelectCharacterUsingKeys()
         {
@@ -107,13 +115,12 @@ namespace BattleModule.StateMachineBase.States
 
             _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
         }
+
         private void CheckCancelKeyPressed() 
         {
             if (_cancelKeyPressed)
             {
-                BattleGlobalActionEventProcessor.BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, TargetType.ENEMY));
-
-                _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
+                
             }
         }
     }

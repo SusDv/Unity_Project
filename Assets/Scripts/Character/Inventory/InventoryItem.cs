@@ -1,5 +1,4 @@
-﻿using InventorySystem.Inventory.Interfaces;
-using InventorySystem.Item;
+﻿using InventorySystem.Item;
 using System;
 
 namespace InventorySystem.Core 

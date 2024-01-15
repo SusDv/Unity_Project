@@ -80,14 +80,21 @@ namespace BattleModule.Controllers
             OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
         }
 
-        public void TriggerCharacterInTurnTemporaryModifiers() 
+        public void TriggerCharacterInTurnTemporaryTurnModifiers() 
         {
             Character characterInTurn = GetCharacterInTurn();
 
             Stats characterInTurnStats = characterInTurn.GetCharacterStats();
             
-            characterInTurnStats.ApplyStatModifiersByCondition((statModifier) =>
-                statModifier is TemporaryStatModifier);
+            characterInTurnStats.ApplyStatModifiersByCondition(
+                (statModifier) =>
+                    (statModifier is TemporaryStatModifier),
+
+                (statModifier) => 
+                    !(statModifier as TemporaryStatModifier)
+                        .TemporaryStatModifierType
+                        .Equals(TemporaryStatModifierType.APPLIED_EVERY_CYCLE)
+                );
         }
 
         public IList<Character> GetCharactersInTurn()
