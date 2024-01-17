@@ -8,6 +8,8 @@ namespace BattleModule.Utility.Interfaces
 
         public TargetSearchType TargetSearchType { get; set; }
 
-        public int TargetCount { get; set; }
+        public int TargetsToSelect { get; set; }
+
+        public int MaxTargetsCount { get; set; }
     }
 }

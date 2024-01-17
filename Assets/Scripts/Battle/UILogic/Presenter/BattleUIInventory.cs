@@ -5,10 +5,9 @@ using BattleModule.UI.Button;
 using BattleModule.UI.View;
 using UnityEngine;
 using BattleModule.ActionCore;
-using BattleModule.ActionCore.Events;
-using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
 using BattleModule.ActionCore.Context;
+using BattleModule.Data;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -30,11 +29,15 @@ namespace BattleModule.UI.Presenter
         private List<InventoryItem> _battleInventoryItems;
 
         private BattleUIItemView _selectedItem;
+        private BattleStatesData _battleData;
 
         public void InitBattleInventory(
             ref Action<List<InventoryItem>> battleItemsChanged, 
-            List<InventoryItem> battleInventory)
+            List<InventoryItem> battleInventory,
+            BattleStatesData battleStatesData)
         {      
+            _battleData = battleStatesData;
+
             battleItemsChanged += BattleInventoryUpdate;
 
             _battleInventoryButton.OnButtonClick += BattleInventoryVisibility;
@@ -105,22 +108,17 @@ namespace BattleModule.UI.Presenter
         {
             if (_selectedItem == null)
             {
-                BattleGlobalActionEventProcessor.SetBattleAction(
-                    BattleDefaultAction.GetBattleDefaultActionInstance(
-                        BattleActionContext.GetBattleActionContextInstance(
-                            null, TargetType.ENEMY)));
+                _battleData.BattleAction = null;
 
                 return;
             }
 
             InventoryItem selectedItem = GetSelectedItem();
 
-            TargetType targetType = ((selectedItem.inventoryItem) as ITargetable).TargetType;
+            ITargetable targetable = ((selectedItem.inventoryItem) as ITargetable);
 
-            BattleGlobalActionEventProcessor.SetBattleAction(
-                BattleItemAction.GetBattleItemActionInstance(
-                    BattleActionContext.GetBattleActionContextInstance(
-                        selectedItem, targetType)));
+            _battleData.BattleAction = BattleItemAction.GetBattleItemActionInstance
+                (BattleActionContext.GetBattleActionContextInstance(selectedItem, targetable));
         }
 
         public void BattleInventoryVisibility()

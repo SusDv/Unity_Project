@@ -44,8 +44,7 @@ namespace StatModule.Modifier
             }
             else 
             {
-                if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN) 
-                    || TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_CYCLE))
+                if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN))
                 {
                     ValueModifierProcessor.ModifyStatValue(statToModify, this);
                 }
