@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Assets.Scripts.Battle.Controllers;
 using BattleModule.ActionCore.Events;
 using BattleModule.Data;
 using BattleModule.Input;
@@ -41,8 +42,6 @@ namespace BattleModule.Controllers.Core
 
             BattleCharactersOnScene = new BattleCharactersOnScene();
 
-            Data = new BattleStatesData();
-
             BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
 
             BattleStart();
@@ -66,6 +65,8 @@ namespace BattleModule.Controllers.Core
             BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
 
             BattleCharactersInTurn = new BattleCharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
+            
+            Data = new BattleStatesData(BattleCharactersInTurn.GetCharacterInTurn());
 
             BattleGlobalActionEventProcessor.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
         }

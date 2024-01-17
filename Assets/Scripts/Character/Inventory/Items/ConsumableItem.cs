@@ -8,7 +8,7 @@ using UnityEngine;
 namespace InventorySystem.Item 
 {
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
-    public class Consumable : BaseItem, IItemAction, ITargetable
+    public class ConsumableItem : BaseItem, IConsumable, ITargetable
     {
         [field: SerializeField]
         public TargetType TargetType { get; set; }
@@ -18,9 +18,13 @@ namespace InventorySystem.Item
 
         [field: SerializeField]
         [field: Range(1, 3)]
-        public int TargetCount { get; set; } = 1;
+        public int TargetsToSelect { get; set; } = 1;
 
-        public void PerformAction(Character character)
+        [field: SerializeField]
+        [field: Range(1, 3)]
+        public int MaxTargetsCount { get; set; } = 1;
+
+        public void Consume(Character character)
         {
             Stats characterStats = character.GetCharacterStats();
 

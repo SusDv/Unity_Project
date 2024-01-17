@@ -5,7 +5,7 @@ namespace CharacterModule.Weapon
 {
     public class CharacterWeapon
     {
-        private Equipment _weaponItem;
+        private WeaponItem _weaponItem;
 
         private Character _characterWithWeapon;
 
@@ -16,23 +16,23 @@ namespace CharacterModule.Weapon
             _characterWithWeapon = character;
         }
 
-        public void EquipWeapon(Equipment equipmentItem) 
+        public void EquipWeapon(WeaponItem equipmentItem) 
         {
             _weaponItem = equipmentItem;
 
-            (_weaponItem as IItemAction).PerformAction(_characterWithWeapon);
+            (_weaponItem as IEquipable).Equip(_characterWithWeapon);
         }
 
-        public void UnequipItem(Equipment equipmentItem) 
+        public void UnequipItem() 
         {
-            (_weaponItem as IItemAction).PerformAction(_characterWithWeapon);
+            (_weaponItem as IEquipable).Unequip(_characterWithWeapon);
 
             _weaponItem = null;
         }
 
-        public float GetWeaponAttackCost() 
+        public WeaponItem GetWeapon() 
         {
-            return _weaponItem.BattlePoints;
+            return _weaponItem;
         }
     }
 }

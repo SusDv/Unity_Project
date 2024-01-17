@@ -1,3 +1,4 @@
+using BattleModule.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,25 @@ namespace BattleModule.Controllers
     {
         private List<Character> _charactersOnScene;
 
+        private readonly Dictionary<TargetType, Func<Type, Type, bool>>
+            _characterSearchFuntions;
+
         public BattleCharactersOnScene()
         {
             _charactersOnScene = new List<Character>();
+
+            _characterSearchFuntions
+                = new Dictionary<TargetType, Func<Type, Type, bool>>
+                {
+                    { TargetType.ALLY,
+                        (selectedCharacterType, characterInTurnType) =>
+                            selectedCharacterType.Equals(characterInTurnType)
+                    },
+                    { TargetType.ENEMY,
+                        (selectedCharacterType, characterInTurnType) =>
+                            !selectedCharacterType.Equals(characterInTurnType)
+                    }
+                };
         }
 
         private int GetNearbyCharacterIndex(float desiredIndex, float listSize)
@@ -19,13 +36,22 @@ namespace BattleModule.Controllers
             return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
         }
 
-        private List<Character> GetSpecificCharacterByType(Type characterInTurnType, Func<Type, Type, bool> targetFunction) 
+        public List<Character> GetCharactersByType(Type characterInTurnType, TargetType targetType) 
         {
             return _charactersOnScene
                     .Where((character) =>
-                    targetFunction.Invoke(
+                    _characterSearchFuntions[targetType].Invoke(
                         character.GetType(), characterInTurnType))
                             .ToList();
+        }
+
+        public Character GetInitialTarget(
+            Type characterInTurnType,
+            TargetType targetType)
+        {
+            List<Character> characters = GetCharactersByType(characterInTurnType, targetType);
+
+            return characters[Mathf.RoundToInt(characters.Count / 2)];
         }
 
         public void AddCharactersOnScene(List<Character> characters)
@@ -34,17 +60,6 @@ namespace BattleModule.Controllers
             {
                 _charactersOnScene.Add(character);
             }
-        }
-
-        public Character GetCharacterOnScene(Character characterInTurn, Func<Type, Type, bool> targetFunction, int specificTargetIndex = -1)
-        {
-            List<Character> characters = GetSpecificCharacterByType(
-                characterInTurn.GetType(), targetFunction);
-                
-
-            return characters[specificTargetIndex == -1 ? 
-                Mathf.RoundToInt(characters.Count / 2) : 
-                specificTargetIndex];
         }
 
         public (int, Character) GetNearbyCharacterOnScene(Character selectedCharacter, int direction)

@@ -35,7 +35,7 @@ namespace BattleModule.Controllers
 
                 int deduction;
 
-                int tierNumber = (int) GetTierNumber(battlePoints);
+                int tierNumber = (int) Mathf.Clamp(GetTierNumber(battlePoints), 0f, 4f);
 
                 if (battlePoints <= 10 * tierNumber)
                 {
@@ -71,7 +71,7 @@ namespace BattleModule.Controllers
             OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
         }
 
-        public void ResetCharacterInTurnBattlePoints()
+        private void ResetCharacterInTurnBattlePoints()
         {
             Stats characterInTurnStats = GetCharacterInTurn().GetCharacterStats();
 
@@ -80,7 +80,7 @@ namespace BattleModule.Controllers
             OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
         }
 
-        public void TriggerCharacterInTurnTemporaryTurnModifiers() 
+        private void TriggerCharacterInTurnTemporaryModifiers() 
         {
             Character characterInTurn = GetCharacterInTurn();
 
@@ -95,6 +95,12 @@ namespace BattleModule.Controllers
                         .TemporaryStatModifierType
                         .Equals(TemporaryStatModifierType.APPLIED_EVERY_CYCLE)
                 );
+        }
+
+        public void OnTurnStarted() 
+        {
+            ResetCharacterInTurnBattlePoints();
+            TriggerCharacterInTurnTemporaryModifiers();
         }
 
         public IList<Character> GetCharactersInTurn()

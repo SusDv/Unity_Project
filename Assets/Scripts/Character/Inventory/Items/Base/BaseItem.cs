@@ -4,7 +4,7 @@ using StatModule.Modifier;
 
 namespace InventorySystem.Item 
 {
-    public class BaseItem : ScriptableObject
+    public abstract class BaseItem : ScriptableObject
     {
         public int ID => GetInstanceID();
 

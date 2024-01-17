@@ -13,8 +13,8 @@ namespace BattleModule.ActionCore.Events
 
         public static Action OnCycleEnded;
 
-        public static BattleAction BattleAction { get; private set; } = 
-            BattleDefaultAction.GetBattleDefaultActionInstance(BattleActionContext.GetBattleActionContextInstance(null, Utility.Enums.TargetType.ENEMY));
+        public static BattleAction BattleAction { get; private set; }
+
 
         private static int MaximumTurnsInCycle;
 
@@ -39,10 +39,6 @@ namespace BattleModule.ActionCore.Events
                 AdvanceCycle();
                 TurnsLeft = MaximumTurnsInCycle;
             }
-
-            SetBattleAction(BattleDefaultAction.GetBattleDefaultActionInstance(
-                BattleActionContext.GetBattleActionContextInstance(
-                    null, Utility.Enums.TargetType.ENEMY)));
         }
 
         public static void SetBattleAction(BattleAction battleAction) 
@@ -54,6 +50,11 @@ namespace BattleModule.ActionCore.Events
         private static void AdvanceCycle()
         {
             OnCycleEnded?.Invoke();
+        }
+
+        private static int GetMaximumTurnsInCycle() 
+        {
+            return MaximumTurnsInCycle;
         }
     }
 }

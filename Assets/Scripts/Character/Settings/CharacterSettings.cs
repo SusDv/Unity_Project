@@ -7,5 +7,5 @@ public class CharacterSettings : ScriptableObject
 {
     public BaseStats BaseStats;
 
-    public Equipment BaseWeapon;
+    public WeaponItem BaseWeapon;
 }
