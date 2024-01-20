@@ -13,7 +13,6 @@ namespace BattleModule.ActionCore.Context
 
             TargetType = targetableObject.TargetType;
             TargetSearchType = targetableObject.TargetSearchType;
-            TargetsToSelect = targetableObject.TargetsToSelect;
             MaxTargetsCount = targetableObject.MaxTargetsCount;
         }
 
@@ -22,8 +21,6 @@ namespace BattleModule.ActionCore.Context
         public TargetType TargetType { get; set; }
 
         public TargetSearchType TargetSearchType { get; set; }
-
-        public int TargetsToSelect { get; set; }
 
         public int MaxTargetsCount { get; set; }
 

@@ -25,6 +25,5 @@ MonoBehaviour:
       <ValueModifierType>k__BackingField: 0
       <Value>k__BackingField: 75
   <TargetType>k__BackingField: 1
-  <TargetSearchType>k__BackingField: 0
-  <TargetsToSelect>k__BackingField: 3
+  <TargetSearchType>k__BackingField: 1
   <MaxTargetsCount>k__BackingField: 3
