@@ -13,15 +13,16 @@ namespace BattleModule.StateMachineBase.States
     {
         private BattleStatesData _data;
 
-        private int _currentTargetIndex;
+        private BattleActionContext _currentBattleActionContext;
+
 
         private Character _mainTarget;
-
-        private BattleActionContext _currentBattleActionContext;
 
         private Stack<Character> _currentTargets = new Stack<Character>();
 
         private Dictionary<TargetSearchType, BattleTargeting> _targeting;
+
+        private int _currentTargetIndex;
 
         public BattleTargetingState(BattleStateMachine battleStateMachine) 
             : base(battleStateMachine)
@@ -36,6 +37,8 @@ namespace BattleModule.StateMachineBase.States
             SetupTargetingState();
 
             BattleActionChanged();
+
+            SelectCharacters();
 
             base.OnEnter();
         }
@@ -71,7 +74,7 @@ namespace BattleModule.StateMachineBase.States
                 _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharactersByType(
                     _data.CharacterInTurn.GetType(), _currentBattleActionContext.TargetType),
                 _mainTarget,
-                _currentBattleActionContext.TargetsToSelect
+                _currentBattleActionContext.MaxTargetsCount
                 );
 
             _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(_mainTarget.gameObject.transform.position);
@@ -98,7 +101,7 @@ namespace BattleModule.StateMachineBase.States
             {
                 _data.BattleAction.PerformAction(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn(), _currentTargets.ToList());
 
-                BattleGlobalActionEventProcessor.AdvanceTurn();
+                BattleGlobalEventManager.Instance.AdvanceTurn();
 
                 _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
             }
@@ -120,14 +123,14 @@ namespace BattleModule.StateMachineBase.States
         {
             _data.OnBattleActionChanged += BattleActionChanged;
 
-            BattleGlobalActionEventProcessor.OnBattleAction += BattleActionHandler;
+            BattleGlobalEventManager.Instance.OnBattleAction += BattleActionHandler;
         }
 
         private void ClearBattleEvents() 
         {
             _data.OnBattleActionChanged -= BattleActionChanged;
 
-            BattleGlobalActionEventProcessor.OnBattleAction -= BattleActionHandler;
+            BattleGlobalEventManager.Instance.OnBattleAction -= BattleActionHandler;
         }
 
         private void SetupTargetingState() 
@@ -139,6 +142,8 @@ namespace BattleModule.StateMachineBase.States
             _battleStateMachine.BattleController.BattleCharactersInTurn.OnTurnStarted();
             
             _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetInitialTarget(_data.CharacterInTurn.GetType(), _currentBattleActionContext.TargetType);
+
+            _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(_mainTarget.gameObject.transform.position);
 
             SetupBattleTargeting();
         }

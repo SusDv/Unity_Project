@@ -1,6 +1,6 @@
 ﻿namespace BattleModule.Utility
 {
-    public class BattleConstants
+    public static class BattleConstants
     {
         public static bool ACCESS_INVENTORY { get; set; } = true;
 

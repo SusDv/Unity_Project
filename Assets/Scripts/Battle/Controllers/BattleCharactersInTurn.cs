@@ -13,7 +13,7 @@ namespace BattleModule.Controllers
     {
         private List<Character> _charactersInTurn;
 
-        public Action<List<Character>> OnCharacterInTurnChanged;
+        public Action<List<Character>> OnCharacterInTurnChanged = delegate { };
 
         public BattleCharactersInTurn(List<Character> characters)
         {
@@ -24,7 +24,7 @@ namespace BattleModule.Controllers
 
         private void SetupBattleActions()
         {
-            BattleGlobalActionEventProcessor.OnTurnEnded += UpdateCharactersInTurn;
+            BattleGlobalEventManager.Instance.OnTurnEnded += UpdateCharactersInTurn;
         }
 
         private void UpdateCharactersInTurn()

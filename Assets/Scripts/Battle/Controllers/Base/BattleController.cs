@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Assets.Scripts.Battle.Controllers;
 using BattleModule.ActionCore.Events;
 using BattleModule.Data;
 using BattleModule.Input;
@@ -28,8 +27,6 @@ namespace BattleModule.Controllers.Core
         public LayerMask CharacterLayerMask;
 
         public Action<Vector3> OnCharacterTargetChanged;
-
-        public Action OnBattleAction;
 
         public List<Character> PlayerCharacters;
         public List<Character> EnemyCharacters;
@@ -68,13 +65,14 @@ namespace BattleModule.Controllers.Core
             
             Data = new BattleStatesData(BattleCharactersInTurn.GetCharacterInTurn());
 
-            BattleGlobalActionEventProcessor.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
+            BattleGlobalEventManager.Instance.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
         }
 
         private void OnDestroy()
         {
             OnCharacterTargetChanged = null;
         }
+
         public Camera GetBattleCamera()
         {
             return Camera.main;

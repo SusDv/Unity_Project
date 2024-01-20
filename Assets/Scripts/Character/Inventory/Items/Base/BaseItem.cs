@@ -29,7 +29,7 @@ namespace InventorySystem.Item
         [field: SerializeField]
         public StatModifiers StatModifiers { get; private set; }
 
-        public Action<BaseItem> OnItemAction { get; set; }
+        public Action<BaseItem> OnItemAction;
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -42,6 +42,10 @@ namespace InventorySystem.Item
             StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
         }
 #endif
+        private void OnDisable()
+        {
+            OnItemAction = null;
+        }
     }
 }
 

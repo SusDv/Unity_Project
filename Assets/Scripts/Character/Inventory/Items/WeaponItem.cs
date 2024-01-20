@@ -1,4 +1,5 @@
-﻿using BattleModule.Utility.Enums;
+﻿using BattleModule.Utility;
+using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
 using InventorySystem.Item.Interfaces;
 using StatModule.Core;
@@ -17,11 +18,7 @@ namespace InventorySystem.Item
         public TargetSearchType TargetSearchType { get; set; }
 
         [field: SerializeField]
-        [field: Range(1, 3)]
-        public int TargetsToSelect { get; set; } = 1;
-
-        [field: SerializeField]
-        [field: Range(1, 3)]
+        [field: Range(1, 5)]
         public int MaxTargetsCount { get; set; } = 1;
 
         public override void Equip(Character character)

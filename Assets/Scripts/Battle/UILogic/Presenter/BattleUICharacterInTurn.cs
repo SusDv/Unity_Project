@@ -13,10 +13,14 @@ namespace BattleModule.UI.Presenter
         [Header("View")]
         [SerializeField] private BattleUICharacterInTurnView _battleUICharacterInTurnView;
 
+        private Action<List<Character>> _characterInTurnChanged = delegate { };
+
         public void InitCharactersInTurn(ref Action<List<Character>> characterInTurnChanged, List<Character> charactersInTurn)
         {
-            characterInTurnChanged += BattleCharacterInTurnUpdate;
+            _characterInTurnChanged = characterInTurnChanged;
 
+            characterInTurnChanged += BattleCharacterInTurnUpdate;
+            
             BattleCharacterInTurnUpdate(charactersInTurn);
         }
 
@@ -37,8 +41,14 @@ namespace BattleModule.UI.Presenter
                 BattleUICharacterInTurnView battleUICharacterInTurn = Instantiate(_battleUICharacterInTurnView,
                     _battleCharacterInTurnPanel.transform.position, Quaternion.identity,
                     _battleCharacterInTurnPanel.transform);
+
                 battleUICharacterInTurn.SetData(charactersInTurn[i].gameObject.name, charactersInTurn[i].GetCharacterStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS).ToString(), (i == 0) ? true : false);
             }
+        }
+
+        private void OnDisable()
+        {
+            _characterInTurnChanged -= BattleCharacterInTurnUpdate;
         }
     }
 }
