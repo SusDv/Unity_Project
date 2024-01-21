@@ -1,4 +1,4 @@
-﻿using StatModule.Core;
+﻿using StatModule.Base;
 using StatModule.Interfaces;
 using StatModule.Utility.Enums;
 using System;
@@ -11,6 +11,7 @@ namespace StatModule.Modifier.ValueModifier
     public static class ValueModifierProcessor
     {
         private static Dictionary<ValueModifierType, ValueModifier> _valueModifiers = new Dictionary<ValueModifierType, ValueModifier>();
+        
         private static bool _initialized;
 
         private static void Init() 

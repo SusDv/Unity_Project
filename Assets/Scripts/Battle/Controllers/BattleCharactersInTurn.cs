@@ -1,5 +1,5 @@
 ﻿using BattleModule.ActionCore.Events;
-using StatModule.Core;
+using StatModule.Base;
 using StatModule.Modifier;
 using StatModule.Utility.Enums;
 using System;

@@ -3,7 +3,7 @@ using UnityEngine;
 using StatModule.Utility.Enums;
 using StatModule.Interfaces;
 
-namespace StatModule.Core 
+namespace StatModule.Base 
 {
     [Serializable]
     public class Stat : IStat, ICloneable

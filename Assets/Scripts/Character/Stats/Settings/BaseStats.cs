@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using StatModule.Core;
+using StatModule.Base;
 using StatModule.Utility.Enums;
 
 namespace StatModule.Settings

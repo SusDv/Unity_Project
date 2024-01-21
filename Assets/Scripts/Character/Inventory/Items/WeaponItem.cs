@@ -2,7 +2,7 @@
 using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
 using InventorySystem.Item.Interfaces;
-using StatModule.Core;
+using StatModule.Base;
 using StatModule.Modifier;
 using UnityEngine;
 

@@ -1,24 +1,10 @@
-﻿using BattleModule.Utility.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Utility.Enums;
 
-namespace Assets.Scripts.Battle.Controllers
+namespace BattleModule.Controllers.Targeting
 {
-    public abstract class BattleTargeting
-    {
-        protected Stack<Character> _selectedCharacters;
-
-        public abstract TargetSearchType TargetSearchType { get; }
-
-        public abstract Stack<Character> GetSelectedTargets(
-            List<Character> characters,
-            Character mainTarget,
-            int numberOfCharactersToSelect);
-
-        public abstract void AddSelectedTargets(ref Stack<Character> currentTargets);
-    }
-
     public class AOEBattleTargeting : BattleTargeting 
     {
         public override TargetSearchType TargetSearchType => TargetSearchType.AOE;
@@ -69,33 +55,6 @@ namespace Assets.Scripts.Battle.Controllers
             {
                 currentTargets.Push(character);
             }
-        }
-    }
-
-    public class SequenceBattleTargeting : BattleTargeting 
-    {
-        private Character _mainTarget;
-
-        public override TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
-
-        public override Stack<Character> GetSelectedTargets(
-            List<Character> characters, 
-            Character mainTarget, 
-            int numberOfCharactersToSelect)
-        {
-            _selectedCharacters = new Stack<Character>();
-
-            _mainTarget = mainTarget;
-
-            _selectedCharacters.Push(mainTarget);
-
-            return _selectedCharacters;
-        }
-
-        public override void AddSelectedTargets(
-            ref Stack<Character> currentTargets)
-        {
-            currentTargets.Push(_mainTarget);
         }
     }
 }

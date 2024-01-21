@@ -5,7 +5,7 @@ using StatModule.Utility.Enums;
 using StatModule.Modifier;
 using System.Linq;
 
-namespace StatModule.Core
+namespace StatModule.Base
 {
     [Serializable]
     public class Stats
