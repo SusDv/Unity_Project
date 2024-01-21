@@ -1,5 +1,5 @@
 ﻿using BattleModule.UI.View;
-using StatModule.Core;
+using StatModule.Base;
 using StatModule.Utility.Enums;
 using System.Collections.Generic;
 using System.Linq;

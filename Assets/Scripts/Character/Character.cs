@@ -1,4 +1,4 @@
-using StatModule.Core;
+using StatModule.Base;
 using CharacterModule.Weapon;
 using UnityEngine;
 

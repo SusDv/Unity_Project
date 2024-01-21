@@ -40,8 +40,7 @@ namespace BattleModule.Data
 
         private void SetDefaultBattleAction(Character characterInTurn) 
         {
-            ITargetable targetable = characterInTurn.GetCharacterWeapon().GetWeapon() 
-                as ITargetable;
+            ITargetable targetable = characterInTurn.GetCharacterWeapon().GetWeapon();
 
             BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(
                 BattleActionContext.
