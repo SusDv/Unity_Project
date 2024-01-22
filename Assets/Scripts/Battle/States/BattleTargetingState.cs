@@ -18,7 +18,7 @@ namespace BattleModule.StateMachineBase.States
 
         private Character _mainTarget;
 
-        private Stack<Character> _currentTargets = new Stack<Character>();
+        private Stack<Character> _currentTargets;
 
         private int _currentTargetIndex;
 
@@ -28,14 +28,19 @@ namespace BattleModule.StateMachineBase.States
 
         public override void OnEnter()
         {
-            _data = _battleStateMachine.BattleController.Data;
+            _currentTargets = new Stack<Character>();
 
-            SetupBattleEvents();
+            _data = _battleStateMachine.BattleController.Data;
 
             StartTurn();
 
+            SelectCharacters();
+
+            SetupBattleEvents();
+
             base.OnEnter();
         }
+
         public override void OnExit()
         {
             ClearBattleEvents();
@@ -47,19 +52,9 @@ namespace BattleModule.StateMachineBase.States
         {
             base.OnUpdate();
 
-            ChangeTargetWithInput();
+            SelectCharacterUsingKeys();
 
             CheckCancelKeyPressed();
-        }
-
-        private void ChangeTargetWithInput()
-        {
-            SelectCharacterUsingKeys();
-        }
-
-        private void SetBattleActionContext()
-        {
-            _currentBattleActionContext = _data.BattleAction.GetBattleActionContext();
         }
 
         private void SelectCharacterUsingKeys()
@@ -69,70 +64,44 @@ namespace BattleModule.StateMachineBase.States
                 return;
             }
 
-            (_currentTargetIndex, _mainTarget) = _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacterOnScene(_mainTarget, _arrowKeysInput);
+            _currentTargetIndex = _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacterOnSceneIndex(_mainTarget, _arrowKeysInput);
             
             SelectCharacters();
         }
 
-        private void BattleActionHandler()
-        {
-            BattleTargetingProcessor.AddSelectedTargets(
-                _currentBattleActionContext.TargetSearchType,
-                ref _currentTargets);
-
-            if (_currentBattleActionContext.MaxTargetsCount 
-                - _currentTargets.Count == 0)
-            {
-                _data.BattleAction.PerformAction(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn(), _currentTargets.ToList());
-
-                BattleGlobalEventManager.Instance.AdvanceTurn();
-
-                _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
-            }
-        }
-
-        private void CheckCancelKeyPressed() 
-        {
-            if (_cancelKeyPressed)
-            {
-                if (_currentBattleActionContext.TargetSearchType
-                    == TargetSearchType.SEQUENCE) 
-                {
-                    _currentTargets.Pop();
-                }
-            }
-        }
-
         private void SetupBattleEvents()
         {
-            _data.OnBattleActionChanged += SetBattleActionContext;
+            _data.OnBattleActionChanged += SelectCharacters;
 
             BattleGlobalEventManager.Instance.OnBattleAction += BattleActionHandler;
         }
 
         private void ClearBattleEvents() 
         {
-            _data.OnBattleActionChanged -= SetBattleActionContext;
+            _data.OnBattleActionChanged -= SelectCharacters;
 
             BattleGlobalEventManager.Instance.OnBattleAction -= BattleActionHandler;
         }
+        
         private void StartTurn()
         {
+            _currentTargetIndex = -1;
+
             _battleStateMachine.BattleController.BattleCharactersInTurn.OnTurnStarted();
 
             _data.CharacterInTurn = _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn();
-
-            SetupTargeting();
-
-            SelectCharacters();
         }
 
         private void SelectCharacters()
         {
+            _currentBattleActionContext = _data.BattleAction.GetBattleActionContext();
+
+            _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharacterOnScene(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), _currentBattleActionContext.TargetType, _currentTargetIndex);
+
             BattleTargetingProcessor.GetSelectedTargets(
                 _currentBattleActionContext.TargetSearchType,
                 _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharactersByType(
-                    _data.CharacterInTurn.GetType(), _currentBattleActionContext.TargetType),
+                    _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), _currentBattleActionContext.TargetType),
                 _mainTarget,
                 _currentBattleActionContext.MaxTargetsCount
                 );
@@ -140,15 +109,27 @@ namespace BattleModule.StateMachineBase.States
             _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(_mainTarget.gameObject.transform.position);
         }
 
-        private void SetupTargeting() 
+        private void BattleActionHandler()
         {
-            SetBattleActionContext();
+            if (BattleTargetingProcessor.AddSelectedTargets(
+                _currentBattleActionContext.TargetSearchType,
+                ref _currentTargets))
+            {
+                _data.BattleAction.PerformAction(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetCharacterStats(), _currentTargets.ToList());
 
-            _currentTargetIndex = -1;
+                BattleGlobalEventManager.Instance.AdvanceTurn();
 
-            _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetInitialTarget(_data.CharacterInTurn.GetType(), _currentBattleActionContext.TargetType);
-
-            _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(_mainTarget.gameObject.transform.position);
+                _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
+            }
+        }
+        private void CheckCancelKeyPressed()
+        {
+            if (_cancelKeyPressed)
+            {
+                BattleTargetingProcessor.OnCancelAction(
+                    _currentBattleActionContext.TargetSearchType,
+                    ref _currentTargets);
+            }
         }
     }
 }

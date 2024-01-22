@@ -1,17 +1,19 @@
 using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
+using BattleModule.ActionCore.Interfaces;
 using BattleModule.Utility.Interfaces;
+using InventorySystem.Item;
 using System;
 
 namespace BattleModule.Data
 {
-    public class BattleStatesData
+    public class BattleStatesData : IBattleAction
     {
-        private BattleAction _battleAction;
-
         private Character _characterInTurn;
 
-        public Action OnBattleActionChanged;
+        private BattleAction _battleAction;
+
+        public Action OnBattleActionChanged { get; set; } = delegate { };
 
         public BattleStatesData(Character characterInTurn) 
         {
@@ -20,7 +22,6 @@ namespace BattleModule.Data
 
         public Character CharacterInTurn 
         {
-            get { return _characterInTurn; }
             set 
             {
                 _characterInTurn = value;
@@ -34,17 +35,18 @@ namespace BattleModule.Data
             set 
             {
                 _battleAction = value;
+                
                 OnBattleActionChanged?.Invoke();
             } 
         }
 
         private void SetDefaultBattleAction(Character characterInTurn) 
         {
-            ITargetable targetable = characterInTurn.GetCharacterWeapon().GetWeapon();
+            WeaponItem characterWeapon = characterInTurn.GetCharacterWeapon().GetWeapon();
 
             BattleAction = BattleDefaultAction.GetBattleDefaultActionInstance(
                 BattleActionContext.
-                    GetBattleActionContextInstance(null, targetable));
+                    GetBattleActionContextInstance(characterWeapon));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BattleModule.ActionCore.Context;
+using StatModule.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,6 @@ namespace BattleModule.ActionCore
             return _battleActionContext;
         }
 
-        public abstract void PerformAction(Character source, List<Character> targets);
+        public abstract void PerformAction(IHaveStats source, List<Character> targets);
     }
 }

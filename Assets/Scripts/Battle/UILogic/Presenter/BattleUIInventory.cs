@@ -5,9 +5,9 @@ using BattleModule.UI.Button;
 using BattleModule.UI.View;
 using UnityEngine;
 using BattleModule.ActionCore;
-using BattleModule.Utility.Interfaces;
 using BattleModule.ActionCore.Context;
-using BattleModule.Data;
+using BattleModule.ActionCore.Interfaces;
+using InventorySystem.Intefaces;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -26,23 +26,24 @@ namespace BattleModule.UI.Presenter
         [SerializeField] private BattleUIButton _battleInventoryButton;
 
         private List<BattleUIItemView> _battleUIItems;
+
         private List<InventoryItem> _battleInventoryItems;
 
         private BattleUIItemView _selectedItem;
-        private BattleStatesData _battleData;
+
+        private IBattleAction _battleData;
 
         public void InitBattleInventory(
-            ref Action<List<InventoryItem>> battleItemsChanged, 
-            List<InventoryItem> battleInventory,
-            BattleStatesData battleStatesData)
+            IBattleInvetory battleInventory,
+            IBattleAction battleStatesData)
         {      
             _battleData = battleStatesData;
 
-            battleItemsChanged += BattleInventoryUpdate;
+            battleInventory.OnInventoryChanged += BattleInventoryUpdate;
 
             _battleInventoryButton.OnButtonClick += BattleInventoryVisibility;
 
-            BattleInventoryUpdate(battleInventory);
+            BattleInventoryUpdate(battleInventory.GetBattleInventory());
         }
 
         private void BattleInventoryClear()
@@ -115,10 +116,8 @@ namespace BattleModule.UI.Presenter
 
             InventoryItem selectedItem = GetSelectedItem();
 
-            ITargetable targetable = ((selectedItem.inventoryItem) as ITargetable);
-
             _battleData.BattleAction = BattleItemAction.GetBattleItemActionInstance
-                (BattleActionContext.GetBattleActionContextInstance(selectedItem, targetable));
+                (BattleActionContext.GetBattleActionContextInstance(selectedItem.inventoryItem));
         }
 
         public void BattleInventoryVisibility()

@@ -7,6 +7,8 @@ namespace BattleModule.Controllers.Targeting
     {
         private Character _mainTarget;
 
+        private int _numberOfCharactersToSelect;
+
         public override TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
 
         public override Stack<Character> GetSelectedTargets(
@@ -20,13 +22,23 @@ namespace BattleModule.Controllers.Targeting
 
             _selectedCharacters.Push(mainTarget);
 
+            _numberOfCharactersToSelect = numberOfCharactersToSelect;
+
             return _selectedCharacters;
         }
 
-        public override void AddSelectedTargets(
+        public override bool AddSelectedTargets(
             ref Stack<Character> currentTargets)
         {
             currentTargets.Push(_mainTarget);
+
+            return _numberOfCharactersToSelect == currentTargets.Count;
+        }
+
+        public override void OnCancelAction(
+            ref Stack<Character> currentTargets)
+        {
+            currentTargets.Pop();
         }
     }
 }

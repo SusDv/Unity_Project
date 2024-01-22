@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using StatModule.Interfaces;
 
 namespace InventorySystem.Item.Interfaces
 {
     public interface IConsumable
     {
-        public void Consume(Character character);
+        public void Consume(IHaveStats character);
     }
 }
