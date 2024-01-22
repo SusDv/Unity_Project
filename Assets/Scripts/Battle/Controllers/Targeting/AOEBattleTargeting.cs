@@ -48,13 +48,19 @@ namespace BattleModule.Controllers.Targeting
             }
         }
 
-        public override void AddSelectedTargets(
+        public override bool AddSelectedTargets(
             ref Stack<Character> currentTargets)
         {
             foreach (Character character in _selectedCharacters.Reverse()) 
             {
                 currentTargets.Push(character);
             }
+
+            return true;
         }
+
+        public override void OnCancelAction(
+            ref Stack<Character> currentTargets)
+        { }
     }
 }

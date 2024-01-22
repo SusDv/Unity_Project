@@ -4,11 +4,12 @@ using StatModule.Settings;
 using StatModule.Utility.Enums;
 using StatModule.Modifier;
 using System.Linq;
+using StatModule.Interfaces;
 
 namespace StatModule.Base
 {
     [Serializable]
-    public class Stats
+    public class Stats : IHaveStats
     {
         private Dictionary<StatType, Stat> _stats;
 

@@ -48,7 +48,7 @@ namespace BattleModule.Controllers.Targeting
                 characters, mainTarget, numberOfCharactersToSelect);
         }
 
-        public static void AddSelectedTargets(
+        public static bool AddSelectedTargets(
             TargetSearchType targetSearchType,
             ref Stack<Character> currentTargets)
         {
@@ -59,7 +59,21 @@ namespace BattleModule.Controllers.Targeting
 
             var targetingClass = _targeting[targetSearchType];
 
-            targetingClass.AddSelectedTargets(ref currentTargets);
+            return targetingClass.AddSelectedTargets(ref currentTargets);
+        }
+
+        public static void OnCancelAction(
+            TargetSearchType targetSearchType,
+            ref Stack<Character> currentTargets)
+        {
+            if (!_initialized)
+            {
+                Init();
+            }
+
+            var targetingClass = _targeting[targetSearchType];
+
+            targetingClass.OnCancelAction(ref currentTargets);
         }
     }
 }

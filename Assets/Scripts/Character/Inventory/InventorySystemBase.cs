@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using InventorySystem.Item;
+using InventorySystem.Intefaces;
 
 namespace InventorySystem.Core 
 {
     [Serializable]
     [CreateAssetMenu(fileName = "New Inventory", menuName = "Character/Inventory/Inventory")]
-    public class InventorySystemBase : ScriptableObject
+    public class InventorySystemBase : ScriptableObject, IBattleInvetory
     {
-        public Action<List<InventoryItem>> OnInventoryChanged;
+        public Action<List<InventoryItem>> OnInventoryChanged { get; set; } = delegate { };
 
         private List<InventoryItem> _inventoryItems;
 
@@ -93,9 +94,9 @@ namespace InventorySystem.Core
             return (-1, InventoryItem.GetEmptyItem());
         }
 
-        public List<InventoryItem> GetInventoryItemsByType(Type type)
+        public List<InventoryItem> GetBattleInventory()
         {
-            return _inventoryItems.Where(item => item.inventoryItem.GetType().Equals(type)).ToList();
+            return _inventoryItems.Where(item => item.inventoryItem.GetType().Equals(typeof(ConsumableItem))).ToList();
         }
     }
 }

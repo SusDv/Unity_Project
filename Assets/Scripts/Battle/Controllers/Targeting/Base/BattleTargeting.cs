@@ -14,6 +14,8 @@ namespace BattleModule.Controllers.Targeting
             Character mainTarget,
             int numberOfCharactersToSelect);
 
-        public abstract void AddSelectedTargets(ref Stack<Character> currentTargets);
+        public abstract bool AddSelectedTargets(ref Stack<Character> currentTargets);
+
+        public abstract void OnCancelAction(ref Stack<Character> currentTargets);
     }
 }

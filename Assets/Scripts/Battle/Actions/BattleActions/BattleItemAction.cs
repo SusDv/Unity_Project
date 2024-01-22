@@ -2,6 +2,7 @@
 using InventorySystem.Core;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
+using StatModule.Interfaces;
 using System.Collections.Generic;
 
 namespace BattleModule.ActionCore
@@ -12,12 +13,13 @@ namespace BattleModule.ActionCore
             : base(battleActionContext)
         {}
 
-        public override void PerformAction(Character source, List<Character> targets) 
+        public override void PerformAction(IHaveStats source, List<Character> targets) 
         {
-            BaseItem itemToUse = ((InventoryItem)_battleActionContext.ActionObject).inventoryItem;
-            (itemToUse as IConsumable).Consume(targets[0]);
+            BaseItem itemToUse = _battleActionContext.ActionObject as BaseItem;
+            
+            (itemToUse as IConsumable).Consume(targets[0].GetCharacterStats());
 
-            source.GetCharacterStats().AddStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
+            source.AddStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
         }
 
         public static BattleItemAction GetBattleItemActionInstance(BattleActionContext battleActionContext)

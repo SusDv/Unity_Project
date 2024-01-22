@@ -2,6 +2,7 @@ using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
 using InventorySystem.Item.Interfaces;
 using StatModule.Base;
+using StatModule.Interfaces;
 using StatModule.Modifier;
 using UnityEngine;
 
@@ -20,13 +21,11 @@ namespace InventorySystem.Item
         [field: Range(1, 5)]
         public int MaxTargetsCount { get; set; } = 1;
 
-        public void Consume(Character character)
+        public void Consume(IHaveStats character)
         {
-            Stats characterStats = character.GetCharacterStats();
-
             foreach (BaseStatModifier modifier in StatModifiers.BaseModifiers)
             {
-                characterStats.AddStatModifier(modifier.Clone() as BaseStatModifier);
+                character.AddStatModifier(modifier.Clone() as BaseStatModifier);
             }
 
             OnItemAction?.Invoke(this);

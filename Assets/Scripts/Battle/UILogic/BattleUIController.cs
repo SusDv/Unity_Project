@@ -51,9 +51,8 @@ namespace BattleModule.UI.Core
         private void Start()
         {
             BattleUIInventory.InitBattleInventory(
-                ref _playerInventory.OnInventoryChanged, 
-                _playerInventory.GetInventoryItemsByType(typeof(ConsumableItem)),
-                _battleController.Data);
+                _playerInventory,
+                 _battleController.Data);
             
             BattleCharacterInTurn.InitCharactersInTurn(
                 ref _battleController.BattleCharactersInTurn.OnCharacterInTurnChanged, 

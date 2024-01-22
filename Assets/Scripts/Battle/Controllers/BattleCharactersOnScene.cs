@@ -45,13 +45,16 @@ namespace BattleModule.Controllers
                             .ToList();
         }
 
-        public Character GetInitialTarget(
+        public Character GetCharacterOnScene(
             Type characterInTurnType,
-            TargetType targetType)
+            TargetType targetType,
+            int characterIndex)
         {
             List<Character> characters = GetCharactersByType(characterInTurnType, targetType);
 
-            return characters[Mathf.RoundToInt(characters.Count / 2)];
+            return characters[characterIndex == -1 ? 
+                Mathf.RoundToInt(characters.Count / 2) :
+                characterIndex];
         }
 
         public void AddCharactersOnScene(List<Character> characters)
@@ -62,16 +65,14 @@ namespace BattleModule.Controllers
             }
         }
 
-        public (int, Character) GetNearbyCharacterOnScene(Character selectedCharacter, int direction)
+        public int GetNearbyCharacterOnSceneIndex(Character selectedCharacter, int direction)
         {
             List<Character> characters =
                 _charactersOnScene
                     .Where(character => character.GetType().Equals(selectedCharacter.GetType()))
                         .ToList();
 
-            int nearbyCharacterIndex = GetNearbyCharacterIndex(characters.IndexOf(selectedCharacter) + direction, characters.Count);
-
-            return (nearbyCharacterIndex, characters[nearbyCharacterIndex]);
+            return GetNearbyCharacterIndex(characters.IndexOf(selectedCharacter) + direction, characters.Count);
         }
 
         public List<Character> GetCharactersOnScene()
