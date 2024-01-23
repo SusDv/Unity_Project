@@ -20,7 +20,7 @@ namespace BattleModule.Controllers.Core
 
         public BattleCharactersOnScene BattleCharactersOnScene;
 
-        public BattleCharacterSpawner BattleCharacterSpawner;
+        public BattleCharactersSpawner BattleCharacterSpawner;
 
         public BattleCharactersInTurn BattleCharactersInTurn;
 
