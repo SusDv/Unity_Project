@@ -5,7 +5,6 @@ using BattleModule.ActionCore.Events;
 using BattleModule.Controllers.Targeting;
 using BattleModule.Data;
 using BattleModule.StateMachineBase.States.Core;
-using BattleModule.Utility.Enums;
 
 namespace BattleModule.StateMachineBase.States
 {

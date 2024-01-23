@@ -50,9 +50,7 @@ namespace BattleModule.UI.Core
 
         private void Start()
         {
-            BattleUIInventory.InitBattleInventory(
-                _playerInventory,
-                 _battleController.Data);
+            BattleUIInventory.InitBattleInventory(_playerInventory, _battleController.Data);
             
             BattleCharacterInTurn.InitCharactersInTurn(
                 ref _battleController.BattleCharactersInTurn.OnCharacterInTurnChanged, 

@@ -1,25 +1,11 @@
 ﻿using System;
-using UnityEngine;
+using Utils;
 
 namespace BattleModule.ActionCore.Events
 {
-    public class BattleGlobalEventManager : MonoBehaviour
+    public class BattleGlobalEventManager 
+        : Singleton<BattleGlobalEventManager>
     {
-        private static BattleGlobalEventManager _instance;
-
-        public static BattleGlobalEventManager Instance 
-        { 
-            get 
-            {
-                if (_instance == null) 
-                {
-                    _instance = FindFirstObjectByType<BattleGlobalEventManager>();
-                }
-
-                return _instance;
-            } 
-        }
-
         public Action OnBattleAction = delegate { };
 
         public Action OnTurnEnded = delegate { };
@@ -55,11 +41,6 @@ namespace BattleModule.ActionCore.Events
         private void AdvanceCycle()
         {
             OnCycleEnded?.Invoke();
-        }
-
-        private void OnDisable()
-        {
-            _instance = null;
         }
     }
 }
