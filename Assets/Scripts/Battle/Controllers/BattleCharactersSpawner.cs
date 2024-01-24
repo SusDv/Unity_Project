@@ -14,7 +14,6 @@ namespace BattleModule.Controllers
         [Range(2f, 15f)]
         private float _distanceBetweenCharacters = 2f;
 
-
         private List<Character> _spawnedCharacters;
 
         public List<Character> SpawnCharacters(List<Character> charactersToSpawn)

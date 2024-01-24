@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0fbe1bf70166d46b14d207e5250c46, type: 3}
+  m_Name: Fireball
+  m_EditorClassIdentifier: 
+  <SpellName>k__BackingField: Fireball
+  <SpellImage>k__BackingField: {fileID: 21300000, guid: 2745af66739ca564c894749882290f05, type: 3}
+  <SpellDescription>k__BackingField: Fires a ball that damages 3 targets by 150
+  <BattlePoints>k__BackingField: 15
+  <StatModifiers>k__BackingField:
+    _instantModifiers:
+    - <StatType>k__BackingField: 1
+      <ValueModifierType>k__BackingField: 0
+      <Value>k__BackingField: -150
+    _temporaryModifiers: []
+    _permanentModifiers: []
+  <TargetType>k__BackingField: 1
+  <TargetSearchType>k__BackingField: 0
+  <MaxTargetsCount>k__BackingField: 3

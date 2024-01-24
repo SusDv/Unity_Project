@@ -1,12 +1,13 @@
 ﻿using BattleModule.ActionCore.Context;
 using StatModule.Interfaces;
-using System;
 using System.Collections.Generic;
 
 namespace BattleModule.ActionCore
 {
     public abstract class BattleAction
     {
+        public abstract string ActionName { get; }
+
         protected BattleActionContext _battleActionContext;
 
         protected BattleAction(BattleActionContext battleActionContext)

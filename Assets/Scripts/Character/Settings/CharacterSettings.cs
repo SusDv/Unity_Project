@@ -1,4 +1,5 @@
 ﻿using InventorySystem.Item;
+using SpellModule.Settings;
 using StatModule.Settings;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ using UnityEngine;
 public class CharacterSettings : ScriptableObject
 {
     public BaseStats BaseStats;
+
+    public BaseSpells BaseSpells;
 
     public WeaponItem BaseWeapon;
 }

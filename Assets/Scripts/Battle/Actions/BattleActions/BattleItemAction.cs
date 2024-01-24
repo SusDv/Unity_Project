@@ -1,5 +1,4 @@
 ﻿using BattleModule.ActionCore.Context;
-using InventorySystem.Core;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
 using StatModule.Interfaces;
@@ -9,6 +8,7 @@ namespace BattleModule.ActionCore
 {
     public class BattleItemAction : BattleAction 
     {
+        public override string ActionName => "Item use";
         private BattleItemAction(BattleActionContext battleActionContext)
             : base(battleActionContext)
         {}
@@ -21,6 +21,7 @@ namespace BattleModule.ActionCore
 
             source.AddStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
         }
+
 
         public static BattleItemAction GetBattleItemActionInstance(BattleActionContext battleActionContext)
         {

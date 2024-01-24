@@ -9,6 +9,8 @@ namespace BattleModule.ActionCore
 {
     public class BattleDefaultAction : BattleAction 
     {
+        public override string ActionName => "Weapon attack";
+
         private BattleDefaultAction(BattleActionContext battleActionContext) 
             : base(battleActionContext) 
         {}

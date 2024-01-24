@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: EnemySettings
   m_EditorClassIdentifier: 
   BaseStats: {fileID: 11400000, guid: cdc24f4def3c98445901ba254f0ac9fe, type: 2}
-  BaseWeapon: {fileID: 11400000, guid: 1822837534a96e2488bb1eb735923d62, type: 2}
+  BaseSpells: {fileID: 11400000, guid: e06aec0d12bc8c54893ab38fd6892849, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: 406295f3a4f936a4d909b0d720ebc9f9, type: 2}

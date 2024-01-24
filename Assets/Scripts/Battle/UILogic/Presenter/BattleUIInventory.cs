@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using InventorySystem.Core;
 using BattleModule.UI.Button;
 using BattleModule.UI.View;
@@ -95,6 +94,12 @@ namespace BattleModule.UI.Presenter
 
         private void BattleItemPointerClick(BattleUIItemView battleUIItem) 
         {
+            if (_selectedItem != null && 
+                _battleData.BattleAction is BattleDefaultAction) 
+            {
+                _selectedItem = null;
+            }
+
             if (_selectedItem == null || _selectedItem != battleUIItem)
             {
                 BattleInventoryVisibility();               
