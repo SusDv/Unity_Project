@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.Controllers.Targeting;
@@ -125,9 +126,15 @@ namespace BattleModule.StateMachineBase.States
         {
             if (_cancelKeyPressed)
             {
-                BattleTargetingProcessor.OnCancelAction(
-                    _currentBattleActionContext.TargetSearchType,
-                    ref _currentTargets);
+                if (_data.BattleAction is BattleDefaultAction) 
+                {
+                    BattleTargetingProcessor.OnCancelAction(
+                                        _currentBattleActionContext.TargetSearchType,
+                                        ref _currentTargets);
+                    return;
+                }
+
+                _data.BattleAction = null;
             }
         }
     }

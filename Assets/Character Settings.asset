@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Character Settings
   m_EditorClassIdentifier: 
   BaseStats: {fileID: 11400000, guid: 5119b190281ace44889dc93b123935f0, type: 2}
+  BaseSpells: {fileID: 11400000, guid: 76a30603362dd0748b1394a798bc88a0, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 1822837534a96e2488bb1eb735923d62, type: 2}

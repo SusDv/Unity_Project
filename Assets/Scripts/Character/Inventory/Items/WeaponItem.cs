@@ -1,5 +1,4 @@
-﻿using BattleModule.Utility;
-using BattleModule.Utility.Enums;
+﻿using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
 using InventorySystem.Item.Interfaces;
 using StatModule.Base;

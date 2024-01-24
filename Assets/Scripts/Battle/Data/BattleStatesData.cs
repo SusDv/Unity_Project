@@ -34,6 +34,13 @@ namespace BattleModule.Data
             get { return _battleAction; }
             set 
             {
+                if (value == null) 
+                {
+                    SetDefaultBattleAction(_characterInTurn);
+
+                    return;
+                }
+
                 _battleAction = value;
                 
                 OnBattleActionChanged?.Invoke();
