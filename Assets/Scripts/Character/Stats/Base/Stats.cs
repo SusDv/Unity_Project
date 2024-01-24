@@ -97,20 +97,12 @@ namespace StatModule.Base
             return GetStatFinalValue(numeratorStat) / GetStatFinalValue(denominatorStat);
         }
 
-        public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction, Func<BaseStatModifier, bool> additionalCondition = null) 
+        public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
         {
             List<BaseStatModifier> modifiersByCondition = _modifiersInUse
                 .Where(statModifier =>
                     conditionFunction.Invoke(statModifier))
                 .ToList();
-
-            if (additionalCondition != null) 
-            {
-                modifiersByCondition = modifiersByCondition
-                    .Where(statModifier => 
-                        additionalCondition.Invoke(statModifier))
-                        .ToList();
-            }
 
             modifiersByCondition.ForEach(statModifier => 
                 {
@@ -118,6 +110,16 @@ namespace StatModule.Base
                 });
 
             OnStatsModified?.Invoke(this);
+        }
+
+        public void RemoveStatModifiersByCondifition(Func<BaseStatModifier, bool> conditionFunction, Func<BaseStatModifier, bool> additionalCondition = null) 
+        {
+            List<BaseStatModifier> modifiersByCondition = _modifiersInUse
+                .Where(statModifier =>
+                    conditionFunction.Invoke(statModifier))
+                .ToList();
+
+
         }
     }
 }

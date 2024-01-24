@@ -45,4 +45,12 @@ namespace StatModule.Utility.Enums
         APPLIED_EVERY_TURN,
         APPLIED_EVERY_CYCLE
     }
+
+    public enum StatModifierTier 
+    {
+        TIER_1,
+        TIER_2,
+        TIER_3,
+        TIER_4
+    }
 }

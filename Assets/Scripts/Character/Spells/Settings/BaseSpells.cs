@@ -12,9 +12,9 @@ namespace SpellModule.Settings
     [Serializable]
     public class BaseSpells : ScriptableObject
     {
-        [SerializeField] private List<Spell> _baseSpells;
+        [SerializeField] private List<SpellBase> _baseSpells;
 
-        public List<Spell> GetSpells() 
+        public List<SpellBase> GetSpells() 
         {
             return _baseSpells;
         }
