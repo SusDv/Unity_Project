@@ -7,9 +7,12 @@ using UnityEngine;
 
 namespace SpellModule.Base
 {
-    [CreateAssetMenu(fileName = "Spell", menuName = "Character/Spells/Spell")]
-    public class BasicSpell : Spell, ISpell
+    [CreateAssetMenu(fileName = "Spell", menuName = "Character/Spells/Basic Spell")]
+    public class BasicSpell : SpellBase, ISpell
     {
+        [field: SerializeField]
+        public StatModifiers StatModifiers { get; set; }
+
         public void UseSpell(IHaveStats source, List<Character> targets)
         {
             foreach (Character target in targets)

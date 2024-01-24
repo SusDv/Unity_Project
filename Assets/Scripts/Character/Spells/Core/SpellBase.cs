@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SpellModule.Base
 {
-    public class Spell : ScriptableObject, ITargetable 
+    public class SpellBase : ScriptableObject, ITargetable 
     {
         [field: SerializeField]
         public string SpellName { get; set; }
@@ -20,9 +20,6 @@ namespace SpellModule.Base
 
         [field: SerializeField]
         public float BattlePoints { get; set; }
-
-        [field: SerializeField]
-        public StatModifiers StatModifiers { get; set; }
 
         [field: SerializeField]
         public TargetType TargetType { get; set; }

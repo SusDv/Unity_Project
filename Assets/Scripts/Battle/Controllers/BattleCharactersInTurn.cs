@@ -85,16 +85,13 @@ namespace BattleModule.Controllers
             Character characterInTurn = GetCharacterInTurn();
 
             Stats characterInTurnStats = characterInTurn.GetCharacterStats();
-            
+
             characterInTurnStats.ApplyStatModifiersByCondition(
                 (statModifier) =>
-                    (statModifier is TemporaryStatModifier),
-
-                (statModifier) => 
-                    !(statModifier as TemporaryStatModifier)
+                    (statModifier is TemporaryStatModifier) &&
+                     !((statModifier as TemporaryStatModifier)
                         .TemporaryStatModifierType
-                        .Equals(TemporaryStatModifierType.APPLIED_EVERY_CYCLE)
-                );
+                        .Equals(TemporaryStatModifierType.APPLIED_EVERY_CYCLE)));
         }
 
         public void OnTurnStarted() 

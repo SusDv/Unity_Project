@@ -24,7 +24,12 @@ namespace StatModule.Modifier
         public TemporaryStatModifierType TemporaryStatModifierType { get; private set; }
 
         [field: SerializeField]
+        public StatModifierTier TemporaryStatModifierTier { get; private set; }
+
+        [field: SerializeField]
         public int Duration { get; set; }
+
+        public bool IsNegative { get { return Value < 0; } }
 
         public override void Modify(IStat statToModify, 
             Action<BaseStatModifier> addModifierCallback, 

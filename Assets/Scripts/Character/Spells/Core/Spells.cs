@@ -5,14 +5,14 @@ namespace SpellModule.Base
 {
     public class Spells
     {
-        private List<Spell> _spells;
+        private List<SpellBase> _spells;
 
         public Spells(BaseSpells baseSpells) 
         {
-            _spells = new List<Spell>(baseSpells.GetSpells());
+            _spells = new List<SpellBase>(baseSpells.GetSpells());
         }
 
-        public List<Spell> GetSpells() 
+        public List<SpellBase> GetSpells() 
         {
             return _spells; 
         }

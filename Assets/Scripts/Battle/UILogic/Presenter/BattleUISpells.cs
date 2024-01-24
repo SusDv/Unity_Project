@@ -49,7 +49,7 @@ namespace BattleModule.UI.Presenter
             
             BattleSpellsClear();
 
-            foreach (Spell spell in _characterInTurn.GetCharacterSpells().GetSpells()) 
+            foreach (SpellBase spell in _characterInTurn.GetCharacterSpells().GetSpells()) 
             {
                 BattleUISpellView battleUISpellView = Instantiate(_battleUISpellView,
                     _battleUISpellsPanel.transform.position,
@@ -66,7 +66,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            Spell selectedSpell = _characterInTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            SpellBase selectedSpell = _characterInTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
             _battleAction.BattleAction =
                 BattleSpellAction.GetBattleSpellActionInstance(
