@@ -1,21 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.Controllers.Targeting;
-using BattleModule.Data;
 using BattleModule.StateMachineBase.States.Core;
 
 namespace BattleModule.StateMachineBase.States
 {
     public class BattleTargetingState : BattleState
     {
-        private BattleStatesData _data;
-
-        private BattleActionContext _currentBattleActionContext;
-
-
         private Character _mainTarget;
 
         private Stack<Character> _currentTargets;
@@ -30,11 +23,9 @@ namespace BattleModule.StateMachineBase.States
         {
             _currentTargets = new Stack<Character>();
 
-            _data = _battleStateMachine.BattleController.Data;
+            _battleStateMachine.BattleController.BattleActionController.OnBattleActionChanged += OnBattleActionChanged;
 
             StartTurn();
-
-            SelectCharacters();
 
             SetupBattleEvents();
 
@@ -65,21 +56,15 @@ namespace BattleModule.StateMachineBase.States
             }
 
             _currentTargetIndex = _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacterOnSceneIndex(_mainTarget, _arrowKeysInput);
-            
-            SelectCharacters();
         }
 
         private void SetupBattleEvents()
         {
-            _data.OnBattleActionChanged += SelectCharacters;
-
             BattleGlobalEventManager.Instance.OnBattleAction += BattleActionHandler;
         }
 
         private void ClearBattleEvents() 
         {
-            _data.OnBattleActionChanged -= SelectCharacters;
-
             BattleGlobalEventManager.Instance.OnBattleAction -= BattleActionHandler;
         }
         
@@ -87,23 +72,20 @@ namespace BattleModule.StateMachineBase.States
         {
             _currentTargetIndex = -1;
 
-            _battleStateMachine.BattleController.BattleCharactersInTurn.OnTurnStarted();
-
-            _data.CharacterInTurn = _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn();
+            _battleStateMachine.BattleController.BattleCharactersInTurn.OnTurnStarted();  
         }
 
-        private void SelectCharacters()
+        private void OnBattleActionChanged(BattleActionContext context)
         {
-            _currentBattleActionContext = _data.BattleAction.GetBattleActionContext();
+            BattleTargetingProcessor.SetCurrentSearchType(context.TargetSearchType);
 
-            _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharacterOnScene(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), _currentBattleActionContext.TargetType, _currentTargetIndex);
+            _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharacterOnScene(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), context.TargetType, _currentTargetIndex);
 
             BattleTargetingProcessor.GetSelectedTargets(
-                _currentBattleActionContext.TargetSearchType,
                 _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharactersByType(
-                    _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), _currentBattleActionContext.TargetType),
+                    _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), context.TargetType),
                 _mainTarget,
-                _currentBattleActionContext.MaxTargetsCount
+                context.MaxTargetsCount
                 );
 
             _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(_mainTarget.gameObject.transform.position);
@@ -112,12 +94,9 @@ namespace BattleModule.StateMachineBase.States
         private void BattleActionHandler()
         {
             if (BattleTargetingProcessor.AddSelectedTargets(
-                _currentBattleActionContext.TargetSearchType,
                 ref _currentTargets))
             {
-                _data.BattleAction.PerformAction(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetCharacterStats(), _currentTargets.ToList());
-
-                BattleGlobalEventManager.Instance.AdvanceTurn();
+                _battleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets.ToList());
 
                 _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
             }
@@ -126,15 +105,7 @@ namespace BattleModule.StateMachineBase.States
         {
             if (_cancelKeyPressed)
             {
-                if (_data.BattleAction is BattleDefaultAction) 
-                {
-                    BattleTargetingProcessor.OnCancelAction(
-                                        _currentBattleActionContext.TargetSearchType,
-                                        ref _currentTargets);
-                    return;
-                }
 
-                _data.BattleAction = null;
             }
         }
     }

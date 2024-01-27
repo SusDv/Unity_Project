@@ -7,6 +7,8 @@ using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Interfaces;
 using InventorySystem.Intefaces;
+using BattleModule.ActionCore.Events;
+using InventorySystem.Item;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -30,13 +32,13 @@ namespace BattleModule.UI.Presenter
 
         private BattleUIItemView _selectedItem;
 
-        private IBattleAction _battleData;
+        private IBattleAction _battleActionController;
 
         public void InitBattleInventory(
             IBattleInvetory battleInventory,
-            IBattleAction battleStatesData)
-        {      
-            _battleData = battleStatesData;
+            IBattleAction battleActionController)
+        {
+            _battleActionController = battleActionController;
 
             battleInventory.OnInventoryChanged += BattleInventoryUpdate;
 
@@ -94,12 +96,6 @@ namespace BattleModule.UI.Presenter
 
         private void BattleItemPointerClick(BattleUIItemView battleUIItem) 
         {
-            if (_selectedItem != null && 
-                _battleData.BattleAction is BattleDefaultAction) 
-            {
-                _selectedItem = null;
-            }
-
             if (_selectedItem == null || _selectedItem != battleUIItem)
             {
                 BattleInventoryVisibility();               
@@ -114,15 +110,12 @@ namespace BattleModule.UI.Presenter
         {
             if (_selectedItem == null)
             {
-                _battleData.BattleAction = null;
+                _battleActionController.ResetBattleAction();
 
                 return;
             }
 
-            InventoryItem selectedItem = GetSelectedItem();
-
-            _battleData.BattleAction = BattleItemAction.GetBattleItemActionInstance
-                (BattleActionContext.GetBattleActionContextInstance(selectedItem.inventoryItem));
+            _battleActionController.SetBattleAction<BattleItemAction>(GetSelectedItem());
         }
 
         public void BattleInventoryVisibility()
@@ -133,9 +126,9 @@ namespace BattleModule.UI.Presenter
                 _battleInventoryPanel.activeSelf ? _battleItemDescriptionPanel.activeSelf : false);
         }
 
-        public InventoryItem GetSelectedItem() 
+        public BaseItem GetSelectedItem() 
         {
-            return _battleInventoryItems[_battleUIItems.IndexOf(_selectedItem)];
+            return _battleInventoryItems[_battleUIItems.IndexOf(_selectedItem)].inventoryItem;
         }
     }
 }

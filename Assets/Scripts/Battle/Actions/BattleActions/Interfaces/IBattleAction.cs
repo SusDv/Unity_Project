@@ -1,11 +1,10 @@
-﻿using System;
-
-namespace BattleModule.ActionCore.Interfaces
+﻿namespace BattleModule.ActionCore.Interfaces
 {
     public interface IBattleAction
     {
-        public BattleAction BattleAction { get; set; }
+        public void SetBattleAction<T>(object actionObject)
+            where T : BattleAction;
 
-        public Action OnBattleActionChanged { get; set; }
+        public void ResetBattleAction();
     }
 }

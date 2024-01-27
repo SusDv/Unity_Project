@@ -53,17 +53,16 @@ namespace BattleModule.UI.Core
 
         private void Start()
         {
-            BattleUIInventory.InitBattleInventory(_playerInventory, _battleController.Data);
+            BattleUIInventory.InitBattleInventory(_playerInventory, _battleController.BattleActionController);
             
             BattleCharacterInTurn.InitCharactersInTurn(
-                ref _battleController.BattleCharactersInTurn.OnCharacterInTurnChanged, 
+                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged, 
                 _battleController.BattleCharactersInTurn.GetCharactersInTurn().ToList());
             
             BattleUITargeting.InitBattleTrageting(
                 ref _battleController.OnCharacterTargetChanged);
             
-            BattleUIAction.InitBattleUIAction(
-                _battleController.Data);
+            BattleUIAction.InitBattleUIAction();
 
             BattleUIPlayer.InitBattleUICharacter(
                 _battleController.BattleCharactersOnScene.GetCharactersOnScene());
@@ -72,8 +71,8 @@ namespace BattleModule.UI.Core
                 _battleController.BattleCharactersOnScene.GetCharactersOnScene());
 
             BattleUISpells.InitBattleUISpells(
-                _battleController.Data,
-                ref _battleController.BattleCharactersInTurn.OnCharacterInTurnChanged,
+                _battleController.BattleActionController,
+                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged,
                 _battleController.BattleCharactersInTurn.GetCharactersInTurn().ToList());
         }      
     }

@@ -14,15 +14,8 @@ namespace BattleModule.UI.Presenter
         [Header("Battle Button")]
         [SerializeField] private BattleUIButton _battleActionButton;
 
-        private IBattleAction _battleAction;
-
-        public void InitBattleUIAction(
-            IBattleAction battleAction) 
+        public void InitBattleUIAction() 
         {
-            _battleAction = battleAction;
-
-            battleAction.OnBattleActionChanged += UpdateBattleActionInfo;
-
             _battleActionButton.OnButtonClick += BattleActionPointerClick;
 
             UpdateBattleActionInfo();
@@ -35,8 +28,7 @@ namespace BattleModule.UI.Presenter
 
         private void UpdateBattleActionInfo() 
         {
-            _battleActionView.SetData(
-                $"<b><u>Action:</u></b> {_battleAction.BattleAction?.ActionName}");
+            
         }
     }
 }

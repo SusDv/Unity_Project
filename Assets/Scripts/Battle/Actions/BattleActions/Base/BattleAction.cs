@@ -10,9 +10,12 @@ namespace BattleModule.ActionCore
 
         protected BattleActionContext _battleActionContext;
 
-        protected BattleAction(BattleActionContext battleActionContext)
+        protected BattleAction() { }
+
+        protected BattleAction(object actionObject)
         {
-            _battleActionContext = battleActionContext;
+            _battleActionContext = BattleActionContext
+                .GetInstance(actionObject);
         }
 
         public BattleActionContext GetBattleActionContext() 
@@ -21,5 +24,7 @@ namespace BattleModule.ActionCore
         }
 
         public abstract void PerformAction(IHaveStats source, List<Character> targets);
+
+        public abstract BattleAction GetInstance(object actionObject);
     }
 }

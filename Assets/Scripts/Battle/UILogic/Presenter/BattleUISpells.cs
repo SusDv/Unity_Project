@@ -19,17 +19,19 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleUISpellView _battleUISpellView;
 
-        private IBattleAction _battleAction;
+        private IBattleAction _battleActionController;
 
-        private List<BattleUISpellView> _battleUISpells = new List<BattleUISpellView>();
+        private List<BattleUISpellView> _battleUISpells;
 
         private Character _characterInTurn;
 
-        public void InitBattleUISpells(IBattleAction battleAction,
+        public void InitBattleUISpells(IBattleAction battleActionController,
             ref Action<List<Character>> characterInTurnChanged,
             List<Character> charactersInTurn) 
         {
-            _battleAction = battleAction;
+            _battleUISpells = new List<BattleUISpellView>();
+
+            _battleActionController = battleActionController;
 
             characterInTurnChanged += CreateUISpells;
 
@@ -37,6 +39,8 @@ namespace BattleModule.UI.Presenter
         }
         private void BattleSpellsClear()
         {
+            _battleUISpells = new List<BattleUISpellView>();
+
             for (int i = 0; i < _battleUISpellsPanel.transform.childCount; i++)
             {
                 Destroy(_battleUISpellsPanel.transform.GetChild(i).gameObject);
@@ -68,10 +72,7 @@ namespace BattleModule.UI.Presenter
         {
             SpellBase selectedSpell = _characterInTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
-            _battleAction.BattleAction =
-                BattleSpellAction.GetBattleSpellActionInstance(
-                    BattleActionContext.GetBattleActionContextInstance(
-                        selectedSpell));
+            _battleActionController.SetBattleAction<BattleSpellAction>(selectedSpell);
         }
     }
 }

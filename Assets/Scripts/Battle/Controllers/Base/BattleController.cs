@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using BattleModule.ActionCore.Events;
-using BattleModule.Data;
 using BattleModule.Input;
 using BattleModule.StateMachineBase;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace BattleModule.Controllers.Core
 
         public BattleInput BattleInput;
 
-        public BattleStatesData Data;
+        public BattleActionController BattleActionController;
 
         public BattleCharactersOnScene BattleCharactersOnScene;
 
@@ -39,7 +38,7 @@ namespace BattleModule.Controllers.Core
 
             BattleCharactersOnScene = new BattleCharactersOnScene();
 
-            BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
+            BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>()); 
 
             BattleStart();
         }
@@ -62,9 +61,9 @@ namespace BattleModule.Controllers.Core
             BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
 
             BattleCharactersInTurn = new BattleCharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
-            
-            Data = new BattleStatesData(BattleCharactersInTurn.GetCharacterInTurn());
 
+            BattleActionController = new BattleActionController(ref BattleCharactersInTurn.OnCharacterInTurnChanged);
+            
             BattleGlobalEventManager.Instance.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
         }
 
