@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Health Potion
   m_EditorClassIdentifier: 
   <ItemName>k__BackingField: Health Potion
-  <ItemImage>k__BackingField: {fileID: 21300000, guid: 8f3f21dcd06fd2946996c0f25675d2ca, type: 3}
+  <ItemImage>k__BackingField: {fileID: 21300000, guid: 4d9a6c4c96719a94b819cca7da01f9f0, type: 3}
   <ItemDescription>k__BackingField: Instantly restores 50 Health to the Character
   <IsStackable>k__BackingField: 1
   <BattlePoints>k__BackingField: 5
@@ -26,4 +26,4 @@ MonoBehaviour:
     _permanentModifiers: []
   <TargetType>k__BackingField: 0
   <TargetSearchType>k__BackingField: 0
-  <TargetCount>k__BackingField: 1
+  <MaxTargetsCount>k__BackingField: 1
