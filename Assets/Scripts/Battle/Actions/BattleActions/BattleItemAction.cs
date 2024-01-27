@@ -20,7 +20,7 @@ namespace BattleModule.ActionCore
 
         public override void PerformAction(IHaveStats source, List<Character> targets) 
         {
-            BaseItem itemToUse = _battleActionContext.ActionObject as BaseItem;
+            ItemBase itemToUse = _battleActionContext.ActionObject as ItemBase;
             
             (itemToUse as IConsumable).Consume(targets[0].GetCharacterStats());
 

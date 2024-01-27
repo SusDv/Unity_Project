@@ -11,9 +11,9 @@ namespace BattleModule.UI.View
         [SerializeField] private TextMeshProUGUI _battleUIName;
         [SerializeField] private TextMeshProUGUI _battleUIDescription;
 
-        private BaseItem _battleItem;
+        private ItemBase _battleItem;
 
-        public void SetData(BaseItem battleItem)
+        public void SetData(ItemBase battleItem)
         {
             _battleItem = battleItem;
             GenerateDescription();

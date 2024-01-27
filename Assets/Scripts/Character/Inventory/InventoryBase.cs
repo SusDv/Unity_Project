@@ -9,7 +9,7 @@ namespace InventorySystem.Core
 {
     [Serializable]
     [CreateAssetMenu(fileName = "New Inventory", menuName = "Character/Inventory/Inventory")]
-    public class InventorySystemBase : ScriptableObject, IBattleInvetory
+    public class InventoryBase : ScriptableObject, IBattleInvetory
     {
         public Action<List<InventoryItem>> OnInventoryChanged { get; set; } = delegate { };
 
@@ -20,25 +20,28 @@ namespace InventorySystem.Core
             _inventoryItems = new List<InventoryItem>();
         }
 
-        public void AddItem(BaseItem item, int amount)
+        public void AddItem(ItemBase item, int amount)
         {
-            var existingItem = FindItem(item);
+            var (index, existingItem) = FindItem(item);
 
-            item.OnItemAction = item.IsStackable ? StackableItemUsed : null;
-
-            if (existingItem.item.Equals(InventoryItem.GetEmptyItem()))
+            if (existingItem.Equals(InventoryItem.GetEmptyItem()))
             {
                 _inventoryItems.Add(new InventoryItem
                 {
                     inventoryItem = item,
                     amount = amount
                 });
+
+                if (item is ConsumableItem consumableItem)
+                {
+                    consumableItem.OnConsumableUsed += ConsumableItemUsed;
+                }
             }
             else
             {
-                if (existingItem.item.inventoryItem.IsStackable)
+                if (existingItem.inventoryItem.IsStackable)
                 {
-                    _inventoryItems[existingItem.index] = existingItem.item.ChangeAmount(amount + existingItem.item.amount);
+                    _inventoryItems[index] = existingItem.ChangeAmount(amount + existingItem.amount);
                 }
                 else
                 {
@@ -59,29 +62,8 @@ namespace InventorySystem.Core
 
             OnInventoryChanged?.Invoke(_inventoryItems);
         }
-
-        public void StackableItemUsed(BaseItem inventoryItem)
-        {
-            var itemToUse = FindItem(inventoryItem);
-
-            if (itemToUse.item.inventoryItem.IsStackable)
-            {
-                if (itemToUse.item.amount == 1)
-                {
-                    RemoveItem(itemToUse.item);
-
-                    return;
-                }
-                else
-                {
-                    _inventoryItems[itemToUse.index] = itemToUse.item.ChangeAmount(_inventoryItems[itemToUse.index].amount - 1);
-                }
-            }
-
-            OnInventoryChanged?.Invoke(_inventoryItems);
-        }
         
-        public (int index, InventoryItem item) FindItem(BaseItem ItemBase)
+        public (int index, InventoryItem item) FindItem(ItemBase ItemBase)
         {
             for (int i = 0; i < _inventoryItems.Count; i++)
             {
@@ -97,6 +79,27 @@ namespace InventorySystem.Core
         public List<InventoryItem> GetBattleInventory()
         {
             return _inventoryItems.Where(item => item.inventoryItem.GetType().Equals(typeof(ConsumableItem))).ToList();
+        }
+
+        private void ConsumableItemUsed(ItemBase inventoryItem)
+        {
+            var (index, item) = FindItem(inventoryItem);
+
+            if (item.inventoryItem.IsStackable)
+            {
+                if (item.amount == 1)
+                {
+                    RemoveItem(item);
+
+                    return;
+                }
+                else
+                {
+                    _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].amount - 1);
+                }
+            }
+
+            OnInventoryChanged?.Invoke(_inventoryItems);
         }
     }
 }

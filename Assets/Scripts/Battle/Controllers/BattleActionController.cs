@@ -1,10 +1,9 @@
-﻿using BattleModule.ActionCore;
+﻿using System;
+using System.Collections.Generic;
+using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.ActionCore.Interfaces;
-using StatModule.Interfaces;
-using System;
-using System.Collections.Generic;
 
 namespace BattleModule.Controllers
 {

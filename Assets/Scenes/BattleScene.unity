@@ -417,6 +417,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f70e58feda6a74c91ebfec47928553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <CharactersToSpawn>k__BackingField:
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  - {fileID: 5625005941891779630, guid: b82a12b7c7ed39d43bcf5e38491a0a9c, type: 3}
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
 --- !u!1 &110924115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _battleActionView: {fileID: 2143051267}
-  _battleActionButton: {fileID: 954899150}
+  _battleActionButton: {fileID: 2489976070195950991}
 --- !u!1001 &792504237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1407,17 +1414,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _battleUISpellsPanel: {fileID: 1753788108}
   _battleUISpellView: {fileID: 6550967224006508893, guid: 4f0d23a0042c1474b891168c478ab10f, type: 3}
---- !u!114 &954899150 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1256924278816704354, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
-  m_PrefabInstance: {fileID: 2489976070195950990}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07a42c5fca180b74da4287abf440c24b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &968566754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,7 +1425,7 @@ GameObject:
   - component: {fileID: 968566755}
   - component: {fileID: 968566756}
   m_Layer: 0
-  m_Name: BattleCharacterSpawner
+  m_Name: BattleCharactersSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1522,7 +1518,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1162251804}
   m_Layer: 0
-  m_Name: ------------BATTLE CONTROLS------------
+  m_Name: <<BATTLE CONTROLS>>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1918,19 +1914,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ee7a17508a38a4191125749cc44ee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _battleCharacterSpawner: {fileID: 968566756}
   BattleInput: {fileID: 1586444223}
-  BattleCharacterSpawner: {fileID: 968566756}
   CharacterLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  PlayerCharacters:
-  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  - {fileID: 5625005941891779630, guid: b82a12b7c7ed39d43bcf5e38491a0a9c, type: 3}
-  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  EnemyCharacters:
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
 --- !u!114 &1586444223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2660,7 +2648,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1908393997}
   m_Layer: 0
-  m_Name: ------------UI COTROLS------------
+  m_Name: <<UI COTROLS>>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2918,13 +2906,13 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1962585583 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1256924278816704354, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2705215901925452886, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
   m_PrefabInstance: {fileID: 1962585581}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07a42c5fca180b74da4287abf440c24b, type: 3}
+  m_Script: {fileID: 11500000, guid: 507c0e3655281714bbf0ad98730a3a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1966167484
@@ -3055,7 +3043,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1995798886}
   m_Layer: 0
-  m_Name: ------------MANAGERS------------
+  m_Name: <<MANAGERS>>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3285,6 +3273,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
+--- !u!114 &2489976070195950991 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2705215901925452886, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
+  m_PrefabInstance: {fileID: 2489976070195950990}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507c0e3655281714bbf0ad98730a3a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7551633958775387948
 PrefabInstance:
   m_ObjectHideFlags: 0

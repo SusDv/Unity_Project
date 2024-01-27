@@ -1,4 +1,5 @@
-﻿using BattleModule.ActionCore.Events;
+﻿using BattleModule.ActionCore.Context;
+using BattleModule.ActionCore.Events;
 using BattleModule.ActionCore.Interfaces;
 using BattleModule.UI.Button;
 using BattleModule.UI.View;
@@ -12,23 +13,34 @@ namespace BattleModule.UI.Presenter
         [SerializeField] private BattleUIActionView _battleActionView;
 
         [Header("Battle Button")]
-        [SerializeField] private BattleUIButton _battleActionButton;
+        [SerializeField] private BattleUIDefaultButton _battleActionButton;
 
-        public void InitBattleUIAction() 
+        private IBattleAction _battleActionController;
+
+        public void InitBattleUIAction(
+            IBattleAction battleActionController) 
         {
-            _battleActionButton.OnButtonClick += BattleActionPointerClick;
+            _battleActionController = battleActionController;
 
-            UpdateBattleActionInfo();
+            _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
+
+            _battleActionButton.OnButtonClick += BattleActionPointerClick;
         }
 
-        private void BattleActionPointerClick()
+        private void BattleActionPointerClick(object o)
         {
             BattleGlobalEventManager.Instance.InvokeBattleAction();
         }
 
-        private void UpdateBattleActionInfo() 
+        private void OnBattleActionChanged(BattleActionContext context) 
         {
-            
+            _battleActionView.SetData(
+                $"<b><u>Action:</b></u> {context.ActionName}");
+        }
+
+        private void OnApplicationQuit()
+        {
+            _battleActionController.OnBattleActionChanged -= OnBattleActionChanged;
         }
     }
 }

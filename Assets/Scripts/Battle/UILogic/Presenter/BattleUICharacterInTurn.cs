@@ -12,11 +12,9 @@ namespace BattleModule.UI.Presenter
 
         [Header("View")]
         [SerializeField] private BattleUICharacterInTurnView _battleUICharacterInTurnView;
-        public void InitCharactersInTurn(ref Action<List<Character>> characterInTurnChanged, List<Character> charactersInTurn)
+        public void InitCharactersInTurn(ref Action<List<Character>> characterInTurnChanged)
         {
             characterInTurnChanged += BattleCharacterInTurnUpdate;
-            
-            BattleCharacterInTurnUpdate(charactersInTurn);
         }
 
         private void BattleCharacterInTurnClear()

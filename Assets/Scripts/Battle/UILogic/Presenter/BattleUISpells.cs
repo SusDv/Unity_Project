@@ -1,5 +1,4 @@
 ﻿using BattleModule.ActionCore;
-using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Interfaces;
 using BattleModule.UI.View;
 using SpellModule.Base;
@@ -19,24 +18,22 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleUISpellView _battleUISpellView;
 
-        private IBattleAction _battleActionController;
-
         private List<BattleUISpellView> _battleUISpells;
+
+        private IBattleAction _battleActionController;
 
         private Character _characterInTurn;
 
         public void InitBattleUISpells(IBattleAction battleActionController,
-            ref Action<List<Character>> characterInTurnChanged,
-            List<Character> charactersInTurn) 
+            ref Action<List<Character>> characterInTurnChanged) 
         {
             _battleUISpells = new List<BattleUISpellView>();
 
             _battleActionController = battleActionController;
 
             characterInTurnChanged += CreateUISpells;
-
-            CreateUISpells(charactersInTurn);
         }
+
         private void BattleSpellsClear()
         {
             _battleUISpells = new List<BattleUISpellView>();
@@ -62,7 +59,7 @@ namespace BattleModule.UI.Presenter
 
                 battleUISpellView.SetData(spell.SpellImage);
 
-                battleUISpellView.OnSpellClick += OnSpellClick;
+                battleUISpellView.OnButtonClick += OnSpellClick;
 
                 _battleUISpells.Add(battleUISpellView);
             }

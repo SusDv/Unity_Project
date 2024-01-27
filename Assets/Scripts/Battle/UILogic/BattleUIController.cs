@@ -12,10 +12,10 @@ namespace BattleModule.UI.Core
     {
         [Header("Debug")]
         [SerializeField]
-        private List<BaseItem> testItems;
+        private List<ItemBase> testItems;
 
         [SerializeField]
-        private InventorySystemBase _playerInventory;
+        private InventoryBase _playerInventory;
 
         [Header("Inventory Controller")]
         public BattleUIInventory BattleUIInventory;
@@ -45,7 +45,7 @@ namespace BattleModule.UI.Core
         {
             _playerInventory.InitializeInventory();
 
-            foreach (BaseItem item in testItems)
+            foreach (ItemBase item in testItems)
             {
                 _playerInventory.AddItem(item, 2);
             }
@@ -56,24 +56,20 @@ namespace BattleModule.UI.Core
             BattleUIInventory.InitBattleInventory(_playerInventory, _battleController.BattleActionController);
             
             BattleCharacterInTurn.InitCharactersInTurn(
-                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged, 
-                _battleController.BattleCharactersInTurn.GetCharactersInTurn().ToList());
+                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged);
             
             BattleUITargeting.InitBattleTrageting(
                 ref _battleController.OnCharacterTargetChanged);
             
-            BattleUIAction.InitBattleUIAction();
+            BattleUIAction.InitBattleUIAction(_battleController.BattleActionController);
 
-            BattleUIPlayer.InitBattleUICharacter(
-                _battleController.BattleCharactersOnScene.GetCharactersOnScene());
+            BattleUIPlayer.InitBattleUICharacter();
 
-            BattleUIEnemy.InitBattleUIEnemy(
-                _battleController.BattleCharactersOnScene.GetCharactersOnScene());
+            BattleUIEnemy.InitBattleUIEnemy(); 
 
             BattleUISpells.InitBattleUISpells(
                 _battleController.BattleActionController,
-                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged,
-                _battleController.BattleCharactersInTurn.GetCharactersInTurn().ToList());
+                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged);
         }      
     }
 }

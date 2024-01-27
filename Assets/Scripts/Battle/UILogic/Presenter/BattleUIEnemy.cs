@@ -12,16 +12,15 @@ namespace BattleModule.UI.Presenter
         [Header("View")]
         [SerializeField] private BattleUIEnemyView _battleUIEnemyView;
 
-        private List<Character> _enemyCharacters;
+        private List<Enemy> _enemyCharacters;
 
         private List<BattleUIEnemyView> _battleUIEnemies;
 
-        public void InitBattleUIEnemy(List<Character> enemyCharacters)
+        public void InitBattleUIEnemy()
         {
             _battleUIEnemies = new List<BattleUIEnemyView>();
 
-            _enemyCharacters = new List<Character>(enemyCharacters
-                .Where((character) => character is Enemy));
+            _enemyCharacters = FindObjectsByType<Enemy>(FindObjectsSortMode.None).ToList();
 
             CreateBattleUIEnemies();
         }
