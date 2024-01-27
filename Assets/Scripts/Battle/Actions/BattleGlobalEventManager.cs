@@ -6,11 +6,11 @@ namespace BattleModule.ActionCore.Events
     public class BattleGlobalEventManager 
         : Singleton<BattleGlobalEventManager>
     {
-        public Action OnBattleAction = delegate { };
+        public event Action OnBattleAction = delegate { };
 
-        public Action OnTurnEnded = delegate { };
+        public event Action OnTurnEnded = delegate { };
 
-        public Action OnCycleEnded = delegate { };
+        public event Action OnCycleEnded = delegate { };
 
 
         private int MaximumTurnsInCycle;
@@ -34,6 +34,7 @@ namespace BattleModule.ActionCore.Events
             if (--TurnsLeft <= 0)
             {
                 AdvanceCycle();
+
                 TurnsLeft = MaximumTurnsInCycle;
             }
         }

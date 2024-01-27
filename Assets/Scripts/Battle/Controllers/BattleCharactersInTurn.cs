@@ -13,7 +13,9 @@ namespace BattleModule.Controllers
     {
         private List<Character> _charactersInTurn;
 
-        public Action<List<Character>> OnCharacterInTurnChanged = delegate { };
+        public Action<List<Character>> OnCharactersInTurnChanged = delegate { };
+
+        public Action<Character> OnCharacterInTurnChanged = delegate { };
 
         public BattleCharactersInTurn(List<Character> characters)
         {
@@ -68,7 +70,9 @@ namespace BattleModule.Controllers
                 .OrderBy(characterInTurn => characterInTurn.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS))
                     .ToList();
 
-            OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+            OnCharactersInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+            
+            OnCharacterInTurnChanged?.Invoke(GetCharacterInTurn());
         }
 
         private void ResetCharacterInTurnBattlePoints()
@@ -77,7 +81,9 @@ namespace BattleModule.Controllers
 
             characterInTurnStats.AddStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
 
-            OnCharacterInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+            OnCharactersInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+
+            OnCharacterInTurnChanged?.Invoke(GetCharacterInTurn());
         }
 
         private void TriggerCharacterInTurnTemporaryModifiers() 

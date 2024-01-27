@@ -11,8 +11,12 @@ namespace BattleModule.ActionCore
     {
         public override string ActionName => "Weapon attack";
 
-        private BattleDefaultAction(BattleActionContext battleActionContext) 
-            : base(battleActionContext) 
+        public BattleDefaultAction() 
+            : base()
+        {}
+
+        private BattleDefaultAction(object actionObject) 
+            : base(actionObject) 
         {}
 
         public override void PerformAction(IHaveStats source, List<Character> targets)
@@ -34,10 +38,9 @@ namespace BattleModule.ActionCore
             source.AddStatModifier(StatType.BATTLE_POINTS, characterWeapon.BattlePoints);
         }
 
-        public static BattleDefaultAction GetBattleDefaultActionInstance(
-            BattleActionContext battleActionContext) 
+        public override BattleAction GetInstance(object actionObject)
         {
-            return new BattleDefaultAction(battleActionContext);
+            return new BattleDefaultAction(actionObject);
         }
     }
 }

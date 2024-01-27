@@ -12,7 +12,9 @@ namespace BattleModule.Controllers.Targeting
         
         private static bool _initialized;
 
-        public static void Init() 
+        private static TargetSearchType _targetSearchType;
+
+        private static void Init() 
         {
             _targeting.Clear();
 
@@ -31,8 +33,12 @@ namespace BattleModule.Controllers.Targeting
             _initialized = true;
         }
 
+        public static void SetCurrentSearchType(TargetSearchType targetSearchType) 
+        {
+            _targetSearchType = targetSearchType;
+        } 
+
         public static void GetSelectedTargets(
-            TargetSearchType targetSearchType,
             List<Character> characters,
             Character mainTarget,
             int numberOfCharactersToSelect) 
@@ -42,14 +48,13 @@ namespace BattleModule.Controllers.Targeting
                 Init();
             }
 
-            var targetingClass = _targeting[targetSearchType];
+            var targetingClass = _targeting[_targetSearchType];
 
             targetingClass.GetSelectedTargets(
                 characters, mainTarget, numberOfCharactersToSelect);
         }
 
         public static bool AddSelectedTargets(
-            TargetSearchType targetSearchType,
             ref Stack<Character> currentTargets)
         {
             if (!_initialized)
@@ -57,13 +62,12 @@ namespace BattleModule.Controllers.Targeting
                 Init();
             }
 
-            var targetingClass = _targeting[targetSearchType];
+            var targetingClass = _targeting[_targetSearchType];
 
             return targetingClass.AddSelectedTargets(ref currentTargets);
         }
 
         public static void OnCancelAction(
-            TargetSearchType targetSearchType,
             ref Stack<Character> currentTargets)
         {
             if (!_initialized)
@@ -71,7 +75,7 @@ namespace BattleModule.Controllers.Targeting
                 Init();
             }
 
-            var targetingClass = _targeting[targetSearchType];
+            var targetingClass = _targeting[_targetSearchType];
 
             targetingClass.OnCancelAction(ref currentTargets);
         }
