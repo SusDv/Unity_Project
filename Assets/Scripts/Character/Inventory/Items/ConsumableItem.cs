@@ -4,12 +4,13 @@ using InventorySystem.Item.Interfaces;
 using StatModule.Base;
 using StatModule.Interfaces;
 using StatModule.Modifier;
+using System;
 using UnityEngine;
 
 namespace InventorySystem.Item 
 {
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
-    public class ConsumableItem : BaseItem, IConsumable, ITargetable
+    public class ConsumableItem : ItemBase, IConsumable, ITargetable
     {
         [field: SerializeField]
         public TargetType TargetType { get; set; }
@@ -21,6 +22,8 @@ namespace InventorySystem.Item
         [field: Range(1, 5)]
         public int MaxTargetsCount { get; set; } = 1;
 
+        public event Action<ItemBase> OnConsumableUsed;
+
         public void Consume(IHaveStats character)
         {
             foreach (BaseStatModifier modifier in StatModifiers.BaseModifiers)
@@ -28,7 +31,7 @@ namespace InventorySystem.Item
                 character.AddStatModifier(modifier.Clone() as BaseStatModifier);
             }
 
-            OnItemAction?.Invoke(this);
+            OnConsumableUsed?.Invoke(this);
         }
     }
 }

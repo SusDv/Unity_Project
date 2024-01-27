@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2489976070786007523}
   - component: {fileID: 2489976070786007521}
   - component: {fileID: 2489976070786007520}
-  - component: {fileID: 1256924278816704354}
+  - component: {fileID: 2705215901925452886}
   - component: {fileID: 2331271767127811610}
   m_Layer: 5
   m_Name: BattleButton
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1256924278816704354
+--- !u!114 &2705215901925452886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2489976070786007522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07a42c5fca180b74da4287abf440c24b, type: 3}
+  m_Script: {fileID: 11500000, guid: 507c0e3655281714bbf0ad98730a3a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2331271767127811610
@@ -108,9 +108,27 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1256924278816704354}
-          m_TargetAssemblyTypeName: BattleModule.UI.Button.BattleUIButton, Assembly-CSharp
+        - m_Target: {fileID: 2705215901925452886}
+          m_TargetAssemblyTypeName: BattleModule.UI.Button.BattleUIButton`1[[System.Object,
+            mscorlib
           m_MethodName: OnPointerClick
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2705215901925452886}
+          m_TargetAssemblyTypeName: BattleModule.UI.Button.BattleUIButton`1[[System.Object,
+            mscorlib
+          m_MethodName: OnPointerOver
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

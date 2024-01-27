@@ -6,7 +6,7 @@ namespace InventorySystem.Core
     [Serializable]
     public struct InventoryItem
     {
-        public BaseItem inventoryItem;
+        public ItemBase inventoryItem;
 
         public int amount;
 

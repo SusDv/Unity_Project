@@ -5,9 +5,11 @@ namespace BattleModule.ActionCore.Context
 {
     public class BattleActionContext
     {
-        private BattleActionContext(
+        private BattleActionContext(string actionName,
             object actionObject)
         {
+            ActionName = actionName;
+
             ActionObject = actionObject;
 
             ITargetable targetable = actionObject as ITargetable;
@@ -16,6 +18,7 @@ namespace BattleModule.ActionCore.Context
             TargetSearchType = targetable.TargetSearchType;
             MaxTargetsCount = targetable.MaxTargetsCount;
         }
+        public string ActionName { get; }
 
         public object ActionObject { get; }
 
@@ -25,10 +28,10 @@ namespace BattleModule.ActionCore.Context
 
         public int MaxTargetsCount { get; }
 
-        public static BattleActionContext GetInstance(
+        public static BattleActionContext GetInstance(string actionName,
             object actionObject)
         {
-            return new BattleActionContext(actionObject);
+            return new BattleActionContext(actionName, actionObject);
         }
     }
 }

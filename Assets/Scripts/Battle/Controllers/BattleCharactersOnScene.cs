@@ -8,14 +8,14 @@ namespace BattleModule.Controllers
 {
     public class BattleCharactersOnScene
     {
-        private List<Character> _charactersOnScene;
+        private readonly List<Character> _charactersOnScene;
 
         private readonly Dictionary<TargetType, Func<Type, Type, bool>>
             _characterSearchFuntions;
 
-        public BattleCharactersOnScene()
+        public BattleCharactersOnScene(List<Character> charactersOnScene)
         {
-            _charactersOnScene = new List<Character>();
+            _charactersOnScene = charactersOnScene;
 
             _characterSearchFuntions
                 = new Dictionary<TargetType, Func<Type, Type, bool>>
@@ -57,14 +57,6 @@ namespace BattleModule.Controllers
                 characterIndex];
         }
 
-        public void AddCharactersOnScene(List<Character> characters)
-        {
-            foreach (Character character in characters)
-            {
-                _charactersOnScene.Add(character);
-            }
-        }
-
         public int GetNearbyCharacterOnSceneIndex(Character selectedCharacter, int direction)
         {
             List<Character> characters =
@@ -73,11 +65,6 @@ namespace BattleModule.Controllers
                         .ToList();
 
             return GetNearbyCharacterIndex(characters.IndexOf(selectedCharacter) + direction, characters.Count);
-        }
-
-        public List<Character> GetCharactersOnScene()
-        {
-            return _charactersOnScene;
         }
     }
 }

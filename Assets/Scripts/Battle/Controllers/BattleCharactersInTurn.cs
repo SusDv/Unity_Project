@@ -21,10 +21,10 @@ namespace BattleModule.Controllers
         {
             _charactersInTurn = new List<Character>(characters);
 
-            SetupBattleActions();
+            SetupActions();
         }
 
-        private void SetupBattleActions()
+        private void SetupActions()
         {
             BattleGlobalEventManager.Instance.OnTurnEnded += UpdateCharactersInTurn;
         }
@@ -70,7 +70,7 @@ namespace BattleModule.Controllers
                 .OrderBy(characterInTurn => characterInTurn.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS))
                     .ToList();
 
-            OnCharactersInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+            OnCharactersInTurnChanged?.Invoke(_charactersInTurn);
             
             OnCharacterInTurnChanged?.Invoke(GetCharacterInTurn());
         }
@@ -81,7 +81,7 @@ namespace BattleModule.Controllers
 
             characterInTurnStats.AddStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
 
-            OnCharactersInTurnChanged?.Invoke(GetCharactersInTurn().ToList());
+            OnCharactersInTurnChanged?.Invoke(_charactersInTurn);
 
             OnCharacterInTurnChanged?.Invoke(GetCharacterInTurn());
         }
@@ -106,14 +106,9 @@ namespace BattleModule.Controllers
             TriggerCharacterInTurnTemporaryModifiers();
         }
 
-        public IList<Character> GetCharactersInTurn()
-        {
-            return _charactersInTurn.AsReadOnly();
-        }
-
         public Character GetCharacterInTurn()
         {
-            return GetCharactersInTurn().First();
+            return _charactersInTurn[0];
         }
     }
 }

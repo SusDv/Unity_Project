@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
 using BattleModule.ActionCore.Events;
 using BattleModule.Input;
 using BattleModule.StateMachineBase;
 using UnityEngine;
+using Utils;
 
 namespace BattleModule.Controllers.Core
 {
@@ -11,15 +11,16 @@ namespace BattleModule.Controllers.Core
     {
         private BattleStateMachine _battleStateMachine;
 
+        [SerializeField]
+        private BattleCharactersSpawner _battleCharacterSpawner;
+
         public BattleCamera BattleCamera;
 
         public BattleInput BattleInput;
 
         public BattleActionController BattleActionController;
 
-        public BattleCharactersOnScene BattleCharactersOnScene;
-
-        public BattleCharactersSpawner BattleCharacterSpawner;
+        public BattleCharactersOnScene BattleCharactersOnScene;     
 
         public BattleCharactersInTurn BattleCharactersInTurn;
 
@@ -27,18 +28,15 @@ namespace BattleModule.Controllers.Core
 
         public Action<Vector3> OnCharacterTargetChanged;
 
-        public List<Character> PlayerCharacters;
-        public List<Character> EnemyCharacters;
-
         private void Awake()
         {
             _battleStateMachine = new BattleStateMachine(this);
 
             BattleInput = GetComponent<BattleInput>();
 
-            BattleCharactersOnScene = new BattleCharactersOnScene();
+            BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
 
-            BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>()); 
+            _battleCharacterSpawner.SpawnCharacters();
 
             BattleStart();
         }
@@ -57,14 +55,13 @@ namespace BattleModule.Controllers.Core
 
         private void BattleStart()
         {
-            BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(PlayerCharacters));
-            BattleCharactersOnScene.AddCharactersOnScene(BattleCharacterSpawner.SpawnCharacters(EnemyCharacters));
+            BattleCharactersOnScene = new BattleCharactersOnScene(_battleCharacterSpawner.GetSpawnedCharacters());
 
-            BattleCharactersInTurn = new BattleCharactersInTurn(BattleCharactersOnScene.GetCharactersOnScene());
+            BattleCharactersInTurn = new BattleCharactersInTurn(_battleCharacterSpawner.GetSpawnedCharacters());
 
             BattleActionController = new BattleActionController(ref BattleCharactersInTurn.OnCharacterInTurnChanged);
             
-            BattleGlobalEventManager.Instance.SetMaximumTurnsInCycle(BattleCharactersInTurn.GetCharactersInTurn().Count);
+            BattleGlobalEventManager.Instance.SetMaximumTurnsInCycle(BattleManager.Instance.CharactersToSpawn.Count);
         }
 
         private void OnDestroy()

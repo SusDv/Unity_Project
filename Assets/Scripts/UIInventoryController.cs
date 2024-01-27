@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UIInventoryController : MonoBehaviour
 {
-    private InventorySystemBase Inventory;
+    private InventoryBase Inventory;
 
     [SerializeField] private GameObject InventoryPanel;
     [SerializeField] private GameObject InventoryContainer;

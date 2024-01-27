@@ -4,7 +4,7 @@ using StatModule.Modifier;
 
 namespace InventorySystem.Item 
 {
-    public abstract class BaseItem : ScriptableObject
+    public abstract class ItemBase : ScriptableObject
     {
         public int ID => GetInstanceID();
 
@@ -29,7 +29,7 @@ namespace InventorySystem.Item
         [field: SerializeField]
         public StatModifiers StatModifiers { get; private set; }
 
-        public Action<BaseItem> OnItemAction;
+        public Action<ItemBase> OnItemAction;
 
 #if UNITY_EDITOR
         private void OnValidate()

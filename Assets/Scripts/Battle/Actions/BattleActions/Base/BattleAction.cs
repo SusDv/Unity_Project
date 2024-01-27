@@ -15,7 +15,7 @@ namespace BattleModule.ActionCore
         protected BattleAction(object actionObject)
         {
             _battleActionContext = BattleActionContext
-                .GetInstance(actionObject);
+                .GetInstance(ActionName, actionObject);
         }
 
         public BattleActionContext GetBattleActionContext() 
