@@ -1,12 +1,12 @@
 ﻿using BattleModule.UI.Button;
 using BattleModule.UI.View;
 using BattleModule.ActionCore;
-using BattleModule.ActionCore.Interfaces;
 using InventorySystem.Intefaces;
 using InventorySystem.Item;
 using InventorySystem.Core;
 using System.Collections.Generic;
 using UnityEngine;
+using BattleModule.Controllers;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -28,15 +28,15 @@ namespace BattleModule.UI.Presenter
         
         private List<InventoryItem> _battleInventory = new ();
 
-        private IBattleAction _battleActionController;
+        private BattleActionController _battleActionController;
 
         private IBattleInvetory _battleInventoryController;    
 
         private BattleUIItemView _selectedItem;
 
-        public void InitBattleInventory(
+        public void Init(
             IBattleInvetory battleInventory,
-            IBattleAction battleActionController)
+            BattleActionController battleActionController)
         {
             _battleInventoryController = battleInventory;
 

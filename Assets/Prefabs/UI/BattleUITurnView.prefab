@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8828945347706592270}
   - component: {fileID: 8828945347706592265}
   m_Layer: 5
-  m_Name: BattleCharacterInTurnName
+  m_Name: BattleUITurnName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8828945348229079666}
   - component: {fileID: 8828945348229079664}
   m_Layer: 5
-  m_Name: BattleCharacterInTurn
+  m_Name: BattleUITurnView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8828945348229079676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50c3d2e000310f4439c558006bf2c2fc, type: 3}
+  m_Script: {fileID: 11500000, guid: f1a733bc02507104c9aa70b6db83121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _characterInTurnBorder: {fileID: 8828945348229079666}
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 8828945349339410452}
   - component: {fileID: 8828945349339410455}
   m_Layer: 5
-  m_Name: BattleCharacterInTurnBattlePoints
+  m_Name: BattleUITurnBattlePoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 8828945349403751197}
   - component: {fileID: 8828945349403751196}
   m_Layer: 5
-  m_Name: BattleCharacterInTurnWrapper
+  m_Name: BattleUITurnWrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

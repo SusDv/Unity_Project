@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Controllers;
 using BattleModule.UI.View;
 using StatModule.Base;
 using StatModule.Utility.Enums;
@@ -12,15 +13,15 @@ namespace BattleModule.UI.Presenter
         [Header("View")]
         [SerializeField] private BattleUIEnemyView _battleUIEnemyView;
 
-        private List<Enemy> _enemyCharacters;
+        private List<Character> _enemyCharacters;
 
         private List<BattleUIEnemyView> _battleUIEnemies;
 
-        public void InitBattleUIEnemy()
+        public void Init()
         {
             _battleUIEnemies = new List<BattleUIEnemyView>();
 
-            _enemyCharacters = FindObjectsByType<Enemy>(FindObjectsSortMode.None).ToList();
+            _enemyCharacters = BattleSpawner.Instance.GetSpawnedCharacters().Where((character) => character is Enemy).ToList();
 
             CreateBattleUIEnemies();
         }

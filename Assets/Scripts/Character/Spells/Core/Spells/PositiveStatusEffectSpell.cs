@@ -17,9 +17,9 @@ namespace SpellModule.Base
             foreach (Character target in targets) 
             {
                 target.GetCharacterStats().RemoveStatModifiersByCondifition(
-                    (statModifier) => (statModifier is TemporaryStatModifier) 
-                    && (statModifier as TemporaryStatModifier).IsNegative
-                    && (statModifier as TemporaryStatModifier).TemporaryStatModifierTier == SpellClearanceTier);
+                    (statModifier) => (statModifier is TemporaryStatModifier temporaryStatModifier) 
+                    && temporaryStatModifier.IsNegative
+                    && temporaryStatModifier.TemporaryStatModifierTier == SpellClearanceTier);
             }
 
             source.AddStatModifier(StatType.BATTLE_POINTS, BattlePoints);

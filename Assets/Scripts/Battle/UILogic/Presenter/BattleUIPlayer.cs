@@ -1,4 +1,5 @@
-﻿using BattleModule.UI.View;
+﻿using BattleModule.Controllers;
+using BattleModule.UI.View;
 using StatModule.Base;
 using StatModule.Utility.Enums;
 using System.Collections.Generic;
@@ -15,15 +16,15 @@ namespace BattleModule.UI.Presenter
         [Header("View")]
         [SerializeField] private BattleUIPlayerView _battleUIPlayerView;
 
-        private List<Player> _playerCharacters;
+        private List<Character> _playerCharacters;
 
         private List<BattleUIPlayerView> _battleUIPlayers;
 
-        public void InitBattleUICharacter() 
+        public void Init() 
         {
             _battleUIPlayers = new List<BattleUIPlayerView>();
 
-            _playerCharacters = FindObjectsByType<Player>(FindObjectsSortMode.None).ToList();
+            _playerCharacters = BattleSpawner.Instance.GetSpawnedCharacters().Where((character) => character is Player).ToList();
 
             CreateBattleUICharacters();
         }

@@ -4,6 +4,7 @@ using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
 using BattleModule.Controllers.Targeting;
 using BattleModule.StateMachineBase.States.Core;
+using BattleModule.Utility.Enums;
 
 namespace BattleModule.StateMachineBase.States
 {
@@ -14,6 +15,8 @@ namespace BattleModule.StateMachineBase.States
         private Stack<Character> _currentTargets;
 
         private int _currentTargetIndex;
+
+        private BattleActionContext _battleActionContext;
 
         public BattleTargetingState(BattleStateMachine battleStateMachine) 
             : base(battleStateMachine)
@@ -56,39 +59,45 @@ namespace BattleModule.StateMachineBase.States
             }
 
             _currentTargetIndex = _battleStateMachine.BattleController.BattleCharactersOnScene.GetNearbyCharacterOnSceneIndex(_mainTarget, _arrowKeysInput);
+
+            SetTargets(_battleActionContext.TargetType, _battleActionContext.MaxTargetCount);
         }
 
         private void SetupBattleEvents()
         {
-            BattleGlobalEventManager.Instance.OnBattleAction += BattleActionHandler;
+            BattleEventManager.Instance.OnActionButtonPressed += BattleActionHandler;
         }
 
         private void ClearBattleEvents() 
         {
-            BattleGlobalEventManager.Instance.OnBattleAction -= BattleActionHandler;
+            BattleEventManager.Instance.OnActionButtonPressed -= BattleActionHandler;
         }
         
         private void StartTurn()
         {
             _currentTargetIndex = -1;
 
-            _battleStateMachine.BattleController.BattleCharactersInTurn.OnTurnStarted();  
+            _battleStateMachine.BattleController.BattleTurnController.TurnEffects();  
         }
 
         private void OnBattleActionChanged(BattleActionContext context)
         {
+            _battleActionContext = context;
+
             BattleTargetingProcessor.SetCurrentSearchType(context.TargetSearchType);
 
-            _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharacterOnScene(_battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), context.TargetType, _currentTargetIndex);
+            SetTargets(_battleActionContext.TargetType, _battleActionContext.MaxTargetCount);
+        }
+
+        private void SetTargets(TargetType targetType, int maxTargetCount) 
+        {
+            _mainTarget = _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharacterOnScene(targetType, _currentTargetIndex);
 
             BattleTargetingProcessor.GetSelectedTargets(
-                _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharactersByType(
-                    _battleStateMachine.BattleController.BattleCharactersInTurn.GetCharacterInTurn().GetType(), context.TargetType),
+                _battleStateMachine.BattleController.BattleCharactersOnScene.GetCharactersByType(targetType),
                 _mainTarget,
-                context.MaxTargetsCount
+                maxTargetCount
                 );
-
-            _battleStateMachine.BattleController.OnCharacterTargetChanged?.Invoke(_mainTarget.gameObject.transform.position);
         }
 
         private void BattleActionHandler()
@@ -101,6 +110,7 @@ namespace BattleModule.StateMachineBase.States
                 _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
             }
         }
+
         private void CheckCancelKeyPressed()
         {
             if (_cancelKeyPressed)

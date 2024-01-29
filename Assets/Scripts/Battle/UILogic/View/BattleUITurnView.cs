@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace BattleModule.UI.View 
 {
-    public class BattleUICharacterInTurnView : MonoBehaviour
+    public class BattleUITurnView : MonoBehaviour
     {
         [SerializeField] private Image _characterInTurnBorder; 
 

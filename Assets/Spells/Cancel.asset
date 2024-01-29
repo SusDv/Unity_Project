@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eab1c390f051334484a08a7a584221c, type: 3}
+  m_Name: Cancel
+  m_EditorClassIdentifier: 
+  <SpellName>k__BackingField: 
+  <SpellImage>k__BackingField: {fileID: 21300000, guid: d4f36aaf280a7954bb4c00aa07d6a395, type: 3}
+  <SpellDescription>k__BackingField: 
+  <BattlePoints>k__BackingField: 20
+  <TargetType>k__BackingField: 0
+  <TargetSearchType>k__BackingField: 0
+  <MaxTargetsCount>k__BackingField: 1
+  <SpellClearanceTier>k__BackingField: 0

@@ -6,13 +6,14 @@ namespace BattleModule.StateMachineBase
     public class BattleStateMachine : StateMachine
     {
         public IState CurrentState;
-        public BattleController BattleController { get; }
+
+        public BattleFightController BattleController { get; }
 
         public BattleTargetingState BattleTargetingState { get; }
 
         public BattleEnemyAttackState BattleEnemyAttackState { get; }
 
-        public BattleStateMachine(BattleController battleController)
+        public BattleStateMachine(BattleFightController battleController)
         {
             BattleController = battleController;
 

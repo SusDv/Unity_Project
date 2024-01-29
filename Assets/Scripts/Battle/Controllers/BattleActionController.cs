@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BattleModule.ActionCore;
 using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
-using BattleModule.ActionCore.Interfaces;
 
 namespace BattleModule.Controllers
 {
-    public class BattleActionController : IBattleAction
+    public class BattleActionController
     {
         private BattleAction _currentBattleAction;
 
-        private Character _characterInTurn;
+        private Character _characterToHaveTurn;
 
         public event Action<BattleActionContext> OnBattleActionChanged;
 
-        public BattleActionController(ref Action<Character> characterInTurnChanged) 
+        public BattleActionController(BattleTurnController battleTurnController) 
         {
-            characterInTurnChanged += OnCharacterInTurnChanged;
+            battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
         }
 
         public void SetBattleAction<T>(object actionObject)
@@ -35,20 +35,20 @@ namespace BattleModule.Controllers
 
         public void ExecuteBattleAction(List<Character> targets) 
         {
-            _currentBattleAction.PerformAction(_characterInTurn.GetCharacterStats(), targets);
+            _currentBattleAction.PerformAction(_characterToHaveTurn.GetCharacterStats(), targets);
 
-            BattleGlobalEventManager.Instance.AdvanceTurn();
+            BattleEventManager.Instance.AdvanceTurn();
         }
 
         private void SetDefaulBattleAction() 
         {
-            SetBattleAction<BattleDefaultAction>(_characterInTurn.
+            SetBattleAction<BattleDefaultAction>(_characterToHaveTurn.
                 GetCharacterWeapon().GetWeapon());
         }
 
-        private void OnCharacterInTurnChanged(Character characterInTurn) 
+        private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn) 
         {
-            _characterInTurn = characterInTurn;
+            _characterToHaveTurn = charactersToHaveTurn.First();
 
             SetDefaulBattleAction();
         }
