@@ -1,6 +1,6 @@
 ﻿using BattleModule.ActionCore.Context;
 using BattleModule.ActionCore.Events;
-using BattleModule.ActionCore.Interfaces;
+using BattleModule.Controllers;
 using BattleModule.UI.Button;
 using BattleModule.UI.View;
 using UnityEngine;
@@ -15,10 +15,10 @@ namespace BattleModule.UI.Presenter
         [Header("Battle Button")]
         [SerializeField] private BattleUIDefaultButton _battleActionButton;
 
-        private IBattleAction _battleActionController;
+        private BattleActionController _battleActionController;
 
-        public void InitBattleUIAction(
-            IBattleAction battleActionController) 
+        public void Init(
+            BattleActionController battleActionController) 
         {
             _battleActionController = battleActionController;
 
@@ -29,7 +29,7 @@ namespace BattleModule.UI.Presenter
 
         private void BattleActionPointerClick(object o)
         {
-            BattleGlobalEventManager.Instance.InvokeBattleAction();
+            BattleEventManager.Instance.OnActionButtonPressed?.Invoke();
         }
 
         private void OnBattleActionChanged(BattleActionContext context) 

@@ -114,12 +114,8 @@ namespace StatModule.Base
 
         public void RemoveStatModifiersByCondifition(Func<BaseStatModifier, bool> conditionFunction, Func<BaseStatModifier, bool> additionalCondition = null) 
         {
-            List<BaseStatModifier> modifiersByCondition = _modifiersInUse
-                .Where(statModifier =>
-                    conditionFunction.Invoke(statModifier))
-                .ToList();
-
-
+            _modifiersInUse.RemoveAll(statModifier =>
+                    conditionFunction.Invoke(statModifier));
         }
     }
 }

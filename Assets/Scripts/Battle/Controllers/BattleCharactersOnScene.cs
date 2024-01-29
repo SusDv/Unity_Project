@@ -1,3 +1,4 @@
+using BattleModule.ActionCore.Events;
 using BattleModule.Utility.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,26 @@ namespace BattleModule.Controllers
     {
         private readonly List<Character> _charactersOnScene;
 
-        private readonly Dictionary<TargetType, Func<Type, Type, bool>>
-            _characterSearchFuntions;
+        private Character _characterToHaveTurn;
 
-        public BattleCharactersOnScene(List<Character> charactersOnScene)
+        public Action<Vector3> OnCharacterTargetChanged = delegate { };
+
+        public BattleCharactersOnScene(BattleTurnController battleTurnController)
         {
-            _charactersOnScene = charactersOnScene;
+            battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
 
-            _characterSearchFuntions
-                = new Dictionary<TargetType, Func<Type, Type, bool>>
-                {
-                    { TargetType.ALLY,
-                        (selectedCharacterType, characterInTurnType) =>
-                            selectedCharacterType.Equals(characterInTurnType)
-                    },
-                    { TargetType.ENEMY,
-                        (selectedCharacterType, characterInTurnType) =>
-                            !selectedCharacterType.Equals(characterInTurnType)
-                    }
-                };
+            _charactersOnScene = BattleSpawner.Instance.GetSpawnedCharacters();
+        }
+
+        private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn) 
+        {
+            _characterToHaveTurn = charactersToHaveTurn.First();
+        }
+
+        private Func<Type, bool> GetSearchFunction(TargetType targetType) 
+        {
+            return (selectedCharacterType) => targetType == TargetType.ALLY ?
+                            selectedCharacterType.Equals(_characterToHaveTurn.GetType()) : !selectedCharacterType.Equals(_characterToHaveTurn.GetType());
         }
 
         private int GetNearbyCharacterIndex(float desiredIndex, float listSize)
@@ -36,25 +38,24 @@ namespace BattleModule.Controllers
             return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
         }
 
-        public List<Character> GetCharactersByType(Type characterInTurnType, TargetType targetType) 
+        public List<Character> GetCharactersByType(TargetType targetType) 
         {
-            return _charactersOnScene
-                    .Where((character) =>
-                    _characterSearchFuntions[targetType].Invoke(
-                        character.GetType(), characterInTurnType))
-                            .ToList();
+            return _charactersOnScene.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
         }
 
         public Character GetCharacterOnScene(
-            Type characterInTurnType,
             TargetType targetType,
             int characterIndex)
         {
-            List<Character> characters = GetCharactersByType(characterInTurnType, targetType);
+            List<Character> characters = GetCharactersByType(targetType);
 
-            return characters[characterIndex == -1 ? 
+            Character selectedCharacter = characters[characterIndex == -1 ?
                 Mathf.RoundToInt(characters.Count / 2) :
                 characterIndex];
+
+            OnCharacterTargetChanged?.Invoke(selectedCharacter.transform.position);
+
+            return selectedCharacter;
         }
 
         public int GetNearbyCharacterOnSceneIndex(Character selectedCharacter, int direction)
@@ -64,7 +65,9 @@ namespace BattleModule.Controllers
                     .Where(character => character.GetType().Equals(selectedCharacter.GetType()))
                         .ToList();
 
-            return GetNearbyCharacterIndex(characters.IndexOf(selectedCharacter) + direction, characters.Count);
+            int nearbyCharacterIndex = GetNearbyCharacterIndex(characters.IndexOf(selectedCharacter) + direction, characters.Count);
+            
+            return nearbyCharacterIndex;
         }
     }
 }

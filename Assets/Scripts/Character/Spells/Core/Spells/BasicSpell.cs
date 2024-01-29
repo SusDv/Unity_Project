@@ -21,9 +21,10 @@ namespace SpellModule.Base
                 {
                     IHaveStats targetStats = target.GetCharacterStats();
 
-                    targetStats.AddStatModifier(baseStatModifier);
+                    targetStats.AddStatModifier(baseStatModifier.Clone() as BaseStatModifier);
                 }
             }
+
             source.AddStatModifier(StatType.BATTLE_POINTS, BattlePoints);
         }
     }

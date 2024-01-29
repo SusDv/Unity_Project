@@ -1,3 +1,4 @@
+using BattleModule.ActionCore.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,8 @@ using Utils;
 
 namespace BattleModule.Controllers
 {
-    public class BattleCharactersSpawner : MonoBehaviour
+    public class BattleSpawner : 
+        Singleton<BattleSpawner>
     {
         [Header("Spawn Points")]
         [SerializeField] private Transform _playerSpawnBoxPoint;
@@ -16,36 +18,25 @@ namespace BattleModule.Controllers
         [Range(2f, 15f)]
         private float _distanceBetweenCharacters = 2f;
 
-        private readonly List<Character> _spawnedCharacters;
-
-        public BattleCharactersSpawner() 
-        {
-            _spawnedCharacters = new List<Character>();
-        }
+        private List<Character> _spawnedCharacters = new List<Character>();
 
         public void SpawnCharacters()
         {
-            SpawnSpecificCharacters(typeof(Player));
+            SpawnCharactersByType(typeof(Player));
 
-            SpawnSpecificCharacters(typeof(Enemy));
+            SpawnCharactersByType(typeof(Enemy));
         }
 
-        public List<Character> GetSpawnedCharacters() 
-        {
-            return _spawnedCharacters;
-        }
-
-        private void SpawnSpecificCharacters(Type characterType) 
+        private void SpawnCharactersByType(Type characterType) 
         {
             float distanceToMoveBox = 0f;
             
-            Transform spawnPoint = GetSpawnedCharacterInfo(characterType);
+            Transform spawnPoint = GetSpawnPoint(characterType);
 
             List<Character> charactersToSpawn = BattleManager.Instance.CharactersToSpawn.Where((character) => character.GetType().Equals(characterType)).ToList();
 
             for (int i = 0; i < charactersToSpawn.Count; i++)
             {
-                
                 Vector3 spawnPosition = spawnPoint.position +
                     (_distanceBetweenCharacters) * i * Vector3.right;
 
@@ -58,7 +49,7 @@ namespace BattleModule.Controllers
                 distanceToMoveBox = -(_distanceBetweenCharacters / 2f) * i;
 
                 character.gameObject.name = $"{(character is Enemy ? "Enemy" : "Player")} {i + 1}";
-
+               
                 _spawnedCharacters.Add(character);
             }
 
@@ -66,9 +57,14 @@ namespace BattleModule.Controllers
                 Vector3.right * distanceToMoveBox);
         }
 
-        private Transform GetSpawnedCharacterInfo(Type characterToSpawnType)
+        private Transform GetSpawnPoint(Type characterToSpawnType)
         {
             return characterToSpawnType.Equals(typeof(Enemy)) ? _enemySpawnBoxPoint : _playerSpawnBoxPoint;
+        }
+
+        public List<Character> GetSpawnedCharacters() 
+        {
+            return _spawnedCharacters;
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using BattleModule.Controllers.Core;
 using BattleModule.UI.Presenter;
 using InventorySystem.Core;
@@ -21,7 +20,7 @@ namespace BattleModule.UI.Core
         public BattleUIInventory BattleUIInventory;
 
         [Header("Characters In Turn Controller")]
-        public BattleUICharacterInTurn BattleCharacterInTurn;
+        public BattleUITurn BattleCharacterInTurn;
 
         [Header("Battle Action Controller")]
         public BattleUIAction BattleUIAction;
@@ -39,9 +38,9 @@ namespace BattleModule.UI.Core
         public BattleUISpells BattleUISpells;
 
         [Header("Battle Controller Reference")]
-        [SerializeField] private BattleController _battleController;
+        [SerializeField] private BattleFightController _battleFightController;
 
-        private void Awake()
+        public void Init()
         {
             _playerInventory.InitializeInventory();
 
@@ -49,27 +48,21 @@ namespace BattleModule.UI.Core
             {
                 _playerInventory.AddItem(item, 2);
             }
-        }
 
-        private void Start()
-        {
-            BattleUIInventory.InitBattleInventory(_playerInventory, _battleController.BattleActionController);
-            
-            BattleCharacterInTurn.InitCharactersInTurn(
-                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged);
-            
-            BattleUITargeting.InitBattleTrageting(
-                ref _battleController.OnCharacterTargetChanged);
-            
-            BattleUIAction.InitBattleUIAction(_battleController.BattleActionController);
+            BattleUIInventory.Init(_playerInventory, _battleFightController.BattleActionController);
 
-            BattleUIPlayer.InitBattleUICharacter();
+            BattleCharacterInTurn.Init(_battleFightController.BattleTurnController);
 
-            BattleUIEnemy.InitBattleUIEnemy(); 
+            BattleUITargeting.Init(ref _battleFightController.BattleCharactersOnScene.OnCharacterTargetChanged);
 
-            BattleUISpells.InitBattleUISpells(
-                _battleController.BattleActionController,
-                ref _battleController.BattleCharactersInTurn.OnCharactersInTurnChanged);
+            BattleUIAction.Init(_battleFightController.BattleActionController);
+
+            BattleUIPlayer.Init();
+
+            BattleUIEnemy.Init();
+
+            BattleUISpells.Init(_battleFightController.BattleActionController, _battleFightController.BattleTurnController);
+
         }      
     }
 }

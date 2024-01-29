@@ -13,7 +13,7 @@ namespace BattleModule.UI.Presenter
         [Header("Main Camera Reference")]
         [SerializeField] private Camera _mainCamera;
 
-        public void InitBattleTrageting(ref Action<Vector3> targetChangedAction) 
+        public void Init(ref Action<Vector3> targetChangedAction) 
         {
             targetChangedAction += BattleCharacterTarget;
         }

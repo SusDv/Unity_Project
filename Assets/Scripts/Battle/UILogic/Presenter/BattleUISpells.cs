@@ -1,9 +1,9 @@
 ﻿using BattleModule.ActionCore;
-using BattleModule.ActionCore.Interfaces;
+using BattleModule.Controllers;
 using BattleModule.UI.View;
 using SpellModule.Base;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter
@@ -20,18 +20,25 @@ namespace BattleModule.UI.Presenter
 
         private List<BattleUISpellView> _battleUISpells;
 
-        private IBattleAction _battleActionController;
+        private BattleActionController _battleActionController;
 
-        private Character _characterInTurn;
+        private Character _characterToHaveTurn;
 
-        public void InitBattleUISpells(IBattleAction battleActionController,
-            ref Action<List<Character>> characterInTurnChanged) 
+        public void Init(BattleActionController battleActionController,
+            BattleTurnController battleTurnController) 
         {
             _battleUISpells = new List<BattleUISpellView>();
 
             _battleActionController = battleActionController;
 
-            characterInTurnChanged += CreateUISpells;
+            battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
+        }
+
+        private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn)
+        {
+            _characterToHaveTurn = charactersToHaveTurn.First();
+
+            DisplayCharacterSpells(_characterToHaveTurn);
         }
 
         private void BattleSpellsClear()
@@ -44,13 +51,11 @@ namespace BattleModule.UI.Presenter
             }
         }
 
-        private void CreateUISpells(List<Character> charactersInTurn) 
+        private void DisplayCharacterSpells(Character characterToHaveTurn) 
         {
-            _characterInTurn = charactersInTurn[0];
-            
             BattleSpellsClear();
 
-            foreach (SpellBase spell in _characterInTurn.GetCharacterSpells().GetSpells()) 
+            foreach (SpellBase spell in characterToHaveTurn.GetCharacterSpells().GetSpells()) 
             {
                 BattleUISpellView battleUISpellView = Instantiate(_battleUISpellView,
                     _battleUISpellsPanel.transform.position,
@@ -67,7 +72,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            SpellBase selectedSpell = _characterInTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            SpellBase selectedSpell = _characterToHaveTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
             _battleActionController.SetBattleAction<BattleSpellAction>(selectedSpell);
         }

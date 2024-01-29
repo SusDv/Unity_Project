@@ -15,8 +15,10 @@ namespace BattleModule.ActionCore.Context
             ITargetable targetable = actionObject as ITargetable;
 
             TargetType = targetable.TargetType;
+
             TargetSearchType = targetable.TargetSearchType;
-            MaxTargetsCount = targetable.MaxTargetsCount;
+
+            MaxTargetCount = targetable.MaxTargetsCount;
         }
         public string ActionName { get; }
 
@@ -26,7 +28,7 @@ namespace BattleModule.ActionCore.Context
 
         public TargetSearchType TargetSearchType { get; }
 
-        public int MaxTargetsCount { get; }
+        public int MaxTargetCount { get; }
 
         public static BattleActionContext GetInstance(string actionName,
             object actionObject)

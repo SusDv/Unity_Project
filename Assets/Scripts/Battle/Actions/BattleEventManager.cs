@@ -1,30 +1,25 @@
-﻿using System;
+﻿using BattleModule.Controllers;
+using System;
 using Utils;
 
 namespace BattleModule.ActionCore.Events
 {
-    public class BattleGlobalEventManager 
-        : Singleton<BattleGlobalEventManager>
+    public class BattleEventManager 
+        : Singleton<BattleEventManager>
     {
-        public event Action OnBattleAction = delegate { };
-
         public event Action OnTurnEnded = delegate { };
 
         public event Action OnCycleEnded = delegate { };
 
+        public Action OnActionButtonPressed = delegate { };
 
         private int MaximumTurnsInCycle;
 
         private int TurnsLeft;
 
-        public void SetMaximumTurnsInCycle(int maximumTurnsInCycle) 
+        private void Start()
         {
-            MaximumTurnsInCycle = TurnsLeft = maximumTurnsInCycle;
-        }
-
-        public void InvokeBattleAction() 
-        {
-            OnBattleAction?.Invoke();
+            MaximumTurnsInCycle = TurnsLeft = BattleSpawner.Instance.GetSpawnedCharacters().Count;
         }
 
         public void AdvanceTurn()
