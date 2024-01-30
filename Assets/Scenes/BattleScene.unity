@@ -1844,18 +1844,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd40f9ce4dce609449436e371dd9aae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testItems:
-  - {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
-  - {fileID: 11400000, guid: 261a169f154091a43987412c1050f910, type: 2}
-  - {fileID: 11400000, guid: 7959d013c0b461b4284f764a8fa02929, type: 2}
+  _testItems: []
   _playerInventory: {fileID: 11400000, guid: 666c2c6536ccb244686cc8ec1fcf104e, type: 2}
-  BattleUIInventory: {fileID: 287493815}
-  BattleCharacterInTurn: {fileID: 1557257066}
-  BattleUIAction: {fileID: 778106361}
-  BattleUITargeting: {fileID: 981139196}
-  BattleUIPlayer: {fileID: 1947159070}
-  BattleUIEnemy: {fileID: 1625986108}
-  BattleUISpells: {fileID: 919194937}
+  _battleUIInventory: {fileID: 287493815}
+  _battleUITurn: {fileID: 1557257066}
+  _battleUIAction: {fileID: 778106361}
+  _battleUITargeting: {fileID: 981139196}
+  _battleUIPlayer: {fileID: 1947159070}
+  _battleUIEnemy: {fileID: 1625986108}
+  _battleUISpells: {fileID: 919194937}
   _battleFightController: {fileID: 1586444222}
 --- !u!1 &1557257064
 GameObject:
@@ -2025,9 +2022,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BattleInput: {fileID: 2101143909}
-  CharacterLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!1 &1625986107
 GameObject:
   m_ObjectHideFlags: 0
