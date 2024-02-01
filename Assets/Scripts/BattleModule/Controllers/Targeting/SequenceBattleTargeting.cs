@@ -4,36 +4,33 @@ using BattleModule.Utility.Enums;
 
 namespace BattleModule.Controllers.Targeting
 {
-    public class SequenceBattleTargeting : BattleTargeting 
+    public class SequenceBattleTargeting : BattleTargeting
     {
         private Character _mainTarget;
-
-        private int _numberOfCharactersToSelect;
 
         public override TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
 
         public override Stack<Character> GetSelectedTargets(
             List<Character> characters, 
             Character mainTarget, 
-            int numberOfCharactersToSelect)
+            int maxTargetsToSelect)
         {
             SelectedCharacters = new Stack<Character>();
 
             _mainTarget = mainTarget;
 
             SelectedCharacters.Push(mainTarget);
-
-            _numberOfCharactersToSelect = numberOfCharactersToSelect;
-
+            
             return SelectedCharacters;
         }
 
         public override bool AddSelectedTargets(
-            ref Stack<Character> currentTargets)
+            ref Stack<Character> currentTargets,
+            int maxTargetsToSelect)
         {
             currentTargets.Push(_mainTarget);
 
-            return _numberOfCharactersToSelect == currentTargets.Count;
+            return maxTargetsToSelect == currentTargets.Count;
         }
 
         public override void OnCancelAction(

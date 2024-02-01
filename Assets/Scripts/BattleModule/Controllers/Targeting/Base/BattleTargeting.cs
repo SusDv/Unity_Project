@@ -6,7 +6,7 @@ namespace BattleModule.Controllers.Targeting.Base
     public abstract class BattleTargeting
     {
         protected Stack<Character> SelectedCharacters;
-
+        
         public abstract TargetSearchType TargetSearchType { get; }
 
         public abstract Stack<Character> GetSelectedTargets(
@@ -14,7 +14,7 @@ namespace BattleModule.Controllers.Targeting.Base
             Character mainTarget,
             int numberOfCharactersToSelect);
 
-        public abstract bool AddSelectedTargets(ref Stack<Character> currentTargets);
+        public abstract bool AddSelectedTargets(ref Stack<Character> currentTargets, int maxTargetsToSelect);
 
         public abstract void OnCancelAction(ref Stack<Character> currentTargets);
     }

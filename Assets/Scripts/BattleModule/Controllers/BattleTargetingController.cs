@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Actions.BattleActions.Context;
 using UnityEngine;
 using BattleModule.Controllers.Targeting.Processor;
 using BattleModule.Utility.Enums;
@@ -11,40 +12,52 @@ namespace BattleModule.Controllers
     {
         private readonly List<Character> _charactersOnScene;
 
+        private readonly BattleTargetingProcessor _battleTargetingProcessor;
+
         private List<Character> _currentPossibleTargets;
         
         private Character _characterToHaveTurn;
 
         private Character _mainTarget;
 
-        private int _maxTargetCount;
-
-        public Action<Vector3> OnCharacterTargetChanged = delegate { };
+        public Action<List<Character>> OnCharacterTargetChanged = delegate { };
 
         public BattleTargetingController(BattleTurnController battleTurnController)
         {
             battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
 
             _charactersOnScene = BattleSpawner.Instance.GetSpawnedCharacters();
+
+            _battleTargetingProcessor = new BattleTargetingProcessor();
         }
 
-        public void SetTargetingData(TargetType targetType, int maxTargetCount)
+        public void SetTargetingData(BattleActionContext context)
         {
-            _maxTargetCount = maxTargetCount;
+            _battleTargetingProcessor.SetTargetingData(context.TargetSearchType, context.MaxTargetCount);
             
-            SetPossibleTargets(targetType);
+            SetPossibleTargets(context.TargetType);
             
             SetMainTarget();
         }
         
-        public void SetNeighbourAsMainTarget(int direction)
+        public void SetMainTargetWithInput(int direction)
         {
             SetMainTarget(GetNearbyCharacterIndex(_currentPossibleTargets.IndexOf(_mainTarget) + direction, _currentPossibleTargets.Count));
         }
 
+        public void SetMainTargetWithInput(Character character)
+        {
+            if (!character || !_currentPossibleTargets.Contains(character))
+            {
+                return;
+            }
+
+            SetMainTarget(_currentPossibleTargets.IndexOf(character));
+        }
+
         public bool IsReadyForAction(ref Stack<Character> currentTargets)
         {
-            return BattleTargetingProcessor.AddSelectedTargets(ref currentTargets);
+            return _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
         }
 
         private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn) 
@@ -73,12 +86,9 @@ namespace BattleModule.Controllers
             _mainTarget =
                 _currentPossibleTargets[characterIndex == -1 ? _currentPossibleTargets.Count / 2 : characterIndex];
             
-            BattleTargetingProcessor.GetSelectedTargets(
+            OnCharacterTargetChanged?.Invoke(_battleTargetingProcessor.GetSelectedTargets(
                 _currentPossibleTargets,
-                _mainTarget,
-                _maxTargetCount);
-            
-            OnCharacterTargetChanged?.Invoke(_mainTarget.transform.position);
+                _mainTarget).ToList());
         }
     }
 }

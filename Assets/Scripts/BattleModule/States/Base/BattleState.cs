@@ -11,6 +11,8 @@ namespace BattleModule.States.Base
 
         protected bool CancelKeyPressed;
 
+        protected bool MousePressed;
+
         protected BattleState(BattleStateMachine battleStateMachine)
         {
             BattleStateMachine = battleStateMachine;
@@ -28,7 +30,16 @@ namespace BattleModule.States.Base
         public virtual void OnUpdate()
         {
             ArrowKeysInput = GetArrowKeyInput();
+            
             CancelKeyPressed = GetCancelKeyInput();
+
+            MousePressed = GetMouseInput();
+        }
+
+        private bool GetMouseInput()
+        {
+            return BattleStateMachine.BattleController.BattleInput.BattleInputAction.BattleInput.LeftMouseButton
+                .WasPressedThisFrame();
         }
 
         private int GetArrowKeyInput()

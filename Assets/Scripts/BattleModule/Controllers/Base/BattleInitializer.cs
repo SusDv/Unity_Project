@@ -1,6 +1,6 @@
 ﻿using BattleModule.Controllers;
 using BattleModule.Controllers.Base;
-using BattleModule.UI.Core;
+using BattleModule.UI;
 using UnityEngine;
 
 namespace BattleModule.Init

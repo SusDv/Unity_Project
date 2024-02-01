@@ -1,5 +1,6 @@
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
+using Cinemachine;
 using UnityEngine;
 
 namespace BattleModule.Controllers.Base
@@ -17,11 +18,23 @@ namespace BattleModule.Controllers.Base
         public BattleTargetingController BattleTargetingController;     
 
         public BattleTurnController BattleTurnController;
+
+        [SerializeField]
+        private LayerMask _characterLayerMask;
+        
+        [SerializeField]
+        private CinemachineVirtualCamera _playersPerspectiveCamera;
+        
+        [SerializeField]
+        private CinemachineVirtualCamera _playersAllyPerspectiveCamera;
+        
         public void Init() 
         {
             _battleStateMachine = new BattleStateMachine(this);
 
-            BattleCamera = new BattleCamera(FindObjectOfType<Cinemachine.CinemachineVirtualCamera>());
+            BattleCamera = new BattleCamera(_playersPerspectiveCamera,
+                _playersAllyPerspectiveCamera,
+                Camera.main, _characterLayerMask);
 
             BattleTurnController = new BattleTurnController();
 
