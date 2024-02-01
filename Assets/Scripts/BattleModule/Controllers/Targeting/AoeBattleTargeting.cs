@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Controllers.Targeting.Base;
 using BattleModule.Utility.Enums;
@@ -27,7 +26,7 @@ namespace BattleModule.Controllers.Targeting
         }
 
         private void GetNeighboursTarget(
-            List<Character> characters,
+            IReadOnlyList<Character> characters,
             int mainTargetIndex,
             int charactersToPick,
             out Stack<Character> selectedCharacters)
@@ -50,9 +49,10 @@ namespace BattleModule.Controllers.Targeting
         }
 
         public override bool AddSelectedTargets(
-            ref Stack<Character> currentTargets)
+            ref Stack<Character> currentTargets,
+            int maxTargetsToSelect)
         {
-            foreach (Character character in SelectedCharacters.Reverse()) 
+            foreach (var character in SelectedCharacters.Reverse()) 
             {
                 currentTargets.Push(character);
             }

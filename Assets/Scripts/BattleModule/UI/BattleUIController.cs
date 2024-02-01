@@ -5,7 +5,7 @@ using InventorySystem.Core;
 using InventorySystem.Item;
 using UnityEngine;
 
-namespace BattleModule.UI.Core 
+namespace BattleModule.UI 
 {
     public class BattleUIController : MonoBehaviour
     {

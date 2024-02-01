@@ -4,21 +4,25 @@ using System.Linq;
 using System.Reflection;
 using BattleModule.Controllers.Targeting.Base;
 using BattleModule.Utility.Enums;
-using UnityEngine.Assertions;
 
 namespace BattleModule.Controllers.Targeting.Processor
 {
-    public static class BattleTargetingProcessor
+    public class BattleTargetingProcessor
     {
-        private static readonly Dictionary<TargetSearchType, BattleTargeting> Targeting = new Dictionary<TargetSearchType, BattleTargeting>();
+        private readonly Dictionary<TargetSearchType, BattleTargeting> _targeting = new();
         
-        private static bool _initialized;
+        private BattleTargeting _currentTargetingClass;
 
-        private static TargetSearchType _targetSearchType;
+        private int _maxTargetsToSelect;
 
-        private static void Init() 
+        public BattleTargetingProcessor()
         {
-            Targeting.Clear();
+            Init();
+        }
+
+        private void Init() 
+        {
+            _targeting.Clear();
 
             var assembly = Assembly.GetAssembly(typeof(BattleTargeting));
 
@@ -28,61 +32,36 @@ namespace BattleModule.Controllers.Targeting.Processor
 
             foreach(var targeting in allTargetingTypes) 
             {
-                BattleTargeting targetingInstance = Activator.CreateInstance(targeting) as BattleTargeting;
+                var targetingInstance = Activator.CreateInstance(targeting) as BattleTargeting;
                 
-                Assert.IsNotNull(targetingInstance);
-                
-                Targeting.Add(targetingInstance.TargetSearchType, targetingInstance);
+                _targeting.Add(targetingInstance.TargetSearchType, targetingInstance);
             }
-
-            _initialized = true;
         }
 
-        public static void SetCurrentSearchType(TargetSearchType targetSearchType) 
+        public void SetTargetingData(TargetSearchType targetSearchType, int maxTargetsToSelect) 
         {
-            _targetSearchType = targetSearchType;
+            _currentTargetingClass = _targeting[targetSearchType];
+            _maxTargetsToSelect = maxTargetsToSelect;
         } 
 
-        public static void GetSelectedTargets(
+        public IEnumerable<Character> GetSelectedTargets(
             List<Character> characters,
-            Character mainTarget,
-            int numberOfCharactersToSelect) 
+            Character mainTarget) 
         {
-            if (!_initialized) 
-            {
-                Init();
-            }
-
-            var targetingClass = Targeting[_targetSearchType];
-
-            targetingClass.GetSelectedTargets(
-                characters, mainTarget, numberOfCharactersToSelect);
+            return _currentTargetingClass.GetSelectedTargets(
+                characters, mainTarget, _maxTargetsToSelect);
         }
 
-        public static bool AddSelectedTargets(
+        public bool AddSelectedTargets(
             ref Stack<Character> currentTargets)
         {
-            if (!_initialized)
-            {
-                Init();
-            }
-
-            var targetingClass = Targeting[_targetSearchType];
-
-            return targetingClass.AddSelectedTargets(ref currentTargets);
+            return _currentTargetingClass.AddSelectedTargets(ref currentTargets, _maxTargetsToSelect);
         }
 
-        public static void OnCancelAction(
+        public void OnCancelAction(
             ref Stack<Character> currentTargets)
         {
-            if (!_initialized)
-            {
-                Init();
-            }
-
-            var targetingClass = Targeting[_targetSearchType];
-
-            targetingClass.OnCancelAction(ref currentTargets);
+            _currentTargetingClass.OnCancelAction(ref currentTargets);
         }
     }
 }

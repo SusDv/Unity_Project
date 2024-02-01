@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
 using BattleModule.Actions.BattleActions.Context;
-using BattleModule.Controllers.Targeting.Processor;
 using BattleModule.States.Base;
 using BattleModule.States.StateMachine;
 
@@ -12,7 +11,6 @@ namespace BattleModule.States
     {
         private Stack<Character> _currentTargets;
         
-
         public BattlePlayerActionState(BattleStateMachine battleStateMachine) 
             : base(battleStateMachine)
         {}
@@ -41,9 +39,22 @@ namespace BattleModule.States
         {
             base.OnUpdate();
 
+            SelectCharacterUsingMouse();
+            
             SelectCharacterUsingKeys();
 
             CheckCancelKeyPressed();
+        }
+
+        private void SelectCharacterUsingMouse()
+        {
+            if (!MousePressed)
+            {
+                return;
+            }
+            
+            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(
+                BattleStateMachine.BattleController.BattleCamera.GetCharacterWithRaycast());
         }
 
         private void SelectCharacterUsingKeys()
@@ -53,7 +64,7 @@ namespace BattleModule.States
                 return;
             }
             
-            BattleStateMachine.BattleController.BattleTargetingController.SetNeighbourAsMainTarget(ArrowKeysInput);
+            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(ArrowKeysInput);
         }
 
         private void SetupBattleEvents()
@@ -73,9 +84,7 @@ namespace BattleModule.States
 
         private void OnBattleActionChanged(BattleActionContext context)
         {
-            BattleTargetingProcessor.SetCurrentSearchType(context.TargetSearchType);
-            
-            BattleStateMachine.BattleController.BattleTargetingController.SetTargetingData(context.TargetType, context.MaxTargetCount);
+            BattleStateMachine.BattleController.BattleTargetingController.SetTargetingData(context);
         }
 
         private void BattleActionHandler()
