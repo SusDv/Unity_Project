@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using StatModule.Settings;
-using StatModule.Utility.Enums;
-using StatModule.Modifier;
 using System.Linq;
 using CharacterModule.Stats.StatModifier.Modifiers;
-using StatModule.Interfaces;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using StatModule.Settings;
+using StatModule.Utility.Enums;
 
-namespace StatModule.Base
+namespace CharacterModule.Stats.Base
 {
     [Serializable]
-    public class Stats : IHaveStats
+    public class Stats
     {
         private Dictionary<StatType, Stat> _stats;
 
@@ -35,7 +34,7 @@ namespace StatModule.Base
             }
         }
 
-        private void AddModifierToList(BaseStatModifier statModifier) 
+        private void AddModifierToList(BaseStatModifier statModifier)
         {
             _modifiersInUse.Add(statModifier);
         }
@@ -47,16 +46,14 @@ namespace StatModule.Base
 
         private bool ExistingTemporaryStatModifierFound(BaseStatModifier statModifierAdded) 
         {
-            TemporaryStatModifier existingTemporaryStatModifier = _modifiersInUse.FirstOrDefault(existingModifier => existingModifier.Equals(statModifierAdded)) as TemporaryStatModifier;
-
-            if (existingTemporaryStatModifier != null)
+            if (_modifiersInUse.FirstOrDefault(existingModifier => existingModifier.Equals(statModifierAdded)) is not TemporaryStatModifier existingTemporaryStatModifier)
             {
-                existingTemporaryStatModifier.Duration = (statModifierAdded as TemporaryStatModifier)?.Duration ?? existingTemporaryStatModifier.Duration;
-
-                return true;
+                return false;
             }
+            
+            existingTemporaryStatModifier.Duration = (statModifierAdded as TemporaryStatModifier)?.Duration ?? existingTemporaryStatModifier.Duration;
 
-            return false;
+            return true;
         }
 
         public void AddStatModifier(BaseStatModifier statModifier) 
@@ -65,10 +62,8 @@ namespace StatModule.Base
             {
                 return;
             }
-            else 
-            {
-                statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
-            }
+            
+            statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
 
             OnStatsModified?.Invoke(this);
         }
@@ -100,12 +95,10 @@ namespace StatModule.Base
 
         public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
         {
-            List<BaseStatModifier> modifiersByCondition = _modifiersInUse
-                .Where(statModifier =>
-                    conditionFunction.Invoke(statModifier))
-                .ToList();
-
-            modifiersByCondition.ForEach(statModifier => 
+            _modifiersInUse
+                .Where(conditionFunction)
+                .ToList()
+                .ForEach(statModifier => 
                 {
                     statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
                 });
@@ -113,10 +106,9 @@ namespace StatModule.Base
             OnStatsModified?.Invoke(this);
         }
 
-        public void RemoveStatModifiersByCondifition(Func<BaseStatModifier, bool> conditionFunction, Func<BaseStatModifier, bool> additionalCondition = null) 
+        public void RemoveStatModifiersByCondition(Predicate<BaseStatModifier> conditionFunction) 
         {
-            _modifiersInUse.RemoveAll(statModifier =>
-                    conditionFunction.Invoke(statModifier));
+            _modifiersInUse.RemoveAll(conditionFunction);
         }
     }
 }

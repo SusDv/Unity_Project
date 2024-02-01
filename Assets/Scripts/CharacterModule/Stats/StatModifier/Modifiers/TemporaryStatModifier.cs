@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleModule.Actions;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using StatModule.Interfaces;
 using StatModule.Modifier;
 using StatModule.Modifier.ValueModifier;
@@ -33,55 +34,57 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
 
         public bool IsNegative => Value < 0;
 
-        private int LocalCycleDuration { get; set; }
+        private int AssignedOnTurn { get; set; }
 
         public override void Modify(IStat statToModify, 
             Action<BaseStatModifier> addModifierCallback, 
             Action<BaseStatModifier> removeModifierCallback) 
         {
-            if (!_isModified)
+            if (!Initialized)
             {
-                LocalCycleDuration = BattleEventManager.Instance.GetCurrentTurnCount();
+                AssignedOnTurn = BattleEventManager.Instance.GetCurrentTurn();
                 
                 if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
                 {
                     ValueModifierProcessor.ModifyStatValue(statToModify, this);
                 }
 
-                _isModified = true;
+                Initialized = true;
                 
                 addModifierCallback?.Invoke(this);
+                
+                return;
             }
-            else 
+            
+            if (TemporaryStatModifierType != TemporaryStatModifierType.APPLIED_EVERY_CYCLE)
             {
-                if (TemporaryStatModifierType != TemporaryStatModifierType.APPLIED_EVERY_CYCLE)
+                Duration--;
+            }
+            else
+            {
+                if (BattleEventManager.Instance.GetCurrentTurn() - AssignedOnTurn ==
+                    BattleEventManager.Instance.GetMaximumTurnsInCycle())
                 {
                     Duration--;
-                }
-                else
-                {
-                    if (BattleEventManager.Instance.GetCurrentTurnCount() - LocalCycleDuration ==
-                        BattleEventManager.Instance.GetMaximumTurnsInCycle())
-                    {
-                        Duration--;
-                    }
-                }
-                
-                if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN))
-                {
+                    
                     ValueModifierProcessor.ModifyStatValue(statToModify, this);
                 }
             }
-
-            if (Duration <= 0) 
+                
+            if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN))
             {
-                if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE)) 
+                ValueModifierProcessor.ModifyStatValue(statToModify, this);
+            }
+            
+            if (Duration == 0)
+            {
+                if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
                 {
                     ValueModifierProcessor.ModifyStatValue(statToModify, -this);
                 }
 
-                removeModifierCallback?.Invoke(this);     
-            }  
+                removeModifierCallback?.Invoke(this);
+            }
         }
 
         public static TemporaryStatModifier GetTemporaryStatModifierInstance(

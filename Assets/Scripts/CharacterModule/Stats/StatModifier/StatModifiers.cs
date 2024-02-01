@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CharacterModule.Stats.StatModifier.Modifiers;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using StatModule.Modifier;
 using UnityEngine;
 

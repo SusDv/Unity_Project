@@ -1,7 +1,8 @@
 ﻿using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule.Stats.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using InventorySystem.Item.Interfaces;
-using StatModule.Base;
 using StatModule.Modifier;
 using UnityEngine;
 

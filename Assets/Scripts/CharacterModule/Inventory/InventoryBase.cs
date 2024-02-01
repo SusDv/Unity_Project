@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Inventory.Items;
 using UnityEngine;
 using InventorySystem.Item;
 using InventorySystem.Intefaces;

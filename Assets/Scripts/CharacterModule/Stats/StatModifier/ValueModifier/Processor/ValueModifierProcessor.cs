@@ -1,5 +1,4 @@
-﻿using StatModule.Base;
-using StatModule.Interfaces;
+﻿using StatModule.Interfaces;
 using StatModule.Utility.Enums;
 using System;
 using System.Collections.Generic;

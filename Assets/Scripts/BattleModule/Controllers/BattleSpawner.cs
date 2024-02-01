@@ -28,18 +28,18 @@ namespace BattleModule.Controllers
 
         private void SpawnCharactersByType(Type characterType) 
         {
-            float distanceToMoveBox = 0f;
+            var distanceToMoveBox = 0f;
             
-            Transform spawnPoint = GetSpawnPoint(characterType);
+            var spawnPoint = GetSpawnPoint(characterType);
 
-            List<Character> charactersToSpawn = BattleManager.Instance.CharactersToSpawn.Where((character) => character.GetType().Equals(characterType)).ToList();
+            var charactersToSpawn = BattleManager.Instance.CharactersToSpawn.Where((character) => character.GetType() == characterType).ToList();
 
-            for (int i = 0; i < charactersToSpawn.Count; i++)
+            for (var i = 0; i < charactersToSpawn.Count; i++)
             {
-                Vector3 spawnPosition = spawnPoint.position +
-                    (_distanceBetweenCharacters) * i * Vector3.right;
+                var spawnPosition = spawnPoint.position +
+                                    (_distanceBetweenCharacters) * i * Vector3.right;
 
-                Character character = Instantiate(
+                var character = Instantiate(
                     charactersToSpawn[i],
                     spawnPosition,
                     charactersToSpawn[i].transform.rotation,

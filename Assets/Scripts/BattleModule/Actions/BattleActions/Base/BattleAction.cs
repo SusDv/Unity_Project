@@ -1,6 +1,7 @@
 ﻿using StatModule.Interfaces;
 using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Context;
+using CharacterModule.Stats.Base;
 
 namespace BattleModule.Actions.BattleActions.Base
 {
@@ -23,7 +24,7 @@ namespace BattleModule.Actions.BattleActions.Base
             return BattleActionContext;
         }
 
-        public abstract void PerformAction(IHaveStats source, List<Character> targets);
+        public abstract void PerformAction(Stats source, List<Character> targets);
 
         public abstract BattleAction GetInstance(object actionObject);
     }

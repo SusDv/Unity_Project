@@ -61,7 +61,7 @@ namespace BattleModule.UI.Core
 
             _battleUITurn.Init(_battleFightController.BattleTurnController);
 
-            _battleUITargeting.Init(ref _battleFightController.BattleCharactersOnScene.OnCharacterTargetChanged);
+            _battleUITargeting.Init(ref _battleFightController.BattleTargetingController.OnCharacterTargetChanged);
 
             _battleUIAction.Init(_battleFightController.BattleActionController);
 

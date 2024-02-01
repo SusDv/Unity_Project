@@ -1,9 +1,9 @@
 ﻿using System;
-using UnityEngine;
 using StatModule.Interfaces;
 using StatModule.Utility.Enums;
+using UnityEngine;
 
-namespace StatModule.Modifier
+namespace CharacterModule.Stats.StatModifier.Modifiers.Base
 {
     [Serializable]
     public abstract class BaseStatModifier : IModifier, ICloneable, IEquatable<BaseStatModifier>
@@ -18,7 +18,7 @@ namespace StatModule.Modifier
             Value = value;
         }
 
-        protected bool _isModified;
+        protected bool Initialized;
 
         [field: SerializeField]
         public StatType StatType { get; set; }

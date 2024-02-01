@@ -1,9 +1,9 @@
 ﻿using System;
-using UnityEngine;
-using StatModule.Utility.Enums;
 using StatModule.Interfaces;
+using StatModule.Utility.Enums;
+using UnityEngine;
 
-namespace StatModule.Base 
+namespace CharacterModule.Stats.Base 
 {
     [Serializable]
     public class Stat : IStat, ICloneable

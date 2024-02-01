@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleModule.Controllers;
 using BattleModule.UI.View;
-using StatModule.Base;
+using CharacterModule.Stats.Base;
 using StatModule.Utility.Enums;
 using UnityEngine;
 

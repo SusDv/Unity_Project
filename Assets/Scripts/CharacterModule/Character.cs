@@ -1,5 +1,5 @@
 using CharacterModule.Spells.Core;
-using StatModule.Base;
+using CharacterModule.Stats.Base;
 using CharacterModule.Weapon;
 using UnityEngine;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Base;
+using CharacterModule.Stats.Base;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
 using StatModule.Interfaces;
@@ -18,7 +19,7 @@ namespace BattleModule.Actions.BattleActions
             : base(actionObject)
         {}
 
-        public override void PerformAction(IHaveStats source, List<Character> targets) 
+        public override void PerformAction(Stats source, List<Character> targets) 
         {
             ItemBase itemToUse = BattleActionContext.ActionObject as ItemBase;
             

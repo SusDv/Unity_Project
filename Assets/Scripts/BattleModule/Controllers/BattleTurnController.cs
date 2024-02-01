@@ -1,9 +1,9 @@
-﻿using StatModule.Base;
-using StatModule.Utility.Enums;
+﻿using StatModule.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
+using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using UnityEngine;
 

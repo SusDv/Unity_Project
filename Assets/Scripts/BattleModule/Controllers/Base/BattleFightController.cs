@@ -14,7 +14,7 @@ namespace BattleModule.Controllers.Base
 
         public BattleActionController BattleActionController;
 
-        public BattleCharactersOnScene BattleCharactersOnScene;     
+        public BattleTargetingController BattleTargetingController;     
 
         public BattleTurnController BattleTurnController;
         public void Init() 
@@ -25,7 +25,7 @@ namespace BattleModule.Controllers.Base
 
             BattleTurnController = new BattleTurnController();
 
-            BattleCharactersOnScene = new BattleCharactersOnScene(BattleTurnController);
+            BattleTargetingController = new BattleTargetingController(BattleTurnController);
 
             BattleActionController = new BattleActionController(BattleTurnController);
 
@@ -33,7 +33,7 @@ namespace BattleModule.Controllers.Base
 
         private void Start()
         {
-            _battleStateMachine.ChangeState(_battleStateMachine.BattleTargetingState);
+            _battleStateMachine.ChangeState(_battleStateMachine.BattlePlayerActionState);
         }
 
         private void Update()
