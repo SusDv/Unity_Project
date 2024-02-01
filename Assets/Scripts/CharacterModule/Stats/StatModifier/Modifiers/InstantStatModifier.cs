@@ -1,10 +1,10 @@
 ﻿using System;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using StatModule.Interfaces;
 using StatModule.Modifier.ValueModifier;
 using StatModule.Utility.Enums;
-using UnityEngine;
 
-namespace StatModule.Modifier
+namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
     public class InstantStatModifier : BaseStatModifier

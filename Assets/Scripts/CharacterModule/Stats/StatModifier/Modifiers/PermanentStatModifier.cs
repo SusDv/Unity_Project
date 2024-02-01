@@ -1,9 +1,10 @@
 ﻿using System;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using StatModule.Interfaces;
 using StatModule.Modifier.ValueModifier;
 using StatModule.Utility.Enums;
 
-namespace StatModule.Modifier
+namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
     public class PermanentStatModifier : BaseStatModifier
@@ -15,20 +16,20 @@ namespace StatModule.Modifier
 
         public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
         {
-            if (!_isModified)
+            if (!Initialized)
             {
                 ValueModifierProcessor.ModifyStatValue(statToModify, this);
 
-                _isModified = true;
+                Initialized = true;
 
                 addModifierCallback?.Invoke(this);
+                
+                return;
             }
-            else 
-            {
-                ValueModifierProcessor.ModifyStatValue(statToModify, -this);
+            
+            ValueModifierProcessor.ModifyStatValue(statToModify, -this);
 
-                removeModifierCallback?.Invoke(this);
-            }
+            removeModifierCallback?.Invoke(this);
         }
 
         public static PermanentStatModifier GetPermanentStatModifierInstance(

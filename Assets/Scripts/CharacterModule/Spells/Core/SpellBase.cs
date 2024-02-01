@@ -7,17 +7,20 @@ namespace CharacterModule.Spells.Core
     public class SpellBase : ScriptableObject, ITargeting 
     {
         [field: SerializeField]
-        public string SpellName { get; set; }
+        public string SpellName { get; private set; }
 
         [field: SerializeField]
-        public Sprite SpellImage { get; set; }
+        public Sprite SpellImage { get; private set; }
 
         [field: SerializeField]
         [field: TextArea]
-        public string SpellDescription { get; set; }
+        public string SpellDescription { get; private set; }
 
         [field: SerializeField]
-        public float BattlePoints { get; set; }
+        public float BattlePoints { get; private set; }
+
+        [field: SerializeField]
+        public float ManaCost { get; private set; }
 
         [field: SerializeField]
         public TargetType TargetType { get; set; }

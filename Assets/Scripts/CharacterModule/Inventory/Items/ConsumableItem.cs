@@ -1,13 +1,12 @@
+using System;
 using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
-using StatModule.Base;
-using StatModule.Interfaces;
-using StatModule.Modifier;
-using System;
 using UnityEngine;
 
-namespace InventorySystem.Item 
+namespace CharacterModule.Inventory.Items 
 {
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
     public class ConsumableItem : ItemBase, IConsumable, ITargeting
@@ -24,11 +23,11 @@ namespace InventorySystem.Item
 
         public event Action<ItemBase> OnConsumableUsed;
 
-        public void Consume(IHaveStats character)
+        public void Consume(Stats.Base.Stats characterStats)
         {
-            foreach (BaseStatModifier modifier in StatModifiers.BaseModifiers)
+            foreach (var modifier in StatModifiers.BaseModifiers)
             {
-                character.AddStatModifier(modifier.Clone() as BaseStatModifier);
+                characterStats.AddStatModifier(modifier.Clone() as BaseStatModifier);
             }
 
             OnConsumableUsed?.Invoke(this);

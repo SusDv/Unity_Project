@@ -1,9 +1,9 @@
 ﻿using BattleModule.Controllers;
 using BattleModule.UI.View;
-using StatModule.Base;
 using StatModule.Utility.Enums;
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Stats.Base;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter

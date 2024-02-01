@@ -45,7 +45,7 @@ namespace BattleModule.Actions
             return _maximumTurnsInCycle;
         }
 
-        public int GetCurrentTurnCount()
+        public int GetCurrentTurn()
         {
             return _currentTurnCount;
         }

@@ -9,7 +9,7 @@ namespace BattleModule.States.StateMachine
 
         public BattleFightController BattleController { get; }
 
-        public BattleTargetingState BattleTargetingState { get; }
+        public BattlePlayerActionState BattlePlayerActionState { get; }
 
         public BattleEnemyAttackState BattleEnemyAttackState { get; }
 
@@ -17,7 +17,7 @@ namespace BattleModule.States.StateMachine
         {
             BattleController = battleController;
 
-            BattleTargetingState = new BattleTargetingState(this);
+            BattlePlayerActionState = new BattlePlayerActionState(this);
 
             BattleEnemyAttackState = new BattleEnemyAttackState(this);
         }
