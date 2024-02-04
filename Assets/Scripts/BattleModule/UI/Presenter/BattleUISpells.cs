@@ -1,24 +1,31 @@
-﻿using BattleModule.Actions.BattleActions.Base;
-using BattleModule.Controllers;
+﻿using BattleModule.Controllers;
 using BattleModule.UI.View;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.BattleActions;
-using CharacterModule.Spells.Core;
+using BattleModule.UI.BattleButton;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter
 {
     public class BattleUISpells : MonoBehaviour
     {
-        [Header("Panel")]
-        [SerializeField]
+        [Header("Panel")] 
+        [SerializeField] 
         private GameObject _battleUISpellsPanel;
+        
+        [Header("Parent")]
+        [SerializeField]
+        private GameObject _battleUISpellsParent;
 
         [Header("View")]
         [SerializeField]
         private BattleUISpellView _battleUISpellView;
 
+        [Header("Button")]
+        [SerializeField]
+        private BattleUIDefaultButton _battleUIDefaultButton;
+        
         private List<BattleUISpellView> _battleUISpells;
 
         private BattleActionController _battleActionController;
@@ -32,6 +39,8 @@ namespace BattleModule.UI.Presenter
 
             _battleActionController = battleActionController;
 
+            _battleUIDefaultButton.OnButtonClick += OnSpellsButtonClick;
+
             battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
         }
 
@@ -42,13 +51,18 @@ namespace BattleModule.UI.Presenter
             DisplayCharacterSpells(_characterToHaveTurn);
         }
 
+        private void OnSpellsButtonClick(object o)
+        {
+            _battleUISpellsPanel.SetActive(!_battleUISpellsPanel.activeSelf);
+        }
+
         private void BattleSpellsClear()
         {
             _battleUISpells = new List<BattleUISpellView>();
 
-            for (int i = 0; i < _battleUISpellsPanel.transform.childCount; i++)
+            for (var i = 0; i < _battleUISpellsParent.transform.childCount; i++)
             {
-                Destroy(_battleUISpellsPanel.transform.GetChild(i).gameObject);
+                Destroy(_battleUISpellsParent.transform.GetChild(i).gameObject);
             }
         }
 
@@ -56,12 +70,12 @@ namespace BattleModule.UI.Presenter
         {
             BattleSpellsClear();
 
-            foreach (SpellBase spell in characterToHaveTurn.GetCharacterSpells().GetSpells()) 
+            foreach (var spell in characterToHaveTurn.GetCharacterSpells().GetSpells()) 
             {
-                BattleUISpellView battleUISpellView = Instantiate(_battleUISpellView,
-                    _battleUISpellsPanel.transform.position,
+                var battleUISpellView = Instantiate(_battleUISpellView,
+                    _battleUISpellsParent.transform.position,
                     Quaternion.identity,
-                    _battleUISpellsPanel.transform);
+                    _battleUISpellsParent.transform);
 
                 battleUISpellView.SetData(spell.SpellImage);
 
@@ -73,7 +87,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            SpellBase selectedSpell = _characterToHaveTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            var selectedSpell = _characterToHaveTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
             _battleActionController.SetBattleAction<BattleSpellAction>(selectedSpell);
         }

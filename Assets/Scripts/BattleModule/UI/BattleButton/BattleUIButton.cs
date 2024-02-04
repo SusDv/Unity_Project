@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace BattleModule.UI.Button
+namespace BattleModule.UI.BattleButton
 {
     public abstract class BattleUIButton<T> : MonoBehaviour
         where T : class
@@ -13,7 +13,7 @@ namespace BattleModule.UI.Button
 
         public void OnPointerClick(BaseEventData baseEventData) 
         {
-            if ((baseEventData as PointerEventData).button == PointerEventData.InputButton.Left) 
+            if (((PointerEventData) baseEventData).button == PointerEventData.InputButton.Left) 
             {
                 OnButtonClick?.Invoke(this as T);
             }

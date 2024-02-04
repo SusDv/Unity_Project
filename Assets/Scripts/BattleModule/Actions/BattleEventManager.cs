@@ -8,10 +8,11 @@ namespace BattleModule.Actions
         : Singleton<BattleEventManager>
     {
         public event Action OnTurnEnded = delegate { };
-
+        
         public event Action OnCycleEnded = delegate { };
 
         public Action OnActionButtonPressed = delegate { };
+        
 
         private int _maximumTurnsInCycle;
 

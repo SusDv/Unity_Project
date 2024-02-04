@@ -40,7 +40,7 @@ namespace BattleModule.Controllers.Base
 
             BattleTargetingController = new BattleTargetingController(BattleTurnController);
 
-            BattleActionController = new BattleActionController(BattleTurnController);
+            BattleActionController = new BattleActionController(BattleTurnController, BattleInput);
 
         }
 

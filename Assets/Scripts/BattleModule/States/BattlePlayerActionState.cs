@@ -42,13 +42,11 @@ namespace BattleModule.States
             SelectCharacterUsingMouse();
             
             SelectCharacterUsingKeys();
-
-            CheckCancelKeyPressed();
         }
 
         private void SelectCharacterUsingMouse()
         {
-            if (!MousePressed)
+            if (!BattleStateMachine.BattleController.BattleInput.MouseLeftButtonPressed)
             {
                 return;
             }
@@ -59,12 +57,12 @@ namespace BattleModule.States
 
         private void SelectCharacterUsingKeys()
         {
-            if (ArrowKeysInput == 0)
+            if (BattleStateMachine.BattleController.BattleInput.ArrowKeysInput == 0)
             {
                 return;
             }
             
-            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(ArrowKeysInput);
+            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(BattleStateMachine.BattleController.BattleInput.ArrowKeysInput);
         }
 
         private void SetupBattleEvents()
@@ -97,14 +95,6 @@ namespace BattleModule.States
             BattleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets.ToList());
 
             BattleStateMachine.ChangeState(BattleStateMachine.BattlePlayerActionState);
-        }
-
-        private void CheckCancelKeyPressed()
-        {
-            if (CancelKeyPressed)
-            {
-
-            }
         }
     }
 }

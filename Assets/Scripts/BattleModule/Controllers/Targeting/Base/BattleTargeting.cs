@@ -5,11 +5,11 @@ namespace BattleModule.Controllers.Targeting.Base
 {
     public abstract class BattleTargeting
     {
-        protected Stack<Character> SelectedCharacters;
+        protected Stack<Character> SelectedCharacters = new();
         
         public abstract TargetSearchType TargetSearchType { get; }
 
-        public abstract Stack<Character> GetSelectedTargets(
+        public abstract IEnumerable<Character> GetSelectedTargets(
             List<Character> characters,
             Character mainTarget,
             int numberOfCharactersToSelect);

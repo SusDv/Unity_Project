@@ -1,6 +1,4 @@
-﻿using BattleModule.UI.Button;
-using BattleModule.UI.View;
-using BattleModule.Actions.BattleActions.Base;
+﻿using BattleModule.UI.View;
 using InventorySystem.Intefaces;
 using InventorySystem.Item;
 using InventorySystem.Core;
@@ -8,6 +6,7 @@ using System.Collections.Generic;
 using BattleModule.Actions.BattleActions;
 using UnityEngine;
 using BattleModule.Controllers;
+using BattleModule.UI.BattleButton;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -45,9 +44,16 @@ namespace BattleModule.UI.Presenter
 
             battleInventory.OnInventoryChanged += BattleInventoryUpdate;
 
-            _battleInventoryButton.OnButtonClick += BattleInventoryVisibility;
+            _battleInventoryButton.OnButtonClick += InventoryButtonClicked;
+
+            _battleActionController.OnBattleActionCanceled += OnBattleActionCanceled;
 
             BattleInventoryUpdate(_battleInventoryController.GetBattleInventory());          
+        }
+
+        private void OnBattleActionCanceled()
+        {
+            _selectedItem = null;
         }
 
         private void BattleInventoryUpdate(List<InventoryItem> inventoryItems)
@@ -56,9 +62,9 @@ namespace BattleModule.UI.Presenter
 
             BattleUIInventoryClear();
 
-            foreach (InventoryItem item in _battleInventory)
+            foreach (var item in _battleInventory)
             {
-                BattleUIItemView battleUIItem = Instantiate(_battleUIItemView,
+                var battleUIItem = Instantiate(_battleUIItemView,
                             _battleInventoryItemsParent.transform.position, Quaternion.identity,
                             _battleInventoryItemsParent.transform);
 
@@ -76,7 +82,7 @@ namespace BattleModule.UI.Presenter
         {
             _battleUIItems = new List<BattleUIItemView>();
 
-            for (int i = 0; i < _battleInventoryItemsParent.transform.childCount; i++)
+            for (var i = 0; i < _battleInventoryItemsParent.transform.childCount; i++)
             {
                 Destroy(_battleInventoryItemsParent.transform.GetChild(i).gameObject);
             }
@@ -97,7 +103,7 @@ namespace BattleModule.UI.Presenter
         {
             if (_selectedItem == null || _selectedItem != battleUIItem)
             {
-                BattleInventoryVisibility(null);               
+                InventoryButtonClicked(null);               
             }
 
             _selectedItem = _selectedItem == battleUIItem ? null : battleUIItem;
@@ -117,10 +123,10 @@ namespace BattleModule.UI.Presenter
             _battleActionController.SetBattleAction<BattleItemAction>(GetSelectedItem());
         }
 
-        private void BattleInventoryVisibility(object o)
+        private void InventoryButtonClicked(object o)
         {
             _battleInventoryPanel.SetActive(!_battleInventoryPanel.activeSelf);
-
+            
             _battleItemDescriptionPanel.SetActive(_battleInventoryPanel.activeSelf && _battleItemDescriptionPanel.activeSelf);
         }
 

@@ -1,9 +1,7 @@
-﻿using BattleModule.Controllers;
-using BattleModule.Controllers.Base;
-using BattleModule.UI;
+﻿using BattleModule.UI;
 using UnityEngine;
 
-namespace BattleModule.Init
+namespace BattleModule.Controllers.Base
 {
     public class BattleInitializer : MonoBehaviour
     {

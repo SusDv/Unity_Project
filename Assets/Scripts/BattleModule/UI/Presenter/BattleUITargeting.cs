@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,24 +31,27 @@ namespace BattleModule.UI.Presenter
         {
             ClearBattleCanvas();
             
-            foreach (var screenPosition in charactersTargeted.Select(targetedCharacter => RectTransformUtility.WorldToScreenPoint(_mainCamera, targetedCharacter.transform.position)))
+            foreach (var characterTargeted in charactersTargeted)
             {
+                var screenPosition =
+                    RectTransformUtility.WorldToScreenPoint(_mainCamera, characterTargeted.transform.position); 
+                
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleTargetingCanvas.transform as RectTransform, screenPosition, _mainCamera, out var localPosition);
 
-                BattleSetUpTargetImage(localPosition, _mainCamera.transform.position);
+                BattleSetUpTargetImage(localPosition, _mainCamera.transform.position, characterTargeted == charactersTargeted[0]);
             }
         }
 
-        private void BattleSetUpTargetImage(Vector3 anchoredPosition, Vector3 lookAt)
+        private void BattleSetUpTargetImage(Vector3 anchoredPosition, Vector3 lookAt, bool isMain)
         {
             var targetingImage = Instantiate(_characterTargetImage,
                 _battleTargetingCanvas.transform);
             
             targetingImage.rectTransform.anchoredPosition = anchoredPosition;
 
-            targetingImage.transform.LookAt(lookAt);
+            targetingImage.transform.localScale = isMain ? targetingImage.transform.localScale * 1.2f : Vector3.one;
 
-            targetingImage.gameObject.SetActive(true);
+            targetingImage.transform.LookAt(lookAt);
         }
     }
 }

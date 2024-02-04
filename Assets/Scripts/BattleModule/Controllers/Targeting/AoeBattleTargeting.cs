@@ -9,7 +9,7 @@ namespace BattleModule.Controllers.Targeting
     {
         public override TargetSearchType TargetSearchType => TargetSearchType.AOE;
 
-        public override Stack<Character> GetSelectedTargets(
+        public override IEnumerable<Character> GetSelectedTargets(
             List<Character> characters,
             Character mainTarget, 
             int numberOfCharactersToSelect)
