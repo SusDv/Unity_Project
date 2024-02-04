@@ -5,6 +5,7 @@ using BattleModule.Actions;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Input;
 
 namespace BattleModule.Controllers
 {
@@ -15,12 +16,16 @@ namespace BattleModule.Controllers
         private Character _characterToHaveTurn;
 
         public event Action<BattleActionContext> OnBattleActionChanged;
+        
+        public event Action OnBattleActionCanceled;
 
-        public BattleActionController(BattleTurnController battleTurnController) 
+        public BattleActionController(BattleTurnController battleTurnController, BattleInput battleInput) 
         {
             battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
+            
+            battleInput.OnCancelButtonPressed += OnCancelButtonPressed;
         }
-
+        
         public void SetBattleAction<T>(object actionObject)
             where T : BattleAction
         {
@@ -53,5 +58,13 @@ namespace BattleModule.Controllers
 
             SetDefaultBattleAction();
         }
+        
+        private void OnCancelButtonPressed()
+        {
+            SetDefaultBattleAction();
+            
+            OnBattleActionCanceled?.Invoke();
+        }
+
     }
 }

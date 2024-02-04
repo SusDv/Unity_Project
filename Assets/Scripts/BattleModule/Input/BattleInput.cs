@@ -1,28 +1,66 @@
+using System;
 using UnityEngine;
 
 namespace BattleModule.Input
 {
     public class BattleInput : MonoBehaviour
     {
-        public BattleInputAction BattleInputAction { get; private set; }
+        private BattleInputAction BattleInputAction { get; set; }
 
-        public BattleInputAction.BattleInputActions BattleActions { get; private set; }
+        private BattleInputAction.ControlsActions BattleControls { get; set; }
+        
+        
+        public bool MouseLeftButtonPressed { get; private set; }
+        
+        public int ArrowKeysInput { get; private set; }
+
+        public event Action OnCancelButtonPressed = delegate { };
 
         public Vector2 MousePosition { get; private set; }
-
-
+        
+        
         private void Awake()
         {
             BattleInputAction = new BattleInputAction();
+            
+            BattleControls = BattleInputAction.Controls;
+        }
 
-            BattleActions = BattleInputAction.BattleInput;
+        private void Update()
+        {
+            MouseLeftButtonPressed = GetMouseLeftButtonPressed();
+            
+            ArrowKeysInput = GetArrowKeysInput();
+
+            CancelButtonPressed();
+        }
+        
+        private bool GetMouseLeftButtonPressed()
+        {
+            return BattleControls.LeftMouseButton.WasPressedThisFrame();
+        }
+        
+        private int GetArrowKeysInput()
+        {
+            return BattleControls.LeftArrow.WasPressedThisFrame() ? -1 :
+                BattleControls.RightArrow.WasPressedThisFrame() ? 1 : 0;
+        }
+
+        private void CancelButtonPressed()
+        {
+            if (!BattleControls.Cancel.WasPressedThisFrame())
+            {
+                return;
+            }
+            
+            OnCancelButtonPressed?.Invoke();
         }
 
         private void OnEnable()
         {
-            BattleActions.Enable();
+            BattleInputAction.Enable();
 
-            BattleActions.MousePosition.performed += MousePosition_Changed;
+            BattleControls.MousePosition.performed += MousePosition_Changed;
         }
 
         private void MousePosition_Changed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
@@ -32,9 +70,9 @@ namespace BattleModule.Input
 
         private void OnDisable()
         {
-            BattleActions.Disable();
+            BattleInputAction.Disable();
 
-            BattleActions.MousePosition.performed -= MousePosition_Changed;
+            BattleControls.MousePosition.performed -= MousePosition_Changed;
         }
     }
 }

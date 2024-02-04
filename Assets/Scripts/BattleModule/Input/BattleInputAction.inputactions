@@ -2,7 +2,7 @@
     "name": "BattleInputAction",
     "maps": [
         {
-            "name": "BattleInput",
+            "name": "Controls",
             "id": "c0a75210-6cec-47a0-911d-dc45605c3ebb",
             "actions": [
                 {

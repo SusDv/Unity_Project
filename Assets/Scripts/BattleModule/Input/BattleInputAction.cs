@@ -24,7 +24,7 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
     ""name"": ""BattleInputAction"",
     ""maps"": [
         {
-            ""name"": ""BattleInput"",
+            ""name"": ""Controls"",
             ""id"": ""c0a75210-6cec-47a0-911d-dc45605c3ebb"",
             ""actions"": [
                 {
@@ -134,13 +134,13 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // BattleInput
-        m_BattleInput = asset.FindActionMap("BattleInput", throwIfNotFound: true);
-        m_BattleInput_LeftArrow = m_BattleInput.FindAction("LeftArrow", throwIfNotFound: true);
-        m_BattleInput_RightArrow = m_BattleInput.FindAction("RightArrow", throwIfNotFound: true);
-        m_BattleInput_MousePosition = m_BattleInput.FindAction("MousePosition", throwIfNotFound: true);
-        m_BattleInput_LeftMouseButton = m_BattleInput.FindAction("LeftMouseButton", throwIfNotFound: true);
-        m_BattleInput_Cancel = m_BattleInput.FindAction("Cancel", throwIfNotFound: true);
+        // Controls
+        m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
+        m_Controls_LeftArrow = m_Controls.FindAction("LeftArrow", throwIfNotFound: true);
+        m_Controls_RightArrow = m_Controls.FindAction("RightArrow", throwIfNotFound: true);
+        m_Controls_MousePosition = m_Controls.FindAction("MousePosition", throwIfNotFound: true);
+        m_Controls_LeftMouseButton = m_Controls.FindAction("LeftMouseButton", throwIfNotFound: true);
+        m_Controls_Cancel = m_Controls.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -199,32 +199,32 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // BattleInput
-    private readonly InputActionMap m_BattleInput;
-    private List<IBattleInputActions> m_BattleInputActionsCallbackInterfaces = new List<IBattleInputActions>();
-    private readonly InputAction m_BattleInput_LeftArrow;
-    private readonly InputAction m_BattleInput_RightArrow;
-    private readonly InputAction m_BattleInput_MousePosition;
-    private readonly InputAction m_BattleInput_LeftMouseButton;
-    private readonly InputAction m_BattleInput_Cancel;
-    public struct BattleInputActions
+    // Controls
+    private readonly InputActionMap m_Controls;
+    private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
+    private readonly InputAction m_Controls_LeftArrow;
+    private readonly InputAction m_Controls_RightArrow;
+    private readonly InputAction m_Controls_MousePosition;
+    private readonly InputAction m_Controls_LeftMouseButton;
+    private readonly InputAction m_Controls_Cancel;
+    public struct ControlsActions
     {
         private @BattleInputAction m_Wrapper;
-        public BattleInputActions(@BattleInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @LeftArrow => m_Wrapper.m_BattleInput_LeftArrow;
-        public InputAction @RightArrow => m_Wrapper.m_BattleInput_RightArrow;
-        public InputAction @MousePosition => m_Wrapper.m_BattleInput_MousePosition;
-        public InputAction @LeftMouseButton => m_Wrapper.m_BattleInput_LeftMouseButton;
-        public InputAction @Cancel => m_Wrapper.m_BattleInput_Cancel;
-        public InputActionMap Get() { return m_Wrapper.m_BattleInput; }
+        public ControlsActions(@BattleInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @LeftArrow => m_Wrapper.m_Controls_LeftArrow;
+        public InputAction @RightArrow => m_Wrapper.m_Controls_RightArrow;
+        public InputAction @MousePosition => m_Wrapper.m_Controls_MousePosition;
+        public InputAction @LeftMouseButton => m_Wrapper.m_Controls_LeftMouseButton;
+        public InputAction @Cancel => m_Wrapper.m_Controls_Cancel;
+        public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BattleInputActions set) { return set.Get(); }
-        public void AddCallbacks(IBattleInputActions instance)
+        public static implicit operator InputActionMap(ControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IControlsActions instance)
         {
-            if (instance == null || m_Wrapper.m_BattleInputActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_BattleInputActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
             @LeftArrow.started += instance.OnLeftArrow;
             @LeftArrow.performed += instance.OnLeftArrow;
             @LeftArrow.canceled += instance.OnLeftArrow;
@@ -242,7 +242,7 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             @Cancel.canceled += instance.OnCancel;
         }
 
-        private void UnregisterCallbacks(IBattleInputActions instance)
+        private void UnregisterCallbacks(IControlsActions instance)
         {
             @LeftArrow.started -= instance.OnLeftArrow;
             @LeftArrow.performed -= instance.OnLeftArrow;
@@ -261,22 +261,22 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             @Cancel.canceled -= instance.OnCancel;
         }
 
-        public void RemoveCallbacks(IBattleInputActions instance)
+        public void RemoveCallbacks(IControlsActions instance)
         {
-            if (m_Wrapper.m_BattleInputActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_ControlsActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IBattleInputActions instance)
+        public void SetCallbacks(IControlsActions instance)
         {
-            foreach (var item in m_Wrapper.m_BattleInputActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_ControlsActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_BattleInputActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_ControlsActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public BattleInputActions @BattleInput => new BattleInputActions(this);
-    public interface IBattleInputActions
+    public ControlsActions @Controls => new ControlsActions(this);
+    public interface IControlsActions
     {
         void OnLeftArrow(InputAction.CallbackContext context);
         void OnRightArrow(InputAction.CallbackContext context);

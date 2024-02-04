@@ -1,4 +1,4 @@
-﻿using BattleModule.UI.Button;
+﻿using BattleModule.UI.BattleButton;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

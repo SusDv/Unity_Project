@@ -786,7 +786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &610058889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1471,8 +1471,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78841fa2159432348a5c4e20e83a8585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleUISpellsPanel: {fileID: 1753788108}
+  _battleUISpellsPanel: {fileID: 610058888}
+  _battleUISpellsParent: {fileID: 1753788108}
   _battleUISpellView: {fileID: 6550967224006508893, guid: 4f0d23a0042c1474b891168c478ab10f, type: 3}
+  _battleUIDefaultButton: {fileID: 1966167487}
 --- !u!1 &968566754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,7 +1968,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd40f9ce4dce609449436e371dd9aae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testItems: []
+  _testItems:
+  - {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
+  - {fileID: 11400000, guid: 7959d013c0b461b4284f764a8fa02929, type: 2}
+  - {fileID: 11400000, guid: 261a169f154091a43987412c1050f910, type: 2}
   _playerInventory: {fileID: 11400000, guid: 666c2c6536ccb244686cc8ec1fcf104e, type: 2}
   _battleUIInventory: {fileID: 287493815}
   _battleUITurn: {fileID: 1557257066}
@@ -2472,7 +2477,7 @@ GameObject:
   - component: {fileID: 1753788110}
   - component: {fileID: 1753788112}
   m_Layer: 5
-  m_Name: BattleSpellsWrapper
+  m_Name: BattleSpellsParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3284,6 +3289,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2489976070786007523, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
   m_PrefabInstance: {fileID: 1966167484}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1966167487 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2705215901925452886, guid: 863b154b063737f4c9c26ae13b169bca, type: 3}
+  m_PrefabInstance: {fileID: 1966167484}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507c0e3655281714bbf0ad98730a3a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1995798885
 GameObject:
   m_ObjectHideFlags: 0

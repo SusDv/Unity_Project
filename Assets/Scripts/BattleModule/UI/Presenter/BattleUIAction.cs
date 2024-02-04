@@ -1,7 +1,7 @@
 ﻿using BattleModule.Actions;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers;
-using BattleModule.UI.Button;
+using BattleModule.UI.BattleButton;
 using BattleModule.UI.View;
 using UnityEngine;
 

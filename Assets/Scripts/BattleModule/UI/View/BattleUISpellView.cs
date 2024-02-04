@@ -1,5 +1,5 @@
-using BattleModule.UI.Button;
 using System;
+using BattleModule.UI.BattleButton;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

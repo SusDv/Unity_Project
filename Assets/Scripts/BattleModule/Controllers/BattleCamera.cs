@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BattleModule.Utility;
 using BattleModule.Utility.Enums;
 using Cinemachine;
 using JetBrains.Annotations;
@@ -45,10 +46,8 @@ namespace BattleModule.Controllers
             {
                 return null;
             }
-            
-            hit.collider.gameObject.TryGetComponent(out Character selectedCharacter);
-            
-            return selectedCharacter;
+
+            return hit.collider.gameObject.TryGetComponent(out Character selectedCharacter) ? selectedCharacter : null;
         }
     }
 }

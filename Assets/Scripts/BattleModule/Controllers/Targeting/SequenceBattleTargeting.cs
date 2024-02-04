@@ -10,18 +10,12 @@ namespace BattleModule.Controllers.Targeting
 
         public override TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
 
-        public override Stack<Character> GetSelectedTargets(
+        public override IEnumerable<Character> GetSelectedTargets(
             List<Character> characters, 
             Character mainTarget, 
             int maxTargetsToSelect)
         {
-            SelectedCharacters = new Stack<Character>();
-
-            _mainTarget = mainTarget;
-
-            SelectedCharacters.Push(mainTarget);
-            
-            return SelectedCharacters;
+            return new Stack<Character>(new [] { mainTarget });
         }
 
         public override bool AddSelectedTargets(
