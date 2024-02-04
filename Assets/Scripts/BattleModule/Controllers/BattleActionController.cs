@@ -18,7 +18,7 @@ namespace BattleModule.Controllers
         public event Action<BattleActionContext> OnBattleActionChanged;
         
         public event Action OnBattleActionCanceled;
-
+        
         public BattleActionController(BattleTurnController battleTurnController, BattleInput battleInput) 
         {
             battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;

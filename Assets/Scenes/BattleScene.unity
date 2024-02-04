@@ -1708,8 +1708,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33e7a3af7c2c154daa0ddb0de359f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleFightController: {fileID: 1586444222}
-  _battleUIController: {fileID: 1404162069}
+  _battleFightController: {fileID: 0}
+  _battleUIController: {fileID: 0}
 --- !u!1 &1162251803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,7 +1980,7 @@ MonoBehaviour:
   _battleUIPlayer: {fileID: 1947159070}
   _battleUIEnemy: {fileID: 1625986108}
   _battleUISpells: {fileID: 919194937}
-  _battleFightController: {fileID: 1586444222}
+  _battleFightController: {fileID: 0}
 --- !u!1 &1557257064
 GameObject:
   m_ObjectHideFlags: 0
