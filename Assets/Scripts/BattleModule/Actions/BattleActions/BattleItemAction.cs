@@ -3,34 +3,23 @@ using BattleModule.Actions.BattleActions.Base;
 using CharacterModule.Stats.Base;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
+using JetBrains.Annotations;
 using StatModule.Interfaces;
 
 namespace BattleModule.Actions.BattleActions
 {
+    [UsedImplicitly]
     public class BattleItemAction : BattleAction 
     {
         protected override string ActionName => "Item use";
 
-        public BattleItemAction()
-            : base()
-        { }
-
-        private BattleItemAction(object actionObject)
-            : base(actionObject)
-        {}
-
         public override void PerformAction(Stats source, List<Character> targets) 
         {
-            ItemBase itemToUse = BattleActionContext.ActionObject as ItemBase;
+            var itemToUse = BattleActionContext.ActionObject as ItemBase;
             
-            (itemToUse as IConsumable).Consume(targets[0].GetCharacterStats());
+            (itemToUse as IConsumable)?.Consume(targets[0].GetCharacterStats());
 
             source.AddStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
-        }
-
-        public override BattleAction GetInstance(object actionObject)
-        {
-            return new BattleItemAction(actionObject);
         }
     }
 }

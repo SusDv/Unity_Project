@@ -287,8 +287,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19025221}
-  m_LocalRotation: {x: -0.000000029802319, y: 0.08715565, z: -0.0000000074505797, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: 0, z: 9.62}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 7.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -297,7 +297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.04, y: 0.82}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &71577777
@@ -551,8 +551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _battleInventoryPanel: {fileID: 1746057275}
-  _battleInventoryItemsParent: {fileID: 71577777}
   _battleItemDescriptionPanel: {fileID: 7063970}
+  _battleInventoryItemsParent: {fileID: 71577777}
   _battleUIItemView: {fileID: 5296806101796757579, guid: c654dc39f371ed049a17aa634dab5180, type: 3}
   _battleUIItemDescriptionView: {fileID: 1172870068}
   _battleInventoryButton: {fileID: 1962585583}
@@ -1144,15 +1144,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747773530}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 2.5, z: 3}
+  m_LocalRotation: {x: 0, y: 0.9848078, z: -0.17364816, w: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 976526020}
   m_Father: {fileID: 313438193}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 180, z: 0}
 --- !u!114 &747773532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1708,8 +1708,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33e7a3af7c2c154daa0ddb0de359f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleFightController: {fileID: 0}
-  _battleUIController: {fileID: 0}
+  _battleFightController: {fileID: 1586444222}
+  _battleUIController: {fileID: 1404162069}
 --- !u!1 &1162251803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,7 +1980,7 @@ MonoBehaviour:
   _battleUIPlayer: {fileID: 1947159070}
   _battleUIEnemy: {fileID: 1625986108}
   _battleUISpells: {fileID: 919194937}
-  _battleFightController: {fileID: 0}
+  _battleFightController: {fileID: 1586444222}
 --- !u!1 &1557257064
 GameObject:
   m_ObjectHideFlags: 0

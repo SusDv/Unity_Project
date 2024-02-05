@@ -29,7 +29,9 @@ namespace BattleModule.Controllers
         public void SetBattleAction<T>(object actionObject)
             where T : BattleAction
         {
-            _currentBattleAction = Activator.CreateInstance<T>().GetInstance(actionObject);
+            _currentBattleAction = Activator.CreateInstance<T>();
+            
+            _currentBattleAction.Init(actionObject);
 
             OnBattleActionChanged?.Invoke(_currentBattleAction.GetBattleActionContext());
         }
@@ -61,10 +63,14 @@ namespace BattleModule.Controllers
         
         private void OnCancelButtonPressed()
         {
+            if (_currentBattleAction is BattleDefaultAction)
+            {
+                return;
+            }
+            
             SetDefaultBattleAction();
             
             OnBattleActionCanceled?.Invoke();
         }
-
     }
 }

@@ -1,12 +1,12 @@
-﻿using BattleModule.UI.View;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using BattleModule.Actions.BattleActions;
+using BattleModule.Controllers;
+using BattleModule.UI.BattleButton;
+using BattleModule.UI.View;
 using InventorySystem.Intefaces;
 using InventorySystem.Item;
 using InventorySystem.Core;
-using System.Collections.Generic;
-using BattleModule.Actions.BattleActions;
-using UnityEngine;
-using BattleModule.Controllers;
-using BattleModule.UI.BattleButton;
 
 namespace BattleModule.UI.Presenter 
 {
@@ -14,14 +14,16 @@ namespace BattleModule.UI.Presenter
     {
         [Header("Panels")]
         [SerializeField] private GameObject _battleInventoryPanel;
-        [SerializeField] private GameObject _battleInventoryItemsParent;
         [SerializeField] private GameObject _battleItemDescriptionPanel;
+        
+        [Header("Parent")]
+        [SerializeField] private GameObject _battleInventoryItemsParent;
 
         [Header("Views")]
         [SerializeField] private BattleUIItemView _battleUIItemView;
         [SerializeField] private BattleUIItemDescriptionView _battleUIItemDescriptionView;
 
-        [Header("BattleModule Button")]
+        [Header("Button")]
         [SerializeField] private BattleUIDefaultButton _battleInventoryButton;
 
         private List<BattleUIItemView> _battleUIItems = new ();
@@ -42,7 +44,7 @@ namespace BattleModule.UI.Presenter
 
             _battleActionController = battleActionController;
 
-            battleInventory.OnInventoryChanged += BattleInventoryUpdate;
+            _battleInventoryController.OnInventoryChanged += BattleInventoryUpdate;
 
             _battleInventoryButton.OnButtonClick += InventoryButtonClicked;
 
@@ -101,12 +103,7 @@ namespace BattleModule.UI.Presenter
 
         private void BattleItemPointerClick(BattleUIItemView battleUIItem) 
         {
-            if (_selectedItem == null || _selectedItem != battleUIItem)
-            {
-                InventoryButtonClicked(null);               
-            }
-
-            _selectedItem = _selectedItem == battleUIItem ? null : battleUIItem;
+            _selectedItem = battleUIItem;
 
             SetupBattleAction();
         }
