@@ -1,10 +1,10 @@
-﻿using BattleModule.Controllers;
-using BattleModule.UI.View;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using BattleModule.Controllers;
+using BattleModule.UI.View;
 using BattleModule.Actions.BattleActions;
 using BattleModule.UI.BattleButton;
-using UnityEngine;
 
 namespace BattleModule.UI.Presenter
 {

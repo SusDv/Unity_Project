@@ -28,24 +28,6 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             ""id"": ""c0a75210-6cec-47a0-911d-dc45605c3ebb"",
             ""actions"": [
                 {
-                    ""name"": ""LeftArrow"",
-                    ""type"": ""Button"",
-                    ""id"": ""1bf8a762-8f46-4d10-9cb7-e149d957c099"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""RightArrow"",
-                    ""type"": ""Button"",
-                    ""id"": ""49e59c7d-192a-477e-8021-122082c31815"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""MousePosition"",
                     ""type"": ""Value"",
                     ""id"": ""141e9ebd-d99b-450b-9f96-723be79225cc"",
@@ -71,31 +53,18 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LeftRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""de31dafe-a89a-4d6e-92fc-f1ea612fa709"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""f43e8049-04ab-4a1f-9985-006eaef2f5ed"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""LeftArrow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c8acf8c0-c8c2-4328-9c0a-32c483321655"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightArrow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""2489d596-b663-4397-afeb-0c1f233d3081"",
@@ -128,6 +97,105 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""e92f4d49-c4e3-40db-94d0-58781c468cb6"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""944ca264-3828-4230-9c66-f091f8274186"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""bbd1e91d-3d37-4e37-996c-bfef80474484"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard_Alt"",
+                    ""id"": ""8aba4356-22d2-412e-945e-44358f408471"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b014ca48-41d1-40ba-9932-87929cddd793"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""eb153cfa-47df-4e43-87e3-079fec58963e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Joystick"",
+                    ""id"": ""1ea2dffd-8410-4f43-9552-bb4f0d00ad15"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""2f2b3cad-d5e3-47de-a0e2-a45df140ade6"",
+                    ""path"": ""<Joystick>/stick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""c5b41de2-c68c-468e-bd45-9bb9b262e130"",
+                    ""path"": ""<Joystick>/stick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -136,11 +204,10 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
 }");
         // Controls
         m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
-        m_Controls_LeftArrow = m_Controls.FindAction("LeftArrow", throwIfNotFound: true);
-        m_Controls_RightArrow = m_Controls.FindAction("RightArrow", throwIfNotFound: true);
         m_Controls_MousePosition = m_Controls.FindAction("MousePosition", throwIfNotFound: true);
         m_Controls_LeftMouseButton = m_Controls.FindAction("LeftMouseButton", throwIfNotFound: true);
         m_Controls_Cancel = m_Controls.FindAction("Cancel", throwIfNotFound: true);
+        m_Controls_LeftRight = m_Controls.FindAction("LeftRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -202,20 +269,18 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
     // Controls
     private readonly InputActionMap m_Controls;
     private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
-    private readonly InputAction m_Controls_LeftArrow;
-    private readonly InputAction m_Controls_RightArrow;
     private readonly InputAction m_Controls_MousePosition;
     private readonly InputAction m_Controls_LeftMouseButton;
     private readonly InputAction m_Controls_Cancel;
+    private readonly InputAction m_Controls_LeftRight;
     public struct ControlsActions
     {
         private @BattleInputAction m_Wrapper;
         public ControlsActions(@BattleInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @LeftArrow => m_Wrapper.m_Controls_LeftArrow;
-        public InputAction @RightArrow => m_Wrapper.m_Controls_RightArrow;
         public InputAction @MousePosition => m_Wrapper.m_Controls_MousePosition;
         public InputAction @LeftMouseButton => m_Wrapper.m_Controls_LeftMouseButton;
         public InputAction @Cancel => m_Wrapper.m_Controls_Cancel;
+        public InputAction @LeftRight => m_Wrapper.m_Controls_LeftRight;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -225,12 +290,6 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
-            @LeftArrow.started += instance.OnLeftArrow;
-            @LeftArrow.performed += instance.OnLeftArrow;
-            @LeftArrow.canceled += instance.OnLeftArrow;
-            @RightArrow.started += instance.OnRightArrow;
-            @RightArrow.performed += instance.OnRightArrow;
-            @RightArrow.canceled += instance.OnRightArrow;
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
@@ -240,16 +299,13 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @LeftRight.started += instance.OnLeftRight;
+            @LeftRight.performed += instance.OnLeftRight;
+            @LeftRight.canceled += instance.OnLeftRight;
         }
 
         private void UnregisterCallbacks(IControlsActions instance)
         {
-            @LeftArrow.started -= instance.OnLeftArrow;
-            @LeftArrow.performed -= instance.OnLeftArrow;
-            @LeftArrow.canceled -= instance.OnLeftArrow;
-            @RightArrow.started -= instance.OnRightArrow;
-            @RightArrow.performed -= instance.OnRightArrow;
-            @RightArrow.canceled -= instance.OnRightArrow;
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
@@ -259,6 +315,9 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @LeftRight.started -= instance.OnLeftRight;
+            @LeftRight.performed -= instance.OnLeftRight;
+            @LeftRight.canceled -= instance.OnLeftRight;
         }
 
         public void RemoveCallbacks(IControlsActions instance)
@@ -278,10 +337,9 @@ public partial class @BattleInputAction: IInputActionCollection2, IDisposable
     public ControlsActions @Controls => new ControlsActions(this);
     public interface IControlsActions
     {
-        void OnLeftArrow(InputAction.CallbackContext context);
-        void OnRightArrow(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnLeftMouseButton(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnLeftRight(InputAction.CallbackContext context);
     }
 }

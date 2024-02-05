@@ -42,8 +42,7 @@ namespace BattleModule.Input
         
         private int GetArrowKeysInput()
         {
-            return BattleControls.LeftArrow.WasPressedThisFrame() ? -1 :
-                BattleControls.RightArrow.WasPressedThisFrame() ? 1 : 0;
+            return (int) (BattleControls.LeftRight.WasPressedThisFrame() ? BattleControls.LeftRight.ReadValue<float>() : 0);
         }
 
         private void CancelButtonPressed()

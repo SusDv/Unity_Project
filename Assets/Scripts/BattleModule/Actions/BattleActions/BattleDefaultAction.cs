@@ -3,30 +3,23 @@ using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Utility;
 using CharacterModule.Stats.Base;
 using InventorySystem.Item;
-using StatModule.Interfaces;
+using JetBrains.Annotations;
 using StatModule.Utility.Enums;
 
 namespace BattleModule.Actions.BattleActions
 {
+    [UsedImplicitly]
     public class BattleDefaultAction : BattleAction 
     {
         protected override string ActionName => "Weapon attack";
 
-        public BattleDefaultAction() 
-            : base()
-        {}
-
-        private BattleDefaultAction(object actionObject) 
-            : base(actionObject) 
-        {}
-
         public override void PerformAction(Stats source, List<Character> targets)
         {
-            WeaponItem characterWeapon = BattleActionContext.ActionObject as WeaponItem;
+            var characterWeapon = BattleActionContext.ActionObject as WeaponItem;
 
-            foreach(Character character in targets) 
+            foreach(var character in targets) 
             {
-                Stats target = character.GetCharacterStats();
+                var target = character.GetCharacterStats();
 
                 float damage = -BattleAttackDamageProcessor.CalculateAttackDamage(
                     source.GetStatFinalValue(StatType.ATTACK),
@@ -37,11 +30,6 @@ namespace BattleModule.Actions.BattleActions
             }
 
             source.AddStatModifier(StatType.BATTLE_POINTS, characterWeapon.BattlePoints);
-        }
-
-        public override BattleAction GetInstance(object actionObject)
-        {
-            return new BattleDefaultAction(actionObject);
         }
     }
 }

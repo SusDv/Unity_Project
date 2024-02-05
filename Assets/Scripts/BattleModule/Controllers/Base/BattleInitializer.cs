@@ -1,6 +1,6 @@
 ﻿using BattleModule.UI;
 using UnityEngine;
-
+    
 namespace BattleModule.Controllers.Base
 {
     public class BattleInitializer : MonoBehaviour

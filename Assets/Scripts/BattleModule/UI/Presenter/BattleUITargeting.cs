@@ -49,7 +49,7 @@ namespace BattleModule.UI.Presenter
             
             targetingImage.rectTransform.anchoredPosition = anchoredPosition;
 
-            targetingImage.transform.localScale = isMain ? targetingImage.transform.localScale * 1.2f : Vector3.one;
+            targetingImage.transform.localScale = isMain ? targetingImage.transform.localScale * 1.2f : targetingImage.transform.localScale * 0.8f;
 
             targetingImage.transform.LookAt(lookAt);
         }
