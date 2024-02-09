@@ -10,20 +10,12 @@ namespace BattleModule.UI.View
         [SerializeField] private Image _battleUIImage;
         [SerializeField] private TextMeshProUGUI _battleUIName;
         [SerializeField] private TextMeshProUGUI _battleUIDescription;
-
-        private ItemBase _battleItem;
-
+        
         public void SetData(ItemBase battleItem)
         {
-            _battleItem = battleItem;
-            GenerateDescription();
-        }
-
-        private void GenerateDescription()
-        {
-            _battleUIImage.sprite = _battleItem.ItemImage;
-            _battleUIName.text = _battleItem.ItemName;
-            _battleUIDescription.text = _battleItem.ItemDescription;
+            _battleUIImage.sprite = battleItem.ItemImage;
+            _battleUIName.text = battleItem.ItemName;
+            _battleUIDescription.text = battleItem.ItemDescription;
         }
     }
 }

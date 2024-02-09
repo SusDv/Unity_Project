@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 7063973}
   - component: {fileID: 7063972}
   m_Layer: 5
-  m_Name: BattleItemDescriptionPanel
+  m_Name: BattleItemDescriptionWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,12 +550,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a031425c70f53140a61c1e81cda3f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleInventoryPanel: {fileID: 1746057275}
-  _battleItemDescriptionPanel: {fileID: 7063970}
-  _battleInventoryItemsParent: {fileID: 71577777}
-  _battleUIItemView: {fileID: 5296806101796757579, guid: c654dc39f371ed049a17aa634dab5180, type: 3}
-  _battleUIItemDescriptionView: {fileID: 1172870068}
-  _battleInventoryButton: {fileID: 1962585583}
+  _battleInventorySettings:
+    BattleInventoryWindow: {fileID: 1746057275}
+    BattleInventoryItemsParent: {fileID: 71577777}
+    BattleUIItemView: {fileID: 5296806101796757579, guid: c654dc39f371ed049a17aa634dab5180, type: 3}
+    BattleInventoryButton: {fileID: 1962585583}
+  _battleItemDescriptionSettings:
+    BattleItemDescriptionWindow: {fileID: 7063970}
+    BattleUIItemDescriptionView: {fileID: 792504239}
 --- !u!1 &313438192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1339,6 +1341,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4289345549355125636, guid: 7e370eae3ba3103489981855fd5d26b8, type: 3}
   m_PrefabInstance: {fileID: 792504237}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &792504239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4289345549355125641, guid: 7e370eae3ba3103489981855fd5d26b8, type: 3}
+  m_PrefabInstance: {fileID: 792504237}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af9f38b42c07df49b6b681b324477f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &813122964
 GameObject:
   m_ObjectHideFlags: 3
@@ -1744,17 +1757,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1172870068 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4289345549355125641, guid: 7e370eae3ba3103489981855fd5d26b8, type: 3}
-  m_PrefabInstance: {fileID: 792504237}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9af9f38b42c07df49b6b681b324477f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1198982593
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,7 +2438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1746057276}
   m_Layer: 5
-  m_Name: BattleInventoryPanel
+  m_Name: BattleInventoryWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,7 +2,7 @@
 using UnityEngine;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Controllers;
-using BattleModule.UI.BattleButton;
+using BattleModule.UI.Presenter.Settings.Inventory;
 using BattleModule.UI.View;
 using InventorySystem.Intefaces;
 using InventorySystem.Item;
@@ -12,19 +12,9 @@ namespace BattleModule.UI.Presenter
 {
     public class BattleUIInventory : MonoBehaviour
     {
-        [Header("Panels")]
-        [SerializeField] private GameObject _battleInventoryPanel;
-        [SerializeField] private GameObject _battleItemDescriptionPanel;
-        
-        [Header("Parent")]
-        [SerializeField] private GameObject _battleInventoryItemsParent;
-
-        [Header("Views")]
-        [SerializeField] private BattleUIItemView _battleUIItemView;
-        [SerializeField] private BattleUIItemDescriptionView _battleUIItemDescriptionView;
-
-        [Header("Button")]
-        [SerializeField] private BattleUIDefaultButton _battleInventoryButton;
+        [SerializeField] private BattleInventorySettings _battleInventorySettings;
+        [Space(10f)]
+        [SerializeField] private BattleItemDescriptionSettings _battleItemDescriptionSettings;
 
         private List<BattleUIItemView> _battleUIItems = new ();
         
@@ -32,43 +22,35 @@ namespace BattleModule.UI.Presenter
 
         private BattleActionController _battleActionController;
 
-        private IBattleInvetory _battleInventoryController;    
-
-        private BattleUIItemView _selectedItem;
-
-        public void Init(
-            IBattleInvetory battleInventory,
-            BattleActionController battleActionController)
+        public void Init(IBattleInvetory battleInventory, BattleActionController battleActionController)
         {
-            _battleInventoryController = battleInventory;
+            battleInventory.OnInventoryChanged += OnBattleInventoryChanged;
 
             _battleActionController = battleActionController;
-
-            _battleInventoryController.OnInventoryChanged += BattleInventoryUpdate;
-
-            _battleInventoryButton.OnButtonClick += InventoryButtonClicked;
-
-            _battleActionController.OnBattleActionCanceled += OnBattleActionCanceled;
-
-            BattleInventoryUpdate(_battleInventoryController.GetBattleInventory());          
+            
+            _battleInventorySettings.BattleInventoryButton.OnButtonClick += BattleInventoryItemClicked;
+            
+            _battleInventory = battleInventory.GetBattleInventory();
+            
+            UpdateBattleInventory();
         }
 
-        private void OnBattleActionCanceled()
-        {
-            _selectedItem = null;
-        }
-
-        private void BattleInventoryUpdate(List<InventoryItem> inventoryItems)
+        private void OnBattleInventoryChanged(List<InventoryItem> inventoryItems)
         {
             _battleInventory = inventoryItems;
 
+            UpdateBattleInventory();
+        }
+
+        private void UpdateBattleInventory()
+        {
             BattleUIInventoryClear();
 
             foreach (var item in _battleInventory)
             {
-                var battleUIItem = Instantiate(_battleUIItemView,
-                            _battleInventoryItemsParent.transform.position, Quaternion.identity,
-                            _battleInventoryItemsParent.transform);
+                var battleUIItem = Instantiate(_battleInventorySettings.BattleUIItemView,
+                    _battleInventorySettings.BattleInventoryItemsParent.transform.position, Quaternion.identity,
+                    _battleInventorySettings.BattleInventoryItemsParent.transform);
 
                 battleUIItem.OnButtonOver += BattleItemPointerOver;
 
@@ -84,52 +66,42 @@ namespace BattleModule.UI.Presenter
         {
             _battleUIItems = new List<BattleUIItemView>();
 
-            for (var i = 0; i < _battleInventoryItemsParent.transform.childCount; i++)
+            for (var i = 0; i < _battleInventorySettings.BattleInventoryItemsParent.transform.childCount; i++)
             {
-                Destroy(_battleInventoryItemsParent.transform.GetChild(i).gameObject);
+                Destroy(_battleInventorySettings.BattleInventoryItemsParent.transform.GetChild(i).gameObject);
             }
         }
 
         private void BattleItemPointerOver(BattleUIItemView battleUIItem)
         {
-            _battleItemDescriptionPanel.SetActive(!_battleItemDescriptionPanel.activeSelf);
+            _battleItemDescriptionSettings.BattleItemDescriptionWindow.SetActive(!_battleItemDescriptionSettings.BattleItemDescriptionWindow.activeSelf);
 
-            if (_battleItemDescriptionPanel.activeSelf)
+            if (_battleItemDescriptionSettings.BattleItemDescriptionWindow.activeSelf)
             {
-                _battleUIItemDescriptionView.SetData(
-                    _battleInventory[_battleUIItems.IndexOf(battleUIItem)].inventoryItem);
+                _battleItemDescriptionSettings.BattleUIItemDescriptionView.SetData(GetSelectedItem(battleUIItem));
             }
         }
 
         private void BattleItemPointerClick(BattleUIItemView battleUIItem) 
         {
-            _selectedItem = battleUIItem;
-
-            SetupBattleAction();
+            SetupBattleAction(battleUIItem);
         }
 
-        private void SetupBattleAction() 
+        private void SetupBattleAction(BattleUIItemView battleUIItem) 
         {
-            if (_selectedItem == null)
-            {
-                _battleActionController.ResetBattleAction();
-
-                return;
-            }
-
-            _battleActionController.SetBattleAction<BattleItemAction>(GetSelectedItem());
+            _battleActionController.SetBattleAction<BattleItemAction>(GetSelectedItem(battleUIItem));
         }
 
-        private void InventoryButtonClicked(object o)
+        private void BattleInventoryItemClicked(object o)
         {
-            _battleInventoryPanel.SetActive(!_battleInventoryPanel.activeSelf);
+            _battleInventorySettings.BattleInventoryWindow.SetActive(!_battleInventorySettings.BattleInventoryWindow.activeSelf);
             
-            _battleItemDescriptionPanel.SetActive(_battleInventoryPanel.activeSelf && _battleItemDescriptionPanel.activeSelf);
+            _battleItemDescriptionSettings.BattleItemDescriptionWindow.SetActive(_battleInventorySettings.BattleInventoryWindow.activeSelf && _battleItemDescriptionSettings.BattleItemDescriptionWindow.activeSelf);
         }
 
-        private ItemBase GetSelectedItem() 
+        private ItemBase GetSelectedItem(BattleUIItemView battleUIItem) 
         {
-            return _battleInventoryController.GetBattleInventory()[_battleUIItems.IndexOf(_selectedItem)].inventoryItem;
+            return _battleInventory[_battleUIItems.IndexOf(battleUIItem)].inventoryItem;
         }
     }
 }
