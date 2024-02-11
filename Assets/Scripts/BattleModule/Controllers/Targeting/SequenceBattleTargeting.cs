@@ -15,7 +15,9 @@ namespace BattleModule.Controllers.Targeting
             Character mainTarget, 
             int maxTargetsToSelect)
         {
-            return new Stack<Character>(new [] { mainTarget });
+            _mainTarget = mainTarget;
+            
+            return new Stack<Character>(new [] { _mainTarget });
         }
 
         public override bool AddSelectedTargets(

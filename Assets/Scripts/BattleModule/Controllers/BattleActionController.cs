@@ -6,10 +6,12 @@ using BattleModule.Actions.BattleActions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Input;
+using BattleModule.Utility.Interfaces;
+using VContainer;
 
 namespace BattleModule.Controllers
 {
-    public class BattleActionController
+    public class BattleActionController : ICharacterInTurnObserver
     {
         private BattleAction _currentBattleAction;
 
@@ -19,9 +21,10 @@ namespace BattleModule.Controllers
         
         public event Action OnBattleActionCanceled;
         
+        [Inject]
         public BattleActionController(BattleTurnController battleTurnController, BattleInput battleInput) 
         {
-            battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
+            battleTurnController.AddCharacterInTurnObserver(this);
             
             battleInput.OnCancelButtonPressed += OnCancelButtonPressed;
         }
@@ -34,11 +37,6 @@ namespace BattleModule.Controllers
             _currentBattleAction.Init(actionObject);
 
             OnBattleActionChanged?.Invoke(_currentBattleAction.GetBattleActionContext());
-        }
-
-        public void ResetBattleAction() 
-        {
-            SetDefaultBattleAction();
         }
 
         public void ExecuteBattleAction(List<Character> targets) 
@@ -54,7 +52,7 @@ namespace BattleModule.Controllers
                 GetCharacterWeapon().GetWeapon());
         }
 
-        private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn) 
+        public void Notify(List<Character> charactersToHaveTurn) 
         {
             _characterToHaveTurn = charactersToHaveTurn.First();
 

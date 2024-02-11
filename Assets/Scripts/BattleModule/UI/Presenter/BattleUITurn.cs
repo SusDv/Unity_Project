@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using BattleModule.UI.View;
 using BattleModule.Controllers;
+using BattleModule.Utility.Interfaces;
 
 namespace BattleModule.UI.Presenter 
 {
-    public class BattleUITurn : MonoBehaviour
+    public class BattleUITurn : MonoBehaviour, ICharacterInTurnObserver
     {
         [Header("Panel")]
         [SerializeField] private GameObject _battleTurnParent;
@@ -16,7 +17,7 @@ namespace BattleModule.UI.Presenter
 
         public void Init(BattleTurnController battleTurnController)
         {
-            battleTurnController.OnCharacterToHaveTurnChanged += DisplayTurnPanel;
+            battleTurnController.AddCharacterInTurnObserver(this);
         }
 
         private void ClearTurnPanel()
@@ -27,7 +28,7 @@ namespace BattleModule.UI.Presenter
             }
         }
 
-        private void DisplayTurnPanel(List<Character> charactersToHaveTurn)
+        public void Notify(List<Character> charactersToHaveTurn)
         {
             ClearTurnPanel();
 

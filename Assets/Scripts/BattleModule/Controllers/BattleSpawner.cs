@@ -6,8 +6,7 @@ using Utils;
 
 namespace BattleModule.Controllers
 {
-    public class BattleSpawner : 
-        Singleton<BattleSpawner>
+    public class BattleSpawner : MonoBehaviour
     {
         [Header("Spawn Points")]
         [SerializeField] private Transform _playerSpawnBoxPoint;

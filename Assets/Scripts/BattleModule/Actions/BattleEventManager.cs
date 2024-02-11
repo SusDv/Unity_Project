@@ -22,7 +22,7 @@ namespace BattleModule.Actions
 
         private void Start()
         {
-            _maximumTurnsInCycle = _turnsLeft = BattleSpawner.Instance.GetSpawnedCharacters().Count;
+            _maximumTurnsInCycle = _turnsLeft = 6;
         }
 
         public void AdvanceTurn()

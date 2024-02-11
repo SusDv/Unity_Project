@@ -1,59 +1,53 @@
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
-using Cinemachine;
-using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace BattleModule.Controllers.Base
 {
-    public class BattleFightController : MonoBehaviour
+    public class BattleFightController : IInitializable, ITickable, IFixedTickable 
     {
-        private BattleStateMachine _battleStateMachine;
+        private readonly BattleStateMachine _battleStateMachine;
 
-        public BattleCamera BattleCamera;
-
-        public BattleInput BattleInput;
-
-        public BattleActionController BattleActionController;
-
-        public BattleTargetingController BattleTargetingController;     
-
-        public BattleTurnController BattleTurnController;
-
-        [SerializeField]
-        private LayerMask _characterLayerMask;
+        public readonly BattleInput BattleInput;
         
-        [SerializeField]
-        private CinemachineVirtualCamera _playersPerspectiveCamera;
-        
-        [SerializeField]
-        private CinemachineVirtualCamera _playersAllyPerspectiveCamera;
-        
-        public void Init() 
+        public readonly BattleCamera BattleCamera;
+
+        public readonly BattleActionController BattleActionController;
+
+        public readonly BattleTargetingController BattleTargetingController;     
+
+        public readonly BattleTurnController BattleTurnController;
+
+        [Inject]
+        public BattleFightController(BattleInput battleInput,
+            BattleCamera battleCamera, BattleActionController battleActionController,
+            BattleTargetingController battleTargetingController, BattleTurnController battleTurnController)
         {
             _battleStateMachine = new BattleStateMachine(this);
-
-            BattleCamera = new BattleCamera(_playersPerspectiveCamera,
-                _playersAllyPerspectiveCamera,
-                Camera.main, _characterLayerMask);
-
-            BattleTurnController = new BattleTurnController();
-
-            BattleTargetingController = new BattleTargetingController(BattleTurnController);
-
-            BattleActionController = new BattleActionController(BattleTurnController, BattleInput);
-
+            
+            BattleInput = battleInput;
+            
+            BattleCamera = battleCamera;
+            
+            BattleActionController = battleActionController;
+            
+            BattleTargetingController = battleTargetingController;
+            
+            BattleTurnController = battleTurnController;
         }
-
-        private void Start()
+        
+        public void Initialize()
         {
             _battleStateMachine.ChangeState(_battleStateMachine.BattlePlayerActionState);
         }
 
-        private void Update()
+        public void Tick()
         {
             _battleStateMachine.OnUpdate();
         }
-        private void FixedUpdate()
+
+        public void FixedTick()
         {
             _battleStateMachine.OnFixedUpdate();
         }

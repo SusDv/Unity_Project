@@ -1,40 +1,17 @@
-using System;
-using System.Collections.Generic;
-using BattleModule.Utility;
-using BattleModule.Utility.Enums;
-using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine;
+using VContainer;
 
 namespace BattleModule.Controllers 
 {
     public class BattleCamera
     {
-        private readonly CinemachineVirtualCamera _playersPerspectiveCamera;
-
-        private readonly CinemachineVirtualCamera _playersAllyPerspectiveCamera;
-
         private readonly Camera _mainCamera;
-        
-        private readonly LayerMask _characterLayerMask;
-        
-        private CinemachineVirtualCamera GetPlayerTargetingCamera(TargetType targetType)
-        {
-            return targetType == TargetType.ALLY ? _playersAllyPerspectiveCamera : _playersPerspectiveCamera;
-        }
 
-        public BattleCamera(CinemachineVirtualCamera playersPerspectiveCamera,
-            CinemachineVirtualCamera playersAllyPerspectiveCamera,
-            Camera mainCamera,
-            LayerMask characterLayerMask)
+        [Inject]
+        public BattleCamera(Camera mainCamera)
         {
-            _playersPerspectiveCamera = playersPerspectiveCamera;
-
-            _playersAllyPerspectiveCamera = playersAllyPerspectiveCamera;
-            
             _mainCamera = mainCamera;
-
-            _characterLayerMask = characterLayerMask;
         }
 
         [CanBeNull]
@@ -42,7 +19,7 @@ namespace BattleModule.Controllers
         {
             var mouseRaycast = _mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
 
-            if (!Physics.Raycast(mouseRaycast, out var hit, 1000f, _characterLayerMask))
+            if (!Physics.Raycast(mouseRaycast, out var hit, 1000f, LayerMask.GetMask("Character")))
             {
                 return null;
             }

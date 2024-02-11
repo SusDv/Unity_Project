@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Controllers;
 using BattleModule.UI.Presenter.Settings.Inventory;
 using BattleModule.UI.View;
+using CharacterModule.Inventory.Items;
 using InventorySystem.Intefaces;
 using InventorySystem.Item;
 using InventorySystem.Core;
@@ -13,7 +15,9 @@ namespace BattleModule.UI.Presenter
     public class BattleUIInventory : MonoBehaviour
     {
         [SerializeField] private BattleInventorySettings _battleInventorySettings;
+        
         [Space(10f)]
+        
         [SerializeField] private BattleItemDescriptionSettings _battleItemDescriptionSettings;
 
         private List<BattleUIItemView> _battleUIItems = new ();
@@ -22,7 +26,8 @@ namespace BattleModule.UI.Presenter
 
         private BattleActionController _battleActionController;
 
-        public void Init(IBattleInvetory battleInventory, BattleActionController battleActionController)
+        public void Init(IBattleInvetory battleInventory, 
+            BattleActionController battleActionController)
         {
             battleInventory.OnInventoryChanged += OnBattleInventoryChanged;
 
@@ -37,7 +42,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnBattleInventoryChanged(List<InventoryItem> inventoryItems)
         {
-            _battleInventory = inventoryItems;
+            _battleInventory = inventoryItems.Where(item => item.inventoryItem is ConsumableItem).ToList();
 
             UpdateBattleInventory();
         }
