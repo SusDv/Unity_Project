@@ -16,12 +16,12 @@ namespace BattleModule.UI.Presenter
         private List<Character> _enemyCharacters;
 
         private List<BattleUIEnemyView> _battleUIEnemies;
-
-        public void Init()
+        
+        public void Init(BattleSpawner battleSpawner)
         {
             _battleUIEnemies = new List<BattleUIEnemyView>();
 
-            _enemyCharacters = BattleSpawner.Instance.GetSpawnedCharacters().Where((character) => character is Enemy).ToList();
+            _enemyCharacters = battleSpawner.GetSpawnedCharacters().Where((character) => character is Enemy).ToList();
 
             CreateBattleUIEnemies();
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Base;
 using UnityEngine;
+using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
@@ -19,12 +20,12 @@ namespace BattleModule.UI.Presenter
         private List<Character> _playerCharacters;
 
         private List<BattleUIPlayerView> _battleUIPlayers;
-
-        public void Init() 
+        
+        public void Init(BattleSpawner battleSpawner) 
         {
             _battleUIPlayers = new List<BattleUIPlayerView>();
 
-            _playerCharacters = BattleSpawner.Instance.GetSpawnedCharacters().Where((character) => character is Player).ToList();
+            _playerCharacters = battleSpawner.GetSpawnedCharacters().Where((character) => character is Player).ToList();
 
             CreateBattleUICharacters();
         }

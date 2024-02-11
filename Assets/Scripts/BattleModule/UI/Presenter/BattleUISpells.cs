@@ -5,10 +5,11 @@ using BattleModule.Controllers;
 using BattleModule.UI.View;
 using BattleModule.Actions.BattleActions;
 using BattleModule.UI.BattleButton;
+using BattleModule.Utility.Interfaces;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUISpells : MonoBehaviour
+    public class BattleUISpells : MonoBehaviour, ICharacterInTurnObserver
     {
         [Header("Panel")] 
         [SerializeField] 
@@ -41,10 +42,10 @@ namespace BattleModule.UI.Presenter
 
             _battleUIDefaultButton.OnButtonClick += OnSpellsButtonClick;
 
-            battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
+            battleTurnController.AddCharacterInTurnObserver(this);
         }
 
-        private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn)
+        public void Notify(List<Character> charactersToHaveTurn)
         {
             _characterToHaveTurn = charactersToHaveTurn.First();
 

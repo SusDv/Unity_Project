@@ -5,10 +5,12 @@ using BattleModule.Actions.BattleActions.Context;
 using UnityEngine;
 using BattleModule.Controllers.Targeting.Processor;
 using BattleModule.Utility.Enums;
+using BattleModule.Utility.Interfaces;
+using VContainer;
 
 namespace BattleModule.Controllers
 {
-    public class BattleTargetingController
+    public class BattleTargetingController : ICharacterInTurnObserver
     {
         private readonly List<Character> _charactersOnScene;
 
@@ -22,12 +24,15 @@ namespace BattleModule.Controllers
 
         public Action<List<Character>> OnCharacterTargetChanged = delegate { };
 
-        public BattleTargetingController(BattleTurnController battleTurnController)
+        [Inject]
+        public BattleTargetingController(BattleSpawner battleSpawner, BattleTurnController battleTurnController)
         {
-            battleTurnController.OnCharacterToHaveTurnChanged += OnCharacterToHaveTurnChanged;
+            battleTurnController.AddCharacterInTurnObserver(this);
+            
+            _charactersOnScene = battleSpawner.GetSpawnedCharacters();
 
-            _charactersOnScene = BattleSpawner.Instance.GetSpawnedCharacters();
-
+            _characterToHaveTurn = _charactersOnScene.First();
+            
             _battleTargetingProcessor = new BattleTargetingProcessor();
         }
 
@@ -60,7 +65,7 @@ namespace BattleModule.Controllers
             return _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
         }
 
-        private void OnCharacterToHaveTurnChanged(List<Character> charactersToHaveTurn) 
+        public void Notify(List<Character> charactersToHaveTurn) 
         {
             _characterToHaveTurn = charactersToHaveTurn.First();
         }
@@ -76,7 +81,7 @@ namespace BattleModule.Controllers
             return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
         }
 
-        private void SetPossibleTargets(TargetType targetType) 
+        private void SetPossibleTargets(TargetType targetType)
         {
             _currentPossibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
         }

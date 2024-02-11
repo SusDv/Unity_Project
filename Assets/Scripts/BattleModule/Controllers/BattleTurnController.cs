@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
+using BattleModule.Utility.Interfaces;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using UnityEngine;
+using VContainer;
 
 namespace BattleModule.Controllers
 {
@@ -13,13 +15,21 @@ namespace BattleModule.Controllers
     {
         private List<Character> _spawnedCharacters;
 
-        public event Action<List<Character>> OnCharacterToHaveTurnChanged = delegate { };
+        private List<ICharacterInTurnObserver> _characterInTurnObservers;
         
-        public BattleTurnController()
+        [Inject]
+        public BattleTurnController(BattleSpawner battleSpawner)
         {
-            _spawnedCharacters = BattleSpawner.Instance.GetSpawnedCharacters().OrderBy((character) => character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS)).ToList();
+            _characterInTurnObservers = new List<ICharacterInTurnObserver>();
+            
+            _spawnedCharacters = battleSpawner.GetSpawnedCharacters().OrderBy((character) => character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS)).ToList();
             
             SetupActions();
+        }
+
+        public void AddCharacterInTurnObserver(ICharacterInTurnObserver observer)
+        {
+            _characterInTurnObservers.Add(observer);
         }
 
         private void SetupActions()
@@ -66,7 +76,7 @@ namespace BattleModule.Controllers
         {
             _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS)).ToList();
 
-            OnCharacterToHaveTurnChanged?.Invoke(_spawnedCharacters);
+            _characterInTurnObservers.ForEach(o => o.Notify(_spawnedCharacters));
         }
 
         private void ResetBattlePoints()
@@ -75,7 +85,7 @@ namespace BattleModule.Controllers
 
             characterInTurnStats.AddStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
             
-            OnCharacterToHaveTurnChanged?.Invoke(_spawnedCharacters);
+            _characterInTurnObservers.ForEach(o => o.Notify(_spawnedCharacters));
         }
 
         private void TriggerTemporaryModifiers() 

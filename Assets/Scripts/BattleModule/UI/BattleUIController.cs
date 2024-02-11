@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using BattleModule.Controllers;
 using BattleModule.Controllers.Base;
+using BattleModule.Input;
 using BattleModule.UI.Presenter;
 using InventorySystem.Core;
 using InventorySystem.Item;
 using UnityEngine;
+using VContainer;
 
 namespace BattleModule.UI 
 {
@@ -44,33 +47,31 @@ namespace BattleModule.UI
         [SerializeField]
         private BattleUISpells _battleUISpells;
 
-        [Header("Battle Fight Controller Reference")]
-        [SerializeField] 
-        private BattleFightController _battleFightController;
-
-        public void Init()
+        [Inject]
+        private void Init(BattleSpawner battleSpawner, BattleActionController battleActionController,
+            BattleTargetingController battleTargetingController, BattleTurnController battleTurnController)
         {
             _playerInventory.InitializeInventory();
 
-            foreach (ItemBase item in _testItems)
+            foreach (var item in _testItems)
             {
                 _playerInventory.AddItem(item, 2);
             }
 
-            _battleUIInventory.Init(_playerInventory, _battleFightController.BattleActionController);
+            _battleUIInventory.Init(_playerInventory, battleActionController);
 
-            _battleUITurn.Init(_battleFightController.BattleTurnController);
+            _battleUITurn.Init(battleTurnController);
 
-            _battleUITargeting.Init(ref _battleFightController.BattleTargetingController.OnCharacterTargetChanged);
+            _battleUITargeting.Init(ref battleTargetingController.OnCharacterTargetChanged);
 
-            _battleUIAction.Init(_battleFightController.BattleActionController);
+            _battleUIAction.Init(battleActionController);
+            
+            _battleUIEnemy.Init(battleSpawner);
+            
+            _battleUIPlayer.Init(battleSpawner);
 
-            _battleUIPlayer.Init();
+            _battleUISpells.Init(battleActionController, battleTurnController);
 
-            _battleUIEnemy.Init();
-
-            _battleUISpells.Init(_battleFightController.BattleActionController, _battleFightController.BattleTurnController);
-
-        }      
+        }
     }
 }
