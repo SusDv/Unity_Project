@@ -9,7 +9,6 @@ namespace BattleModule.Input
 
         private BattleInputAction.ControlsActions BattleControls { get; set; }
         
-        
         public bool MouseLeftButtonPressed { get; private set; }
         
         public int ArrowKeysInput { get; private set; }

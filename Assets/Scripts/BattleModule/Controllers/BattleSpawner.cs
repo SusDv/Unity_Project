@@ -18,7 +18,7 @@ namespace BattleModule.Controllers
 
         private readonly List<Character> _spawnedCharacters = new List<Character>();
 
-        public void SpawnCharacters()
+        private void Awake()
         {
             SpawnCharactersByType(typeof(Player));
 

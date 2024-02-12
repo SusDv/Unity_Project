@@ -3,6 +3,7 @@ using BattleModule.Controllers;
 using BattleModule.Controllers.Base;
 using BattleModule.Input;
 using BattleModule.UI.Presenter;
+using BattleModule.Utility;
 using InventorySystem.Core;
 using InventorySystem.Item;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace BattleModule.UI
         private BattleUISpells _battleUISpells;
 
         [Inject]
-        private void Init(BattleSpawner battleSpawner, BattleActionController battleActionController,
+        private void Init(Factory factory, BattleSpawner battleSpawner, BattleActionController battleActionController,
             BattleTargetingController battleTargetingController, BattleTurnController battleTurnController)
         {
             _playerInventory.InitializeInventory();
@@ -58,7 +59,7 @@ namespace BattleModule.UI
                 _playerInventory.AddItem(item, 2);
             }
 
-            _battleUIInventory.Init(_playerInventory, battleActionController);
+            _battleUIInventory.Init(_playerInventory, battleActionController, factory);
 
             _battleUITurn.Init(battleTurnController);
 
