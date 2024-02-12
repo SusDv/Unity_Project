@@ -1,11 +1,13 @@
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
+using JetBrains.Annotations;
 using VContainer;
 using VContainer.Unity;
 
 namespace BattleModule.Controllers.Base
 {
-    public class BattleFightController : IInitializable, ITickable, IFixedTickable 
+    [UsedImplicitly]
+    public class BattleController : IInitializable, ITickable, IFixedTickable 
     {
         private readonly BattleStateMachine _battleStateMachine;
 
@@ -18,9 +20,8 @@ namespace BattleModule.Controllers.Base
         public readonly BattleTargetingController BattleTargetingController;     
 
         public readonly BattleTurnController BattleTurnController;
-
-        [Inject]
-        public BattleFightController(BattleInput battleInput,
+        
+        public BattleController(BattleInput battleInput,
             BattleCamera battleCamera, BattleActionController battleActionController,
             BattleTargetingController battleTargetingController, BattleTurnController battleTurnController)
         {
@@ -36,7 +37,7 @@ namespace BattleModule.Controllers.Base
             
             BattleTurnController = battleTurnController;
         }
-        
+
         public void Initialize()
         {
             _battleStateMachine.ChangeState(_battleStateMachine.BattlePlayerActionState);

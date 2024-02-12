@@ -5,6 +5,7 @@ using BattleModule.Actions.BattleActions;
 using BattleModule.Controllers;
 using BattleModule.UI.Presenter.Settings.Inventory;
 using BattleModule.UI.View;
+using BattleModule.Utility;
 using CharacterModule.Inventory.Items;
 using InventorySystem.Intefaces;
 using InventorySystem.Item;
@@ -26,9 +27,15 @@ namespace BattleModule.UI.Presenter
 
         private BattleActionController _battleActionController;
 
+        private Factory _factory;
+        
         public void Init(IBattleInvetory battleInventory, 
-            BattleActionController battleActionController)
+            BattleActionController battleActionController,
+            Factory factory)
         {
+
+            _factory = factory;
+            
             battleInventory.OnInventoryChanged += OnBattleInventoryChanged;
 
             _battleActionController = battleActionController;
@@ -53,7 +60,7 @@ namespace BattleModule.UI.Presenter
 
             foreach (var item in _battleInventory)
             {
-                var battleUIItem = Instantiate(_battleInventorySettings.BattleUIItemView,
+                var battleUIItem = _factory.CreateInstance(_battleInventorySettings.BattleUIItemView,
                     _battleInventorySettings.BattleInventoryItemsParent.transform.position, Quaternion.identity,
                     _battleInventorySettings.BattleInventoryItemsParent.transform);
 
