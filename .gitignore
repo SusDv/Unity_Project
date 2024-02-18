@@ -77,11 +77,7 @@ crashlytics-build.properties
 # Default ignored files
 /shelf/
 /workspace.xml
-# Rider ignored files
-/contentModel.xml
-/.idea.Unity_Project.iml
-/projectSettingsUpdater.xml
-/modules.xml
+
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
