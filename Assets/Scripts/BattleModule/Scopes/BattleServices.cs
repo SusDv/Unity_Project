@@ -1,6 +1,6 @@
+using BattleModule.Actions;
 using BattleModule.Controllers;
-using BattleModule.Controllers.Base;
-using BattleModule.Utility;
+using BattleModule.Input;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -9,18 +9,24 @@ namespace BattleModule.Scopes
 {
     public class BattleServices : MonoBehaviour
     {
-        public static void Configure(IContainerBuilder builder)
+        [SerializeField] private Camera _mainCamera;
+        
+        public void Configure(IContainerBuilder builder)
         {
-            builder.Register<Factory>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<BattleSpawner>();
+            
+            builder.RegisterComponentInHierarchy<BattleInput>();
+            
+            builder.RegisterComponentInHierarchy<BattleEventManager>();
+            
             
             builder.Register<BattleTurnController>(Lifetime.Singleton);
             
             builder.Register<BattleTargetingController>(Lifetime.Singleton);
             
             builder.Register<BattleActionController>(Lifetime.Singleton);
-
             
-            builder.RegisterEntryPoint<BattleController>();
+            builder.Register<BattleCamera>(Lifetime.Singleton).WithParameter(_mainCamera);
         }
     }
 }

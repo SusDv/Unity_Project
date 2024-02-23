@@ -5,12 +5,8 @@ namespace StatModule.Utility.Enums
 {
     public enum StatType
     {
-        [Description(StatNames.MAX_HEALTH_NAME)]
-        MAX_HEALTH,
         [Description(StatNames.HEALTH_NAME)]
         HEALTH,
-        [Description(StatNames.MAX_MANA_NAME)]
-        MAX_MANA,
         [Description(StatNames.MANA_NAME)]
         MANA,
         [Description(StatNames.ATTACK_NAME)]
@@ -31,6 +27,12 @@ namespace StatModule.Utility.Enums
         EVASION,
         [Description(StatNames.BATTLE_POINTS_NAME)]
         BATTLE_POINTS
+    }
+
+    public enum ModifierCapType
+    {
+        NO_CAP,
+        INCREASE_CAP
     }
 
     public enum ValueModifierType

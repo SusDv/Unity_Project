@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Inventory.Items;
-using UnityEngine;
+using InventorySystem.Core;
 using InventorySystem.Item;
-using InventorySystem.Intefaces;
+using UnityEngine;
 
-namespace InventorySystem.Core 
+namespace CharacterModule.Inventory 
 {
     [Serializable]
     [CreateAssetMenu(fileName = "New Inventory", menuName = "Character/Inventory/Inventory")]
-    public class InventoryBase : ScriptableObject, IBattleInvetory
+    public class InventoryBase : ScriptableObject
     {
         public Action<List<InventoryItem>> OnInventoryChanged { get; set; } = delegate { };
 
@@ -23,7 +23,7 @@ namespace InventorySystem.Core
 
         public void AddItem(ItemBase item, int amount)
         {
-            var (index, existingItem) = FindItem(item);
+            (int index, var existingItem) = FindItem(item);
 
             if (existingItem.Equals(InventoryItem.GetEmptyItem()))
             {
@@ -64,12 +64,13 @@ namespace InventorySystem.Core
             OnInventoryChanged?.Invoke(_inventoryItems);
         }
         
-        public (int index, InventoryItem item) FindItem(ItemBase ItemBase)
+        public (int index, InventoryItem item) FindItem(ItemBase itemBase)
         {
-            for (int i = 0; i < _inventoryItems.Count; i++)
+            for (var i = 0; i < _inventoryItems.Count; i++)
             {
-                InventoryItem currentItem = _inventoryItems[i];
-                if (currentItem.inventoryItem.ID == ItemBase.ID)
+                var currentItem = _inventoryItems[i];
+                
+                if (currentItem.inventoryItem.ID == itemBase.ID)
                 {
                     return (i, currentItem);
                 }
@@ -79,12 +80,12 @@ namespace InventorySystem.Core
 
         public List<InventoryItem> GetBattleInventory()
         {
-            return _inventoryItems.Where(item => item.inventoryItem.GetType().Equals(typeof(ConsumableItem))).ToList();
+            return _inventoryItems.Where(item => item.inventoryItem.GetType() == typeof(ConsumableItem)).ToList();
         }
 
         private void ConsumableItemUsed(ItemBase inventoryItem)
         {
-            var (index, item) = FindItem(inventoryItem);
+            (int index, var item) = FindItem(inventoryItem);
 
             if (item.inventoryItem.IsStackable)
             {
@@ -94,10 +95,8 @@ namespace InventorySystem.Core
 
                     return;
                 }
-                else
-                {
-                    _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].amount - 1);
-                }
+
+                _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].amount - 1);
             }
 
             OnInventoryChanged?.Invoke(_inventoryItems);

@@ -1,7 +1,8 @@
 ﻿using System;
 using BattleModule.Actions;
+using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Interfaces;
 using StatModule.Modifier.ValueModifier;
 using StatModule.Utility.Enums;
 using UnityEngine;
@@ -11,12 +12,12 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
     [Serializable]
     public class TemporaryStatModifier : BaseStatModifier 
     {
-        private TemporaryStatModifier(
-            StatType statType,
-            ValueModifierType valueModifierType,
+        private TemporaryStatModifier(StatType statType, 
+            ValueModifierType valueModifierType, 
+            ModifierCapType modifierCapType,
             float value,
             TemporaryStatModifierType temporaryStatModifierType,
-            int duration) : base(statType, valueModifierType, value) 
+            int duration) : base(statType, valueModifierType, modifierCapType, value) 
         {
             TemporaryStatModifierType = temporaryStatModifierType;
             Duration = duration;
@@ -31,12 +32,10 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         [field: SerializeField]
         public int Duration { get; set; }
 
-        public bool IsNegative => Value < 0;
-
         private int AssignedOnTurn { get; set; }
 
-        public override void Modify(IStat statToModify, 
-            Action<BaseStatModifier> addModifierCallback, 
+        public override void Modify(Stat statToModify,
+            Action<BaseStatModifier> addModifierCallback,
             Action<BaseStatModifier> removeModifierCallback) 
         {
             if (!Initialized)
@@ -74,31 +73,34 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             {
                 ValueModifierProcessor.ModifyStatValue(statToModify, this);
             }
-            
-            if (Duration == 0)
-            {
-                if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
-                {
-                    ValueModifierProcessor.ModifyStatValue(statToModify, -this);
-                }
 
-                removeModifierCallback?.Invoke(this);
+            if (Duration != 0)
+            {
+                return;
             }
+            
+            if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
+            {
+                ValueModifierProcessor.ModifyStatValue(statToModify, -this);
+            }
+
+            removeModifierCallback?.Invoke(this);
         }
 
         public static TemporaryStatModifier GetTemporaryStatModifierInstance(
-            StatType statType,
-            ValueModifierType valueModifierType,
+            StatType statType, 
+            ValueModifierType valueModifierType, 
+            ModifierCapType modifierCapType,
             float value,
             TemporaryStatModifierType temporaryStatModifierType,
             int duration)
         {
-            return new TemporaryStatModifier(statType, valueModifierType, value, temporaryStatModifierType, duration);
+            return new TemporaryStatModifier(statType, valueModifierType, modifierCapType, value, temporaryStatModifierType, duration);
         }
 
         public override object Clone()
         {
-            return  new TemporaryStatModifier(StatType, ValueModifierType, Value, TemporaryStatModifierType, Duration);
+            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifierCapType, Value, TemporaryStatModifierType, Duration);
         }
 
         public override bool Equals(BaseStatModifier other)

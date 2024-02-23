@@ -1,24 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Controllers;
-using BattleModule.UI.View;
-using CharacterModule.Stats.Base;
-using StatModule.Utility.Enums;
 using UnityEngine;
+using VContainer;
+using StatModule.Utility.Enums;
+using CharacterModule.Stats.Base;
+using BattleModule.Controllers;
+using BattleModule.UI.Presenter.SceneSettings.Enemy;
+using BattleModule.UI.View;
 
 namespace BattleModule.UI.Presenter
 {
     public class BattleUIEnemy : MonoBehaviour
     {
-        [Header("View")]
-        [SerializeField] private BattleUIEnemyView _battleUIEnemyView;
-
+        private BattleEnemySceneSettings _battleEnemySceneSettings;
+        
         private List<Character> _enemyCharacters;
 
         private List<BattleUIEnemyView> _battleUIEnemies;
         
-        public void Init(BattleSpawner battleSpawner)
+        [Inject]
+        private void Init(BattleEnemySceneSettings battleEnemySceneSettings,
+            BattleSpawner battleSpawner)
         {
+            _battleEnemySceneSettings = battleEnemySceneSettings;
+            
             _battleUIEnemies = new List<BattleUIEnemyView>();
 
             _enemyCharacters = battleSpawner.GetSpawnedCharacters().Where((character) => character is Enemy).ToList();
@@ -28,10 +33,10 @@ namespace BattleModule.UI.Presenter
 
         private void CreateBattleUIEnemies()
         {
-            foreach (Character character in _enemyCharacters)
+            foreach (var character in _enemyCharacters)
             {
-                BattleUIEnemyView battleUICharacterView = Instantiate(
-                    _battleUIEnemyView, character.gameObject.transform);
+                var battleUICharacterView = Instantiate(
+                    _battleEnemySceneSettings.BattleUIEnemyView, character.gameObject.transform);
 
                 character.GetCharacterStats().OnStatsModified += UpdateEnemyStats;
 
@@ -44,11 +49,11 @@ namespace BattleModule.UI.Presenter
         private void UpdateEnemyStats(Stats stats)
         {
             int characterToUpdateIndex = _enemyCharacters.IndexOf(
-                _enemyCharacters.Where((character) =>
-                    character.GetCharacterStats().Equals(stats)).First());
+                _enemyCharacters.First(character => character.GetCharacterStats().Equals(stats)));
 
-            _battleUIEnemies[characterToUpdateIndex].SetData(
-                stats.GetStatFinalValuesRatio(StatType.HEALTH, StatType.MAX_HEALTH));
+            var statInfo = stats.GetStatInfo(StatType.HEALTH);
+            
+            _battleUIEnemies[characterToUpdateIndex].SetData(statInfo.FinalValue / statInfo.MaxValue);
         }
 
     }

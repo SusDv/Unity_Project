@@ -379,7 +379,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -743,8 +743,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterImage: {fileID: 2536552245058707247}
-  _healthBarImage: {fileID: 2536552244432330360}
-  _manaBarImage: {fileID: 2536552243471695586}
+  _statObservers:
+  - _sliderFillAmount: {fileID: 2536552244432330360}
+    <StatType>k__BackingField: 0
+  - _sliderFillAmount: {fileID: 2536552243471695586}
+    <StatType>k__BackingField: 1
 --- !u!1 &2536552245512500580
 GameObject:
   m_ObjectHideFlags: 0

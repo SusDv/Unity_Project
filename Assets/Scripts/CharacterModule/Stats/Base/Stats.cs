@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using StatModule.Settings;
+using StatModule.Utility;
 using StatModule.Utility.Enums;
 
 namespace CharacterModule.Stats.Base
@@ -15,7 +17,7 @@ namespace CharacterModule.Stats.Base
 
         private List<BaseStatModifier> _modifiersInUse;
 
-        public Action<Stats> OnStatsModified;
+        public Action<Stats> OnStatsModified = delegate { };
 
         public Stats(BaseStats baseStats)
         {
@@ -64,33 +66,25 @@ namespace CharacterModule.Stats.Base
             }
             
             statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
-
+            
             OnStatsModified?.Invoke(this);
         }
 
         public void AddStatModifier(StatType statType, float value) 
         {
             BaseStatModifier statModifier = InstantStatModifier.GetInstantStatModifierInstance(
-                statType, ValueModifierType.ADDITIVE, value);
+                statType, ValueModifierType.ADDITIVE, ModifierCapType.NO_CAP, value);
 
             statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
             
             OnStatsModified?.Invoke(this);
         }
 
-        public float GetStatFinalValue(StatType type) 
+        public StatInfo GetStatInfo(StatType statType)
         {
-            return _stats[type].FinalValue;
-        }
-
-        public float GetStatBaseValue(StatType type) 
-        {
-            return _stats[type].BaseValue;
-        }
-
-        public float GetStatFinalValuesRatio(StatType numeratorStat, StatType denominatorStat) 
-        {
-            return GetStatFinalValue(numeratorStat) / GetStatFinalValue(denominatorStat);
+            var stat = _stats[statType];
+            
+            return StatInfo.GetInstance(stat.BaseValue, stat.FinalValue, stat.MaxValue);
         }
 
         public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
@@ -102,13 +96,27 @@ namespace CharacterModule.Stats.Base
                 {
                     statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
                 });
-
+            
             OnStatsModified?.Invoke(this);
         }
 
         public void RemoveStatModifiersByCondition(Predicate<BaseStatModifier> conditionFunction) 
         {
             _modifiersInUse.RemoveAll(conditionFunction);
+        }
+
+        public void AddStatObserver(IStatObserver statObserver)
+        {
+            _stats[statObserver.StatType].AttachObserver(statObserver);
+        }
+
+        public void AddStatObservers<T>(List<T> statObservers)
+            where T : IStatObserver
+        {
+            statObservers.ForEach(o =>
+            {
+                _stats[o.StatType].AttachObserver(o); 
+            });
         }
     }
 }

@@ -2,7 +2,6 @@
 using CharacterModule.Spells.Interfaces;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Interfaces;
 using StatModule.Modifier;
 using StatModule.Utility.Enums;
 using UnityEngine;

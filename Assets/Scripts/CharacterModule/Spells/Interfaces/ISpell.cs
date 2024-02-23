@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using StatModule.Interfaces;
 
 namespace CharacterModule.Spells.Interfaces
 {

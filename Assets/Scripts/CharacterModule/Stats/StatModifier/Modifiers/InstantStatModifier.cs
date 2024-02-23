@@ -1,6 +1,7 @@
 ﻿using System;
+using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Interfaces;
 using StatModule.Modifier.ValueModifier;
 using StatModule.Utility.Enums;
 
@@ -12,24 +13,27 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         private InstantStatModifier(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            float value) : base (statType, valueModifierType, value) {}
+            ModifierCapType modifierCapType,
+            float value) : base (statType, valueModifierType, modifierCapType,value) {}
 
-        public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
+        public override void Modify(Stat statToModify, Action<BaseStatModifier> addModifierCallback,
+            Action<BaseStatModifier> removeModifierCallback)
         {
             ValueModifierProcessor.ModifyStatValue(statToModify, this);
         }
 
         public static InstantStatModifier GetInstantStatModifierInstance(
-            StatType statType,
-            ValueModifierType valueModifierType,
+            StatType statType, 
+            ValueModifierType valueModifierType, 
+            ModifierCapType modifierCapType,
             float value) 
         {
-            return new InstantStatModifier(statType, valueModifierType, value);
+            return new InstantStatModifier(statType, valueModifierType, modifierCapType, value);
         }
 
         public override object Clone()
         {
-            return new InstantStatModifier(StatType, ValueModifierType, Value);
+            return new InstantStatModifier(StatType, ValueModifierType, ModifierCapType, Value);
         }
 
         public override bool Equals(BaseStatModifier other)
@@ -37,6 +41,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             return other.Value == Value
                 && other.ValueModifierType == ValueModifierType
                 && other.SourceID == SourceID
+                && other.ModifierCapType == ModifierCapType
                 && other.StatType == StatType;
         }
     }

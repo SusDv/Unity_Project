@@ -3,47 +3,48 @@ using System.Linq;
 using UnityEngine;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Controllers;
-using BattleModule.UI.Presenter.Settings.Inventory;
+using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
-using BattleModule.Utility;
 using CharacterModule.Inventory.Items;
-using InventorySystem.Intefaces;
 using InventorySystem.Item;
 using InventorySystem.Core;
+using Utils;
+using VContainer;
 
 namespace BattleModule.UI.Presenter 
 {
     public class BattleUIInventory : MonoBehaviour
     {
-        [SerializeField] private BattleInventorySettings _battleInventorySettings;
+        private BattleInventorySceneSettings _battleInventorySceneSettings;
         
-        [Space(10f)]
-        
-        [SerializeField] private BattleItemDescriptionSettings _battleItemDescriptionSettings;
-
-        private List<BattleUIItemView> _battleUIItems = new ();
-        
-        private List<InventoryItem> _battleInventory = new ();
-
         private BattleActionController _battleActionController;
 
-        private Factory _factory;
+        private BattleUIItemDescription _battleUIItemDescription;
         
-        public void Init(IBattleInvetory battleInventory, 
-            BattleActionController battleActionController,
-            Factory factory)
+        
+        private List<BattleUIItemView> _battleUIItems;
+        
+        private List<InventoryItem> _battleInventory;
+
+        [Inject]
+        private void Init(BattleUIItemDescription battleUIItemDescription, 
+            BattleInventorySceneSettings battleInventorySceneSettings,
+            BattleActionController battleActionController)
         {
-
-            _factory = factory;
+            _battleInventorySceneSettings = battleInventorySceneSettings;
             
-            battleInventory.OnInventoryChanged += OnBattleInventoryChanged;
-
+            _battleUIItemDescription = battleUIItemDescription;
+            
             _battleActionController = battleActionController;
             
-            _battleInventorySettings.BattleInventoryButton.OnButtonClick += BattleInventoryItemClicked;
+            _battleInventory = BattleManager.Instance.PlayerInventory.GetBattleInventory();
             
-            _battleInventory = battleInventory.GetBattleInventory();
+            _battleUIItems = new List<BattleUIItemView>();
             
+            BattleManager.Instance.PlayerInventory.OnInventoryChanged += OnBattleInventoryChanged;
+            
+            _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
+
             UpdateBattleInventory();
         }
 
@@ -60,9 +61,9 @@ namespace BattleModule.UI.Presenter
 
             foreach (var item in _battleInventory)
             {
-                var battleUIItem = _factory.CreateInstance(_battleInventorySettings.BattleUIItemView,
-                    _battleInventorySettings.BattleInventoryItemsParent.transform.position, Quaternion.identity,
-                    _battleInventorySettings.BattleInventoryItemsParent.transform);
+                var battleUIItem = Instantiate(_battleInventorySceneSettings.BattleUIItemView,
+                    _battleInventorySceneSettings.BattleInventoryItemsParent.transform.position, Quaternion.identity,
+                    _battleInventorySceneSettings.BattleInventoryItemsParent.transform);
 
                 battleUIItem.OnButtonOver += BattleItemPointerOver;
 
@@ -76,22 +77,14 @@ namespace BattleModule.UI.Presenter
 
         private void BattleUIInventoryClear()
         {
-            _battleUIItems = new List<BattleUIItemView>();
-
-            for (var i = 0; i < _battleInventorySettings.BattleInventoryItemsParent.transform.childCount; i++)
-            {
-                Destroy(_battleInventorySettings.BattleInventoryItemsParent.transform.GetChild(i).gameObject);
-            }
+            _battleUIItems.ForEach(uiItem => uiItem.Dispose());
+            
+            _battleUIItems.Clear();
         }
 
         private void BattleItemPointerOver(BattleUIItemView battleUIItem)
         {
-            _battleItemDescriptionSettings.BattleItemDescriptionWindow.SetActive(!_battleItemDescriptionSettings.BattleItemDescriptionWindow.activeSelf);
-
-            if (_battleItemDescriptionSettings.BattleItemDescriptionWindow.activeSelf)
-            {
-                _battleItemDescriptionSettings.BattleUIItemDescriptionView.SetData(GetSelectedItem(battleUIItem));
-            }
+            _battleUIItemDescription.SetItemDescription(GetSelectedItem(battleUIItem));
         }
 
         private void BattleItemPointerClick(BattleUIItemView battleUIItem) 
@@ -104,11 +97,11 @@ namespace BattleModule.UI.Presenter
             _battleActionController.SetBattleAction<BattleItemAction>(GetSelectedItem(battleUIItem));
         }
 
-        private void BattleInventoryItemClicked(object o)
+        private void BattleInventoryButtonClicked(object o)
         {
-            _battleInventorySettings.BattleInventoryWindow.SetActive(!_battleInventorySettings.BattleInventoryWindow.activeSelf);
+            _battleInventorySceneSettings.BattleInventoryWindow.SetActive(!_battleInventorySceneSettings.BattleInventoryWindow.activeSelf);
             
-            _battleItemDescriptionSettings.BattleItemDescriptionWindow.SetActive(_battleInventorySettings.BattleInventoryWindow.activeSelf && _battleItemDescriptionSettings.BattleItemDescriptionWindow.activeSelf);
+            _battleUIItemDescription.SetDescriptionPanelVisibility(_battleInventorySceneSettings.BattleInventoryWindow.activeSelf);
         }
 
         private ItemBase GetSelectedItem(BattleUIItemView battleUIItem) 

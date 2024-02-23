@@ -1,4 +1,4 @@
-﻿using StatModule.Interfaces;
+﻿using CharacterModule.Stats.Base;
 using StatModule.Utility.Enums;
 
 namespace StatModule.Modifier.ValueModifier
@@ -7,6 +7,6 @@ namespace StatModule.Modifier.ValueModifier
     {
         public abstract ValueModifierType ValueModifierType { get; }
 
-        public abstract void ModifyValue(IStat statToModify, float value); 
+        public abstract void ModifyValue(Stat statToModify, float value, ModifierCapType modifierCapType); 
     }
 }

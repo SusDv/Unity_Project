@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BattleModule.Controllers;
+using BattleModule.UI.Presenter.SceneSettings.Targeting;
 using UnityEngine;
-using UnityEngine.UI;
+using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
     public class BattleUITargeting : MonoBehaviour
     {
-        [Header("UI References")]
-        [SerializeField] private Canvas _battleTargetingCanvas;
-        [SerializeField] private Image _characterTargetImage;
-
-        [Header("Main Camera Reference")]
-        [SerializeField] private Camera _mainCamera;
-
-        public void Init(ref Action<List<Character>> targetChangedAction) 
+        private BattleTargetingSceneSettings _battleTargetingSceneSettings;
+        
+        [Inject]
+        private void Init(BattleTargetingSceneSettings battleTargetingSceneSettings,
+            BattleTargetingController battleTargetingController)
         {
-            targetChangedAction += BattleCharacterTarget;
+            _battleTargetingSceneSettings = battleTargetingSceneSettings;
+            
+            battleTargetingController.OnCharacterTargetChanged += BattleCharacterTarget;
         }
 
         private void ClearBattleCanvas()
         {
-            for (var i = 0; i < _battleTargetingCanvas.transform.childCount; i++)
+            for (var i = 0; i < _battleTargetingSceneSettings.BattleTargetingCanvas.transform.childCount; i++)
             {
-                Destroy(_battleTargetingCanvas.transform.GetChild(i).gameObject);
+                Destroy(_battleTargetingSceneSettings.BattleTargetingCanvas.transform.GetChild(i).gameObject);
             }
         }
 
@@ -34,18 +34,18 @@ namespace BattleModule.UI.Presenter
             foreach (var characterTargeted in charactersTargeted)
             {
                 var screenPosition =
-                    RectTransformUtility.WorldToScreenPoint(_mainCamera, characterTargeted.transform.position); 
+                    RectTransformUtility.WorldToScreenPoint(_battleTargetingSceneSettings.MainCamera, characterTargeted.transform.position); 
                 
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleTargetingCanvas.transform as RectTransform, screenPosition, _mainCamera, out var localPosition);
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleTargetingSceneSettings.BattleTargetingCanvas.transform as RectTransform, screenPosition, _battleTargetingSceneSettings.MainCamera, out var localPosition);
 
-                BattleSetUpTargetImage(localPosition, _mainCamera.transform.position, characterTargeted == charactersTargeted[0]);
+                BattleSetUpTargetImage(localPosition, _battleTargetingSceneSettings.MainCamera.transform.position, characterTargeted == charactersTargeted[0]);
             }
         }
 
         private void BattleSetUpTargetImage(Vector3 anchoredPosition, Vector3 lookAt, bool isMain)
         {
-            var targetingImage = Instantiate(_characterTargetImage,
-                _battleTargetingCanvas.transform);
+            var targetingImage = Instantiate(_battleTargetingSceneSettings.CharacterTargetImage,
+                _battleTargetingSceneSettings.BattleTargetingCanvas.transform);
             
             targetingImage.rectTransform.anchoredPosition = anchoredPosition;
 
