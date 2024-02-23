@@ -1,6 +1,7 @@
 using InventorySystem.Core;
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Inventory;
 using UnityEngine;
 
 public class UIInventoryController : MonoBehaviour

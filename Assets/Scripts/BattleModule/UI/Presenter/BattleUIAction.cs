@@ -1,46 +1,29 @@
-﻿using BattleModule.Actions;
+﻿using System;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers;
-using BattleModule.UI.BattleButton;
-using BattleModule.UI.View;
+using BattleModule.UI.Presenter.SceneSettings.Action;
 using UnityEngine;
+using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
     public class BattleUIAction : MonoBehaviour
     {
-        [Header("View")]
-        [SerializeField] private BattleUIActionView _battleActionView;
-
-        [Header("BattleModule Button")]
-        [SerializeField] private BattleUIDefaultButton _battleActionButton;
-
-        private BattleActionController _battleActionController;
-
-        public void Init(
-            BattleActionController battleActionController) 
+        private BattleActionSceneSettings _battleActionSceneSettings;
+        
+        [Inject]
+        private void Init(BattleActionSceneSettings battleActionSceneSettings, 
+            BattleActionController battleActionController)
         {
-            _battleActionController = battleActionController;
-
-            _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
-
-            _battleActionButton.OnButtonClick += BattleActionPointerClick;
-        }
-
-        private void BattleActionPointerClick(object o)
-        {
-            BattleEventManager.Instance.OnActionButtonPressed?.Invoke();
+            _battleActionSceneSettings = battleActionSceneSettings;
+            
+            battleActionController.OnBattleActionChanged += OnBattleActionChanged;
         }
 
         private void OnBattleActionChanged(BattleActionContext context) 
         {
-            _battleActionView.SetData(
+            _battleActionSceneSettings.BattleActionView.SetData(
                 $"<b><u>Action:</b></u> {context.ActionName}");
-        }
-
-        private void OnApplicationQuit()
-        {
-            _battleActionController.OnBattleActionChanged -= OnBattleActionChanged;
         }
     }
 }

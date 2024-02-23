@@ -1,28 +1,36 @@
 ﻿using System;
-using StatModule.Interfaces;
+using System.Collections.Generic;
+using CharacterModule.Stats.Interfaces;
+using StatModule.Utility;
 using StatModule.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Stats.Base 
 {
     [Serializable]
-    public class Stat : IStat, ICloneable
+    public class Stat : ICloneable
     {
         private Stat(
             StatType statType, 
             float baseValue, 
-            float baseValuePrescaler, 
-            bool isMaxStat, 
-            float finalValue) 
+            float baseValueScaleFactor, 
+            bool isCapped, 
+            float finalValue,
+            float maxValue) 
         {
             StatType = statType;
             BaseValue = baseValue;
-            BaseValuePrescaler = baseValuePrescaler;
-            IsMaxStat = isMaxStat;
-            _finalValue = finalValue;
+            BaseValueScaleFactor = baseValueScaleFactor;
+            IsCapped = isCapped;
+            MaxValue = maxValue;
+            FinalValue = finalValue;
         }
-
+        
         private float _finalValue;
+        
+        private float _maxValue;
+
+        private List<IStatObserver> _statObservers = new();
 
         [field: SerializeField]    
         public StatType StatType { get; set; }
@@ -31,44 +39,68 @@ namespace CharacterModule.Stats.Base
         public float BaseValue { get; set; }
 
         [field: SerializeField]
-        public float BaseValuePrescaler { get; set; }
+        public float BaseValueScaleFactor { get; set; }
 
         [field: SerializeField]
-        public bool IsMaxStat { get; set; }
+        public bool IsCapped { get; set; }
 
-        public float FinalValue 
-        { 
-            get { return _finalValue; } 
-            set 
+        public float FinalValue
+        {
+            get => _finalValue;
+            set
             {
-                if (DependencyWithStat != null)
+                if (!IsCapped)
                 {
-                    if (!IsMaxStat)
-                    {
-                        _finalValue = Mathf.Clamp(value, 0f, DependencyWithStat._finalValue);
-                    }
-                    else
-                    {
-                        float valuePercentage = _finalValue != 0 ?
-                            DependencyWithStat._finalValue / _finalValue : 1;
-
-                        _finalValue = value;
-
-                        DependencyWithStat._finalValue = value * valuePercentage;
-                    }
+                    _finalValue = _maxValue = Mathf.Clamp(value, 0f, value);
+                    
+                    return;
                 }
-                else 
+                
+                _finalValue = Mathf.Clamp(value, 0f, _maxValue);
+                
+                _statObservers?.ForEach(o => o.UpdateValue(StatInfo.GetInstance(BaseValue, FinalValue, MaxValue)));
+            }
+        }
+
+        public float MaxValue
+        {
+            get => _maxValue;
+            set
+            {
+                if (!IsCapped)
                 {
-                    _finalValue = Mathf.Clamp(value, 0f , value);
+                    _maxValue = Mathf.Clamp(value, 0f, value);
+
+                    return;
                 }
-            } 
+                
+                
+                if (_maxValue != 0)
+                {
+                    float valuePercentage = _finalValue / _maxValue;
+                    
+                    _finalValue = value * valuePercentage;
+                }
+                
+                _maxValue = Mathf.Clamp(value, 0f, value);
+
+                _statObservers?.ForEach(o => o.UpdateValue(StatInfo.GetInstance(BaseValue, FinalValue, MaxValue)));
+            }
         }
         
-        public Stat DependencyWithStat { get; set; }
-
         public object Clone()
         {
-            return new Stat(StatType, BaseValue, BaseValuePrescaler, IsMaxStat, FinalValue);
+            return new Stat(StatType, BaseValue, BaseValueScaleFactor, IsCapped, FinalValue, MaxValue);
+        }
+
+        public void AttachObserver(IStatObserver statObserver)
+        {
+            _statObservers.Add(statObserver);
+        }
+
+        public void DetachObserver(IStatObserver statObserver)
+        {
+            _statObservers.Remove(statObserver);
         }
     }
 }

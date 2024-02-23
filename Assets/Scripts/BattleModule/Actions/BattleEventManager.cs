@@ -1,6 +1,8 @@
 ﻿using System;
 using BattleModule.Controllers;
+using BattleModule.UI.Presenter.SceneSettings.Action;
 using Utils;
+using VContainer;
 
 namespace BattleModule.Actions
 {
@@ -11,7 +13,7 @@ namespace BattleModule.Actions
         
         public event Action OnCycleEnded = delegate { };
 
-        public Action OnActionButtonPressed = delegate { };
+        public event Action OnActionButtonPressed = delegate { };
         
 
         private int _maximumTurnsInCycle;
@@ -20,11 +22,14 @@ namespace BattleModule.Actions
 
         private int _currentTurnCount;
 
-        private void Start()
+        [Inject]
+        private void Init(BattleActionSceneSettings battleActionSceneSettings, BattleSpawner battleSpawner)
         {
-            _maximumTurnsInCycle = _turnsLeft = 6;
+            _maximumTurnsInCycle = _turnsLeft = battleSpawner.GetSpawnedCharacters().Count;
+            
+            battleActionSceneSettings.BattleActionButton.OnButtonClick += ((o) => OnActionButtonPressed.Invoke());
         }
-
+        
         public void AdvanceTurn()
         {
             OnTurnEnded?.Invoke();

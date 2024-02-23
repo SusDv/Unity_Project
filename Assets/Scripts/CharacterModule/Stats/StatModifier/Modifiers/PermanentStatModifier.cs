@@ -1,6 +1,7 @@
 ﻿using System;
+using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Interfaces;
 using StatModule.Modifier.ValueModifier;
 using StatModule.Utility.Enums;
 
@@ -9,12 +10,13 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
     [Serializable]
     public class PermanentStatModifier : BaseStatModifier
     {
-        private PermanentStatModifier(
-            StatType statType,
-            ValueModifierType valueModifierType,
-            float value) : base(statType, valueModifierType, value) { }
+        private PermanentStatModifier(StatType statType, 
+            ValueModifierType valueModifierType, 
+            ModifierCapType modifierCapType,
+            float value) : base(statType, valueModifierType, modifierCapType, value) { }
 
-        public override void Modify(IStat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
+        public override void Modify(Stat statToModify, Action<BaseStatModifier> addModifierCallback,
+            Action<BaseStatModifier> removeModifierCallback)
         {
             if (!Initialized)
             {
@@ -33,16 +35,17 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         }
 
         public static PermanentStatModifier GetPermanentStatModifierInstance(
-            StatType statType,
-            ValueModifierType valueModifierType,
+            StatType statType, 
+            ValueModifierType valueModifierType, 
+            ModifierCapType modifierCapType,
             float value)
         {
-            return new PermanentStatModifier(statType, valueModifierType, value);
+            return new PermanentStatModifier(statType, valueModifierType, modifierCapType, value);
         }
 
         public override object Clone()
         {
-            return new PermanentStatModifier(StatType, ValueModifierType, Value);
+            return new PermanentStatModifier(StatType, ValueModifierType, ModifierCapType, Value);
         }
 
         public override bool Equals(BaseStatModifier other)

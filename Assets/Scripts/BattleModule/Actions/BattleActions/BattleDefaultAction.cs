@@ -22,8 +22,8 @@ namespace BattleModule.Actions.BattleActions
                 var target = character.GetCharacterStats();
 
                 float damage = -BattleAttackDamageProcessor.CalculateAttackDamage(
-                    source.GetStatFinalValue(StatType.ATTACK),
-                    target.GetStatFinalValue(StatType.DEFENSE));
+                    source.GetStatInfo(StatType.ATTACK).FinalValue,
+                    target.GetStatInfo(StatType.DEFENSE).FinalValue);
 
                 target.AddStatModifier(StatType.HEALTH,
                     damage);

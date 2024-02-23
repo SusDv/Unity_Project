@@ -1,44 +1,45 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
-using BattleModule.UI.View;
 using BattleModule.Controllers;
-using BattleModule.Utility.Interfaces;
+using BattleModule.UI.Presenter.SceneSettings.Turn;
+using VContainer;
 
 namespace BattleModule.UI.Presenter 
 {
-    public class BattleUITurn : MonoBehaviour, ICharacterInTurnObserver
+    public class BattleUITurn : MonoBehaviour
     {
-        [Header("Panel")]
-        [SerializeField] private GameObject _battleTurnParent;
-
-        [Header("View")]
-        [SerializeField] private BattleUITurnView _battleUITurnView;
-
-        public void Init(BattleTurnController battleTurnController)
+        private BattleTurnSceneSettings _battleTurnSceneSettings;
+        
+        [Inject]
+        private void Init(BattleTurnSceneSettings battleTargetingSceneSettings,
+            BattleTurnController battleTurnController)
         {
-            battleTurnController.AddCharacterInTurnObserver(this);
+            _battleTurnSceneSettings = battleTargetingSceneSettings;
+
+            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
         }
 
         private void ClearTurnPanel()
         {
-            for (int i = 0; i < _battleTurnParent.transform.childCount; i++)
+            for (var i = 0; i < _battleTurnSceneSettings.BattleTurnParent.transform.childCount; i++)
             {
-                Destroy(_battleTurnParent.transform.GetChild(i).gameObject);
+                Destroy(_battleTurnSceneSettings.BattleTurnParent.transform.GetChild(i).gameObject);
             }
         }
 
-        public void Notify(List<Character> charactersToHaveTurn)
+        private void OnCharactersInTurnChanged(List<Character> charactersToHaveTurn)
         {
             ClearTurnPanel();
 
-            foreach (Character character in charactersToHaveTurn)
+            foreach (var character in charactersToHaveTurn)
             {
-                BattleUITurnView battleUITurn = Instantiate(_battleUITurnView,
-                      _battleTurnParent.transform.position, Quaternion.identity,
-                      _battleTurnParent.transform);
+                var battleUITurn = Instantiate(_battleTurnSceneSettings.BattleUITurnView,
+                    _battleTurnSceneSettings.BattleTurnParent.transform.position, Quaternion.identity,
+                    _battleTurnSceneSettings.BattleTurnParent.transform);
 
-                battleUITurn.SetData(character.gameObject.name, character.GetCharacterStats().GetStatFinalValue(StatModule.Utility.Enums.StatType.BATTLE_POINTS).ToString(), charactersToHaveTurn.First().name == character.name);
+                battleUITurn.SetData(character.gameObject.name, character.GetCharacterStats().GetStatInfo(StatModule.Utility.Enums.StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), charactersToHaveTurn.First().name == character.name);
             }
         }
     }

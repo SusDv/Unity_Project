@@ -12,56 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ecf632e45f8834b8889a55b68c68c3, type: 3}
   m_Name: BaseStats
   m_EditorClassIdentifier: 
-  <_statList>k__BackingField:
+  <StatList>k__BackingField:
   - <StatType>k__BackingField: 0
     <BaseValue>k__BackingField: 800
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 1
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 1
   - <StatType>k__BackingField: 1
     <BaseValue>k__BackingField: 800
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 1
   - <StatType>k__BackingField: 2
-    <BaseValue>k__BackingField: 50
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 1
-  - <StatType>k__BackingField: 3
-    <BaseValue>k__BackingField: 50
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 4
     <BaseValue>k__BackingField: 100
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 5
-    <BaseValue>k__BackingField: 30
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 6
-    <BaseValue>k__BackingField: 50
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 7
-    <BaseValue>k__BackingField: 50
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 8
-    <BaseValue>k__BackingField: 5
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 9
-    <BaseValue>k__BackingField: 50
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 0
+  - <StatType>k__BackingField: 3
+    <BaseValue>k__BackingField: 100
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 0
   - <StatType>k__BackingField: 10
-    <BaseValue>k__BackingField: 5
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 11
-    <BaseValue>k__BackingField: 1
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
-  - <StatType>k__BackingField: 12
-    <BaseValue>k__BackingField: 2
-    <BaseValuePrescaler>k__BackingField: 0
-    <IsMaxStat>k__BackingField: 0
+    <BaseValue>k__BackingField: 3
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 0
+  - <StatType>k__BackingField: 4
+    <BaseValue>k__BackingField: 50
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 0

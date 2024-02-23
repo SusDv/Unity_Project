@@ -1,10 +1,8 @@
-﻿using StatModule.Utility.Enums;
-using System;
+﻿using System;
+using StatModule.Utility.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
-using BattleModule.Utility.Interfaces;
-using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using UnityEngine;
 using VContainer;
@@ -15,51 +13,23 @@ namespace BattleModule.Controllers
     {
         private List<Character> _spawnedCharacters;
 
-        private List<ICharacterInTurnObserver> _characterInTurnObservers;
+        public event Action<List<Character>> OnCharactersInTurnChanged = delegate { };
         
         [Inject]
         public BattleTurnController(BattleSpawner battleSpawner)
         {
-            _characterInTurnObservers = new List<ICharacterInTurnObserver>();
-            
-            _spawnedCharacters = battleSpawner.GetSpawnedCharacters().OrderBy((character) => character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS)).ToList();
-            
-            SetupActions();
-        }
+            _spawnedCharacters = battleSpawner.GetSpawnedCharacters().OrderBy((character) => character.GetCharacterStats().GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
 
-        public void AddCharacterInTurnObserver(ICharacterInTurnObserver observer)
-        {
-            _characterInTurnObservers.Add(observer);
-        }
-
-        private void SetupActions()
-        {
             BattleEventManager.Instance.OnTurnEnded += UpdateCharactersBattlePoints;
         }
 
         private void UpdateCharactersBattlePoints()
         {
-            foreach (Character character in _spawnedCharacters)
+            foreach (var character in _spawnedCharacters)
             {
-                float battlePoints = character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS);
+                float battlePoints = character.GetCharacterStats().GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
 
-                int deduction;
-
-                int tierNumber = (int) Mathf.Clamp(GetTierNumber(battlePoints), 0f, 4f);
-
-                if (battlePoints <= 10 * tierNumber)
-                {
-                    deduction = 2 * tierNumber;
-                }
-                else if (battlePoints > 10 * tierNumber &&
-                        battlePoints < 10 * tierNumber + 2 * tierNumber)
-                {
-                    deduction = 3 + (2 * (tierNumber - 1));
-                }
-                else 
-                {
-                    deduction = 4 + (2 * (tierNumber - 1));
-                }
+                int deduction = CalculateDeduction(battlePoints);
 
                 character.GetCharacterStats().AddStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
@@ -67,25 +37,43 @@ namespace BattleModule.Controllers
             SortSpawnedCharacters();
         }
 
-        private float GetTierNumber(float battlePoints) 
+        private int CalculateDeduction(float battlePoints)
         {
-            return Mathf.Floor(battlePoints / 10);
+            int deduction;
+            
+            var tierNumber = (int) Mathf.Clamp(battlePoints / 10f, 0f, 4f);
+
+            if (battlePoints <= 10 * tierNumber)
+            {
+                deduction = 2 * tierNumber;
+            }
+            else if (battlePoints > 10 * tierNumber &&
+                     battlePoints < 10 * tierNumber + 2 * tierNumber)
+            {
+                deduction = 3 + (2 * (tierNumber - 1));
+            }
+            else 
+            {
+                deduction = 4 + (2 * (tierNumber - 1));
+            }
+
+            return deduction;
         }
 
         private void SortSpawnedCharacters()
         {
-            _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.GetCharacterStats().GetStatFinalValue(StatType.BATTLE_POINTS)).ToList();
+            _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.GetCharacterStats().GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
 
-            _characterInTurnObservers.ForEach(o => o.Notify(_spawnedCharacters));
+            OnCharactersInTurnChanged?.Invoke(_spawnedCharacters);
         }
 
         private void ResetBattlePoints()
         {
-            Stats characterInTurnStats = _spawnedCharacters.First().GetCharacterStats();
+            var characterInTurnStats = _spawnedCharacters.First().GetCharacterStats();
 
-            characterInTurnStats.AddStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatFinalValue(StatType.BATTLE_POINTS));
+            characterInTurnStats.AddStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
             
-            _characterInTurnObservers.ForEach(o => o.Notify(_spawnedCharacters));
+            OnCharactersInTurnChanged?.Invoke(_spawnedCharacters);
         }
 
         private void TriggerTemporaryModifiers() 

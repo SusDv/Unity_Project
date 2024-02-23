@@ -1,8 +1,7 @@
-using System;
+using BattleModule.Actions;
 using BattleModule.Controllers;
 using BattleModule.Controllers.Base;
 using BattleModule.Input;
-using BattleModule.Utility;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -11,27 +10,16 @@ namespace BattleModule.Scopes
 {
     public class BattleScope : LifetimeScope
     {
-        [SerializeField] private Camera _mainCamera;
-
+        [SerializeField] private BattleServices _battleServices;
+        [SerializeField] private BattleUIServices _battleUIServices;
+        
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<BattleSpawner>();
+            _battleServices.Configure(builder);
             
-            builder.RegisterComponentInHierarchy<BattleInput>();
+            _battleUIServices.Configure(builder);
             
-            BattleServices.Configure(builder);
-
-            builder.Register<BattleCamera>(Lifetime.Singleton).WithParameter(_mainCamera);
-
-            builder.Register<BattleServices>(Lifetime.Singleton).WithParameter(builder);
-        }
-
-        private void OnValidate()
-        {
-            if (autoRun)
-            {
-                autoRun = false;
-            }
+            builder.RegisterEntryPoint<BattleController>();
         }
     }
 }

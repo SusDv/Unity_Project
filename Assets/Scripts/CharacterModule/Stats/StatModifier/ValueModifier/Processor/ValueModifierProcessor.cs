@@ -1,15 +1,17 @@
-﻿using StatModule.Interfaces;
-using StatModule.Utility.Enums;
+﻿using StatModule.Utility.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 
 namespace StatModule.Modifier.ValueModifier
 {
     public static class ValueModifierProcessor
     {
-        private static Dictionary<ValueModifierType, ValueModifier> _valueModifiers = new Dictionary<ValueModifierType, ValueModifier>();
+        private static readonly Dictionary<ValueModifierType, ValueModifier> _valueModifiers = new Dictionary<ValueModifierType, ValueModifier>();
         
         private static bool _initialized;
 
@@ -25,14 +27,14 @@ namespace StatModule.Modifier.ValueModifier
 
             foreach(var valueModifier in  _allValueModifiers) 
             {
-                ValueModifier baseValueModifier = Activator.CreateInstance(valueModifier) as ValueModifier;
+                var baseValueModifier = Activator.CreateInstance(valueModifier) as ValueModifier;
                 _valueModifiers.Add(baseValueModifier.ValueModifierType, baseValueModifier);
             }
 
             _initialized = true;
         }
 
-        public static void ModifyStatValue(IStat statToModify, IModifier modifier) 
+        public static void ModifyStatValue(Stat statToModify, BaseStatModifier modifier) 
         {
             if (!_initialized)
             {
@@ -41,7 +43,7 @@ namespace StatModule.Modifier.ValueModifier
 
             var valueModifier = _valueModifiers[modifier.ValueModifierType];
 
-            valueModifier.ModifyValue(statToModify, modifier.Value);
+            valueModifier.ModifyValue(statToModify, modifier.Value, modifier.ModifierCapType);
         }
     }
 }

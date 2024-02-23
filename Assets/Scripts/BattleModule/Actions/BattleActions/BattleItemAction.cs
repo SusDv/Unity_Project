@@ -4,7 +4,6 @@ using CharacterModule.Stats.Base;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
 using JetBrains.Annotations;
-using StatModule.Interfaces;
 
 namespace BattleModule.Actions.BattleActions
 {

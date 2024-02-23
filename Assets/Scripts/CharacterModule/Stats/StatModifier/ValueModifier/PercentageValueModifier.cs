@@ -1,4 +1,5 @@
-﻿using StatModule.Interfaces;
+﻿using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Interfaces;
 using StatModule.Utility.Enums;
 
 namespace StatModule.Modifier.ValueModifier
@@ -7,9 +8,16 @@ namespace StatModule.Modifier.ValueModifier
     {
         public override ValueModifierType ValueModifierType => ValueModifierType.PERCENTAGE;
 
-        public override void ModifyValue(IStat statToModify, float value)
+        public override void ModifyValue(Stat statToModify, float value, ModifierCapType modifierCapType)
         {
-            statToModify.FinalValue += statToModify.BaseValue * value;
+            if (modifierCapType == ModifierCapType.NO_CAP)
+            {
+                statToModify.FinalValue *= value;
+                
+                return;
+            }
+
+            statToModify.MaxValue *= value;
         }
     }
 }

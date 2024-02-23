@@ -10,7 +10,7 @@ using VContainer;
 
 namespace BattleModule.Controllers
 {
-    public class BattleTargetingController : ICharacterInTurnObserver
+    public class BattleTargetingController
     {
         private readonly List<Character> _charactersOnScene;
 
@@ -27,7 +27,7 @@ namespace BattleModule.Controllers
         [Inject]
         public BattleTargetingController(BattleSpawner battleSpawner, BattleTurnController battleTurnController)
         {
-            battleTurnController.AddCharacterInTurnObserver(this);
+            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
             
             _charactersOnScene = battleSpawner.GetSpawnedCharacters();
 
@@ -65,7 +65,7 @@ namespace BattleModule.Controllers
             return _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
         }
 
-        public void Notify(List<Character> charactersToHaveTurn) 
+        private void OnCharactersInTurnChanged(List<Character> charactersToHaveTurn) 
         {
             _characterToHaveTurn = charactersToHaveTurn.First();
         }
