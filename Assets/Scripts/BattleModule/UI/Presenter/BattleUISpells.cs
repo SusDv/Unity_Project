@@ -5,6 +5,7 @@ using BattleModule.Controllers;
 using BattleModule.UI.View;
 using BattleModule.Actions.BattleActions;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
+using CharacterModule;
 using VContainer;
 
 namespace BattleModule.UI.Presenter

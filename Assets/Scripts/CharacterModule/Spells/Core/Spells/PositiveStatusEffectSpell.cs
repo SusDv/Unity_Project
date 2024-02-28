@@ -11,7 +11,7 @@ namespace CharacterModule.Spells.Core.Spells
         [field: SerializeField]
         private StatModifierTier SpellClearanceTier { get; set; }
 
-        public override void UseSpell(Stats.Base.Stats source, List<Character> targets)
+        public override void UseSpell(Stats.Base.StatManager source, List<Character> targets)
         {
             foreach (var target in targets) 
             {

@@ -4,6 +4,7 @@ using System.Globalization;
 using UnityEngine;
 using BattleModule.Controllers;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
+using CharacterModule;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 

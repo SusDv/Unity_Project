@@ -4,6 +4,7 @@ using StatModule.Utility.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.UI.Presenter.SceneSettings.Player;
+using CharacterModule;
 using CharacterModule.Stats.Base;
 using UnityEngine;
 using VContainer;
@@ -41,10 +42,7 @@ namespace BattleModule.UI.Presenter
 
                 _battleUIPlayers.Add(battleUICharacterView);
 
-                var stats = character.GetCharacterStats();
-
-                stats.AddStatObservers(battleUICharacterView.SetData(null, stats.GetStatInfo(StatType.HEALTH),
-                    stats.GetStatInfo(StatType.MANA)));
+                battleUICharacterView.SetData(character.GetCharacterInformation(), character.GetCharacterStats());
             }
         }
     }

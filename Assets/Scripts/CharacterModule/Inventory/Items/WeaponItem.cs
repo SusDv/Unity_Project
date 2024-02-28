@@ -1,5 +1,6 @@
 ﻿using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using InventorySystem.Item.Interfaces;
@@ -23,7 +24,7 @@ namespace InventorySystem.Item
 
         public override void Equip(Character character)
         {
-            Stats characterStats = character.GetCharacterStats();
+            StatManager characterStatManager = character.GetCharacterStats();
 
             if (character.GetCharacterWeapon().HaveWeapon)
             {
@@ -33,7 +34,7 @@ namespace InventorySystem.Item
             {
                 foreach (BaseStatModifier baseStatModifier in StatModifiers.BaseModifiers)
                 {
-                    characterStats.AddStatModifier(baseStatModifier.Clone() as BaseStatModifier);
+                    characterStatManager.AddStatModifier(baseStatModifier.Clone() as BaseStatModifier);
                 }
             }
 
@@ -42,9 +43,9 @@ namespace InventorySystem.Item
 
         public override void Unequip(Character character)
         {
-            Stats characterStats = character.GetCharacterStats();
+            StatManager characterStatManager = character.GetCharacterStats();
 
-            characterStats.ApplyStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
+            characterStatManager.ApplyStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
         }
     }
 }

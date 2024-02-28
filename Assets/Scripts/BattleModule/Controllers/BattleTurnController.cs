@@ -3,6 +3,7 @@ using StatModule.Utility.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
+using CharacterModule;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using UnityEngine;
 using VContainer;

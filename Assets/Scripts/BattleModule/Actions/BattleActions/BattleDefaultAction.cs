@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Utility;
+using CharacterModule;
 using CharacterModule.Stats.Base;
 using InventorySystem.Item;
 using JetBrains.Annotations;
@@ -13,7 +14,7 @@ namespace BattleModule.Actions.BattleActions
     {
         protected override string ActionName => "Weapon attack";
 
-        public override void PerformAction(Stats source, List<Character> targets)
+        public override void PerformAction(StatManager source, List<Character> targets)
         {
             var characterWeapon = BattleActionContext.ActionObject as WeaponItem;
 

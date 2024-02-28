@@ -4,6 +4,6 @@ namespace CharacterModule.Spells.Interfaces
 {
     public interface ISpell
     {
-        public void UseSpell(Stats.Base.Stats source, List<Character> targets);
+        public void UseSpell(Stats.Base.StatManager source, List<Character> targets);
     }
 }

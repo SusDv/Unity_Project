@@ -6,6 +6,7 @@ using UnityEngine;
 using BattleModule.Controllers.Targeting.Processor;
 using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule;
 using VContainer;
 
 namespace BattleModule.Controllers

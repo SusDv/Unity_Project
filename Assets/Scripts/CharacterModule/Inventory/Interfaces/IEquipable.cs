@@ -1,4 +1,6 @@
-﻿namespace InventorySystem.Item.Interfaces
+﻿using CharacterModule;
+
+namespace InventorySystem.Item.Interfaces
 {
     public interface IEquipable
     {

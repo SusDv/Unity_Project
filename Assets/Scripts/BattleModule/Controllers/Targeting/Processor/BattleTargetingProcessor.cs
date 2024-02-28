@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using BattleModule.Controllers.Targeting.Base;
 using BattleModule.Utility.Enums;
+using CharacterModule;
 
 namespace BattleModule.Controllers.Targeting.Processor
 {

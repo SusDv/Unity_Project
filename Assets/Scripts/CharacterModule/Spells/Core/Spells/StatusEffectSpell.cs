@@ -5,6 +5,6 @@ namespace CharacterModule.Spells.Core.Spells
 {
     public abstract class StatusEffectSpell : SpellBase, ISpell
     {
-        public abstract void UseSpell(Stats.Base.Stats source, List<Character> targets);
+        public abstract void UseSpell(Stats.Base.StatManager source, List<Character> targets);
     }
 }
