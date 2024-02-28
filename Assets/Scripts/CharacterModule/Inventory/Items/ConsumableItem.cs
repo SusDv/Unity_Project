@@ -23,11 +23,11 @@ namespace CharacterModule.Inventory.Items
 
         public event Action<ItemBase> OnConsumableUsed;
 
-        public void Consume(Stats.Base.Stats characterStats)
+        public void Consume(Stats.Base.StatManager characterStatManager)
         {
             foreach (var modifier in StatModifiers.BaseModifiers)
             {
-                characterStats.AddStatModifier(modifier.Clone() as BaseStatModifier);
+                characterStatManager.AddStatModifier(modifier.Clone() as BaseStatModifier);
             }
 
             OnConsumableUsed?.Invoke(this);

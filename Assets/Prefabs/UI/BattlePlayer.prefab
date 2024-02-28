@@ -742,12 +742,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423f224e772eebf489eacd710a8611cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterImage: {fileID: 2536552245058707247}
+  _characterImage: {fileID: 2536552244489462679}
   _statObservers:
-  - _sliderFillAmount: {fileID: 2536552244432330360}
-    <StatType>k__BackingField: 0
-  - _sliderFillAmount: {fileID: 2536552243471695586}
-    <StatType>k__BackingField: 1
+  - <StatType>k__BackingField: 0
+    _sliderFillAmount: {fileID: 2536552244432330360}
+  - <StatType>k__BackingField: 1
+    _sliderFillAmount: {fileID: 2536552243471695586}
 --- !u!1 &2536552245512500580
 GameObject:
   m_ObjectHideFlags: 0

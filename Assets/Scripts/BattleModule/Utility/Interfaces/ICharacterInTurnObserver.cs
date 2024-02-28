@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CharacterModule;
 
 namespace BattleModule.Utility.Interfaces
 {

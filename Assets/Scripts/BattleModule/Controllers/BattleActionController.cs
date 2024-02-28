@@ -6,6 +6,7 @@ using BattleModule.Actions.BattleActions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Input;
+using CharacterModule;
 using VContainer;
 
 namespace BattleModule.Controllers

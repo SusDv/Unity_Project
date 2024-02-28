@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CharacterModule;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

@@ -1,5 +1,6 @@
 ﻿using InventorySystem.Core;
 using System.Collections.Generic;
+using CharacterModule;
 using CharacterModule.Inventory;
 using UnityEngine;
 

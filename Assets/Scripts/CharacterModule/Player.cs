@@ -1,4 +1,5 @@
 using System;
+using CharacterModule;
 using UnityEngine;
 
 public class Player : Character

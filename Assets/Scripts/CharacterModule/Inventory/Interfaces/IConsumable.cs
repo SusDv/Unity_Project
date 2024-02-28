@@ -4,6 +4,6 @@ namespace InventorySystem.Item.Interfaces
 {
     public interface IConsumable
     {
-        public void Consume(Stats characterStats);
+        public void Consume(StatManager characterStatManager);
     }
 }

@@ -1,41 +1,55 @@
+using CharacterModule.Data.Info;
+using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
 using CharacterModule.Stats.Base;
 using CharacterModule.Weapon;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+namespace CharacterModule
 {
-    [SerializeField] private CharacterSettings _characterSettings;
-
-    private CharacterWeapon _characterWeapon;
-
-    private Stats _characterStats;
-
-    private SpellContainer _characterSpellContainer;
-
-    private void Awake()
+    public class Character : MonoBehaviour
     {
-        _characterStats = new Stats(_characterSettings.BaseStats);
+        [SerializeField] private CharacterSettings _characterSettings;
 
-        _characterSpellContainer = new SpellContainer(_characterSettings.BaseSpells);
+        private CharacterWeapon _characterWeapon;
 
-        _characterWeapon = new CharacterWeapon(this);
+        private StatManager _characterStatManager;
 
-        _characterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
-    }
+        private SpellContainer _characterSpellContainer;
 
-    public Stats GetCharacterStats() 
-    {
-        return _characterStats;
-    }
+        private CharacterInformation _characterInformation;
 
-    public CharacterWeapon GetCharacterWeapon() 
-    {
-        return _characterWeapon;
-    }
+        private void Awake()
+        {
+            _characterStatManager = new StatManager(_characterSettings.BaseStats);
 
-    public SpellContainer GetCharacterSpells() 
-    {
-        return _characterSpellContainer;
+            _characterSpellContainer = new SpellContainer(_characterSettings.BaseSpells);
+
+            _characterWeapon = new CharacterWeapon(this);
+
+            _characterInformation = _characterSettings.CharacterInformation;
+
+            _characterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
+        }
+
+        public StatManager GetCharacterStats() 
+        {
+            return _characterStatManager;
+        }
+
+        public CharacterWeapon GetCharacterWeapon() 
+        {
+            return _characterWeapon;
+        }
+
+        public SpellContainer GetCharacterSpells() 
+        {
+            return _characterSpellContainer;
+        }
+
+        public CharacterInformation GetCharacterInformation()
+        {
+            return _characterInformation;
+        }
     }
 }

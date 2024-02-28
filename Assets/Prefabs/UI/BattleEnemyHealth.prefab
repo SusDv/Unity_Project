@@ -268,7 +268,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c0bee5e8ba9584a9d612613f36032f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyHealthBar: {fileID: 7980732593207145440}
+  _healthObserver:
+    <StatType>k__BackingField: 0
+    _sliderFillAmount: {fileID: 7980732593207145440}
 --- !u!1 &6768959141576894396
 GameObject:
   m_ObjectHideFlags: 0

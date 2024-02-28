@@ -7,6 +7,7 @@ using CharacterModule.Stats.Base;
 using BattleModule.Controllers;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.View;
+using CharacterModule;
 
 namespace BattleModule.UI.Presenter
 {
@@ -37,24 +38,12 @@ namespace BattleModule.UI.Presenter
             {
                 var battleUICharacterView = Instantiate(
                     _battleEnemySceneSettings.BattleUIEnemyView, character.gameObject.transform);
-
-                character.GetCharacterStats().OnStatsModified += UpdateEnemyStats;
-
+                
                 _battleUIEnemies.Add(battleUICharacterView);
 
-                UpdateEnemyStats(character.GetCharacterStats());
+                battleUICharacterView.SetData(character.GetCharacterStats());
             }
 
         }
-        private void UpdateEnemyStats(Stats stats)
-        {
-            int characterToUpdateIndex = _enemyCharacters.IndexOf(
-                _enemyCharacters.First(character => character.GetCharacterStats().Equals(stats)));
-
-            var statInfo = stats.GetStatInfo(StatType.HEALTH);
-            
-            _battleUIEnemies[characterToUpdateIndex].SetData(statInfo.FinalValue / statInfo.MaxValue);
-        }
-
     }
 }

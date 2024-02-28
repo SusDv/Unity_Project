@@ -1,3 +1,4 @@
+using CharacterModule;
 using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;

@@ -14,7 +14,7 @@ namespace CharacterModule.Spells.Core.Spells
         [field: SerializeField]
         public StatModifiers StatModifiers { get; set; }
 
-        public void UseSpell(Stats.Base.Stats source, List<Character> targets)
+        public void UseSpell(Stats.Base.StatManager source, List<Character> targets)
         {
             foreach (var target in targets)
             {

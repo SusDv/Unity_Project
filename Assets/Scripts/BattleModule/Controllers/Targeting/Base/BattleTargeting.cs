@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Utility.Enums;
+using CharacterModule;
 
 namespace BattleModule.Controllers.Targeting.Base
 {

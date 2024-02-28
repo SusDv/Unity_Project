@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Data.Info;
 using CharacterModule.Stats.Interfaces;
 using StatModule.Utility;
 using StatModule.Utility.Enums;
@@ -15,16 +16,15 @@ namespace BattleModule.UI.View
         
         [SerializeField] private List<SliderStatObserver> _statObservers;
 
-        public List<SliderStatObserver> SetData(Sprite characterImage,
-            StatInfo healthInfo, StatInfo manaInfo) 
+        public void SetData(CharacterInformation characterInformation, IStatSubject statSubject) 
         {
-            _characterImage.sprite = characterImage;
+            _characterImage.sprite = characterInformation.CharacterImage;
             
-            SetInitialData(StatType.HEALTH, healthInfo);
+            SetInitialData(StatType.HEALTH, statSubject.GetStatInfo(StatType.HEALTH));
             
-            SetInitialData(StatType.MANA, manaInfo);
-
-            return _statObservers;
+            SetInitialData(StatType.MANA, statSubject.GetStatInfo(StatType.MANA));
+            
+            _statObservers.ForEach(statSubject.AttachStatObserver);
         }
 
         private void SetInitialData(StatType statType, StatInfo statInfo)

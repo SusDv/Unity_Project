@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Controllers;
 using BattleModule.UI.Presenter.SceneSettings.Targeting;
+using CharacterModule;
 using UnityEngine;
 using VContainer;
 

@@ -11,15 +11,15 @@ using StatModule.Utility.Enums;
 namespace CharacterModule.Stats.Base
 {
     [Serializable]
-    public class Stats
+    public class StatManager : IStatSubject
     {
         private Dictionary<StatType, Stat> _stats;
 
         private List<BaseStatModifier> _modifiersInUse;
 
-        public Action<Stats> OnStatsModified = delegate { };
+        public Action<StatManager> OnStatsModified = delegate { };
 
-        public Stats(BaseStats baseStats)
+        public StatManager(BaseStats baseStats)
         {
             _stats = new Dictionary<StatType, Stat>();
 
@@ -105,18 +105,14 @@ namespace CharacterModule.Stats.Base
             _modifiersInUse.RemoveAll(conditionFunction);
         }
 
-        public void AddStatObserver(IStatObserver statObserver)
+        public void AttachStatObserver(IStatObserver statObserver)
         {
             _stats[statObserver.StatType].AttachObserver(statObserver);
         }
 
-        public void AddStatObservers<T>(List<T> statObservers)
-            where T : IStatObserver
+        public void DetachStatObserver(IStatObserver statObserver)
         {
-            statObservers.ForEach(o =>
-            {
-                _stats[o.StatType].AttachObserver(o); 
-            });
+            _stats[statObserver.StatType].DetachObserver(statObserver);
         }
     }
 }
