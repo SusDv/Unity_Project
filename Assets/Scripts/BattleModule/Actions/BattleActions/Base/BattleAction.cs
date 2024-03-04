@@ -2,6 +2,7 @@
 using BattleModule.Actions.BattleActions.Context;
 using CharacterModule;
 using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Managers;
 
 namespace BattleModule.Actions.BattleActions.Base
 {

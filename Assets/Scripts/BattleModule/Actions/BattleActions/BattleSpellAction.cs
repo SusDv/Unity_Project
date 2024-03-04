@@ -3,6 +3,7 @@ using BattleModule.Actions.BattleActions.Base;
 using CharacterModule;
 using CharacterModule.Spells.Interfaces;
 using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Managers;
 using JetBrains.Annotations;
 
 namespace BattleModule.Actions.BattleActions

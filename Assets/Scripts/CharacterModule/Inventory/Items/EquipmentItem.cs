@@ -1,4 +1,5 @@
 using CharacterModule;
+using CharacterModule.Inventory.Items.Base;
 using InventorySystem.Item.Interfaces;
 
 namespace InventorySystem.Item

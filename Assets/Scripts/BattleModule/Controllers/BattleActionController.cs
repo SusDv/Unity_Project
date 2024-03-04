@@ -5,6 +5,7 @@ using BattleModule.Actions;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Controllers.Turn;
 using BattleModule.Input;
 using CharacterModule;
 using VContainer;
@@ -52,9 +53,9 @@ namespace BattleModule.Controllers
                 GetCharacterWeapon().GetWeapon());
         }
 
-        private void OnCharactersInTurnChanged(List<Character> charactersToHaveTurn) 
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
         {
-            _characterToHaveTurn = charactersToHaveTurn.First();
+            _characterToHaveTurn = battleTurnContext.CharacterInAction;
 
             SetDefaultBattleAction();
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
@@ -8,7 +9,7 @@ using StatModule.Settings;
 using StatModule.Utility;
 using StatModule.Utility.Enums;
 
-namespace CharacterModule.Stats.Base
+namespace CharacterModule.Stats.Managers
 {
     [Serializable]
     public class StatManager : IStatSubject
@@ -16,8 +17,6 @@ namespace CharacterModule.Stats.Base
         private Dictionary<StatType, Stat> _stats;
 
         private List<BaseStatModifier> _modifiersInUse;
-
-        public Action<StatManager> OnStatsModified = delegate { };
 
         public StatManager(BaseStats baseStats)
         {
@@ -53,12 +52,17 @@ namespace CharacterModule.Stats.Base
                 return false;
             }
             
-            existingTemporaryStatModifier.Duration = (statModifierAdded as TemporaryStatModifier)?.Duration ?? existingTemporaryStatModifier.Duration;
-
+            ExtendDuration(existingTemporaryStatModifier, statModifierAdded as TemporaryStatModifier);
+            
             return true;
         }
 
-        public void AddStatModifier(BaseStatModifier statModifier) 
+        private void ExtendDuration(TemporaryStatModifier existingModifier, TemporaryStatModifier addedModifier)
+        {
+            existingModifier.Duration = addedModifier.Duration;
+        }
+
+        public void ApplyStatModifier(BaseStatModifier statModifier) 
         {
             if (ExistingTemporaryStatModifierFound(statModifier))
             {
@@ -66,18 +70,14 @@ namespace CharacterModule.Stats.Base
             }
             
             statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
-            
-            OnStatsModified?.Invoke(this);
         }
 
-        public void AddStatModifier(StatType statType, float value) 
+        public void ApplyStatModifier(StatType statType, float value) 
         {
             BaseStatModifier statModifier = InstantStatModifier.GetInstantStatModifierInstance(
-                statType, ValueModifierType.ADDITIVE, ModifierCapType.NO_CAP, value);
+                statType, ValueModifierType.ADDITIVE, ModifierCapType.FINAL_VALUE, value);
 
             statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
-            
-            OnStatsModified?.Invoke(this);
         }
 
         public StatInfo GetStatInfo(StatType statType)
@@ -96,8 +96,6 @@ namespace CharacterModule.Stats.Base
                 {
                     statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
                 });
-            
-            OnStatsModified?.Invoke(this);
         }
 
         public void RemoveStatModifiersByCondition(Predicate<BaseStatModifier> conditionFunction) 

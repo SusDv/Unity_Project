@@ -23,7 +23,7 @@ namespace CharacterModule.Stats.StatModifier
         {
             get 
             {
-                List<BaseStatModifier> allModifiers = new List<BaseStatModifier>();
+                var allModifiers = new List<BaseStatModifier>();
 
                 allModifiers.AddRange(_instantModifiers);
 

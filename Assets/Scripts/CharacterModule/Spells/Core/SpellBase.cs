@@ -1,5 +1,6 @@
 ﻿using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule.Stats.StatModifier;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core
@@ -17,11 +18,8 @@ namespace CharacterModule.Spells.Core
         public string SpellDescription { get; private set; }
 
         [field: SerializeField]
-        public float BattlePoints { get; private set; }
-
-        [field: SerializeField]
-        public float ManaCost { get; private set; }
-
+        public StatModifiers CasterModifiers { get; private set; }
+        
         [field: SerializeField]
         public TargetType TargetType { get; set; }
         

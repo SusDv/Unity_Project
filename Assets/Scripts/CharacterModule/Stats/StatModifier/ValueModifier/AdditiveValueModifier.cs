@@ -10,7 +10,7 @@ namespace StatModule.Modifier.ValueModifier
 
         public override void ModifyValue(Stat statToModify, float value, ModifierCapType modifierCapType)
         {
-            if (modifierCapType == ModifierCapType.NO_CAP)
+            if (modifierCapType == ModifierCapType.FINAL_VALUE)
             {
                 statToModify.FinalValue += value;
                 

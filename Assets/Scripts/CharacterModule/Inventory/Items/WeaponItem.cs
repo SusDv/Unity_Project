@@ -2,6 +2,7 @@
 using BattleModule.Utility.Interfaces;
 using CharacterModule;
 using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using InventorySystem.Item.Interfaces;
 using StatModule.Modifier;
@@ -34,7 +35,7 @@ namespace InventorySystem.Item
             {
                 foreach (BaseStatModifier baseStatModifier in StatModifiers.BaseModifiers)
                 {
-                    characterStatManager.AddStatModifier(baseStatModifier.Clone() as BaseStatModifier);
+                    characterStatManager.ApplyStatModifier(baseStatModifier.Clone() as BaseStatModifier);
                 }
             }
 

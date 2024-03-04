@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using BattleModule.Controllers;
+using BattleModule.Controllers.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
+using BattleModule.UI.View;
 using CharacterModule;
 using VContainer;
 
@@ -12,35 +13,51 @@ namespace BattleModule.UI.Presenter
     public class BattleUITurn : MonoBehaviour
     {
         private BattleTurnSceneSettings _battleTurnSceneSettings;
+
+        private readonly List<BattleUITurnView> _battleUITurnViews = new();
         
         [Inject]
         private void Init(BattleTurnSceneSettings battleTargetingSceneSettings,
-            BattleTurnController battleTurnController)
+            BattleTurnController battleTurnController, BattleSpawner battleSpawner)
         {
             _battleTurnSceneSettings = battleTargetingSceneSettings;
 
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+            
+            CreateTurnPanels(battleSpawner.GetSpawnedCharacters());
         }
 
-        private void ClearTurnPanel()
+        private void CreateTurnPanels(List<Character> characters)
         {
-            for (var i = 0; i < _battleTurnSceneSettings.BattleTurnParent.transform.childCount; i++)
-            {
-                Destroy(_battleTurnSceneSettings.BattleTurnParent.transform.GetChild(i).gameObject);
-            }
-        }
-
-        private void OnCharactersInTurnChanged(List<Character> charactersToHaveTurn)
-        {
-            ClearTurnPanel();
-
-            foreach (var character in charactersToHaveTurn)
+            foreach (var character in characters)
             {
                 var battleUITurn = Instantiate(_battleTurnSceneSettings.BattleUITurnView,
                     _battleTurnSceneSettings.BattleTurnParent.transform.position, Quaternion.identity,
                     _battleTurnSceneSettings.BattleTurnParent.transform);
 
-                battleUITurn.SetData(character.gameObject.name, character.GetCharacterStats().GetStatInfo(StatModule.Utility.Enums.StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), charactersToHaveTurn.First().name == character.name);
+                battleUITurn.SetData(character.GetCharacterInformation().CharacterName, character.GetCharacterStats().GetStatInfo(StatModule.Utility.Enums.StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), false);
+                
+                _battleUITurnViews.Add(battleUITurn);
+            }
+        }
+
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
+        {
+            CheckCharactersCount(battleTurnContext);
+            
+            for (var i = 0; i < battleTurnContext.CharactersInTurn.Count; i++)
+            {
+                _battleUITurnViews[i].SetData(battleTurnContext.CharactersInTurn[i].GetCharacterInformation().CharacterName,battleTurnContext.CharactersInTurn[i].GetCharacterStats().GetStatInfo(StatModule.Utility.Enums.StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), battleTurnContext.CharactersInTurn[i] == battleTurnContext.CharacterInAction);
+            }
+        }
+
+        private void CheckCharactersCount(BattleTurnContext battleTurnContext)
+        {
+            for (int i = battleTurnContext.CharactersInTurn.Count; i < _battleUITurnViews.Count; i++)
+            {
+                Destroy(_battleUITurnViews[i].gameObject);
+                
+                _battleUITurnViews.Remove(_battleUITurnViews[i]);
             }
         }
     }
