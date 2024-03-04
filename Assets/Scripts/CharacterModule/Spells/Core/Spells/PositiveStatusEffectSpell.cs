@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using StatModule.Utility.Enums;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace CharacterModule.Spells.Core.Spells
         [field: SerializeField]
         private StatModifierTier SpellClearanceTier { get; set; }
 
-        public override void UseSpell(Stats.Base.StatManager source, List<Character> targets)
+        public override void UseSpell(StatManager source, List<Character> targets)
         {
             foreach (var target in targets) 
             {
@@ -20,7 +21,15 @@ namespace CharacterModule.Spells.Core.Spells
                                       && temporaryStatModifier.TemporaryStatModifierTier == SpellClearanceTier);
             }
 
-            source.AddStatModifier(StatType.BATTLE_POINTS, BattlePoints);
+            ApplyCasterModifiers(source);
+        }
+        
+        private void ApplyCasterModifiers(StatManager source)
+        {
+            foreach (var modifier in CasterModifiers.BaseModifiers)
+            {
+                source.ApplyStatModifier(modifier);
+            }
         }
     }
 }

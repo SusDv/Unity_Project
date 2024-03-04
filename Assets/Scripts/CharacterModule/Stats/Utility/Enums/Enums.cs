@@ -31,8 +31,8 @@ namespace StatModule.Utility.Enums
 
     public enum ModifierCapType
     {
-        NO_CAP,
-        INCREASE_CAP
+        FINAL_VALUE,
+        MAX_VALUE
     }
 
     public enum ValueModifierType

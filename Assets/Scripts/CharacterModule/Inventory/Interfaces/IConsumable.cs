@@ -1,4 +1,5 @@
 ﻿using CharacterModule.Stats.Base;
+using CharacterModule.Stats.Managers;
 
 namespace InventorySystem.Item.Interfaces
 {

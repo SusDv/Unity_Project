@@ -1313,6 +1313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSettings: {fileID: 11400000, guid: cb0b7510adc85f2468fc300403b75d82, type: 2}
+  _characterAnimator: {fileID: -3300252270310966431}
   InteractibleObjectMask:
     serializedVersion: 2
     m_Bits: 0

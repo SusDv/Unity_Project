@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BattleModule.Scopes;
+using CharacterModule.Inventory.Items.Base;
 using InventorySystem.Item;
 using UnityEngine;
 using Utils;

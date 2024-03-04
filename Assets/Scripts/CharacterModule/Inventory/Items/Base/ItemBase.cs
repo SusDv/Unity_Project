@@ -1,9 +1,8 @@
 using System;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
-using StatModule.Modifier;
 
-namespace InventorySystem.Item 
+namespace CharacterModule.Inventory.Items.Base 
 {
     public abstract class ItemBase : ScriptableObject
     {

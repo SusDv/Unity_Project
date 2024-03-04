@@ -6,6 +6,7 @@ using BattleModule.Controllers;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
 using CharacterModule.Inventory.Items;
+using CharacterModule.Inventory.Items.Base;
 using InventorySystem.Item;
 using InventorySystem.Core;
 using Utils;

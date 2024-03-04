@@ -4,6 +4,7 @@ using UnityEngine;
 using BattleModule.Controllers;
 using BattleModule.UI.View;
 using BattleModule.Actions.BattleActions;
+using BattleModule.Controllers.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
 using CharacterModule;
 using VContainer;
@@ -18,7 +19,7 @@ namespace BattleModule.UI.Presenter
 
         private BattleActionController _battleActionController;
 
-        private Character _characterToHaveTurn;
+        private Character _characterInAction;
 
         [Inject]
         private void Init(BattleSpellsSceneSettings battleSpellsSceneSettings, 
@@ -36,11 +37,11 @@ namespace BattleModule.UI.Presenter
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
         }
 
-        private void OnCharactersInTurnChanged(List<Character> charactersToHaveTurn)
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            _characterToHaveTurn = charactersToHaveTurn.First();
+            _characterInAction = battleTurnContext.CharacterInAction;
 
-            DisplayCharacterSpells(_characterToHaveTurn);
+            DisplayCharacterSpells();
         }
 
         private void OnSpellsButtonClick(object o)
@@ -58,11 +59,11 @@ namespace BattleModule.UI.Presenter
             }
         }
 
-        private void DisplayCharacterSpells(Character characterToHaveTurn) 
+        private void DisplayCharacterSpells() 
         {
             BattleSpellsClear();
 
-            foreach (var spell in characterToHaveTurn.GetCharacterSpells().GetSpells()) 
+            foreach (var spell in _characterInAction.GetCharacterSpells().GetSpells()) 
             {
                 var battleUISpellView = Instantiate(_battleSpellsSceneSettings.BattleUISpellView,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform.position,
@@ -79,7 +80,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            var selectedSpell = _characterToHaveTurn.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            var selectedSpell = _characterInAction.GetCharacterSpells().GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
             _battleActionController.SetBattleAction<BattleSpellAction>(selectedSpell);
         }

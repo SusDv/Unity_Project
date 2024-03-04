@@ -4,8 +4,8 @@ using System.Linq;
 using BattleModule.Actions.BattleActions.Context;
 using UnityEngine;
 using BattleModule.Controllers.Targeting.Processor;
+using BattleModule.Controllers.Turn;
 using BattleModule.Utility.Enums;
-using BattleModule.Utility.Interfaces;
 using CharacterModule;
 using VContainer;
 
@@ -13,7 +13,7 @@ namespace BattleModule.Controllers
 {
     public class BattleTargetingController
     {
-        private readonly List<Character> _charactersOnScene;
+        private List<Character> _charactersOnScene;
 
         private readonly BattleTargetingProcessor _battleTargetingProcessor;
 
@@ -66,9 +66,11 @@ namespace BattleModule.Controllers
             return _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
         }
 
-        private void OnCharactersInTurnChanged(List<Character> charactersToHaveTurn) 
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
         {
-            _characterToHaveTurn = charactersToHaveTurn.First();
+            _characterToHaveTurn = battleTurnContext.CharacterInAction;
+
+            _charactersOnScene = battleTurnContext.CharactersInTurn;
         }
 
         private Func<Type, bool> GetSearchFunction(TargetType targetType) 

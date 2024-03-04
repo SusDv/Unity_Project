@@ -1,5 +1,6 @@
 ﻿using InventorySystem.Item;
 using System;
+using CharacterModule.Inventory.Items.Base;
 
 namespace InventorySystem.Core 
 {
