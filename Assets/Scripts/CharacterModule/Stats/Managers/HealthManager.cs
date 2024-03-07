@@ -17,7 +17,7 @@ namespace CharacterModule.Stats.Managers
         {
             _observableCharacter = character;
             
-            character.GetCharacterStats().AttachStatObserver(this);
+            character.CharacterStats.AttachStatObserver(this);
         }
 
         public void UpdateValue(StatInfo statInfo)

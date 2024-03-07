@@ -42,15 +42,14 @@ namespace BattleModule.Controllers
 
         public void ExecuteBattleAction(List<Character> targets) 
         {
-            _currentBattleAction.PerformAction(_characterToHaveTurn.GetCharacterStats(), targets);
+            _currentBattleAction.PerformAction(_characterToHaveTurn.CharacterStats, targets);
 
             BattleEventManager.Instance.AdvanceTurn();
         }
 
         private void SetDefaultBattleAction() 
         {
-            SetBattleAction<BattleDefaultAction>(_characterToHaveTurn.
-                GetCharacterWeapon().GetWeapon());
+            SetBattleAction<BattleDefaultAction>(_characterToHaveTurn.CharacterWeapon.GetWeapon());
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 

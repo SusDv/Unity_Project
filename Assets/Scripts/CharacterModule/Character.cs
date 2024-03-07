@@ -11,62 +11,33 @@ namespace CharacterModule
     public class Character : MonoBehaviour, IDisposable
     {
         [SerializeField] private CharacterSettings _characterSettings;
+        
+        public StatManager CharacterStats { get; private set; }
 
-        private CharacterWeapon _characterWeapon;
+        public CharacterWeapon CharacterWeapon { get; private set; }
 
-        private StatManager _characterStatManager;
+        public SpellContainer CharacterSpells { get; private set; }
 
-        private HealthManager _healthManager;
+        public CharacterInformation CharacterInformation { get; private set; }
 
-        private SpellContainer _characterSpellContainer;
+        public HealthManager HealthManager{ get; private set; }
 
-        private CharacterInformation _characterInformation;
-
-        [SerializeField] private Animator _characterAnimator;
-
+        [field: SerializeField]
+        public Animator CharacterAnimator { get; private set; }
+        
         private void Awake()
         {
-            _characterStatManager = new StatManager(_characterSettings.BaseStats);
+            CharacterStats = new StatManager(_characterSettings.BaseStats);
 
-            _characterSpellContainer = new SpellContainer(_characterSettings.BaseSpells);
+            CharacterSpells = new SpellContainer(_characterSettings.BaseSpells);
 
-            _characterWeapon = new CharacterWeapon(this);
+            CharacterWeapon = new CharacterWeapon(this);
 
-            _healthManager = new HealthManager(this);
+            HealthManager = new HealthManager(this);
 
-            _characterInformation = _characterSettings.CharacterInformation;
+            CharacterInformation = _characterSettings.CharacterInformation;
 
-            _characterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
-        }
-
-        public StatManager GetCharacterStats() 
-        {
-            return _characterStatManager;
-        }
-
-        public CharacterWeapon GetCharacterWeapon() 
-        {
-            return _characterWeapon;
-        }
-
-        public SpellContainer GetCharacterSpells() 
-        {
-            return _characterSpellContainer;
-        }
-
-        public CharacterInformation GetCharacterInformation()
-        {
-            return _characterInformation;
-        }
-
-        public HealthManager GetHealthManager()
-        {
-            return _healthManager;
-        }
-
-        public Animator GetCharacterAnimator()
-        {
-            return _characterAnimator;
+            CharacterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
         }
 
         public void Dispose()

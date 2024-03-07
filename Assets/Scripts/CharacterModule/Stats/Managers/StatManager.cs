@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.Settings;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Settings;
 using StatModule.Utility;
 using StatModule.Utility.Enums;
 

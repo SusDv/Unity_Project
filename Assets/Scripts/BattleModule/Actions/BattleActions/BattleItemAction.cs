@@ -19,7 +19,7 @@ namespace BattleModule.Actions.BattleActions
         {
             var itemToUse = BattleActionContext.ActionObject as ItemBase;
             
-            (itemToUse as IConsumable)?.Consume(targets[0].GetCharacterStats());
+            (itemToUse as IConsumable)?.Consume(targets[0].CharacterStats);
 
             source.ApplyStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
         }

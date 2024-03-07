@@ -25,9 +25,9 @@ namespace InventorySystem.Item
 
         public override void Equip(Character character)
         {
-            StatManager characterStatManager = character.GetCharacterStats();
+            StatManager characterStatManager = character.CharacterStats;
 
-            if (character.GetCharacterWeapon().HaveWeapon)
+            if (character.CharacterWeapon.HaveWeapon)
             {
                 Unequip(character);
             }
@@ -39,12 +39,12 @@ namespace InventorySystem.Item
                 }
             }
 
-            character.GetCharacterWeapon().HaveWeapon = !character.GetCharacterWeapon().HaveWeapon;
+            character.CharacterWeapon.HaveWeapon = !character.CharacterWeapon.HaveWeapon;
         }
 
         public override void Unequip(Character character)
         {
-            StatManager characterStatManager = character.GetCharacterStats();
+            StatManager characterStatManager = character.CharacterStats;
 
             characterStatManager.ApplyStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
         }

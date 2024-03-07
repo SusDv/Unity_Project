@@ -19,9 +19,9 @@ namespace BattleModule.Controllers.Turn
         [Inject]
         public BattleTurnController(BattleSpawner battleSpawner)
         {
-            _spawnedCharacters = battleSpawner.GetSpawnedCharacters().OrderBy((character) => character.GetCharacterStats().GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
+            _spawnedCharacters = battleSpawner.GetSpawnedCharacters().OrderBy((character) => character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
 
-            _spawnedCharacters.ForEach(character => character.GetHealthManager().OnCharacterDied += OnCharacterDied);
+            _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
             
             BattleEventManager.Instance.OnTurnEnded += UpdateCharactersBattlePoints;
         }
@@ -30,11 +30,11 @@ namespace BattleModule.Controllers.Turn
         {
             foreach (var character in _spawnedCharacters)
             {
-                float battlePoints = character.GetCharacterStats().GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
+                float battlePoints = character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
 
                 int deduction = CalculateDeduction(battlePoints);
 
-                character.GetCharacterStats().ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
+                character.CharacterStats.ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
             }
 
             SortSpawnedCharacters();
@@ -65,14 +65,14 @@ namespace BattleModule.Controllers.Turn
 
         private void SortSpawnedCharacters()
         {
-            _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.GetCharacterStats().GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
+            _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
 
             OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
         }
 
         private void ResetBattlePoints()
         {
-            var characterInTurnStats = _spawnedCharacters.First().GetCharacterStats();
+            var characterInTurnStats = _spawnedCharacters.First().CharacterStats;
 
             characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
             
@@ -81,7 +81,7 @@ namespace BattleModule.Controllers.Turn
 
         private void TriggerTemporaryModifiers() 
         {
-            _spawnedCharacters.First().GetCharacterStats().ApplyStatModifiersByCondition(
+            _spawnedCharacters.First().CharacterStats.ApplyStatModifiersByCondition(
                 (statModifier) => statModifier is TemporaryStatModifier);
         }
 

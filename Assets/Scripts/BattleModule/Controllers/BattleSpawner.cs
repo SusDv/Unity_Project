@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Scopes;
+using BattleModule.Transition;
 using CharacterModule;
 using UnityEngine;
 using Utils;
+using VContainer;
 
 namespace BattleModule.Controllers
 {
@@ -19,8 +22,13 @@ namespace BattleModule.Controllers
 
         private readonly List<Character> _spawnedCharacters = new List<Character>();
 
-        private void Awake()
+        private BattleTransitionData _battleTransitionManager;
+        
+        [Inject]
+        private void Init(BattleTransitionData battleTransitionData)
         {
+            _battleTransitionManager = battleTransitionData;
+            
             SpawnCharactersByType(typeof(Player));
 
             SpawnCharactersByType(typeof(Enemy));
@@ -32,7 +40,7 @@ namespace BattleModule.Controllers
             
             var spawnPoint = GetSpawnPoint(characterType);
 
-            var charactersToSpawn = BattleManager.Instance.CharactersToSpawn.Where((character) => character.GetType() == characterType).ToList();
+            var charactersToSpawn = _battleTransitionManager.CharactersToSpawn.Where((character) => character.GetType() == characterType).ToList();
 
             for (var i = 0; i < charactersToSpawn.Count; i++)
             {

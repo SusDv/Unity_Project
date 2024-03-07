@@ -16,7 +16,7 @@ namespace CharacterModule.Spells.Core.Spells
         {
             foreach (var target in targets) 
             {
-                target.GetCharacterStats().RemoveStatModifiersByCondition(
+                target.CharacterStats.RemoveStatModifiersByCondition(
                     (statModifier) => (statModifier is TemporaryStatModifier { IsNegative: true } temporaryStatModifier)
                                       && temporaryStatModifier.TemporaryStatModifierTier == SpellClearanceTier);
             }

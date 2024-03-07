@@ -1,11 +1,10 @@
-using System;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Base;
 using StatModule.Utility.Enums;
+using UnityEngine;
 
-namespace StatModule.Settings
+namespace CharacterModule.Stats.Settings
 {
     [CreateAssetMenu(menuName = "Base Stats", fileName = "Character/Stats/Base Stats")]
     public class BaseStats : ScriptableObject 
@@ -26,8 +25,10 @@ namespace StatModule.Settings
 #else
         private void Awake()
         {
-            foreach (Stat stat in _statList)
+            foreach (var stat in StatList)
             {
+                stat.MaxValue = stat.BaseValue;
+                
                 stat.FinalValue = stat.BaseValue;
             }
         }

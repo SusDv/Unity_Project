@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSettings: {fileID: 11400000, guid: 9769c39f8f8927048811c2d29efcd26f, type: 2}
-  _characterAnimator: {fileID: -6041111671475138606}
+  <CharacterAnimator>k__BackingField: {fileID: -6041111671475138606}
 --- !u!95 &-6041111671475138606
 Animator:
   serializedVersion: 5
