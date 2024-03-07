@@ -16,7 +16,7 @@ namespace BattleModule.Animation
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            _characterAnimator = battleTurnContext.CharacterInAction.GetCharacterAnimator();
+            _characterAnimator = battleTurnContext.CharacterInAction.CharacterAnimator;
         }
     }
 }

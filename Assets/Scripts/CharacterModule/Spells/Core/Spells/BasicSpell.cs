@@ -19,7 +19,7 @@ namespace CharacterModule.Spells.Core.Spells
         {
             foreach (var target in targets)
             {
-                var targetStats = target.GetCharacterStats();
+                var targetStats = target.CharacterStats;
                 
                 foreach (var baseStatModifier in StatModifiers.BaseModifiers)
                 {

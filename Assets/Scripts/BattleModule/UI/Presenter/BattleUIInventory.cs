@@ -3,13 +3,12 @@ using System.Linq;
 using UnityEngine;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Controllers;
+using BattleModule.Transition;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
 using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Base;
-using InventorySystem.Item;
 using InventorySystem.Core;
-using Utils;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 
@@ -30,7 +29,8 @@ namespace BattleModule.UI.Presenter
         [Inject]
         private void Init(BattleUIItemDescription battleUIItemDescription, 
             BattleInventorySceneSettings battleInventorySceneSettings,
-            BattleActionController battleActionController)
+            BattleActionController battleActionController,
+            BattleTransitionData battleTransitionManager)
         {
             _battleInventorySceneSettings = battleInventorySceneSettings;
             
@@ -38,11 +38,11 @@ namespace BattleModule.UI.Presenter
             
             _battleActionController = battleActionController;
             
-            _battleInventory = BattleManager.Instance.PlayerInventory.GetBattleInventory();
+            _battleInventory = battleTransitionManager.PlayerInventory.GetBattleInventory();
             
             _battleUIItems = new List<BattleUIItemView>();
             
-            BattleManager.Instance.PlayerInventory.OnInventoryChanged += OnBattleInventoryChanged;
+            battleTransitionManager.PlayerInventory.OnInventoryChanged += OnBattleInventoryChanged;
             
             _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
 

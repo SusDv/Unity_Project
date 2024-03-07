@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CharacterModule;
 using CharacterModule.Inventory;
+using CharacterModule.Inventory.Items.Base;
 using UnityEngine;
 
 namespace Utils
@@ -14,5 +15,7 @@ namespace Utils
 
         [field: SerializeField]
         public InventoryBase PlayerInventory { get; set; }
+        
+        public List<ItemBase> Items;
     }
 }

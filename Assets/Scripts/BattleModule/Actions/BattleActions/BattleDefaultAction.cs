@@ -21,7 +21,7 @@ namespace BattleModule.Actions.BattleActions
 
             foreach(var character in targets) 
             {
-                var target = character.GetCharacterStats();
+                var target = character.CharacterStats;
 
                 float damage = -BattleAttackDamageProcessor.CalculateAttackDamage(
                     source.GetStatInfo(StatType.ATTACK).FinalValue,
