@@ -5,6 +5,7 @@ using BattleModule.Transition;
 using BattleModule.Utility;
 using CharacterModule;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers
@@ -20,23 +21,23 @@ namespace BattleModule.Controllers
         
         private List<Character> _spawnedCharacters;
 
-        private BattleTransitionData _battleTransitionData;
+        private BattleManager _battleManager;
 
         public event Action<List<Character>> OnCharactersSpawned = delegate { };
 
         [Inject]
-        private void Init(BattleTransitionData battleTransitionData)
+        private void Init(BattleManager battleManager)
         {
-            _battleTransitionData = battleTransitionData;
+            _battleManager = battleManager;
 
             _spawnedCharacters = new List<Character>();
         }
 
         private void Start()
         {
-            SpawnCharacters(_battleTransitionData.PlayerCharacters, _playerSpawnPoint);
+            SpawnCharacters(_battleManager.PlayerCharacters, _playerSpawnPoint);
 
-            SpawnCharacters(_battleTransitionData.EnemyCharacters, _enemySpawnPoint);
+            SpawnCharacters(_battleManager.EnemyCharacters, _enemySpawnPoint);
             
             OnCharactersSpawned?.Invoke(_spawnedCharacters);
         }

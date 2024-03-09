@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Controllers;
-using BattleModule.Transition;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
 using CharacterModule.Inventory;
-using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Base;
 using InventorySystem.Core;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 
@@ -27,38 +25,30 @@ namespace BattleModule.UI.Presenter
         
         private List<InventoryItem> _battleInventory = new();
 
-        private InventoryBase _playerInventory;
 
         [Inject]
         private void Init(BattleInventorySceneSettings battleInventorySceneSettings,
             BattleUIItemDescription battleUIItemDescription,
             BattleActionController battleActionController,
-            BattleTransitionData battleTransitionData)
+            BattleManager battleManager)
         {
             _battleInventorySceneSettings = battleInventorySceneSettings;
             
             _battleUIItemDescription = battleUIItemDescription;
-            
+
             _battleActionController = battleActionController;
-
-            _playerInventory = ScriptableObject.CreateInstance<InventoryBase>();
             
-            _playerInventory.InitializeInventory();
-
-            foreach (var item in battleTransitionData.Items)
-            {
-                _playerInventory.AddItem(item, 2);
-            }
+            _battleInventory = battleManager.PlayerInventory.GetBattleInventory();
             
-            _battleInventory = _playerInventory.GetBattleInventory();
-            
-            _playerInventory.OnInventoryChanged += OnBattleInventoryChanged;
+            battleManager.PlayerInventory.OnInventoryChanged += OnBattleInventoryChanged;
             
             _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
-            
+        }
+
+        private void Start()
+        {
             UpdateBattleInventory();
         }
-        
 
         private void OnBattleInventoryChanged(InventoryBase playerInventory)
         {

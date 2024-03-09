@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -163,7 +163,8 @@ MonoBehaviour:
   - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
   - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
   - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  Items:
+  <PlayerInventory>k__BackingField: {fileID: 11400000, guid: 8a4cfdf1ff57d5e4d83de0a3f1c13429, type: 2}
+  <Items>k__BackingField:
   - {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
   - {fileID: 11400000, guid: 7959d013c0b461b4284f764a8fa02929, type: 2}
   - {fileID: 11400000, guid: 261a169f154091a43987412c1050f910, type: 2}
@@ -180,7 +181,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &951094787
 GameObject:
@@ -211,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf08f84215e40fa804227b9de81f0cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleTransitionScope: {fileID: 1950067995}
+  _battleTransitionScope: {fileID: 1769379562}
 --- !u!4 &951094789
 Transform:
   m_ObjectHideFlags: 0
@@ -225,9 +226,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1950067993
+--- !u!1 &1769379560
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,40 +236,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1950067994}
-  - component: {fileID: 1950067995}
+  - component: {fileID: 1769379561}
+  - component: {fileID: 1769379562}
   m_Layer: 0
-  m_Name: BattleSetupManager
+  m_Name: BattleTransitionScope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1950067994
+--- !u!4 &1769379561
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950067993}
+  m_GameObject: {fileID: 1769379560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.545825, y: 5.2922587, z: -6.565112}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1950067995
+--- !u!114 &1769379562
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950067993}
+  m_GameObject: {fileID: 1769379560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d59f0710333149988d216011fff7b968, type: 3}
+  m_Script: {fileID: 11500000, guid: cf6fad744f1c49daa9d34a24105802f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
