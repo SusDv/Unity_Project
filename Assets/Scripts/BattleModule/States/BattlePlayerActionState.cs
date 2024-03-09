@@ -78,7 +78,7 @@ namespace BattleModule.States
         
         private void StartTurn()
         {
-            BattleStateMachine.BattleController.BattleTurnController.TurnEffects();  
+            BattleStateMachine.BattleController.BattleTurnController.StartTurn();  
         }
 
         private void OnBattleActionChanged(BattleActionContext context)

@@ -1,7 +1,7 @@
 ﻿using CharacterModule.Stats.Interfaces;
 using StatModule.Utility.Enums;
 using UnityEngine;
-using Utils;
+using Utility.UI;
 
 namespace BattleModule.UI.View
 {

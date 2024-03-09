@@ -1,11 +1,9 @@
 ﻿using BattleModule.Controllers;
 using BattleModule.UI.View;
-using StatModule.Utility.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.UI.Presenter.SceneSettings.Player;
 using CharacterModule;
-using CharacterModule.Stats.Base;
 using UnityEngine;
 using VContainer;
 
@@ -26,11 +24,16 @@ namespace BattleModule.UI.Presenter
             
             _battleUIPlayers = new List<BattleUIPlayerView>();
 
-            _players = battleSpawner.GetSpawnedCharacters().Where((character) => (character is Player)).ToList();
+            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
+        }
+        
+        private void OnCharactersSpawned(List<Character> characters)
+        {
+            _players = characters.Where((character) => (character is Player)).ToList();
             
             CreateBattleUICharacters();
         }
-
+        
         private void CreateBattleUICharacters() 
         {
             foreach (var character in _players)

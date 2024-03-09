@@ -23,12 +23,7 @@ namespace BattleModule.UI.BattleButton
         {
             OnButtonOver?.Invoke(this as T);
         }
-
-        public void Dispose()
-        {
-            Destroy(gameObject);
-        }
-
+        
         private void OnApplicationQuit()
         {
             OnButtonClick = null;

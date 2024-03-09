@@ -36,7 +36,7 @@ public class Player : Character
             Loot();
 
         if (Input.GetKeyDown(KeyCode.H))
-            GameController.instance.ChangeScene(Utility.BATTLE_SCENE_NAME);
+            GameController.instance.ChangeScene(UtilityTemp.BATTLE_SCENE_NAME);
     }
     private GameObject GetNearestObject(Collider[] objects)
     {

@@ -19,11 +19,16 @@ namespace BattleModule.Controllers.Turn
         [Inject]
         public BattleTurnController(BattleSpawner battleSpawner)
         {
-            _spawnedCharacters = battleSpawner.GetSpawnedCharacters().OrderBy((character) => character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
-
-            _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
+            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
             
             BattleEventManager.Instance.OnTurnEnded += UpdateCharactersBattlePoints;
+        }
+
+        private void OnCharactersSpawned(List<Character> characters)
+        {
+            _spawnedCharacters = characters;
+            
+            _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
         }
 
         private void UpdateCharactersBattlePoints()
@@ -31,52 +36,35 @@ namespace BattleModule.Controllers.Turn
             foreach (var character in _spawnedCharacters)
             {
                 float battlePoints = character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
-
-                int deduction = CalculateDeduction(battlePoints);
-
-                character.CharacterStats.ApplyStatModifier(StatType.BATTLE_POINTS, -deduction);
+                
+                character.CharacterStats.ApplyStatModifier(StatType.BATTLE_POINTS, CalculateDeduction(battlePoints));
             }
-
-            SortSpawnedCharacters();
         }
 
-        private int CalculateDeduction(float battlePoints)
+        private static int CalculateDeduction(float battlePoints)
         {
-            int deduction;
-            
             var tierNumber = (int) Mathf.Clamp(battlePoints / 10f, 0f, 4f);
 
-            if (battlePoints <= 10 * tierNumber)
-            {
-                deduction = 2 * tierNumber;
-            }
-            else if (battlePoints > 10 * tierNumber &&
-                     battlePoints < 10 * tierNumber + 2 * tierNumber)
-            {
-                deduction = 3 + (2 * (tierNumber - 1));
-            }
-            else 
-            {
-                deduction = 4 + (2 * (tierNumber - 1));
-            }
-
-            return deduction;
+            return -(battlePoints <= 10 * tierNumber ? 2 * tierNumber
+                : battlePoints < 10 * tierNumber + 2 * tierNumber
+                    ? 3 + 2 * (tierNumber - 1)
+                    : 4 + 2 * (tierNumber - 1));
         }
 
         private void SortSpawnedCharacters()
         {
             _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
 
+            ResetFirstCharacterBattlePoints();
+            
             OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
         }
 
-        private void ResetBattlePoints()
+        private void ResetFirstCharacterBattlePoints()
         {
             var characterInTurnStats = _spawnedCharacters.First().CharacterStats;
 
             characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
-            
-            OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
         }
 
         private void TriggerTemporaryModifiers() 
@@ -97,9 +85,10 @@ namespace BattleModule.Controllers.Turn
             return new BattleTurnContext(_spawnedCharacters.First(), _spawnedCharacters);
         }
 
-        public void TurnEffects() 
+        public void StartTurn() 
         {
-            ResetBattlePoints();
+            SortSpawnedCharacters();
+            
             TriggerTemporaryModifiers();
         }
     }

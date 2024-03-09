@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,65 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &577267226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 577267228}
+  - component: {fileID: 577267227}
+  m_Layer: 0
+  m_Name: BattleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &577267227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577267226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f70e58feda6a74c91ebfec47928553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PlayerCharacters>k__BackingField:
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  - {fileID: 5625005941891779630, guid: b82a12b7c7ed39d43bcf5e38491a0a9c, type: 3}
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
+  <EnemyCharacters>k__BackingField:
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  Items:
+  - {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
+  - {fileID: 11400000, guid: 7959d013c0b461b4284f764a8fa02929, type: 2}
+  - {fileID: 11400000, guid: 261a169f154091a43987412c1050f910, type: 2}
+--- !u!4 &577267228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577267226}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &951094787
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,62 +227,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1508769547
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1508769548}
-  - component: {fileID: 1508769549}
-  m_Layer: 0
-  m_Name: BattleData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1508769548
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508769547}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1508769549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508769547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29f70e58feda6a74c91ebfec47928553, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <CharactersToSpawn>k__BackingField:
-  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  - {fileID: 5625005941891779630, guid: b82a12b7c7ed39d43bcf5e38491a0a9c, type: 3}
-  - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  <PlayerInventory>k__BackingField: {fileID: 11400000, guid: 666c2c6536ccb244686cc8ec1fcf104e, type: 2}
-  Items:
-  - {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
-  - {fileID: 11400000, guid: 7959d013c0b461b4284f764a8fa02929, type: 2}
-  - {fileID: 11400000, guid: 261a169f154091a43987412c1050f910, type: 2}
 --- !u!1 &1950067993
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,4 +275,3 @@ MonoBehaviour:
     TypeName: 
   autoRun: 0
   autoInjectGameObjects: []
-  _battleManager: {fileID: 1508769549}

@@ -1,30 +1,28 @@
 using System.Collections.Generic;
 using CharacterModule;
 using CharacterModule.Inventory;
-using Utils;
+using CharacterModule.Inventory.Items.Base;
+using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Transition
 {
     public class BattleTransitionData
     {
-        public readonly List<Character> CharactersToSpawn;
+        public readonly List<Player> PlayerCharacters;
 
-        public readonly InventoryBase PlayerInventory;
+        public readonly List<Enemy> EnemyCharacters;
 
-        [Inject]
-        public BattleTransitionData(BattleManager battleManager)
+        public readonly List<ItemBase> Items;
+        
+        public BattleTransitionData()
         {
-            CharactersToSpawn = battleManager.CharactersToSpawn;
-
-            PlayerInventory = battleManager.PlayerInventory;
+            PlayerCharacters = BattleManager.Instance.PlayerCharacters;
             
-            PlayerInventory.InitializeInventory();
+            EnemyCharacters = BattleManager.Instance.EnemyCharacters;
 
-            foreach (var item in battleManager.Items)
-            {
-                PlayerInventory.AddItem(item, 2);
-            }
+            Items = BattleManager.Instance.Items;
         }
     }
 }

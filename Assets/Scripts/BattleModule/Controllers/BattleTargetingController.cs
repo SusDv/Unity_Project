@@ -29,10 +29,8 @@ namespace BattleModule.Controllers
         public BattleTargetingController(BattleSpawner battleSpawner, BattleTurnController battleTurnController)
         {
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
-            
-            _charactersOnScene = battleSpawner.GetSpawnedCharacters();
 
-            _characterToHaveTurn = _charactersOnScene.First();
+            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
             
             _battleTargetingProcessor = new BattleTargetingProcessor();
         }
@@ -64,6 +62,13 @@ namespace BattleModule.Controllers
         public bool IsReadyForAction(ref Stack<Character> currentTargets)
         {
             return _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
+        }
+
+        private void OnCharactersSpawned(List<Character> characters)
+        {
+            _charactersOnScene = characters;
+
+            _characterToHaveTurn = _charactersOnScene.First();
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 

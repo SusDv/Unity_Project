@@ -1,13 +1,11 @@
-using System;
 using CharacterModule.Stats.Interfaces;
 using StatModule.Utility;
 using StatModule.Utility.Enums;
 using UnityEngine;
 
-namespace Utils
+namespace Utility.UI
 {
-    [Serializable]
-    public abstract class StatObserver : IStatObserver
+    public abstract class UIStatObserver : MonoBehaviour, IStatObserver
     {
         [field: SerializeField] 
         public StatType StatType { get; set; }
