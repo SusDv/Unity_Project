@@ -6,7 +6,7 @@ using StatModule.Utility;
 using StatModule.Utility.Enums;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
+using Utility.UI;
 
 namespace BattleModule.UI.View 
 {

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Scopes;
 using BattleModule.Transition;
+using BattleModule.Utility;
 using CharacterModule;
 using UnityEngine;
-using Utils;
 using VContainer;
 
 namespace BattleModule.Controllers
@@ -13,65 +12,43 @@ namespace BattleModule.Controllers
     public class BattleSpawner : MonoBehaviour
     {
         [Header("Spawn Points")]
-        [SerializeField] private Transform _playerSpawnBoxPoint;
-        [SerializeField] private Transform _enemySpawnBoxPoint;
-
         [SerializeField]
-        [Range(2f, 15f)]
-        private float _distanceBetweenCharacters = 2f;
-
-        private readonly List<Character> _spawnedCharacters = new List<Character>();
-
-        private BattleTransitionData _battleTransitionManager;
+        private BattleSpawnPoint _playerSpawnPoint;
         
+        [SerializeField]
+        private BattleSpawnPoint _enemySpawnPoint;
+        
+        private List<Character> _spawnedCharacters;
+
+        private BattleTransitionData _battleTransitionData;
+
+        public event Action<List<Character>> OnCharactersSpawned = delegate { };
+
         [Inject]
         private void Init(BattleTransitionData battleTransitionData)
         {
-            _battleTransitionManager = battleTransitionData;
+            _battleTransitionData = battleTransitionData;
+
+            _spawnedCharacters = new List<Character>();
+        }
+
+        private void Start()
+        {
+            SpawnCharacters(_battleTransitionData.PlayerCharacters, _playerSpawnPoint);
+
+            SpawnCharacters(_battleTransitionData.EnemyCharacters, _enemySpawnPoint);
             
-            SpawnCharactersByType(typeof(Player));
-
-            SpawnCharactersByType(typeof(Enemy));
+            OnCharactersSpawned?.Invoke(_spawnedCharacters);
         }
 
-        private void SpawnCharactersByType(Type characterType) 
+        private void SpawnCharacters<T>(IEnumerable<T> characters, BattleSpawnPoint battleSpawnPoint)
+            where T : Character
         {
-            var distanceToMoveBox = 0f;
-            
-            var spawnPoint = GetSpawnPoint(characterType);
+            var spawnedCharacters = characters.Select(character => Instantiate(character, character.transform.position, character.transform.rotation, battleSpawnPoint.CharacterSpawnPoint)).Cast<Character>().ToList();
 
-            var charactersToSpawn = _battleTransitionManager.CharactersToSpawn.Where((character) => character.GetType() == characterType).ToList();
+            _spawnedCharacters.AddRange(spawnedCharacters);
 
-            for (var i = 0; i < charactersToSpawn.Count; i++)
-            {
-                var spawnPosition = spawnPoint.position +
-                                    (_distanceBetweenCharacters) * i * Vector3.right;
-
-                var character = Instantiate(
-                    charactersToSpawn[i],
-                    spawnPosition,
-                    charactersToSpawn[i].transform.rotation,
-                    spawnPoint);
-
-                distanceToMoveBox = -(_distanceBetweenCharacters / 2f) * i;
-
-                character.gameObject.name = $"{(character is Enemy ? "Enemy" : "Player")} {i + 1}";
-               
-                _spawnedCharacters.Add(character);
-            }
-
-            spawnPoint.transform.Translate(
-                Vector3.right * distanceToMoveBox);
-        }
-
-        private Transform GetSpawnPoint(Type characterToSpawnType)
-        {
-            return characterToSpawnType == typeof(Enemy) ? _enemySpawnBoxPoint : _playerSpawnBoxPoint;
-        }
-
-        public List<Character> GetSpawnedCharacters() 
-        {
-            return _spawnedCharacters;
+            battleSpawnPoint.Init(spawnedCharacters);
         }
     }
 }

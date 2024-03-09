@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: EnemyStats
   m_EditorClassIdentifier: 
   <StatList>k__BackingField:
+  - <StatType>k__BackingField: 0
+    <BaseValue>k__BackingField: 800
+    <BaseValueScaleFactor>k__BackingField: 0
+    <IsCapped>k__BackingField: 1
   - <StatType>k__BackingField: 1
     <BaseValue>k__BackingField: 800
     <BaseValueScaleFactor>k__BackingField: 0
@@ -33,7 +37,3 @@ MonoBehaviour:
     <BaseValue>k__BackingField: 50
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0
-  - <StatType>k__BackingField: 0
-    <BaseValue>k__BackingField: 800
-    <BaseValueScaleFactor>k__BackingField: 0
-    <IsCapped>k__BackingField: 1

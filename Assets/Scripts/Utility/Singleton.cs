@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using UnityEngine;
 
-namespace Utils
+namespace Utility
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

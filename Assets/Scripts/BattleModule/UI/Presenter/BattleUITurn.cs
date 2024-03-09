@@ -24,7 +24,12 @@ namespace BattleModule.UI.Presenter
 
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
             
-            CreateTurnPanels(battleSpawner.GetSpawnedCharacters());
+            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
+        }
+
+        private void OnCharactersSpawned(List<Character> characters)
+        {
+            CreateTurnPanels(characters);
         }
 
         private void CreateTurnPanels(List<Character> characters)

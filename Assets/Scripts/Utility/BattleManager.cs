@@ -1,21 +1,18 @@
-﻿using InventorySystem.Core;
-using System.Collections.Generic;
-using CharacterModule;
-using CharacterModule.Inventory;
+﻿using System.Collections.Generic;
 using CharacterModule.Inventory.Items.Base;
 using UnityEngine;
 
-namespace Utils
+namespace Utility
 {
     public class BattleManager 
         : Singleton<BattleManager>
     {
         [field: SerializeField]
-        public List<Character> CharactersToSpawn { get; set; }
-
-        [field: SerializeField]
-        public InventoryBase PlayerInventory { get; set; }
+        public List<Player> PlayerCharacters { get; set; }
         
+        [field: SerializeField]
+        public List<Enemy> EnemyCharacters { get; set; }
+
         public List<ItemBase> Items;
     }
 }

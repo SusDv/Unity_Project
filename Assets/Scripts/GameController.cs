@@ -36,10 +36,10 @@ public class GameController : MonoBehaviour
     {
         switch (sceneName) 
         {
-            case Utility.BATTLE_SCENE_NAME:
+            case UtilityTemp.BATTLE_SCENE_NAME:
                 PlayableCharacter_Transform = PlayableCharacter.transform;
                 break;
-            case Utility.OPEN_WORLD_SCENE_NAME:
+            case UtilityTemp.OPEN_WORLD_SCENE_NAME:
                 break;
         }
         SceneManager.LoadScene(sceneName);

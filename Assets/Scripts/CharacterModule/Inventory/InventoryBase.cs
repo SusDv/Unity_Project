@@ -13,7 +13,7 @@ namespace CharacterModule.Inventory
     [CreateAssetMenu(fileName = "New Inventory", menuName = "Character/Inventory/Inventory")]
     public class InventoryBase : ScriptableObject
     {
-        public Action<List<InventoryItem>> OnInventoryChanged { get; set; } = delegate { };
+        public Action<InventoryBase> OnInventoryChanged { get; set; } = delegate { };
 
         private List<InventoryItem> _inventoryItems;
 
@@ -55,14 +55,14 @@ namespace CharacterModule.Inventory
                 }
             }
 
-            OnInventoryChanged?.Invoke(_inventoryItems);
+            OnInventoryChanged?.Invoke(this);
         }
 
         public void RemoveItem(InventoryItem item)
         {
             _inventoryItems.RemoveAt(_inventoryItems.IndexOf(item));
 
-            OnInventoryChanged?.Invoke(_inventoryItems);
+            OnInventoryChanged?.Invoke(this);
         }
         
         public (int index, InventoryItem item) FindItem(ItemBase itemBase)
@@ -100,7 +100,7 @@ namespace CharacterModule.Inventory
                 _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].amount - 1);
             }
 
-            OnInventoryChanged?.Invoke(_inventoryItems);
+            OnInventoryChanged?.Invoke(this);
         }
     }
 }

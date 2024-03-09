@@ -2,8 +2,6 @@
 using System.Linq;
 using UnityEngine;
 using VContainer;
-using StatModule.Utility.Enums;
-using CharacterModule.Stats.Base;
 using BattleModule.Controllers;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.View;
@@ -26,9 +24,14 @@ namespace BattleModule.UI.Presenter
             _battleEnemySceneSettings = battleEnemySceneSettings;
             
             _battleUIEnemies = new List<BattleUIEnemyView>();
-
-            _enemyCharacters = battleSpawner.GetSpawnedCharacters().Where((character) => character is Enemy).ToList();
-
+            
+            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
+        }
+        
+        private void OnCharactersSpawned(List<Character> characters)
+        {
+            _enemyCharacters = characters.Where((character) => character is Enemy).ToList();
+            
             CreateBattleUIEnemies();
         }
 

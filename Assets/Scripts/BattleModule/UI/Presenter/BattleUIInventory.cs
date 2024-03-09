@@ -6,6 +6,7 @@ using BattleModule.Controllers;
 using BattleModule.Transition;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
+using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Base;
 using InventorySystem.Core;
@@ -22,42 +23,52 @@ namespace BattleModule.UI.Presenter
         private BattleUIItemDescription _battleUIItemDescription;
         
         
-        private List<BattleUIItemView> _battleUIItems;
+        private List<BattleUIItemView> _battleUIItems = new ();
         
-        private List<InventoryItem> _battleInventory;
+        private List<InventoryItem> _battleInventory = new();
+
+        private InventoryBase _playerInventory;
 
         [Inject]
-        private void Init(BattleUIItemDescription battleUIItemDescription, 
-            BattleInventorySceneSettings battleInventorySceneSettings,
+        private void Init(BattleInventorySceneSettings battleInventorySceneSettings,
+            BattleUIItemDescription battleUIItemDescription,
             BattleActionController battleActionController,
-            BattleTransitionData battleTransitionManager)
+            BattleTransitionData battleTransitionData)
         {
             _battleInventorySceneSettings = battleInventorySceneSettings;
             
             _battleUIItemDescription = battleUIItemDescription;
             
             _battleActionController = battleActionController;
+
+            _playerInventory = ScriptableObject.CreateInstance<InventoryBase>();
             
-            _battleInventory = battleTransitionManager.PlayerInventory.GetBattleInventory();
+            _playerInventory.InitializeInventory();
+
+            foreach (var item in battleTransitionData.Items)
+            {
+                _playerInventory.AddItem(item, 2);
+            }
             
-            _battleUIItems = new List<BattleUIItemView>();
+            _battleInventory = _playerInventory.GetBattleInventory();
             
-            battleTransitionManager.PlayerInventory.OnInventoryChanged += OnBattleInventoryChanged;
+            _playerInventory.OnInventoryChanged += OnBattleInventoryChanged;
             
             _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
-
+            
             UpdateBattleInventory();
         }
+        
 
-        private void OnBattleInventoryChanged(List<InventoryItem> inventoryItems)
+        private void OnBattleInventoryChanged(InventoryBase playerInventory)
         {
-            _battleInventory = inventoryItems.Where(item => item.inventoryItem is ConsumableItem).ToList();
+            _battleInventory = playerInventory.GetBattleInventory();
 
             UpdateBattleInventory();
         }
 
         private void UpdateBattleInventory()
-        {
+        { 
             BattleUIInventoryClear();
 
             foreach (var item in _battleInventory)
@@ -78,9 +89,12 @@ namespace BattleModule.UI.Presenter
 
         private void BattleUIInventoryClear()
         {
-            _battleUIItems.ForEach(uiItem => uiItem.Dispose());
-            
-            _battleUIItems.Clear();
+            _battleUIItems = new List<BattleUIItemView>();
+
+            for (var i = 0; i < _battleInventorySceneSettings.BattleInventoryItemsParent.transform.childCount; i++)
+            {
+                Destroy(_battleInventorySceneSettings.BattleInventoryItemsParent.transform.GetChild(i).gameObject);
+            }
         }
 
         private void BattleItemPointerOver(BattleUIItemView battleUIItem)
