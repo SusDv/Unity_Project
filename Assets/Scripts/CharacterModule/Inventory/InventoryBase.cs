@@ -4,7 +4,6 @@ using System.Linq;
 using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Base;
 using InventorySystem.Core;
-using InventorySystem.Item;
 using UnityEngine;
 
 namespace CharacterModule.Inventory 

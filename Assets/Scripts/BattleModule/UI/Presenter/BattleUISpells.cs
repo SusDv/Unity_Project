@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using BattleModule.Controllers;
 using BattleModule.UI.View;
@@ -28,8 +27,6 @@ namespace BattleModule.UI.Presenter
         {
             _battleSpellsSceneSettings = battleSpellsSceneSettings;
             
-            _battleUISpells = new List<BattleUISpellView>();
-
             _battleActionController = battleActionController;
 
             _battleSpellsSceneSettings.BattleSpellsMenuButton.OnButtonClick += OnSpellsButtonClick;

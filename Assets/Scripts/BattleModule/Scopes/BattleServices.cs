@@ -3,7 +3,9 @@ using BattleModule.Animation;
 using BattleModule.Controllers;
 using BattleModule.Controllers.Turn;
 using BattleModule.Input;
+using BattleModule.Transition;
 using UnityEngine;
+using Utility;
 using VContainer;
 using VContainer.Unity;
 
