@@ -3,8 +3,6 @@ using CharacterModule.Spells.Interfaces;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Modifier;
-using StatModule.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core.Spells

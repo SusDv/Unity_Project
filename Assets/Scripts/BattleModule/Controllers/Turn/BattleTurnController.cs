@@ -31,8 +31,8 @@ namespace BattleModule.Controllers.Turn
             _spawnedCharacters = characters;
             
             _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
-            
-            BaseStatModifier.LocalCycle = _spawnedCharacters.Count;
+
+            BaseStatModifier.SetLocalCycle(characters.Count);
         }
 
         private void UpdateCharactersBattlePoints()
@@ -81,7 +81,7 @@ namespace BattleModule.Controllers.Turn
         {
             _spawnedCharacters.Remove(deadCharacter);
 
-            BaseStatModifier.LocalCycle = _spawnedCharacters.Count;
+            BaseStatModifier.SetLocalCycle(_spawnedCharacters.Count);
             
             OnCharactersInTurnChanged.Invoke(GetCurrentBattleTurnContext());
         }

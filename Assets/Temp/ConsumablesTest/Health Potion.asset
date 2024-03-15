@@ -21,6 +21,11 @@ MonoBehaviour:
     _instantModifiers:
     - <StatType>k__BackingField: 1
       <ValueModifierType>k__BackingField: 0
+      <ModifiedValue>k__BackingField: 0
+      <Value>k__BackingField: 50
+    - <StatType>k__BackingField: 0
+      <ValueModifierType>k__BackingField: 0
+      <ModifiedValue>k__BackingField: 0
       <Value>k__BackingField: 50
     _temporaryModifiers: []
     _permanentModifiers: []

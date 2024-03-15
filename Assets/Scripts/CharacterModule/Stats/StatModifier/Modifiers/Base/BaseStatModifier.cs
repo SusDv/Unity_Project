@@ -39,7 +39,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
 
         public bool IsNegative => Value < 0;
 
-        public static int LocalCycle { get; set; }
+        protected static int LocalCycle;
 
         public abstract void Modify(Stat statToModify, 
             Action<BaseStatModifier> addModifierCallback,
@@ -54,6 +54,11 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
             baseModifier.Value = -baseModifier.Value;
 
             return baseModifier;
+        }
+
+        public static void SetLocalCycle(int localCycle)
+        {
+            LocalCycle = localCycle;
         }
 
         protected Ref<float> GetRefValue(Stat statToModify)
