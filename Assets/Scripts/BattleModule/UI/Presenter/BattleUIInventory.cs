@@ -19,6 +19,8 @@ namespace BattleModule.UI.Presenter
         private BattleActionController _battleActionController;
 
         private BattleUIItemDescription _battleUIItemDescription;
+
+        private InventoryBase _playerInventory;
         
         
         private List<BattleUIItemView> _battleUIItems = new ();
@@ -30,7 +32,7 @@ namespace BattleModule.UI.Presenter
         private void Init(BattleInventorySceneSettings battleInventorySceneSettings,
             BattleUIItemDescription battleUIItemDescription,
             BattleActionController battleActionController,
-            BattleManager battleManager)
+            BattleTransitionData battleTransitionData)
         {
             _battleInventorySceneSettings = battleInventorySceneSettings;
             
@@ -38,20 +40,24 @@ namespace BattleModule.UI.Presenter
 
             _battleActionController = battleActionController;
             
-            _battleInventory = battleManager.PlayerInventory.GetBattleInventory();
-            
-            battleManager.PlayerInventory.OnInventoryChanged += OnBattleInventoryChanged;
-            
-            _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
+            _playerInventory = battleTransitionData.PlayerInventory;
         }
 
         private void Start()
         {
+            _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
+
+            _playerInventory.OnInventoryChanged += OnInventoryChanged;
+
+            _battleInventory = _playerInventory.GetBattleInventory();
+            
             UpdateBattleInventory();
         }
 
-        private void OnBattleInventoryChanged(InventoryBase playerInventory)
+        private void OnInventoryChanged(InventoryBase playerInventory)
         {
+            _playerInventory = playerInventory;
+
             _battleInventory = playerInventory.GetBattleInventory();
 
             UpdateBattleInventory();
@@ -63,15 +69,15 @@ namespace BattleModule.UI.Presenter
 
             foreach (var item in _battleInventory)
             {
-                var battleUIItem = Instantiate(_battleInventorySceneSettings.BattleUIItemView,
-                    _battleInventorySceneSettings.BattleInventoryItemsParent.transform.position, Quaternion.identity,
-                    _battleInventorySceneSettings.BattleInventoryItemsParent.transform);
-
+                var battleUIItem =
+                    _battleInventorySceneSettings.BattleUIItemView.CreateInstance(_battleInventorySceneSettings
+                        .BattleInventoryItemsParent.transform);
+                
                 battleUIItem.OnButtonOver += BattleItemPointerOver;
 
                 battleUIItem.OnButtonClick += BattleItemPointerClick;
 
-                battleUIItem.SetData(item.inventoryItem.ItemImage, item.amount.ToString());
+                battleUIItem.SetData(item);
 
                 _battleUIItems.Add(battleUIItem);
             }

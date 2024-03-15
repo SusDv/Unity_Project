@@ -21,23 +21,23 @@ namespace BattleModule.Controllers
         
         private List<Character> _spawnedCharacters;
 
-        private BattleManager _battleManager;
+        private BattleTransitionData _battleTransitionData;
 
         public event Action<List<Character>> OnCharactersSpawned = delegate { };
 
         [Inject]
-        private void Init(BattleManager battleManager)
+        private void Init(BattleTransitionData battleTransitionData)
         {
-            _battleManager = battleManager;
+            _battleTransitionData = battleTransitionData;
 
             _spawnedCharacters = new List<Character>();
         }
 
         private void Start()
         {
-            SpawnCharacters(_battleManager.PlayerCharacters, _playerSpawnPoint);
+            SpawnCharacters(_battleTransitionData.PlayerCharacters, _playerSpawnPoint);
 
-            SpawnCharacters(_battleManager.EnemyCharacters, _enemySpawnPoint);
+            SpawnCharacters(_battleTransitionData.EnemyCharacters, _enemySpawnPoint);
             
             OnCharactersSpawned?.Invoke(_spawnedCharacters);
         }

@@ -5,7 +5,6 @@ using BattleModule.Input;
 using BattleModule.States.StateMachine;
 using CharacterModule;
 using JetBrains.Annotations;
-using VContainer;
 using VContainer.Unity;
 
 namespace BattleModule.Controllers.Base
@@ -24,11 +23,14 @@ namespace BattleModule.Controllers.Base
         public readonly BattleTargetingController BattleTargetingController;     
 
         public readonly BattleTurnController BattleTurnController;
+
+        public readonly BattleEventManager BattleEventManager;
         
         public BattleController(BattleInput battleInput,
             BattleCamera battleCamera, BattleActionController battleActionController,
             BattleTargetingController battleTargetingController, 
             BattleTurnController battleTurnController,
+            BattleEventManager battleEventManager,
             BattleSpawner battleSpawner)
         {
             _battleStateMachine = new BattleStateMachine(this);
@@ -42,6 +44,8 @@ namespace BattleModule.Controllers.Base
             BattleTargetingController = battleTargetingController;
             
             BattleTurnController = battleTurnController;
+
+            BattleEventManager = battleEventManager;
 
             battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
         }

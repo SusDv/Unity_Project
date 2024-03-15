@@ -68,12 +68,12 @@ namespace BattleModule.States
 
         private void SetupBattleEvents()
         {
-            BattleEventManager.Instance.OnActionButtonPressed += BattleActionHandler;
+            BattleStateMachine.BattleController.BattleEventManager.OnActionButtonPressed += BattleActionHandler;
         }
 
         private void ClearBattleEvents() 
         {
-            BattleEventManager.Instance.OnActionButtonPressed -= BattleActionHandler;
+            BattleStateMachine.BattleController.BattleEventManager.OnActionButtonPressed -= BattleActionHandler;
         }
         
         private void StartTurn()

@@ -1,9 +1,7 @@
 ﻿using System;
-using BattleModule.Actions;
 using CharacterModule.Stats.Base;
-using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Modifier.ValueModifier;
+using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
 using StatModule.Utility.Enums;
 using UnityEngine;
 
@@ -14,10 +12,11 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
     {
         private TemporaryStatModifier(StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifierCapType modifierCapType,
+            ModifiedValue modifiedValue,
             float value,
             TemporaryStatModifierType temporaryStatModifierType,
-            int duration) : base(statType, valueModifierType, modifierCapType, value) 
+            StatModifierTier temporaryStatModifierTier,
+            int duration) : base(statType, valueModifierType, modifiedValue, value) 
         {
             TemporaryStatModifierType = temporaryStatModifierType;
             Duration = duration;
@@ -27,27 +26,27 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         public TemporaryStatModifierType TemporaryStatModifierType { get; private set; }
 
         [field: SerializeField]
-        public StatModifierTier TemporaryStatModifierTier { get; private set; }
+        public StatModifierTier StatModifierTier { get; private set; }
 
         [field: SerializeField]
         public int Duration { get; set; }
 
-        private int AssignedOnTurn { get; set; }
+        private int _localCycleTimer;
 
         public override void Modify(Stat statToModify,
             Action<BaseStatModifier> addModifierCallback,
             Action<BaseStatModifier> removeModifierCallback) 
         {
-            if (!Initialized)
+            if (!IsApplied)
             {
-                AssignedOnTurn = BattleEventManager.Instance.GetCurrentTurn();
+                _localCycleTimer = LocalCycle;
                 
                 if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
                 {
-                    ValueModifierProcessor.ModifyStatValue(statToModify, this);
+                    ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
                 }
 
-                Initialized = true;
+                IsApplied = true;
                 
                 addModifierCallback?.Invoke(this);
                 
@@ -60,18 +59,17 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             }
             else
             {
-                if (BattleEventManager.Instance.GetCurrentTurn() - AssignedOnTurn ==
-                    BattleEventManager.Instance.GetMaximumTurnsInCycle())
+                if (--_localCycleTimer == 0)
                 {
                     Duration--;
                     
-                    ValueModifierProcessor.ModifyStatValue(statToModify, this);
+                    ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
                 }
             }
                 
             if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN))
             {
-                ValueModifierProcessor.ModifyStatValue(statToModify, this);
+                ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
             }
 
             if (Duration != 0)
@@ -81,26 +79,27 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             
             if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
             {
-                ValueModifierProcessor.ModifyStatValue(statToModify, -this);
+                ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), -this);
             }
 
             removeModifierCallback?.Invoke(this);
         }
-
+        
         public static TemporaryStatModifier GetTemporaryStatModifierInstance(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifierCapType modifierCapType,
+            ModifiedValue modifiedValue,
             float value,
             TemporaryStatModifierType temporaryStatModifierType,
+            StatModifierTier statModifierTier,
             int duration)
         {
-            return new TemporaryStatModifier(statType, valueModifierType, modifierCapType, value, temporaryStatModifierType, duration);
+            return new TemporaryStatModifier(statType, valueModifierType, modifiedValue, value, temporaryStatModifierType, statModifierTier, duration);
         }
 
         public override object Clone()
         {
-            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifierCapType, Value, TemporaryStatModifierType, Duration);
+            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifiedValue, Value, TemporaryStatModifierType, StatModifierTier, Duration);
         }
 
         public override bool Equals(BaseStatModifier other)

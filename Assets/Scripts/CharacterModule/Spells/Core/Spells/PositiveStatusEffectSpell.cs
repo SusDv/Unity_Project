@@ -18,7 +18,7 @@ namespace CharacterModule.Spells.Core.Spells
             {
                 target.CharacterStats.RemoveStatModifiersByCondition(
                     (statModifier) => (statModifier is TemporaryStatModifier { IsNegative: true } temporaryStatModifier)
-                                      && temporaryStatModifier.TemporaryStatModifierTier == SpellClearanceTier);
+                                      && temporaryStatModifier.StatModifierTier == SpellClearanceTier);
             }
 
             ApplyCasterModifiers(source);

@@ -75,7 +75,7 @@ namespace CharacterModule.Stats.Managers
         public void ApplyStatModifier(StatType statType, float value) 
         {
             BaseStatModifier statModifier = InstantStatModifier.GetInstantStatModifierInstance(
-                statType, ValueModifierType.ADDITIVE, ModifierCapType.FINAL_VALUE, value);
+                statType, ValueModifierType.ADDITIVE, ModifiedValue.FINAL_VALUE, value);
 
             statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
         }

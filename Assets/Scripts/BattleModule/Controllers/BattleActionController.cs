@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BattleModule.Actions;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Actions.BattleActions.Base;
@@ -14,6 +13,8 @@ namespace BattleModule.Controllers
 {
     public class BattleActionController
     {
+        private readonly BattleEventManager _battleEventManager;
+        
         private BattleAction _currentBattleAction;
 
         private Character _characterToHaveTurn;
@@ -23,8 +24,11 @@ namespace BattleModule.Controllers
         
         [Inject]
         public BattleActionController(BattleTurnController battleTurnController, 
-            BattleInput battleInput)
+            BattleInput battleInput,
+            BattleEventManager battleEventManager)
         {
+            _battleEventManager = battleEventManager;
+            
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
             
             battleInput.OnCancelButtonPressed += OnCancelButtonPressed;
@@ -44,7 +48,7 @@ namespace BattleModule.Controllers
         {
             _currentBattleAction.PerformAction(_characterToHaveTurn.CharacterStats, targets);
 
-            BattleEventManager.Instance.AdvanceTurn();
+            _battleEventManager.AdvanceTurn();
         }
 
         private void SetDefaultBattleAction() 

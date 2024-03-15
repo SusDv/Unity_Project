@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Utility
 {
-    public class BattleManager : MonoBehaviour
+    public class BattleTransitionData : MonoBehaviour
     {
         [field: SerializeField]
         public List<Player> PlayerCharacters { get; private set; }
