@@ -1,8 +1,7 @@
 ﻿using System;
 using CharacterModule.Stats.Base;
-using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Modifier.ValueModifier;
+using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
 using StatModule.Utility.Enums;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
@@ -12,24 +11,24 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
     {
         private PermanentStatModifier(StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifierCapType modifierCapType,
-            float value) : base(statType, valueModifierType, modifierCapType, value) { }
+            ModifiedValue modifiedValue,
+            float value) : base(statType, valueModifierType, modifiedValue, value) { }
 
         public override void Modify(Stat statToModify, Action<BaseStatModifier> addModifierCallback,
             Action<BaseStatModifier> removeModifierCallback)
         {
-            if (!Initialized)
+            if (!IsApplied)
             {
-                ValueModifierProcessor.ModifyStatValue(statToModify, this);
+                ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
 
-                Initialized = true;
+                IsApplied = true;
 
                 addModifierCallback?.Invoke(this);
                 
                 return;
             }
             
-            ValueModifierProcessor.ModifyStatValue(statToModify, -this);
+            ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), -this);
 
             removeModifierCallback?.Invoke(this);
         }
@@ -37,15 +36,15 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         public static PermanentStatModifier GetPermanentStatModifierInstance(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifierCapType modifierCapType,
+            ModifiedValue modifiedValue,
             float value)
         {
-            return new PermanentStatModifier(statType, valueModifierType, modifierCapType, value);
+            return new PermanentStatModifier(statType, valueModifierType, modifiedValue, value);
         }
 
         public override object Clone()
         {
-            return new PermanentStatModifier(StatType, ValueModifierType, ModifierCapType, Value);
+            return new PermanentStatModifier(StatType, ValueModifierType, ModifiedValue, Value);
         }
 
         public override bool Equals(BaseStatModifier other)

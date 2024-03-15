@@ -3,9 +3,7 @@ using BattleModule.Animation;
 using BattleModule.Controllers;
 using BattleModule.Controllers.Turn;
 using BattleModule.Input;
-using BattleModule.Transition;
 using UnityEngine;
-using Utility;
 using VContainer;
 using VContainer.Unity;
 
@@ -20,11 +18,11 @@ namespace BattleModule.Scopes
             builder.RegisterComponentInHierarchy<BattleSpawner>();
             
             builder.RegisterComponentInHierarchy<BattleInput>();
-            
-            builder.RegisterComponentInHierarchy<BattleEventManager>();
 
             builder.RegisterComponentInHierarchy<BattleAnimationManager>();
-            
+
+
+            builder.Register<BattleEventManager>(Lifetime.Singleton);
             
             builder.Register<BattleTurnController>(Lifetime.Singleton);
             

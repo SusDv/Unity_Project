@@ -29,7 +29,7 @@ namespace StatModule.Utility.Enums
         BATTLE_POINTS
     }
 
-    public enum ModifierCapType
+    public enum ModifiedValue
     {
         FINAL_VALUE,
         MAX_VALUE

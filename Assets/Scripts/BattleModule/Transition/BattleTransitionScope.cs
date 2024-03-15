@@ -1,4 +1,3 @@
-using UnityEngine;
 using Utility;
 using VContainer;
 using VContainer.Unity;
@@ -9,7 +8,7 @@ namespace BattleModule.Transition
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<BattleManager>();
+            builder.RegisterComponentInHierarchy<BattleTransitionData>();
         }
         protected override void Awake()
         {

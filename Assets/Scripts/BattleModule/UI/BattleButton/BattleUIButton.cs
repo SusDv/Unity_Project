@@ -23,7 +23,7 @@ namespace BattleModule.UI.BattleButton
         {
             OnButtonOver?.Invoke(this as T);
         }
-        
+
         private void OnApplicationQuit()
         {
             OnButtonClick = null;

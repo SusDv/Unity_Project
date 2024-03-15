@@ -2,6 +2,7 @@
 using CharacterModule.Stats.Base;
 using StatModule.Utility.Enums;
 using UnityEngine;
+using Utility;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers.Base
 {
@@ -11,16 +12,16 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         protected BaseStatModifier(
             StatType statType, 
             ValueModifierType valueModifierType,
-            ModifierCapType modifierCapType,
+            ModifiedValue modifiedValue,
             float value) 
         {
             StatType = statType;
             ValueModifierType = valueModifierType;
-            ModifierCapType = modifierCapType;
+            ModifiedValue = modifiedValue;
             Value = value;
         }
 
-        protected bool Initialized { get; set; }
+        protected bool IsApplied { get; set; }
 
         [field: SerializeField]
         public StatType StatType { get; set; }
@@ -29,7 +30,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         public ValueModifierType ValueModifierType { get; set; }
 
         [field: SerializeField]
-        public ModifierCapType ModifierCapType { get; set; }
+        public ModifiedValue ModifiedValue { get; set; }
 
         [field: SerializeField]
         public float Value { get; set; }
@@ -38,6 +39,8 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
 
         public bool IsNegative => Value < 0;
 
+        public static int LocalCycle { get; set; }
+
         public abstract void Modify(Stat statToModify, 
             Action<BaseStatModifier> addModifierCallback,
             Action<BaseStatModifier> removeModifierCallback);
@@ -45,12 +48,19 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         public abstract object Clone();
 
         public abstract bool Equals(BaseStatModifier other);
-
+        
         public static BaseStatModifier operator -(BaseStatModifier baseModifier) 
         {
             baseModifier.Value = -baseModifier.Value;
 
             return baseModifier;
+        }
+
+        protected Ref<float> GetRefValue(Stat statToModify)
+        {
+            return ModifiedValue == ModifiedValue.FINAL_VALUE
+                ? new Ref<float>(() => statToModify.FinalValue, v => statToModify.FinalValue = v) :
+                new Ref<float>(() => statToModify.MaxValue, v => statToModify.MaxValue = v);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using BattleModule.Actions;
 using CharacterModule;
 using CharacterModule.Stats.StatModifier.Modifiers;
+using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using StatModule.Utility.Enums;
 using UnityEngine;
 using VContainer;
@@ -17,11 +18,12 @@ namespace BattleModule.Controllers.Turn
         public event Action<BattleTurnContext> OnCharactersInTurnChanged = delegate { };
         
         [Inject]
-        public BattleTurnController(BattleSpawner battleSpawner)
+        public BattleTurnController(BattleSpawner battleSpawner,
+            BattleEventManager battleEventManager)
         {
             battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
             
-            BattleEventManager.Instance.OnTurnEnded += UpdateCharactersBattlePoints;
+            battleEventManager.OnTurnEnded += UpdateCharactersBattlePoints;
         }
 
         private void OnCharactersSpawned(List<Character> characters)
@@ -29,6 +31,8 @@ namespace BattleModule.Controllers.Turn
             _spawnedCharacters = characters;
             
             _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
+            
+            BaseStatModifier.LocalCycle = _spawnedCharacters.Count;
         }
 
         private void UpdateCharactersBattlePoints()
@@ -76,6 +80,8 @@ namespace BattleModule.Controllers.Turn
         private void OnCharacterDied(Character deadCharacter)
         {
             _spawnedCharacters.Remove(deadCharacter);
+
+            BaseStatModifier.LocalCycle = _spawnedCharacters.Count;
             
             OnCharactersInTurnChanged.Invoke(GetCurrentBattleTurnContext());
         }

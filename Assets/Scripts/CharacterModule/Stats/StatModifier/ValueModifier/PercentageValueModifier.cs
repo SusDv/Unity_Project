@@ -1,23 +1,16 @@
-﻿using CharacterModule.Stats.Base;
-using CharacterModule.Stats.Interfaces;
+﻿using CharacterModule.Stats.StatModifier.ValueModifier.Base;
 using StatModule.Utility.Enums;
+using Utility;
 
-namespace StatModule.Modifier.ValueModifier
+namespace CharacterModule.Stats.StatModifier.ValueModifier
 {
-    public class PercentageValueModifier : ValueModifier
+    public class PercentageValueModifier : BaseValueModifier
     {
         public override ValueModifierType ValueModifierType => ValueModifierType.PERCENTAGE;
 
-        public override void ModifyValue(Stat statToModify, float value, ModifierCapType modifierCapType)
+        public override void ModifyValue(Ref<float> valueToModify, float value)
         {
-            if (modifierCapType == ModifierCapType.FINAL_VALUE)
-            {
-                statToModify.FinalValue *= value;
-                
-                return;
-            }
-
-            statToModify.MaxValue *= value;
+            valueToModify.Value *= value;
         }
     }
 }
