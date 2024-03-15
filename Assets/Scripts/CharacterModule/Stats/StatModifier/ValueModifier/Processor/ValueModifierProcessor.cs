@@ -11,13 +11,13 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
 {
     public static class ValueModifierProcessor
     {
-        private static readonly Dictionary<ValueModifierType, BaseValueModifier> _valueModifiers = new Dictionary<ValueModifierType, BaseValueModifier>();
+        private static readonly Dictionary<ValueModifierType, BaseValueModifier> ValueModifiers = new Dictionary<ValueModifierType, BaseValueModifier>();
         
         private static bool _initialized;
 
         private static void Init() 
         {
-            _valueModifiers.Clear();
+            ValueModifiers.Clear();
 
             var assembly = Assembly.GetAssembly(typeof(BaseValueModifier));
 
@@ -28,7 +28,7 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
             foreach(var valueModifier in  allValueModifiers) 
             {
                 var baseValueModifier = Activator.CreateInstance(valueModifier) as BaseValueModifier;
-                _valueModifiers.Add(baseValueModifier.ValueModifierType, baseValueModifier);
+                ValueModifiers.Add(baseValueModifier.ValueModifierType, baseValueModifier);
             }
 
             _initialized = true;
@@ -41,7 +41,7 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
                 Init();
             }
 
-            var valueModifier = _valueModifiers[modifier.ValueModifierType];
+            var valueModifier = ValueModifiers[modifier.ValueModifierType];
 
             valueModifier.ModifyValue(valueToModify, modifier.Value);
         }
