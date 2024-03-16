@@ -1,13 +1,13 @@
-using InventorySystem.Item;
-using InventorySystem.Item.Interfaces;
+using CharacterModule.Inventory.Interfaces;
+using CharacterModule.Inventory.Items;
 
-namespace CharacterModule.Weapon 
+namespace CharacterModule 
 {
     public class CharacterWeapon
     {
         private WeaponItem _weaponItem;
 
-        private Character _characterWithWeapon;
+        private readonly Character _characterWithWeapon;
 
         public CharacterWeapon (Character character)
         {

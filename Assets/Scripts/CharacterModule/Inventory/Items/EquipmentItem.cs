@@ -1,9 +1,8 @@
-using CharacterModule;
+using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.Managers;
-using InventorySystem.Item.Interfaces;
 
-namespace InventorySystem.Item
+namespace CharacterModule.Inventory.Items
 {
     public abstract class EquipmentItem : ItemBase, IEquipment
     {

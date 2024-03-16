@@ -22,6 +22,11 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         }
 
         protected bool Initialized { get; set; }
+        
+        protected Ref<float> ValueToModify { get; private set; }
+        
+        protected Action<BaseStatModifier> RemoveModifierCallback = delegate { };
+        
 
         [field: SerializeField]
         public StatType StatType { get; set; }
@@ -38,12 +43,8 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         public int SourceID { get; set; }
 
         public bool IsNegative => Value < 0;
-
-        protected static int LocalCycle;
-
-        protected Ref<float> ValueToModify;
-
-        protected Action<BaseStatModifier> RemoveModifierCallback;
+        
+        public static int LocalCycle { get; private set; }
         
         public virtual void Init(Stat statToModify, 
             Action<BaseStatModifier> addModifierCallback,

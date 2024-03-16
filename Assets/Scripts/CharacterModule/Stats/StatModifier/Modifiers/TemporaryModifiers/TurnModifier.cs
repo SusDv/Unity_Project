@@ -1,5 +1,6 @@
 using System;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
 using CharacterModule.Stats.Utility.Enums;
 using Utility;

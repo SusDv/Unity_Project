@@ -3,7 +3,6 @@ using CharacterModule.Data.Info;
 using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
 using CharacterModule.Stats.Managers;
-using CharacterModule.Weapon;
 using UnityEngine;
 
 namespace CharacterModule

@@ -1,5 +1,6 @@
 using System;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
 using CharacterModule.Stats.Utility.Enums;
 using Utility;
@@ -13,11 +14,11 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers
         
         private float _localCycleTimer;
 
-        public override TemporaryModifier Init(TemporaryStatModifier modifier, Ref<float> valueToModify, Action<BaseStatModifier> removeModifierCallback)
+        public override TemporaryModifier Init(TemporaryStatModifier modifier, Ref<float> valueToModify)
         {
-            _localCycleTimer = modifier.LocalCycleTimer;
+            _localCycleTimer = BaseStatModifier.LocalCycle;
             
-            return base.Init(modifier, valueToModify, removeModifierCallback);
+            return base.Init(modifier, valueToModify);
         }
 
         protected override void DecreaseDuration()

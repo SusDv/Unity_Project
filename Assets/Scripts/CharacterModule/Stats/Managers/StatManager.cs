@@ -45,30 +45,8 @@ namespace CharacterModule.Stats.Managers
             _modifiersInUse.Remove(statModifier);
         }
 
-        private bool ExistingTemporaryStatModifierFound(BaseStatModifier statModifierAdded) 
-        {
-            if (_modifiersInUse.FirstOrDefault(existingModifier => existingModifier.Equals(statModifierAdded)) is not TemporaryStatModifier existingTemporaryStatModifier)
-            {
-                return false;
-            }
-            
-            ExtendDuration(existingTemporaryStatModifier, statModifierAdded as TemporaryStatModifier);
-            
-            return true;
-        }
-
-        private void ExtendDuration(TemporaryStatModifier existingModifier, TemporaryStatModifier addedModifier)
-        {
-            existingModifier.Duration = addedModifier.Duration;
-        }
-
         public void ApplyStatModifier(BaseStatModifier statModifier) 
         {
-            if (ExistingTemporaryStatModifierFound(statModifier))
-            {
-                return;
-            }
-            
             statModifier.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
         }
 
@@ -89,18 +67,17 @@ namespace CharacterModule.Stats.Managers
 
         public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
         {
-            _modifiersInUse
-                .Where(conditionFunction)
-                .ToList()
-                .ForEach(statModifier => 
-                {
-                    statModifier.Modify();
-                });
+            _modifiersInUse.Where(conditionFunction).ToList()
+            .ForEach(statModifier => 
+            { 
+                statModifier.Modify();
+            });
         }
 
         public void RemoveStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction)
         {
-            _modifiersInUse.Where(conditionFunction).ToList().ForEach(statModifier =>
+            _modifiersInUse.Where(conditionFunction).ToList()
+            .ForEach(statModifier =>
             {
                 statModifier.Remove();
             });

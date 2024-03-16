@@ -1,12 +1,11 @@
 ﻿using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
-using CharacterModule;
+using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using InventorySystem.Item.Interfaces;
 using UnityEngine;
 
-namespace InventorySystem.Item
+namespace CharacterModule.Inventory.Items
 {
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Character/Items/Equipment/Weapon")]
     public class WeaponItem : EquipmentItem, IEquipment, ITargeting 
