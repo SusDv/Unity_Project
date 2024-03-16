@@ -1,13 +1,14 @@
 using CharacterModule;
 using CharacterModule.Inventory.Items.Base;
+using CharacterModule.Stats.Managers;
 using InventorySystem.Item.Interfaces;
 
 namespace InventorySystem.Item
 {
-    public abstract class EquipmentItem : ItemBase, IEquipable
+    public abstract class EquipmentItem : ItemBase, IEquipment
     {
-        public abstract void Equip(Character character);
+        public abstract void Equip(StatManager stats);
 
-        public abstract void Unequip(Character character);
+        public abstract void Unequip(StatManager stats);
     }
 }

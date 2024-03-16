@@ -6,8 +6,8 @@ using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Settings;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using CharacterModule.Stats.Utility.Enums;
 using StatModule.Utility;
-using StatModule.Utility.Enums;
 
 namespace CharacterModule.Stats.Managers
 {
@@ -69,15 +69,15 @@ namespace CharacterModule.Stats.Managers
                 return;
             }
             
-            statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+            statModifier.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
         }
 
         public void ApplyStatModifier(StatType statType, float value) 
         {
             BaseStatModifier statModifier = InstantStatModifier.GetInstantStatModifierInstance(
-                statType, ValueModifierType.ADDITIVE, ModifiedValue.FINAL_VALUE, value);
+                statType, ValueModifierType.ADDITIVE, ModifiedValueType.FINAL_VALUE, value);
 
-            statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+            statModifier.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
         }
 
         public StatInfo GetStatInfo(StatType statType)
@@ -94,13 +94,16 @@ namespace CharacterModule.Stats.Managers
                 .ToList()
                 .ForEach(statModifier => 
                 {
-                    statModifier.Modify(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+                    statModifier.Modify();
                 });
         }
 
-        public void RemoveStatModifiersByCondition(Predicate<BaseStatModifier> conditionFunction) 
+        public void RemoveStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction)
         {
-            _modifiersInUse.RemoveAll(conditionFunction);
+            _modifiersInUse.Where(conditionFunction).ToList().ForEach(statModifier =>
+            {
+                statModifier.Remove();
+            });
         }
 
         public void AttachStatObserver(IStatObserver statObserver)

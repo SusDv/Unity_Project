@@ -1,6 +1,6 @@
 ﻿using System;
 using CharacterModule.Stats.Base;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 using Utility;
 
@@ -12,16 +12,16 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         protected BaseStatModifier(
             StatType statType, 
             ValueModifierType valueModifierType,
-            ModifiedValue modifiedValue,
+            ModifiedValueType modifiedValueType,
             float value) 
         {
             StatType = statType;
             ValueModifierType = valueModifierType;
-            ModifiedValue = modifiedValue;
+            ModifiedValueType = modifiedValueType;
             Value = value;
         }
 
-        protected bool IsApplied { get; set; }
+        protected bool Initialized { get; set; }
 
         [field: SerializeField]
         public StatType StatType { get; set; }
@@ -30,7 +30,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         public ValueModifierType ValueModifierType { get; set; }
 
         [field: SerializeField]
-        public ModifiedValue ModifiedValue { get; set; }
+        public ModifiedValueType ModifiedValueType { get; set; }
 
         [field: SerializeField]
         public float Value { get; set; }
@@ -41,10 +41,30 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
 
         protected static int LocalCycle;
 
-        public abstract void Modify(Stat statToModify, 
-            Action<BaseStatModifier> addModifierCallback,
-            Action<BaseStatModifier> removeModifierCallback);
+        protected Ref<float> ValueToModify;
+
+        protected Action<BaseStatModifier> RemoveModifierCallback;
         
+        public virtual void Init(Stat statToModify, 
+            Action<BaseStatModifier> addModifierCallback,
+            Action<BaseStatModifier> removeModifierCallback)
+        {
+            ValueToModify = GetRefValue(statToModify);
+
+            RemoveModifierCallback = removeModifierCallback;
+            
+            addModifierCallback?.Invoke(this);
+            
+            Initialized = true;
+        }
+
+        public abstract void Modify();
+
+        public virtual void Remove()
+        {
+            RemoveModifierCallback?.Invoke(this);
+        }
+
         public abstract object Clone();
 
         public abstract bool Equals(BaseStatModifier other);
@@ -60,10 +80,10 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
         {
             LocalCycle = localCycle;
         }
-
-        protected Ref<float> GetRefValue(Stat statToModify)
+        
+        private Ref<float> GetRefValue(Stat statToModify)
         {
-            return ModifiedValue == ModifiedValue.FINAL_VALUE
+            return ModifiedValueType == ModifiedValueType.FINAL_VALUE
                 ? new Ref<float>(() => statToModify.FinalValue, v => statToModify.FinalValue = v) :
                 new Ref<float>(() => statToModify.MaxValue, v => statToModify.MaxValue = v);
         }

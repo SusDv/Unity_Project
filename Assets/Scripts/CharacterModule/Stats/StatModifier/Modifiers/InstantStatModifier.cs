@@ -2,7 +2,7 @@
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
@@ -12,27 +12,35 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         private InstantStatModifier(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifiedValue modifiedValue,
-            float value) : base (statType, valueModifierType, modifiedValue,value) {}
+            ModifiedValueType modifiedValueType,
+            float value) : base (statType, valueModifierType, modifiedValueType,value) {}
 
-        public override void Modify(Stat statToModify, Action<BaseStatModifier> addModifierCallback,
-            Action<BaseStatModifier> removeModifierCallback)
+        public override void Init(Stat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
         {
-            ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
+            base.Init(statToModify, addModifierCallback, removeModifierCallback);
+            
+            Modify();
+        }
+
+        public override void Modify()
+        {
+            ValueModifierProcessor.ModifyStatValue(ValueToModify, this);
+                
+            Remove();
         }
 
         public static InstantStatModifier GetInstantStatModifierInstance(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifiedValue modifiedValue,
+            ModifiedValueType modifiedValueType,
             float value) 
         {
-            return new InstantStatModifier(statType, valueModifierType, modifiedValue, value);
+            return new InstantStatModifier(statType, valueModifierType, modifiedValueType, value);
         }
 
         public override object Clone()
         {
-            return new InstantStatModifier(StatType, ValueModifierType, ModifiedValue, Value);
+            return new InstantStatModifier(StatType, ValueModifierType, ModifiedValueType, Value);
         }
 
         public override bool Equals(BaseStatModifier other)
@@ -40,7 +48,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             return other.Value == Value
                 && other.ValueModifierType == ValueModifierType
                 && other.SourceID == SourceID
-                && other.ModifiedValue == ModifiedValue
+                && other.ModifiedValueType == ModifiedValueType
                 && other.StatType == StatType;
         }
     }

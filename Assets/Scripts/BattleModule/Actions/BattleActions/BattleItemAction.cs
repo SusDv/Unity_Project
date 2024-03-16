@@ -4,6 +4,7 @@ using CharacterModule;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Managers;
+using CharacterModule.Stats.Utility.Enums;
 using InventorySystem.Item;
 using InventorySystem.Item.Interfaces;
 using JetBrains.Annotations;
@@ -21,7 +22,7 @@ namespace BattleModule.Actions.BattleActions
             
             (itemToUse as IConsumable)?.Consume(targets[0].CharacterStats);
 
-            source.ApplyStatModifier(StatModule.Utility.Enums.StatType.BATTLE_POINTS, itemToUse.BattlePoints);
+            source.ApplyStatModifier(StatType.BATTLE_POINTS, itemToUse.BattlePoints);
         }
     }
 }

@@ -9,8 +9,6 @@ namespace CharacterModule.Weapon
 
         private Character _characterWithWeapon;
 
-        public bool HaveWeapon { get; set; } = false;
-
         public CharacterWeapon (Character character)
         {
             _characterWithWeapon = character;
@@ -20,12 +18,17 @@ namespace CharacterModule.Weapon
         {
             _weaponItem = equipmentItem;
 
-            (_weaponItem as IEquipable).Equip(_characterWithWeapon);
+            (_weaponItem as IEquipment).Equip(_characterWithWeapon.CharacterStats);
+        }
+
+        public bool HaveWeapon()
+        {
+            return _weaponItem == null;
         }
 
         public void UnequipItem() 
         {
-            (_weaponItem as IEquipable).Unequip(_characterWithWeapon);
+            (_weaponItem as IEquipment).Unequip(_characterWithWeapon.CharacterStats);
 
             _weaponItem = null;
         }

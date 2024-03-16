@@ -1,4 +1,4 @@
-﻿using StatModule.Utility.Enums;
+﻿using CharacterModule.Stats.Utility.Enums;
 using Utility;
 
 namespace CharacterModule.Stats.StatModifier.ValueModifier.Base

@@ -5,7 +5,7 @@ using BattleModule.Actions;
 using CharacterModule;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 using VContainer;
 

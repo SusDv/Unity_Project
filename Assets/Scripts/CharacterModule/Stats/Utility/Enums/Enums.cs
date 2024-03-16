@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using StatModule.Utility.Constants;
 
-namespace StatModule.Utility.Enums
+namespace CharacterModule.Stats.Utility.Enums
 {
     public enum StatType
     {
@@ -29,7 +29,7 @@ namespace StatModule.Utility.Enums
         BATTLE_POINTS
     }
 
-    public enum ModifiedValue
+    public enum ModifiedValueType
     {
         FINAL_VALUE,
         MAX_VALUE

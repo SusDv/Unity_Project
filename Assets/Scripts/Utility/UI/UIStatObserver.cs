@@ -1,6 +1,6 @@
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.Utility.Enums;
 using StatModule.Utility;
-using StatModule.Utility.Enums;
 using UnityEngine;
 
 namespace Utility.UI
