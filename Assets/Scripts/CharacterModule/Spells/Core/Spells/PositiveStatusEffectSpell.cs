@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier.Modifiers;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core.Spells

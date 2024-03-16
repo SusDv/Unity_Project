@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.Utility.Enums;
 using StatModule.Utility;
-using StatModule.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Stats.Base 

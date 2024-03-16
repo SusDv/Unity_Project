@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Base;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Stats.Settings

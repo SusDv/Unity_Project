@@ -4,9 +4,9 @@ using BattleModule.Utility;
 using CharacterModule;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Managers;
+using CharacterModule.Stats.Utility.Enums;
 using InventorySystem.Item;
 using JetBrains.Annotations;
-using StatModule.Utility.Enums;
 
 namespace BattleModule.Actions.BattleActions
 {

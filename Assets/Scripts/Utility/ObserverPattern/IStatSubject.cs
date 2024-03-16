@@ -1,5 +1,5 @@
+using CharacterModule.Stats.Utility.Enums;
 using StatModule.Utility;
-using StatModule.Utility.Enums;
 
 namespace CharacterModule.Stats.Interfaces
 {

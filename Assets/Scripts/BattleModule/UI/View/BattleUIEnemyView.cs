@@ -1,5 +1,5 @@
 ﻿using CharacterModule.Stats.Interfaces;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 using Utility.UI;
 

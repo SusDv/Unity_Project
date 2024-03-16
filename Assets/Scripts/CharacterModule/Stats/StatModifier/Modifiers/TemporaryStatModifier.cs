@@ -1,8 +1,8 @@
 ﻿using System;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers;
+using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
@@ -12,11 +12,11 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
     {
         private TemporaryStatModifier(StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifiedValue modifiedValue,
-            float value,
+            ModifiedValueType modifiedValueType,
             TemporaryStatModifierType temporaryStatModifierType,
             StatModifierTier temporaryStatModifierTier,
-            int duration) : base(statType, valueModifierType, modifiedValue, value) 
+            float value,
+            int duration) : base(statType, valueModifierType, modifiedValueType, value) 
         {
             TemporaryStatModifierType = temporaryStatModifierType;
             Duration = duration;
@@ -31,75 +31,42 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         [field: SerializeField]
         public int Duration { get; set; }
 
-        private int _localCycleTimer;
+        public int LocalCycleTimer { get; private set; }
 
-        public override void Modify(Stat statToModify,
+        private TemporaryModifier _modifierProcessor;
+
+        public override void Init(Stat statToModify, 
             Action<BaseStatModifier> addModifierCallback,
-            Action<BaseStatModifier> removeModifierCallback) 
+            Action<BaseStatModifier> removeModifierCallback)
         {
-            if (!IsApplied)
-            {
-                _localCycleTimer = LocalCycle;
-                
-                if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
-                {
-                    ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
-                }
-
-                IsApplied = true;
-                
-                addModifierCallback?.Invoke(this);
-                
-                return;
-            }
+            base.Init(statToModify, addModifierCallback, removeModifierCallback);
             
-            if (TemporaryStatModifierType != TemporaryStatModifierType.APPLIED_EVERY_CYCLE)
-            {
-                Duration--;
-            }
-            else
-            {
-                if (--_localCycleTimer == 0)
-                {
-                    Duration--;
-                    
-                    ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
-                }
-            }
-                
-            if(TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_EVERY_TURN))
-            {
-                ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
-            }
-
-            if (Duration != 0)
-            {
-                return;
-            }
+            LocalCycleTimer = LocalCycle;
             
-            if (TemporaryStatModifierType.Equals(TemporaryStatModifierType.APPLIED_ONCE))
-            {
-                ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), -this);
-            }
-
-            removeModifierCallback?.Invoke(this);
+            _modifierProcessor = TemporaryModifierProcessor.GetModifier(TemporaryStatModifierType)
+                .Init(this, ValueToModify, removeModifierCallback);
         }
-        
+
+        public override void Modify()
+        {
+            _modifierProcessor.Modify();
+        }
+
         public static TemporaryStatModifier GetTemporaryStatModifierInstance(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifiedValue modifiedValue,
-            float value,
+            ModifiedValueType modifiedValueType,
             TemporaryStatModifierType temporaryStatModifierType,
             StatModifierTier statModifierTier,
+            float value,
             int duration)
         {
-            return new TemporaryStatModifier(statType, valueModifierType, modifiedValue, value, temporaryStatModifierType, statModifierTier, duration);
+            return new TemporaryStatModifier(statType, valueModifierType, modifiedValueType, temporaryStatModifierType, statModifierTier, value, duration);
         }
 
         public override object Clone()
         {
-            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifiedValue, Value, TemporaryStatModifierType, StatModifierTier, Duration);
+            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifiedValueType, TemporaryStatModifierType, StatModifierTier, Value, Duration);
         }
 
         public override bool Equals(BaseStatModifier other)

@@ -2,7 +2,7 @@
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
-using StatModule.Utility.Enums;
+using CharacterModule.Stats.Utility.Enums;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
@@ -11,40 +11,40 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
     {
         private PermanentStatModifier(StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifiedValue modifiedValue,
-            float value) : base(statType, valueModifierType, modifiedValue, value) { }
+            ModifiedValueType modifiedValueType,
+            float value) : base(statType, valueModifierType, modifiedValueType, value) { }
 
-        public override void Modify(Stat statToModify, Action<BaseStatModifier> addModifierCallback,
-            Action<BaseStatModifier> removeModifierCallback)
+        public override void Init(Stat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
         {
-            if (!IsApplied)
-            {
-                ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), this);
-
-                IsApplied = true;
-
-                addModifierCallback?.Invoke(this);
-                
-                return;
-            }
+            base.Init(statToModify, addModifierCallback, removeModifierCallback);
             
-            ValueModifierProcessor.ModifyStatValue(GetRefValue(statToModify), -this);
+            Modify();
+        }
 
-            removeModifierCallback?.Invoke(this);
+        public override void Modify()
+        {
+            ValueModifierProcessor.ModifyStatValue(ValueToModify, this);
+        }
+
+        public override void Remove()
+        {
+            base.Remove();
+            
+            ValueModifierProcessor.ModifyStatValue(ValueToModify, -this);
         }
 
         public static PermanentStatModifier GetPermanentStatModifierInstance(
             StatType statType, 
             ValueModifierType valueModifierType, 
-            ModifiedValue modifiedValue,
+            ModifiedValueType modifiedValueType,
             float value)
         {
-            return new PermanentStatModifier(statType, valueModifierType, modifiedValue, value);
+            return new PermanentStatModifier(statType, valueModifierType, modifiedValueType, value);
         }
 
         public override object Clone()
         {
-            return new PermanentStatModifier(StatType, ValueModifierType, ModifiedValue, Value);
+            return new PermanentStatModifier(StatType, ValueModifierType, ModifiedValueType, Value);
         }
 
         public override bool Equals(BaseStatModifier other)

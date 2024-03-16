@@ -6,6 +6,7 @@ using BattleModule.Controllers.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
 using BattleModule.UI.View;
 using CharacterModule;
+using CharacterModule.Stats.Utility.Enums;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 
@@ -40,7 +41,7 @@ namespace BattleModule.UI.Presenter
                     _battleTurnSceneSettings.BattleTurnParent.transform.position, Quaternion.identity,
                     _battleTurnSceneSettings.BattleTurnParent.transform);
 
-                battleUITurn.SetData(character.CharacterInformation.CharacterName, character.CharacterStats.GetStatInfo(StatModule.Utility.Enums.StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), false);
+                battleUITurn.SetData(character.CharacterInformation.CharacterName, character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), false);
                 
                 _battleUITurnViews.Add(battleUITurn);
             }
@@ -52,7 +53,7 @@ namespace BattleModule.UI.Presenter
             
             for (var i = 0; i < battleTurnContext.CharactersInTurn.Count; i++)
             {
-                _battleUITurnViews[i].SetData(battleTurnContext.CharactersInTurn[i].CharacterInformation.CharacterName,battleTurnContext.CharactersInTurn[i].CharacterStats.GetStatInfo(StatModule.Utility.Enums.StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), battleTurnContext.CharactersInTurn[i] == battleTurnContext.CharacterInAction);
+                _battleUITurnViews[i].SetData(battleTurnContext.CharactersInTurn[i].CharacterInformation.CharacterName,battleTurnContext.CharactersInTurn[i].CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), battleTurnContext.CharactersInTurn[i] == battleTurnContext.CharacterInAction);
             }
         }
 

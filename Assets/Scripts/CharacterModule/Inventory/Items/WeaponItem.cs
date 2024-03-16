@@ -9,7 +9,7 @@ using UnityEngine;
 namespace InventorySystem.Item
 {
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Character/Items/Equipment/Weapon")]
-    public class WeaponItem : EquipmentItem, IEquipable, ITargeting 
+    public class WeaponItem : EquipmentItem, IEquipment, ITargeting 
     {
         [field: SerializeField]
         public TargetType TargetType { get; set; }
@@ -21,30 +21,17 @@ namespace InventorySystem.Item
         [field: Range(1, 5)]
         public int MaxTargetsCount { get; set; } = 1;
 
-        public override void Equip(Character character)
+        public override void Equip(StatManager stats)
         {
-            StatManager characterStatManager = character.CharacterStats;
-
-            if (character.CharacterWeapon.HaveWeapon)
+            foreach (var baseStatModifier in StatModifiers.BaseModifiers)
             {
-                Unequip(character);
+                stats.ApplyStatModifier(baseStatModifier.Clone() as BaseStatModifier);
             }
-            else
-            {
-                foreach (BaseStatModifier baseStatModifier in StatModifiers.BaseModifiers)
-                {
-                    characterStatManager.ApplyStatModifier(baseStatModifier.Clone() as BaseStatModifier);
-                }
-            }
-
-            character.CharacterWeapon.HaveWeapon = !character.CharacterWeapon.HaveWeapon;
         }
 
-        public override void Unequip(Character character)
+        public override void Unequip(StatManager stats)
         {
-            StatManager characterStatManager = character.CharacterStats;
-
-            characterStatManager.ApplyStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
+            stats.RemoveStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
         }
     }
 }
