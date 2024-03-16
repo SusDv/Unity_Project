@@ -68,7 +68,8 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
 
         public override bool Equals(BaseStatModifier other)
         {
-            return other.Value == Value
+            return other != null && 
+                   Mathf.RoundToInt(other.Value - Value) == 0
                    && other.ValueModifierType == ValueModifierType
                    && other.SourceID == SourceID
                    && other.StatType == StatType

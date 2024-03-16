@@ -1,4 +1,3 @@
-using System;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;

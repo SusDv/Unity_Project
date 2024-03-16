@@ -1,5 +1,3 @@
-using System;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.Utility.Enums;
 using Utility;
 
@@ -17,12 +15,9 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base
             TemporaryStatModifier modifier,
             Ref<float> valueToModify)
         {
-            if (TemporaryStatModifier != null)
+            if (modifier.Equals(TemporaryStatModifier))
             {
-                if (modifier.Equals(TemporaryStatModifier))
-                {
-                    TemporaryStatModifier.Remove();
-                }
+                TemporaryStatModifier.Remove();
             }
             
             TemporaryStatModifier = modifier;
