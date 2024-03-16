@@ -3,7 +3,7 @@ using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.Utility.Enums;
 using Utility;
 
-namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers
+namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base
 {
     public abstract class TemporaryModifier
     {
@@ -12,18 +12,22 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers
         protected TemporaryStatModifier TemporaryStatModifier;
         
         protected Ref<float> ValueToModify;
-
-        private Action<BaseStatModifier> _removeModifierCallback;
         
         public virtual TemporaryModifier Init(
             TemporaryStatModifier modifier,
-            Ref<float> valueToModify,
-            Action<BaseStatModifier> removeModifierCallback)
+            Ref<float> valueToModify)
         {
-            TemporaryStatModifier = modifier;
-            ValueToModify = valueToModify;
+            if (TemporaryStatModifier != null)
+            {
+                if (modifier.Equals(TemporaryStatModifier))
+                {
+                    TemporaryStatModifier.Remove();
+                }
+            }
             
-            _removeModifierCallback = removeModifierCallback;
+            TemporaryStatModifier = modifier;
+            
+            ValueToModify = valueToModify;
 
             return this;
         }
@@ -44,7 +48,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers
         {
             if (TemporaryStatModifier.Duration == 0)
             {
-                _removeModifierCallback?.Invoke(TemporaryStatModifier);
+                TemporaryStatModifier.Remove();
             }
         }
     }

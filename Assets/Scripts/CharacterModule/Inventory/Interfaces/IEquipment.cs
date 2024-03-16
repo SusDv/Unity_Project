@@ -1,7 +1,6 @@
-﻿using CharacterModule;
-using CharacterModule.Stats.Managers;
+﻿using CharacterModule.Stats.Managers;
 
-namespace InventorySystem.Item.Interfaces
+namespace CharacterModule.Inventory.Interfaces
 {
     public interface IEquipment
     {

@@ -1,4 +1,5 @@
 ﻿using CharacterModule.Data.Info;
+using CharacterModule.Inventory.Items;
 using CharacterModule.Spells.Settings;
 using CharacterModule.Stats.Settings;
 using InventorySystem.Item;

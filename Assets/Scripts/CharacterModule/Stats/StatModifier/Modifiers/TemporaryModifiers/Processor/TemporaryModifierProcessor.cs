@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
 using CharacterModule.Stats.Utility.Enums;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers

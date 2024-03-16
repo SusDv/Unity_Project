@@ -2,6 +2,7 @@
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Utility;
 using CharacterModule;
+using CharacterModule.Inventory.Items;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Utility.Enums;

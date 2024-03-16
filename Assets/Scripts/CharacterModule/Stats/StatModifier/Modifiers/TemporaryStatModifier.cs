@@ -2,6 +2,7 @@
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
 using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 
@@ -31,8 +32,6 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         [field: SerializeField]
         public int Duration { get; set; }
 
-        public int LocalCycleTimer { get; private set; }
-
         private TemporaryModifier _modifierProcessor;
 
         public override void Init(Stat statToModify, 
@@ -41,10 +40,8 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         {
             base.Init(statToModify, addModifierCallback, removeModifierCallback);
             
-            LocalCycleTimer = LocalCycle;
-            
             _modifierProcessor = TemporaryModifierProcessor.GetModifier(TemporaryStatModifierType)
-                .Init(this, ValueToModify, removeModifierCallback);
+                .Init(this, ValueToModify);
         }
 
         public override void Modify()
