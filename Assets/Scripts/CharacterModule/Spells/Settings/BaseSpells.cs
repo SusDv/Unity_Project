@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CharacterModule.Spells.Settings
 {
-    [CreateAssetMenu(fileName = "Base spells", menuName = "Character/Spells/Base Spells")]
+    [CreateAssetMenu(fileName = "Base spells", menuName = "Character/Spells/Base/Base Spells")]
     [Serializable]
     public class BaseSpells : ScriptableObject
     {

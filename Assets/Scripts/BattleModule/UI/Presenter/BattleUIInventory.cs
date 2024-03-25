@@ -6,7 +6,6 @@ using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
-using InventorySystem.Core;
 using Utility;
 using VContainer;
 
@@ -117,7 +116,7 @@ namespace BattleModule.UI.Presenter
 
         private ItemBase GetSelectedItem(BattleUIItemView battleUIItem) 
         {
-            return _battleInventory[_battleUIItems.IndexOf(battleUIItem)].inventoryItem;
+            return _battleInventory[_battleUIItems.IndexOf(battleUIItem)].Item;
         }
     }
 }

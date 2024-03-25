@@ -18,20 +18,17 @@ namespace CharacterModule.Stats.StatModifier
         [field: SerializeField]
         private List<PermanentStatModifier> _permanentModifiers = new();
 
-        public List<BaseStatModifier> BaseModifiers 
+        public List<BaseStatModifier> GetModifiers()
         {
-            get 
-            {
-                var allModifiers = new List<BaseStatModifier>();
+            var allModifiers = new List<BaseStatModifier>();
 
-                allModifiers.AddRange(_instantModifiers);
+            allModifiers.AddRange(_instantModifiers);
 
-                allModifiers.AddRange(_temporaryModifiers);
+            allModifiers.AddRange(_temporaryModifiers);
 
-                allModifiers.AddRange(_permanentModifiers);
+            allModifiers.AddRange(_permanentModifiers);
 
-                return allModifiers;
-            }
+            return allModifiers;
         }
     }
 }

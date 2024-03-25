@@ -1,38 +1,26 @@
 ﻿using System.Collections.Generic;
-using CharacterModule.Spells.Interfaces;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core.Spells
 {
     [CreateAssetMenu(fileName = "Spell", menuName = "Character/Spells/Basic Spell")]
-    public class BasicSpell : SpellBase, ISpell
+    public class BasicSpell : SpellBase
     {
         [field: SerializeField]
-        public StatModifiers StatModifiers { get; set; }
+        public StatModifiers TargetModifiers { get; private set; }
 
-        public void UseSpell(StatManager source, List<Character> targets)
+        public override void UseSpell(StatManager source, List<Character> targets)
         {
             foreach (var target in targets)
             {
                 var targetStats = target.CharacterStats;
                 
-                foreach (var baseStatModifier in StatModifiers.BaseModifiers)
+                foreach (var baseStatModifier in TargetModifiers.GetModifiers())
                 {
-                    targetStats.ApplyStatModifier(baseStatModifier.Clone() as BaseStatModifier);
+                    targetStats.ApplyStatModifier(baseStatModifier);
                 }
-            }
-
-            ApplyCasterModifiers(source);
-        }
-
-        private void ApplyCasterModifiers(StatManager source)
-        {
-            foreach (var modifier in CasterModifiers.BaseModifiers)
-            {
-                source.ApplyStatModifier(modifier);
             }
         }
     }

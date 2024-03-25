@@ -1,11 +1,14 @@
-﻿using BattleModule.Utility.Enums;
+﻿using System.Collections.Generic;
+using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule.Spells.Interfaces;
+using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core
 {
-    public class SpellBase : ScriptableObject, ITargeting 
+    public abstract class SpellBase : ScriptableObject, ITargeting, ISpell
     {
         [field: SerializeField]
         public string SpellName { get; private set; }
@@ -18,7 +21,7 @@ namespace CharacterModule.Spells.Core
         public string SpellDescription { get; private set; }
 
         [field: SerializeField]
-        public StatModifiers CasterModifiers { get; private set; }
+        public StatModifiers SourceModifiers { get; set; }
         
         [field: SerializeField]
         public TargetType TargetType { get; set; }
@@ -28,6 +31,8 @@ namespace CharacterModule.Spells.Core
 
         [field: SerializeField]
         [field: Range(1, 5)]
-        public int MaxTargetsCount { get; set; } = 1;      
+        public int MaxTargetsCount { get; set; } = 1;
+
+        public abstract void UseSpell(StatManager source, List<Character> targets);
     }
 }

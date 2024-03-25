@@ -6,10 +6,12 @@ using CharacterModule;
 
 namespace BattleModule.Controllers.Targeting
 {
-    public class AoeBattleTargeting : BattleTargeting 
+    public class AoeBattleTargeting : BattleTargeting
     {
+        private int _targetRemainder;
+        
         public override TargetSearchType TargetSearchType => TargetSearchType.AOE;
-
+        
         public override IEnumerable<Character> GetSelectedTargets(
             List<Character> characters,
             Character mainTarget, 
@@ -17,6 +19,8 @@ namespace BattleModule.Controllers.Targeting
         {
             int mainTargetIndex = characters.IndexOf(mainTarget);
 
+            _targetRemainder = numberOfCharactersToSelect % 2 == 0 ? 1 : 0;
+            
             int charactersToPick = numberOfCharactersToSelect / 2;
 
             GetNeighboursTarget(characters, mainTargetIndex, charactersToPick, out SelectedCharacters);
@@ -36,7 +40,7 @@ namespace BattleModule.Controllers.Targeting
 
             for (
                 int i = mainTargetIndex + 1,
-                j = charactersToPick; i < characters.Count && j > 0; i++, j--)
+                j = charactersToPick - _targetRemainder; i < characters.Count && j > 0; i++, j--)
             {
                 selectedCharacters.Push(characters[i]);
             }

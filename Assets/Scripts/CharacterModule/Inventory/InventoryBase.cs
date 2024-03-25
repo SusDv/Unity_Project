@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Base;
-using InventorySystem.Core;
 using UnityEngine;
 
 namespace CharacterModule.Inventory 
@@ -29,8 +28,8 @@ namespace CharacterModule.Inventory
             {
                 _inventoryItems.Add(new InventoryItem
                 {
-                    inventoryItem = item,
-                    amount = amount
+                    Item = item,
+                    Amount = amount
                 });
 
                 if (item is ConsumableItem consumableItem)
@@ -40,16 +39,16 @@ namespace CharacterModule.Inventory
             }
             else
             {
-                if (existingItem.inventoryItem.IsStackable)
+                if (existingItem.Item.IsStackable)
                 {
-                    _inventoryItems[index] = existingItem.ChangeAmount(amount + existingItem.amount);
+                    _inventoryItems[index] = existingItem.ChangeAmount(amount + existingItem.Amount);
                 }
                 else
                 {
                     _inventoryItems.Add(new InventoryItem
                     {
-                        inventoryItem = item,
-                        amount = amount
+                        Item = item,
+                        Amount = amount
                     });
                 }
             }
@@ -70,7 +69,7 @@ namespace CharacterModule.Inventory
             {
                 var currentItem = _inventoryItems[i];
                 
-                if (currentItem.inventoryItem.ID == itemBase.ID)
+                if (currentItem.Item.ID == itemBase.ID)
                 {
                     return (i, currentItem);
                 }
@@ -80,23 +79,23 @@ namespace CharacterModule.Inventory
 
         public List<InventoryItem> GetBattleInventory()
         {
-            return _inventoryItems.Where(item => item.inventoryItem.GetType() == typeof(ConsumableItem)).ToList();
+            return _inventoryItems.Where(item => item.Item.GetType() == typeof(ConsumableItem)).ToList();
         }
 
         private void ConsumableItemUsed(ItemBase inventoryItem)
         {
             (int index, var item) = FindItem(inventoryItem);
 
-            if (item.inventoryItem.IsStackable)
+            if (item.Item.IsStackable)
             {
-                if (item.amount == 1)
+                if (item.Amount == 1)
                 {
                     RemoveItem(item);
 
                     return;
                 }
 
-                _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].amount - 1);
+                _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].Amount - 1);
             }
 
             OnInventoryChanged?.Invoke(this);

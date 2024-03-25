@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Base;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace CharacterModule.Stats.Settings
 {
-    [CreateAssetMenu(menuName = "Base Stats", fileName = "Character/Stats/Base Stats")]
+    [CreateAssetMenu(fileName = "Base Stats", menuName = "Character/Stats/Base Stats")]
     public class BaseStats : ScriptableObject 
     {
         [field: SerializeField]
@@ -15,6 +16,16 @@ namespace CharacterModule.Stats.Settings
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            if (StatList.Count < Enum.GetNames(typeof(StatType)).Length)
+            {
+                StatList.Clear();
+
+                foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+                {
+                    StatList.Add(new Stat(statType));
+                }
+            }
+
             foreach (var stat in StatList)
             {
                 stat.MaxValue = stat.BaseValue;
