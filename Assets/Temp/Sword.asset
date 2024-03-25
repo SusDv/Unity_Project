@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca6591990906794a86760bcdfb56ec8, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  <ItemName>k__BackingField: 
+  <ItemName>k__BackingField: Sword
   <ItemImage>k__BackingField: {fileID: 0}
   <ItemDescription>k__BackingField: 
   <IsStackable>k__BackingField: 0

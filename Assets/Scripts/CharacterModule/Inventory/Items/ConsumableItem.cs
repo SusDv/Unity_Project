@@ -1,11 +1,9 @@
 using System;
 using BattleModule.Utility.Enums;
 using BattleModule.Utility.Interfaces;
+using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.Managers;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using InventorySystem.Item;
-using InventorySystem.Item.Interfaces;
 using UnityEngine;
 
 namespace CharacterModule.Inventory.Items 
@@ -27,9 +25,9 @@ namespace CharacterModule.Inventory.Items
 
         public void Consume(StatManager characterStatManager)
         {
-            foreach (var modifier in StatModifiers.BaseModifiers)
+            foreach (var modifier in StatModifiers.GetModifiers())
             {
-                characterStatManager.ApplyStatModifier(modifier.Clone() as BaseStatModifier);
+                characterStatManager.ApplyStatModifier(modifier);
             }
 
             OnConsumableUsed?.Invoke(this);

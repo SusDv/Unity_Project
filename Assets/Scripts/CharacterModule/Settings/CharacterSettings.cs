@@ -2,7 +2,6 @@
 using CharacterModule.Inventory.Items;
 using CharacterModule.Spells.Settings;
 using CharacterModule.Stats.Settings;
-using InventorySystem.Item;
 using UnityEngine;
 
 namespace CharacterModule.Settings

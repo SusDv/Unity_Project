@@ -47,7 +47,7 @@ namespace CharacterModule.Stats.Managers
 
         public void ApplyStatModifier(BaseStatModifier statModifier) 
         {
-            statModifier.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+            (statModifier.Clone() as BaseStatModifier)?.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
         }
 
         public void ApplyStatModifier(StatType statType, float value) 
@@ -67,20 +67,21 @@ namespace CharacterModule.Stats.Managers
 
         public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
         {
-            _modifiersInUse.Where(conditionFunction).ToList()
-            .ForEach(statModifier => 
-            { 
-                statModifier.Modify();
-            });
+            _modifiersInUse.Where(conditionFunction)
+                .ToList()
+                .ForEach(statModifier => 
+                { 
+                    statModifier.Modify();
+                });
         }
 
         public void RemoveStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction)
         {
             _modifiersInUse.Where(conditionFunction).ToList()
-            .ForEach(statModifier =>
-            {
-                statModifier.Remove();
-            });
+                .ForEach(statModifier =>
+                {
+                    statModifier.Remove();
+                });
         }
 
         public void AttachStatObserver(IStatObserver statObserver)

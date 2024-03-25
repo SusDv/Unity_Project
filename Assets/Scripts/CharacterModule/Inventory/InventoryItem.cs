@@ -1,30 +1,29 @@
-﻿using InventorySystem.Item;
-using System;
+﻿using System;
 using CharacterModule.Inventory.Items.Base;
 
-namespace InventorySystem.Core 
+namespace CharacterModule.Inventory 
 {
     [Serializable]
     public struct InventoryItem
     {
-        public ItemBase inventoryItem;
+        public ItemBase Item;
 
-        public int amount;
+        public int Amount;
 
         public static InventoryItem GetEmptyItem()
         {
             return new InventoryItem
             {
-                inventoryItem = null,
-                amount = 0
+                Item = null,
+                Amount = 0
             };
         }
         public InventoryItem ChangeAmount(int amount)
         {
             return new InventoryItem
             {
-                inventoryItem = this.inventoryItem,
-                amount = amount
+                Item = Item,
+                Amount = amount
             };
         }
     }

@@ -2,7 +2,6 @@
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Stats.Managers;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using UnityEngine;
 
 namespace CharacterModule.Inventory.Items
@@ -22,9 +21,9 @@ namespace CharacterModule.Inventory.Items
 
         public override void Equip(StatManager stats)
         {
-            foreach (var baseStatModifier in StatModifiers.BaseModifiers)
+            foreach (var baseStatModifier in StatModifiers.GetModifiers())
             {
-                stats.ApplyStatModifier(baseStatModifier.Clone() as BaseStatModifier);
+                stats.ApplyStatModifier(baseStatModifier);
             }
         }
 

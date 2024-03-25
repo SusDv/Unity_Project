@@ -68,8 +68,20 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Base
 
         public abstract object Clone();
 
-        public abstract bool Equals(BaseStatModifier other);
-        
+        public virtual bool Equals(BaseStatModifier other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            
+            return Mathf.RoundToInt(other.Value - Value) == 0
+                   && other.StatType == StatType
+                   && other.ValueModifierType == ValueModifierType
+                   && other.ModifiedValueType == ModifiedValueType
+                   && other.SourceID == SourceID;
+        }
+
         public static BaseStatModifier operator -(BaseStatModifier baseModifier) 
         {
             baseModifier.Value = -baseModifier.Value;

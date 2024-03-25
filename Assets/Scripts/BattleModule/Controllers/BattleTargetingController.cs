@@ -37,9 +37,9 @@ namespace BattleModule.Controllers
 
         public void SetTargetingData(BattleActionContext context)
         {
-            _battleTargetingProcessor.SetTargetingData(context.TargetSearchType, context.MaxTargetCount);
+            _battleTargetingProcessor.SetTargetingData(context.TargetingObject.TargetSearchType, context.TargetingObject.MaxTargetsCount);
             
-            SetPossibleTargets(context.TargetType);
+            SetPossibleTargets(context.TargetingObject.TargetType);
             
             SetMainTarget();
         }

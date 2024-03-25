@@ -10,6 +10,11 @@ namespace CharacterModule.Stats.Base
     [Serializable]
     public class Stat : ICloneable
     {
+        public Stat(StatType statType)
+        {
+            StatType = statType;
+        }
+
         private Stat(
             StatType statType, 
             float baseValue, 

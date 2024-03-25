@@ -1,10 +1,12 @@
 using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
 using CharacterModule.Stats.Utility.Enums;
+using JetBrains.Annotations;
 using Utility;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers
 {
+    [UsedImplicitly]
     public class OnceModifier : TemporaryModifier
     {
         public override TemporaryStatModifierType TemporaryStatModifierType =>

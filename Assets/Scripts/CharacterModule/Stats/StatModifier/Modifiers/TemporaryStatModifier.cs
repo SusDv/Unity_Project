@@ -32,7 +32,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         [field: SerializeField]
         public int Duration { get; set; }
 
-        private TemporaryModifier _modifierProcessor;
+        private TemporaryModifier _temporaryModifierProcessor;
 
         public override void Init(Stat statToModify, 
             Action<BaseStatModifier> addModifierCallback,
@@ -40,13 +40,13 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         {
             base.Init(statToModify, addModifierCallback, removeModifierCallback);
             
-            _modifierProcessor = TemporaryModifierProcessor.GetModifier(TemporaryStatModifierType)
+            _temporaryModifierProcessor = TemporaryModifierProcessor.GetModifier(TemporaryStatModifierType)
                 .Init(this, ValueToModify);
         }
 
         public override void Modify()
         {
-            _modifierProcessor.Modify();
+            _temporaryModifierProcessor.Modify();
         }
 
         public static TemporaryStatModifier GetTemporaryStatModifierInstance(
@@ -68,12 +68,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
 
         public override bool Equals(BaseStatModifier other)
         {
-            return other != null && 
-                   Mathf.RoundToInt(other.Value - Value) == 0
-                   && other.ValueModifierType == ValueModifierType
-                   && other.SourceID == SourceID
-                   && other.StatType == StatType
-                   && ((TemporaryStatModifier)other).TemporaryStatModifierType == TemporaryStatModifierType;
+            return base.Equals(other) && ((TemporaryStatModifier)other).TemporaryStatModifierType == TemporaryStatModifierType;
         }
     }
 }

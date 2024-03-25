@@ -1,4 +1,3 @@
-using System;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
 
@@ -29,12 +28,10 @@ namespace CharacterModule.Inventory.Items.Base
         [field: SerializeField]
         public StatModifiers StatModifiers { get; private set; }
 
-        public Action<ItemBase> OnItemAction;
-
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
+            StatModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
         }
 #else
         private void Awake()
@@ -42,10 +39,6 @@ namespace CharacterModule.Inventory.Items.Base
             StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
         }
 #endif
-        private void OnDisable()
-        {
-            OnItemAction = null;
-        }
     }
 }
 

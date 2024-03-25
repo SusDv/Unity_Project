@@ -42,14 +42,5 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         {
             return new InstantStatModifier(StatType, ValueModifierType, ModifiedValueType, Value);
         }
-
-        public override bool Equals(BaseStatModifier other)
-        {
-            return other.Value == Value
-                && other.ValueModifierType == ValueModifierType
-                && other.SourceID == SourceID
-                && other.ModifiedValueType == ModifiedValueType
-                && other.StatType == StatType;
-        }
     }
 }

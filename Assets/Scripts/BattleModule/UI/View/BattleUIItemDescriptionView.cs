@@ -1,5 +1,4 @@
 ﻿using CharacterModule.Inventory.Items.Base;
-using InventorySystem.Item;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

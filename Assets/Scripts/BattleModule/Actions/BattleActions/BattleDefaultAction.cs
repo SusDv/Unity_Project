@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Base;
+using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Utility;
 using CharacterModule;
 using CharacterModule.Inventory.Items;
-using CharacterModule.Stats.Base;
+using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Utility.Enums;
-using InventorySystem.Item;
 using JetBrains.Annotations;
 
 namespace BattleModule.Actions.BattleActions
@@ -14,8 +14,11 @@ namespace BattleModule.Actions.BattleActions
     [UsedImplicitly]
     public class BattleDefaultAction : BattleAction 
     {
-        protected override string ActionName => "Weapon attack";
-
+        public override void Init(object actionObject)
+        {
+            BattleActionContext = new BattleActionContext((actionObject as ItemBase)?.ItemName, actionObject);
+        }
+        
         public override void PerformAction(StatManager source, List<Character> targets)
         {
             var characterWeapon = BattleActionContext.ActionObject as WeaponItem;

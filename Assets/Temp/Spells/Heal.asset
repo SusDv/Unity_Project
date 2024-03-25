@@ -15,19 +15,14 @@ MonoBehaviour:
   <SpellName>k__BackingField: Heal
   <SpellImage>k__BackingField: {fileID: 21300000, guid: 1a8c7b803030ba4449f4291014d840dc, type: 3}
   <SpellDescription>k__BackingField: Heals an ally unit by 30 HP + 15 HP 2 turns
-  <BattlePoints>k__BackingField: 8
-  <StatModifiers>k__BackingField:
-    _instantModifiers:
-    - <StatType>k__BackingField: 1
-      <ValueModifierType>k__BackingField: 0
-      <Value>k__BackingField: 30
-    _temporaryModifiers:
-    - <StatType>k__BackingField: 1
-      <ValueModifierType>k__BackingField: 0
-      <Value>k__BackingField: 15
-      <TemporaryStatModifierType>k__BackingField: 1
-      <Duration>k__BackingField: 2
+  <SourceModifiers>k__BackingField:
+    _instantModifiers: []
+    _temporaryModifiers: []
     _permanentModifiers: []
   <TargetType>k__BackingField: 0
   <TargetSearchType>k__BackingField: 0
   <MaxTargetsCount>k__BackingField: 1
+  <TargetModifiers>k__BackingField:
+    _instantModifiers: []
+    _temporaryModifiers: []
+    _permanentModifiers: []

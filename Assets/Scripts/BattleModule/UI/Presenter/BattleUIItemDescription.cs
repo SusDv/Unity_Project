@@ -1,6 +1,5 @@
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using CharacterModule.Inventory.Items.Base;
-using InventorySystem.Item;
 using JetBrains.Annotations;
 
 namespace BattleModule.UI.Presenter

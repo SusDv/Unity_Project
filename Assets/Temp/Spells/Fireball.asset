@@ -15,26 +15,29 @@ MonoBehaviour:
   <SpellName>k__BackingField: Fireball
   <SpellImage>k__BackingField: {fileID: 21300000, guid: 2745af66739ca564c894749882290f05, type: 3}
   <SpellDescription>k__BackingField: Fires a ball that damages 3 targets by 150
-  <CasterModifiers>k__BackingField:
+  <SourceModifiers>k__BackingField:
     _instantModifiers:
     - <StatType>k__BackingField: 10
       <ValueModifierType>k__BackingField: 0
-      <ModifierCapType>k__BackingField: 0
-      <Value>k__BackingField: 15
-    - <StatType>k__BackingField: 1
+      <ModifiedValueType>k__BackingField: 0
+      <Value>k__BackingField: 20
+    _temporaryModifiers:
+    - <StatType>k__BackingField: 4
       <ValueModifierType>k__BackingField: 0
-      <ModifierCapType>k__BackingField: 0
-      <Value>k__BackingField: -200
-    _temporaryModifiers: []
+      <ModifiedValueType>k__BackingField: 0
+      <Value>k__BackingField: -50
+      <TemporaryStatModifierType>k__BackingField: 0
+      <StatModifierTier>k__BackingField: 0
+      <Duration>k__BackingField: 2
     _permanentModifiers: []
   <TargetType>k__BackingField: 1
   <TargetSearchType>k__BackingField: 0
-  <MaxTargetsCount>k__BackingField: 5
-  <StatModifiers>k__BackingField:
+  <MaxTargetsCount>k__BackingField: 3
+  <TargetModifiers>k__BackingField:
     _instantModifiers:
     - <StatType>k__BackingField: 0
       <ValueModifierType>k__BackingField: 0
-      <ModifierCapType>k__BackingField: 0
+      <ModifiedValueType>k__BackingField: 0
       <Value>k__BackingField: -150
     _temporaryModifiers: []
     _permanentModifiers: []
