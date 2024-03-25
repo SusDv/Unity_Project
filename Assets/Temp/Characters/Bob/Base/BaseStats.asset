@@ -16,11 +16,11 @@ MonoBehaviour:
   - <StatType>k__BackingField: 0
     <BaseValue>k__BackingField: 800
     <BaseValueScaleFactor>k__BackingField: 0
-    <IsCapped>k__BackingField: 0
+    <IsCapped>k__BackingField: 1
   - <StatType>k__BackingField: 1
     <BaseValue>k__BackingField: 200
     <BaseValueScaleFactor>k__BackingField: 0
-    <IsCapped>k__BackingField: 0
+    <IsCapped>k__BackingField: 1
   - <StatType>k__BackingField: 2
     <BaseValue>k__BackingField: 150
     <BaseValueScaleFactor>k__BackingField: 0
