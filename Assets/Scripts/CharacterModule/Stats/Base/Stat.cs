@@ -58,6 +58,8 @@ namespace CharacterModule.Stats.Base
                 {
                     _finalValue = _maxValue = Mathf.Clamp(value, 0f, value);
                     
+                    _statObservers?.ForEach(o => o.UpdateValue(StatInfo.GetInstance(BaseValue, FinalValue, MaxValue)));
+                    
                     return;
                 }
                 
@@ -75,10 +77,11 @@ namespace CharacterModule.Stats.Base
                 if (!IsCapped)
                 {
                     _maxValue = Mathf.Clamp(value, 0f, value);
-
+                    
+                    _statObservers?.ForEach(o => o.UpdateValue(StatInfo.GetInstance(BaseValue, FinalValue, MaxValue)));
+                    
                     return;
                 }
-                
                 
                 if (_maxValue != 0)
                 {

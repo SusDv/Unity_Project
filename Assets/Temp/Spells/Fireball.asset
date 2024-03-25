@@ -21,14 +21,7 @@ MonoBehaviour:
       <ValueModifierType>k__BackingField: 0
       <ModifiedValueType>k__BackingField: 0
       <Value>k__BackingField: 20
-    _temporaryModifiers:
-    - <StatType>k__BackingField: 4
-      <ValueModifierType>k__BackingField: 0
-      <ModifiedValueType>k__BackingField: 0
-      <Value>k__BackingField: -50
-      <TemporaryStatModifierType>k__BackingField: 0
-      <StatModifierTier>k__BackingField: 0
-      <Duration>k__BackingField: 2
+    _temporaryModifiers: []
     _permanentModifiers: []
   <TargetType>k__BackingField: 1
   <TargetSearchType>k__BackingField: 0

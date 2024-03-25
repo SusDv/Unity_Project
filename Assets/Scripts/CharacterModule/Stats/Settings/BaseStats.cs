@@ -26,6 +26,11 @@ namespace CharacterModule.Stats.Settings
                 }
             }
 
+            if (StatList.Count > Enum.GetNames(typeof(StatType)).Length)
+            {
+                StatList.Remove(StatList[^1]);
+            }
+
             foreach (var stat in StatList)
             {
                 stat.MaxValue = stat.BaseValue;

@@ -545,7 +545,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2116645936873579836, guid: f75cc39d7dc81c64a92a29824b37120b, type: 3}
       propertyPath: m_Name
-      value: SliderStatObserver (1)
+      value: ManaStatObserver
       objectReference: {fileID: 0}
     - target: {fileID: 7494258715110643730, guid: f75cc39d7dc81c64a92a29824b37120b, type: 3}
       propertyPath: <StatType>k__BackingField
@@ -662,7 +662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2116645936873579836, guid: f75cc39d7dc81c64a92a29824b37120b, type: 3}
       propertyPath: m_Name
-      value: SliderStatObserver
+      value: HealthStatObserver
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f75cc39d7dc81c64a92a29824b37120b, type: 3}

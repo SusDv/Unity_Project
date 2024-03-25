@@ -36,7 +36,7 @@ namespace CharacterModule.Inventory.Items.Base
 #else
         private void Awake()
         {
-            StatModifiers.BaseModifiers.ForEach(statModifier => statModifier.SourceID = ID);
+            StatModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
         }
 #endif
     }

@@ -410,8 +410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootToObtain:
-  - inventoryItem: {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
-    amount: 1
+  - Item: {fileID: 0}
+    Amount: 0
 --- !u!65 &406885094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -887,10 +887,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootToObtain:
-  - inventoryItem: {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
-    amount: 1
-  - inventoryItem: {fileID: 11400000, guid: aea1d77ddddd07f4ab8ee0b928969f98, type: 2}
-    amount: 1
+  - Item: {fileID: 0}
+    Amount: 0
+  - Item: {fileID: 0}
+    Amount: 0
 --- !u!65 &724945290
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3757,10 +3757,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootToObtain:
-  - inventoryItem: {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
-    amount: 1
-  - inventoryItem: {fileID: 11400000, guid: 6b0a940cc81455f41a1317662e9f9cb8, type: 2}
-    amount: 1
+  - Item: {fileID: 0}
+    Amount: 0
+  - Item: {fileID: 0}
+    Amount: 0
 --- !u!1 &2137289014
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,7 +4004,6 @@ GameObject:
   - component: {fileID: 7631577831195556711}
   - component: {fileID: 5256250359225111444}
   - component: {fileID: 7631577831195556712}
-  - component: {fileID: 7631577831195556714}
   - component: {fileID: 5256250359077740826}
   - component: {fileID: 7631577831195556713}
   m_Layer: 6
@@ -4056,15 +4055,3 @@ CapsuleCollider:
   m_Height: 1.3499999
   m_Direction: 1
   m_Center: {x: 0, y: 1.0250001, z: 0}
---- !u!114 &7631577831195556714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7631577831195556699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58443d21f1a3db740825544086207626, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
