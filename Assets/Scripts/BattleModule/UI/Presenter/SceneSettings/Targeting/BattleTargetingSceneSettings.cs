@@ -9,6 +9,7 @@ namespace BattleModule.UI.Presenter.SceneSettings.Targeting
     {
         [Header("UI References")]
         [SerializeField] public Canvas BattleTargetingCanvas;
+        [SerializeField] public RectTransform TargetGroupPrefab;
         [SerializeField] public Image CharacterTargetImage;
 
         [Header("Main Camera Reference")]

@@ -1,6 +1,4 @@
-﻿using BattleModule.Utility.Enums;
-
-namespace BattleModule.Utility.Interfaces
+﻿namespace BattleModule.Utility.Interfaces
 {
     public interface ITargeting
     {

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using BattleModule.Utility.Enums;
+using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Spells.Interfaces;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
+using Utility.Constants;
 
 namespace CharacterModule.Spells.Core
 {
@@ -30,8 +31,8 @@ namespace CharacterModule.Spells.Core
         public TargetSearchType TargetSearchType { get; set; }
 
         [field: SerializeField]
-        [field: Range(1, 5)]
-        public int MaxTargetsCount { get; set; } = 1;
+        [field: Range(BattleTargetingConstants.SpellMin, BattleTargetingConstants.SpellMax)]
+        public int MaxTargetsCount { get; set; }
 
         public abstract void UseSpell(StatManager source, List<Character> targets);
     }

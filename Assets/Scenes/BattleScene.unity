@@ -748,7 +748,8 @@ MonoBehaviour:
     BattleSpellsMenuButton: {fileID: 1966167487}
   _battleTargetingSceneSettings:
     BattleTargetingCanvas: {fileID: 19025224}
-    CharacterTargetImage: {fileID: 3203809057535785585, guid: 8d909a205c0ba84438cbe1f2959db764, type: 3}
+    TargetGroupPrefab: {fileID: 3203809057535785582, guid: 8d909a205c0ba84438cbe1f2959db764, type: 3}
+    CharacterTargetImage: {fileID: 61842867179150295, guid: 99a08023b0342b94eb9c12d667fd331d, type: 3}
     MainCamera: {fileID: 1660436865}
   _battleTurnSceneSettings:
     BattleTurnParent: {fileID: 1785510479}
