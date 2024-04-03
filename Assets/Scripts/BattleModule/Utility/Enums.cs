@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BattleModule.Utility.Enums
+﻿namespace BattleModule.Utility
 {
     public enum TargetType 
     {
@@ -14,7 +8,7 @@ namespace BattleModule.Utility.Enums
 
     public enum TargetSearchType 
     {
-        AOE,
+        MULTIPLE_TARGET,
         SEQUENCE
     }
 }

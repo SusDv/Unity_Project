@@ -1,5 +1,5 @@
 using System;
-using BattleModule.Utility.Enums;
+using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;

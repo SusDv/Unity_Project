@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BattleModule.Controllers.Targeting.Base;
-using BattleModule.Utility.Enums;
+using BattleModule.Utility;
 using CharacterModule;
 
 namespace BattleModule.Controllers.Targeting.Processor
@@ -13,8 +13,6 @@ namespace BattleModule.Controllers.Targeting.Processor
         private readonly Dictionary<TargetSearchType, BattleTargeting> _targeting = new();
         
         private BattleTargeting _currentTargetingClass;
-
-        private int _maxTargetsToSelect;
 
         public BattleTargetingProcessor()
         {
@@ -39,24 +37,29 @@ namespace BattleModule.Controllers.Targeting.Processor
             }
         }
 
-        public void SetTargetingData(TargetSearchType targetSearchType, int maxTargetsToSelect) 
+        public void SetTargetingData(TargetSearchType targetSearchType,
+            List<Character> targetPool,
+            int maxTargetsToSelect) 
         {
             _currentTargetingClass = _targeting[targetSearchType];
-            _maxTargetsToSelect = maxTargetsToSelect;
-        } 
+            
+            _currentTargetingClass.Init(targetPool, maxTargetsToSelect);
+        }
 
-        public IEnumerable<Character> GetSelectedTargets(
-            List<Character> characters,
-            Character mainTarget) 
+        public List<Character> PreviewTargetList()
         {
-            return _currentTargetingClass.GetSelectedTargets(
-                characters, mainTarget, _maxTargetsToSelect);
+            return _currentTargetingClass.PreviewTargetList();
+        }
+
+        public void PrepareTargets(int mainTargetIndex) 
+        {
+            _currentTargetingClass.PrepareTargets(mainTargetIndex);
         }
 
         public bool AddSelectedTargets(
             ref Stack<Character> currentTargets)
         {
-            return _currentTargetingClass.AddSelectedTargets(ref currentTargets, _maxTargetsToSelect);
+            return _currentTargetingClass.AddSelectedTargets(ref currentTargets);
         }
 
         public void OnCancelAction(

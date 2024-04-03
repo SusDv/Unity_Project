@@ -5,7 +5,7 @@ using BattleModule.Actions.BattleActions.Context;
 using UnityEngine;
 using BattleModule.Controllers.Targeting.Processor;
 using BattleModule.Controllers.Turn;
-using BattleModule.Utility.Enums;
+using BattleModule.Utility;
 using CharacterModule;
 using VContainer;
 
@@ -13,9 +13,9 @@ namespace BattleModule.Controllers
 {
     public class BattleTargetingController
     {
-        private List<Character> _charactersOnScene;
-
         private readonly BattleTargetingProcessor _battleTargetingProcessor;
+        
+        private List<Character> _charactersOnScene;
 
         private List<Character> _currentPossibleTargets;
         
@@ -23,7 +23,7 @@ namespace BattleModule.Controllers
 
         private Character _mainTarget;
 
-        public Action<List<Character>> OnCharacterTargetChanged = delegate { };
+        public event Action<List<Character>> OnCharacterTargetChanged = delegate { };
 
         [Inject]
         public BattleTargetingController(BattleSpawner battleSpawner, BattleTurnController battleTurnController)
@@ -37,9 +37,10 @@ namespace BattleModule.Controllers
 
         public void SetTargetingData(BattleActionContext context)
         {
-            _battleTargetingProcessor.SetTargetingData(context.TargetingObject.TargetSearchType, context.TargetingObject.MaxTargetsCount);
-            
             SetPossibleTargets(context.TargetingObject.TargetType);
+            
+            _battleTargetingProcessor.SetTargetingData(context.TargetingObject.TargetSearchType, 
+                _currentPossibleTargets, context.TargetingObject.MaxTargetsCount);
             
             SetMainTarget();
         }
@@ -61,7 +62,11 @@ namespace BattleModule.Controllers
 
         public bool IsReadyForAction(ref Stack<Character> currentTargets)
         {
-            return _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
+            bool readyForAction = _battleTargetingProcessor.AddSelectedTargets(ref currentTargets);
+            
+            OnCharacterTargetChanged?.Invoke(_battleTargetingProcessor.PreviewTargetList());
+            
+            return readyForAction;
         }
 
         private void OnCharactersSpawned(List<Character> characters)
@@ -99,9 +104,9 @@ namespace BattleModule.Controllers
             _mainTarget =
                 _currentPossibleTargets[characterIndex == -1 ? _currentPossibleTargets.Count / 2 : characterIndex];
             
-            OnCharacterTargetChanged?.Invoke(_battleTargetingProcessor.GetSelectedTargets(
-                _currentPossibleTargets,
-                _mainTarget).ToList());
+            _battleTargetingProcessor.PrepareTargets(_currentPossibleTargets.IndexOf(_mainTarget));
+            
+            OnCharacterTargetChanged?.Invoke(_battleTargetingProcessor.PreviewTargetList());
         }
     }
 }

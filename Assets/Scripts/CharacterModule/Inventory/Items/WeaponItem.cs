@@ -1,4 +1,4 @@
-﻿using BattleModule.Utility.Enums;
+﻿using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Stats.Managers;
@@ -12,11 +12,8 @@ namespace CharacterModule.Inventory.Items
         [field: SerializeField]
         public TargetType TargetType { get; set; }
 
-        [field: SerializeField]
-        public TargetSearchType TargetSearchType { get; set; }
-
-        [field: SerializeField]
-        [field: Range(1, 5)]
+        public TargetSearchType TargetSearchType { get; set; } = TargetSearchType.SEQUENCE;
+        
         public int MaxTargetsCount { get; set; } = 1;
 
         public override void Equip(StatManager stats)
