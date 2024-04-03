@@ -20,7 +20,7 @@ MonoBehaviour:
     _temporaryModifiers: []
     _permanentModifiers: []
   <TargetType>k__BackingField: 0
-  <TargetSearchType>k__BackingField: 1
+  <TargetSearchType>k__BackingField: 0
   <MaxTargetsCount>k__BackingField: 1
   <TargetModifiers>k__BackingField:
     _instantModifiers: []
