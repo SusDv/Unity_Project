@@ -14,9 +14,14 @@ namespace BattleModule.Controllers.Targeting.Processor
         
         private BattleTargeting _currentTargetingClass;
 
-        public BattleTargetingProcessor()
+        private readonly Action<List<Character>> _targetsChangedCallback;
+
+        public BattleTargetingProcessor(
+            Action<List<Character>> targetsChangedCallback)
         {
             Init();
+
+            _targetsChangedCallback = targetsChangedCallback;
         }
 
         private void Init() 
@@ -46,26 +51,24 @@ namespace BattleModule.Controllers.Targeting.Processor
             _currentTargetingClass.Init(targetPool, maxTargetsToSelect);
         }
 
-        public List<Character> PreviewTargetList()
-        {
-            return _currentTargetingClass.PreviewTargetList();
-        }
-
         public void PrepareTargets(int mainTargetIndex) 
         {
-            _currentTargetingClass.PrepareTargets(mainTargetIndex);
+            _currentTargetingClass.PrepareTargets(mainTargetIndex, _targetsChangedCallback);
         }
 
-        public bool AddSelectedTargets(
-            ref Stack<Character> currentTargets)
+        public List<Character> GetSelectedTargets()
         {
-            return _currentTargetingClass.AddSelectedTargets(ref currentTargets);
+            return _currentTargetingClass.GetSelectedTargets(_targetsChangedCallback);
         }
 
-        public void OnCancelAction(
-            ref Stack<Character> currentTargets)
+        public bool TargetingComplete()
         {
-            _currentTargetingClass.OnCancelAction(ref currentTargets);
+            return _currentTargetingClass.TargetingComplete();
+        }
+
+        public bool CancelAction()
+        {
+            return _currentTargetingClass.OnCancelAction(_targetsChangedCallback);
         }
     }
 }

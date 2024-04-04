@@ -6,12 +6,13 @@ using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers.Turn;
 using BattleModule.Input;
+using BattleModule.Utility.Interfaces;
 using CharacterModule;
 using VContainer;
 
 namespace BattleModule.Controllers
 {
-    public class BattleActionController
+    public class BattleActionController : IBattleCancelable
     {
         private readonly BattleEventManager _battleEventManager;
         
@@ -31,7 +32,7 @@ namespace BattleModule.Controllers
             
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
             
-            battleInput.OnCancelButtonPressed += OnCancelButtonPressed;
+            battleInput.PrependCancelable(this);
         }
         
         public void SetBattleAction<T>(object actionObject)
@@ -63,14 +64,16 @@ namespace BattleModule.Controllers
             SetDefaultBattleAction();
         }
         
-        private void OnCancelButtonPressed()
+        public bool Cancel()
         {
             if (_currentBattleAction is BattleDefaultAction)
             {
-                return;
+                return true;
             }
             
             SetDefaultBattleAction();
+            
+            return true;
         }
     }
 }

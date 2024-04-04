@@ -1,4 +1,6 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using BattleModule.Utility.Interfaces;
 using UnityEngine;
 
 namespace BattleModule.Input
@@ -12,12 +14,21 @@ namespace BattleModule.Input
         public bool MouseLeftButtonPressed { get; private set; }
         
         public int ArrowKeysInput { get; private set; }
-
-        public event Action OnCancelButtonPressed = delegate { };
-
+        
         public Vector2 MousePosition { get; private set; }
+
+        private List<IBattleCancelable> _cancelableList = new();
         
-        
+        public void AddCancelable(IBattleCancelable battleCancelable)
+        {
+            _cancelableList.Add(battleCancelable);
+        }
+
+        public void PrependCancelable(IBattleCancelable battleCancelable)
+        {
+            _cancelableList = _cancelableList.Prepend(battleCancelable).ToList();
+        }
+
         private void Awake()
         {
             BattleInputAction = new BattleInputAction();
@@ -51,7 +62,18 @@ namespace BattleModule.Input
                 return;
             }
             
-            OnCancelButtonPressed?.Invoke();
+            HandleCancelAction();
+        }
+
+        private void HandleCancelAction()
+        {
+            for (int i = _cancelableList.Count - 1; i >= 0; i--)
+            {
+                if (!_cancelableList[i].Cancel())
+                {
+                    break;
+                }
+            }
         }
 
         private void OnEnable()
