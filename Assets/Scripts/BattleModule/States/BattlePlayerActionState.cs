@@ -1,16 +1,15 @@
-using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Actions;
+using System.Collections.Generic;
+using BattleModule.States.StateMachine;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.States.Base;
-using BattleModule.States.StateMachine;
 using CharacterModule;
 
 namespace BattleModule.States
 {
     public class BattlePlayerActionState : BattleState
     {
-        private Stack<Character> _currentTargets;
+        private List<Character> _currentTargets;
         
         public BattlePlayerActionState(BattleStateMachine battleStateMachine) 
             : base(battleStateMachine)
@@ -18,7 +17,7 @@ namespace BattleModule.States
 
         public override void OnEnter()
         {
-            _currentTargets = new Stack<Character>();
+            _currentTargets = new List<Character>();
 
             BattleStateMachine.BattleController.BattleActionController.OnBattleActionChanged += OnBattleActionChanged;
 
@@ -88,7 +87,9 @@ namespace BattleModule.States
 
         private void BattleActionHandler()
         {
-            if (!BattleStateMachine.BattleController.BattleTargetingController.IsReadyForAction(ref _currentTargets))
+            _currentTargets = BattleStateMachine.BattleController.BattleTargetingController.GetSelectedTargets();
+            
+            if (!BattleStateMachine.BattleController.BattleTargetingController.IsReadyForAction())
             {
                 return;
             }

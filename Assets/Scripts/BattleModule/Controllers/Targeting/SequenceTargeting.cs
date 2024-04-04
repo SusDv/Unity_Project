@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Controllers.Targeting.Base;
 using BattleModule.Utility;
@@ -11,12 +12,15 @@ namespace BattleModule.Controllers.Targeting
         private int _mainTargetIndex;
         public override TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
 
-        public override void PrepareTargets(int mainTargetIndex)
+        public override void PrepareTargets(int mainTargetIndex,
+            Action<List<Character>> targetChangedCallback)
         {
             _mainTargetIndex = mainTargetIndex;
+            
+            targetChangedCallback?.Invoke(PreviewTargetList());
         }
 
-        public override List<Character> PreviewTargetList()
+        protected override List<Character> PreviewTargetList()
         {
             var previewList = SelectedCharacters.ToList();
 
@@ -25,30 +29,32 @@ namespace BattleModule.Controllers.Targeting
             return previewList;
         }
 
-        public override bool AddSelectedTargets(
-            ref Stack<Character> currentTargets)
+        public override List<Character> GetSelectedTargets(Action<List<Character>> targetChangedCallback)
         {
             SelectedCharacters.Add(TargetPool[_mainTargetIndex]);
             
-            if (SelectedCharacters.Count < NumberOfCharactersToSelect)
-            { 
-                return false;
-            }
-
-            foreach (var target in SelectedCharacters)
-            {
-                currentTargets.Push(target);
-            }
+            targetChangedCallback?.Invoke(PreviewTargetList());
             
-            return true;
+            return SelectedCharacters;
         }
 
-        public override void OnCancelAction(
-            ref Stack<Character> currentTargets)
+        public override bool TargetingComplete()
         {
-            currentTargets.Pop();
+            return SelectedCharacters.Count == NumberOfCharactersToSelect;
+        }
 
-            SelectedCharacters = currentTargets.ToList();
+        public override bool OnCancelAction(Action<List<Character>> targetChangedCallback)
+        {
+            if (SelectedCharacters.Count == 0)
+            {
+                return true;
+            }
+
+            SelectedCharacters.RemoveAt(SelectedCharacters.Count - 1);
+
+            targetChangedCallback?.Invoke(PreviewTargetList());
+            
+            return false;
         }
     }
 }

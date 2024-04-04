@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BattleModule.Utility;
 using CharacterModule;
 
@@ -6,9 +7,9 @@ namespace BattleModule.Controllers.Targeting.Base
 {
     public abstract class BattleTargeting
     {
-        protected List<Character> TargetPool = new();
+        protected List<Character> TargetPool;
 
-        protected List<Character> SelectedCharacters = new();
+        protected List<Character> SelectedCharacters;
 
         protected int NumberOfCharactersToSelect;
         
@@ -18,19 +19,38 @@ namespace BattleModule.Controllers.Targeting.Base
             int numberOfCharactersToSelect)
         {
             TargetPool = targetPool;
+            
             NumberOfCharactersToSelect = numberOfCharactersToSelect;
+            
+            SelectedCharacters = new List<Character>();
+        }
+        
+        public abstract void PrepareTargets(int mainTargetIndex,
+            Action<List<Character>> targetChangedCallback);
+
+        public virtual List<Character> GetSelectedTargets(Action<List<Character>> targetChangedCallback)
+        {
+            targetChangedCallback?.Invoke(PreviewTargetList());
+            
+            return SelectedCharacters;
+        }
+        
+        public virtual bool TargetingComplete()
+        {
+            return true;
         }
 
-        public virtual List<Character> PreviewTargetList()
+        public virtual bool OnCancelAction(Action<List<Character>> targetChangedCallback)
+        {
+            targetChangedCallback?.Invoke(PreviewTargetList());
+            
+            return true;
+        }
+        
+        protected virtual List<Character> PreviewTargetList()
         {
             return SelectedCharacters;
         }
 
-        public abstract void PrepareTargets(int mainTargetIndex);
-
-        public abstract bool AddSelectedTargets(
-            ref Stack<Character> currentTargets);
-
-        public abstract void OnCancelAction(ref Stack<Character> currentTargets);
     }
 }

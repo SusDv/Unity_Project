@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BattleModule.Controllers.Targeting.Base;
 using BattleModule.Utility;
 using CharacterModule;
@@ -11,9 +12,12 @@ namespace BattleModule.Controllers.Targeting
         public override TargetSearchType TargetSearchType => TargetSearchType.MULTIPLE_TARGET;
         
         public override void PrepareTargets(
-            int mainTargetIndex)
+            int mainTargetIndex,
+            Action<List<Character>> targetChangedCallback)
         {
             GetNeighboursTarget(mainTargetIndex, NumberOfCharactersToSelect / 2);
+            
+            targetChangedCallback?.Invoke(PreviewTargetList());
         }
 
         private void GetNeighboursTarget(
@@ -31,20 +35,5 @@ namespace BattleModule.Controllers.Targeting
                 SelectedCharacters.Add(TargetPool[i]);
             }
         }
-
-        public override bool AddSelectedTargets(
-            ref Stack<Character> currentTargets)
-        {
-            foreach (var character in SelectedCharacters) 
-            {
-                currentTargets.Push(character);
-            }
-
-            return true;
-        }
-
-        public override void OnCancelAction(
-            ref Stack<Character> currentTargets)
-        { }
     }
 }
