@@ -9,7 +9,7 @@ using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 using VContainer;
 
-namespace BattleModule.Controllers.Turn
+namespace BattleModule.Controllers.Modules.Turn
 {
     public class BattleTurnController
     {

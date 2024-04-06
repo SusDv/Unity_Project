@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using VContainer;
 using BattleModule.Controllers;
+using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.View;
 using CharacterModule;

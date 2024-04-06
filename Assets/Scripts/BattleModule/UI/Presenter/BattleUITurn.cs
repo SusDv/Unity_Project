@@ -2,7 +2,8 @@
 using System.Globalization;
 using UnityEngine;
 using BattleModule.Controllers;
-using BattleModule.Controllers.Turn;
+using BattleModule.Controllers.Modules;
+using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
 using BattleModule.UI.View;
 using CharacterModule;

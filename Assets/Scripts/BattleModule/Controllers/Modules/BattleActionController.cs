@@ -4,13 +4,13 @@ using BattleModule.Actions;
 using BattleModule.Actions.BattleActions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
-using BattleModule.Controllers.Turn;
+using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.Utility.Interfaces;
 using CharacterModule;
 using VContainer;
 
-namespace BattleModule.Controllers
+namespace BattleModule.Controllers.Modules
 {
     public class BattleActionController : IBattleCancelable
     {

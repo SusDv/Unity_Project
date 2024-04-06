@@ -1,22 +1,23 @@
 ﻿using BattleModule.Utility.Interfaces;
+using Utility;
+using Utility.Information;
 
 namespace BattleModule.Actions.BattleActions.Context
 {
     public class BattleActionContext
     {
-        public BattleActionContext(string actionName,
-            object actionObject)
+        public BattleActionContext(object actionObject)
         {
-            ActionName = actionName;
+            ObjectInformation = (actionObject as IObjectInformation)?.ObjectInformation;
 
             ActionObject = actionObject;
 
-            TargetingObject = actionObject as ITargeting;
+            TargetableObjectObject = actionObject as ITargetableObject;
         }
-        public string ActionName { get; }
+        public ObjectInformation ObjectInformation { get; }
 
         public object ActionObject { get; }
 
-        public ITargeting TargetingObject { get; }
+        public ITargetableObject TargetableObjectObject { get; }
     }
 }

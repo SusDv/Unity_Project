@@ -9,18 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eab1c390f051334484a08a7a584221c, type: 3}
-  m_Name: Cancel
+  m_Script: {fileID: 11500000, guid: 642365ab96724007aca33b9660ae693d, type: 3}
+  m_Name: Special Attack
   m_EditorClassIdentifier: 
-  <ObjectInformation>k__BackingField:
+  <AttackInformation>k__BackingField:
     <Name>k__BackingField: 
     <Description>k__BackingField: 
-    <Icon>k__BackingField: {fileID: 21300000, guid: 2745af66739ca564c894749882290f05, type: 3}
-  <SourceModifiers>k__BackingField:
-    _instantModifiers: []
-    _temporaryModifiers: []
-    _permanentModifiers: []
+    <Icon>k__BackingField: {fileID: 0}
+  <EnergyToAttack>k__BackingField: 0
   <TargetType>k__BackingField: 0
   <TargetSearchType>k__BackingField: 0
   <MaxTargetsCount>k__BackingField: 1
-  <SpellClearanceTier>k__BackingField: 0

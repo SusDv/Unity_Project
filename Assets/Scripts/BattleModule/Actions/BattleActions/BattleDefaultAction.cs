@@ -3,8 +3,8 @@ using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Utility;
 using CharacterModule;
-using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Base;
+using CharacterModule.Inventory.Items.Equipment;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Utility.Enums;
 using JetBrains.Annotations;
@@ -14,11 +14,6 @@ namespace BattleModule.Actions.BattleActions
     [UsedImplicitly]
     public class BattleDefaultAction : BattleAction 
     {
-        public override void Init(object actionObject)
-        {
-            BattleActionContext = new BattleActionContext((actionObject as ItemBase)?.ItemName, actionObject);
-        }
-        
         public override void PerformAction(StatManager source, List<Character> targets)
         {
             var characterWeapon = BattleActionContext.ActionObject as WeaponItem;

@@ -1,6 +1,5 @@
-﻿using System;
-using BattleModule.Actions.BattleActions.Context;
-using BattleModule.Controllers;
+﻿using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Action;
 using UnityEngine;
 using VContainer;
@@ -23,7 +22,7 @@ namespace BattleModule.UI.Presenter
         private void OnBattleActionChanged(BattleActionContext context) 
         {
             _battleActionSceneSettings.BattleActionView.SetData(
-                $"<b><u>Action:</b></u> {context.ActionName}");
+                $"<b><u>Action:</b></u> {context.ObjectInformation.Name}");
         }
     }
 }

@@ -9,16 +9,13 @@ using UnityEngine;
 namespace CharacterModule.Inventory.Items 
 {
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
-    public class ConsumableItem : ItemBase, IConsumable, ITargeting
+    public class ConsumableItem : ItemBase, IConsumable, ITargetableObject
     {
         [field: SerializeField]
         public TargetType TargetType { get; set; }
 
-        [field: SerializeField]
-        public TargetSearchType TargetSearchType { get; set; }
-
-        [field: SerializeField]
-        [field: Range(1, 5)]
+        public TargetSearchType TargetSearchType { get; set; } = TargetSearchType.SEQUENCE;
+        
         public int MaxTargetsCount { get; set; } = 1;
 
         public event Action<ItemBase> OnConsumableUsed;

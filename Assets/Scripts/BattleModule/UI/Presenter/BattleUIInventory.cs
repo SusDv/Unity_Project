@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using BattleModule.Actions.BattleActions;
-using BattleModule.Controllers;
+using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
 using CharacterModule.Inventory;
@@ -66,7 +66,7 @@ namespace BattleModule.UI.Presenter
         { 
             BattleUIInventoryClear();
 
-            foreach (var item in _battleInventory)
+            foreach (var inventoryItem in _battleInventory)
             {
                 var battleUIItem =
                     _battleInventorySceneSettings.BattleUIItemView.CreateInstance(_battleInventorySceneSettings
@@ -76,7 +76,7 @@ namespace BattleModule.UI.Presenter
 
                 battleUIItem.OnButtonClick += BattleItemPointerClick;
 
-                battleUIItem.SetData(item);
+                battleUIItem.SetData(inventoryItem);
 
                 _battleUIItems.Add(battleUIItem);
             }

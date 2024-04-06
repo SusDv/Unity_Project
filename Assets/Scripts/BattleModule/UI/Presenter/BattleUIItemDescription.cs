@@ -26,7 +26,7 @@ namespace BattleModule.UI.Presenter
             
             if (_battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.activeSelf)
             {
-                _battleItemDescriptionSceneSettings.BattleUIItemDescriptionView.SetData(itemBase);
+                _battleItemDescriptionSceneSettings.BattleUIItemDescriptionView.SetData(itemBase.ObjectInformation);
             }
         }
     }

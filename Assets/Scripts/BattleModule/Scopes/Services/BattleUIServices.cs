@@ -1,5 +1,4 @@
 using BattleModule.UI.Presenter;
-using UnityEngine;
 using BattleModule.UI.Presenter.SceneSettings.Action;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
@@ -7,10 +6,11 @@ using BattleModule.UI.Presenter.SceneSettings.Player;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
 using BattleModule.UI.Presenter.SceneSettings.Targeting;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace BattleModule.Scopes
+namespace BattleModule.Scopes.Services
 {
     public class BattleUIServices : MonoBehaviour
     {

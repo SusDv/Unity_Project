@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Controllers.Targeting.Processor;
-using BattleModule.Controllers.Turn;
 using BattleModule.Input;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
@@ -11,7 +11,7 @@ using CharacterModule;
 using UnityEngine;
 using VContainer;
 
-namespace BattleModule.Controllers
+namespace BattleModule.Controllers.Modules
 {
     public class BattleTargetingController : IBattleCancelable
     {
@@ -42,14 +42,14 @@ namespace BattleModule.Controllers
 
         public void SetTargetingData(BattleActionContext context)
         {
-            SetPossibleTargets(context.TargetingObject.TargetType);
+            SetPossibleTargets(context.TargetableObjectObject.TargetType);
 
             _mainTargetIndex = _mainTargetIndex < 0 ? _currentPossibleTargets.Count / 2 : _mainTargetIndex;
             
             _battleTargetingProcessor.SetTargetingData(
-                context.TargetingObject.TargetSearchType, 
+                context.TargetableObjectObject.TargetSearchType, 
                 _currentPossibleTargets, 
-                context.TargetingObject.MaxTargetsCount);
+                context.TargetableObjectObject.MaxTargetsCount);
             
             SetMainTarget();
         }

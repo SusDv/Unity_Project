@@ -13,7 +13,10 @@ namespace BattleModule.Actions.BattleActions.Base
             return BattleActionContext;
         }
 
-        public abstract void Init(object actionObject);
+        public void Init(object actionObject)
+        {
+            BattleActionContext = new BattleActionContext(actionObject);
+        }
 
         public abstract void PerformAction(StatManager source, List<Character> targets);
     }

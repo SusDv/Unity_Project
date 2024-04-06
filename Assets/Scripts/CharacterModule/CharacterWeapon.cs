@@ -1,5 +1,6 @@
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items;
+using CharacterModule.Inventory.Items.Equipment;
 
 namespace CharacterModule 
 {
