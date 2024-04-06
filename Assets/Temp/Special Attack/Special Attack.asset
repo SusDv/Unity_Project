@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642365ab96724007aca33b9660ae693d, type: 3}
   m_Name: Special Attack
   m_EditorClassIdentifier: 
-  <AttackInformation>k__BackingField:
+  <ObjectInformation>k__BackingField:
     <Name>k__BackingField: 
     <Description>k__BackingField: 
     <Icon>k__BackingField: {fileID: 0}

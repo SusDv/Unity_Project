@@ -15,7 +15,7 @@ namespace BattleModule.Controllers.Modules
 {
     public class BattleTargetingController : IBattleCancelable
     {
-        private readonly BattleTargetingProcessor _battleTargetingProcessor;
+        private BattleTargetingProcessor _battleTargetingProcessor;
 
         private List<Character> _currentPossibleTargets;
 
@@ -33,18 +33,13 @@ namespace BattleModule.Controllers.Modules
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
 
             battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-            
-            _battleTargetingProcessor = new BattleTargetingProcessor(
-                CharacterTargetChanged);
-            
+
             battleInput.AddCancelable(this);
         }
 
         public void SetTargetingData(BattleActionContext context)
         {
             SetPossibleTargets(context.TargetableObjectObject.TargetType);
-
-            _mainTargetIndex = _mainTargetIndex < 0 ? _currentPossibleTargets.Count / 2 : _mainTargetIndex;
             
             _battleTargetingProcessor.SetTargetingData(
                 context.TargetableObjectObject.TargetSearchType, 
@@ -90,6 +85,8 @@ namespace BattleModule.Controllers.Modules
 
         private void OnCharactersSpawned(List<Character> characters)
         {
+            _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
+
             _battleTurnContext = new BattleTurnContext(characters.First(), characters);
         }
 
@@ -114,6 +111,8 @@ namespace BattleModule.Controllers.Modules
         private void SetPossibleTargets(TargetType targetType)
         {
             _currentPossibleTargets = _battleTurnContext.CharactersInTurn.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
+            
+            _mainTargetIndex = _currentPossibleTargets.Count / 2;
         }
 
         private void SetMainTarget()
