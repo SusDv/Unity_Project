@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility;
 
 namespace BattleModule.UI.View
 {
@@ -11,11 +12,11 @@ namespace BattleModule.UI.View
         [SerializeField] private TextMeshProUGUI _battleUIName;
         [SerializeField] private TextMeshProUGUI _battleUIDescription;
         
-        public void SetData(ItemBase battleItem)
+        public void SetData(ObjectInformation objectInformation)
         {
-            _battleUIImage.sprite = battleItem.ItemImage;
-            _battleUIName.text = battleItem.ItemName;
-            _battleUIDescription.text = battleItem.ItemDescription;
+            _battleUIImage.sprite = objectInformation.Icon;
+            _battleUIName.text = objectInformation.Name;
+            _battleUIDescription.text = objectInformation.Description;
         }
     }
 }

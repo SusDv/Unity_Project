@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleModule.Controllers;
+using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Action;
 using CharacterModule;
 using VContainer;

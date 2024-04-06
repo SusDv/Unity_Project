@@ -1,4 +1,4 @@
-using BattleModule.Controllers.Turn;
+using BattleModule.Controllers.Modules.Turn;
 using UnityEngine;
 using VContainer;
 

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0fbe1bf70166d46b14d207e5250c46, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  <SpellName>k__BackingField: Fireball
-  <SpellImage>k__BackingField: {fileID: 21300000, guid: 2745af66739ca564c894749882290f05, type: 3}
-  <SpellDescription>k__BackingField: Fires a ball that damages 3 targets by 150
+  <ObjectInformation>k__BackingField:
+    <Name>k__BackingField: Fireball
+    <Description>k__BackingField: 
+    <Icon>k__BackingField: {fileID: 21300000, guid: 2745af66739ca564c894749882290f05, type: 3}
   <SourceModifiers>k__BackingField:
     _instantModifiers:
     - <StatType>k__BackingField: 10

@@ -1,20 +1,16 @@
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
+using Utility;
+using Utility.Information;
 
 namespace CharacterModule.Inventory.Items.Base 
 {
-    public abstract class ItemBase : ScriptableObject
+    public abstract class ItemBase : ScriptableObject, IObjectInformation
     {
         public int ID => GetInstanceID();
 
-        [field: SerializeField]
-        public string ItemName { get; private set; }
-
-        [field: SerializeField]
-        public Sprite ItemImage { get; private set; }
-
-        [field: SerializeField, TextArea]
-        public string ItemDescription { get; private set; }
+        [field: SerializeField] 
+        public ObjectInformation ObjectInformation { get; set; }
 
         [field: SerializeField]
         public bool IsStackable { get; private set; } = false;

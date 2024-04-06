@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using BattleModule.Actions;
-using BattleModule.Controllers.Turn;
+using BattleModule.Controllers.Modules;
+using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
 using CharacterModule;
 using JetBrains.Annotations;
 using VContainer.Unity;
 
-namespace BattleModule.Controllers.Base
+namespace BattleModule.Controllers
 {
     [UsedImplicitly]
     public class BattleController : ITickable, IFixedTickable 

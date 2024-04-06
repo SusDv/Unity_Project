@@ -1,4 +1,5 @@
-using BattleModule.Controllers.Base;
+using BattleModule.Controllers;
+using BattleModule.Scopes.Services;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

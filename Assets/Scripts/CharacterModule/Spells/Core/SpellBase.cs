@@ -5,22 +5,17 @@ using CharacterModule.Spells.Interfaces;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
+using Utility;
 using Utility.Constants;
+using Utility.Information;
 
 namespace CharacterModule.Spells.Core
 {
-    public abstract class SpellBase : ScriptableObject, ITargeting, ISpell
+    public abstract class SpellBase : ScriptableObject, IObjectInformation, ITargetableObject, ISpell
     {
-        [field: SerializeField]
-        public string SpellName { get; private set; }
-
-        [field: SerializeField]
-        public Sprite SpellImage { get; private set; }
-
-        [field: SerializeField]
-        [field: TextArea]
-        public string SpellDescription { get; private set; }
-
+        [field: SerializeField] 
+        public ObjectInformation ObjectInformation { get; set; }
+        
         [field: SerializeField]
         public StatModifiers SourceModifiers { get; set; }
         

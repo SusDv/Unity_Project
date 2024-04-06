@@ -14,7 +14,7 @@ namespace BattleModule.UI.View
 
         public void SetData(InventoryItem inventoryItem)
         {
-            _battleItemImage.sprite = inventoryItem.Item.ItemImage;
+            _battleItemImage.sprite = inventoryItem.Item.ObjectInformation.Icon;
 
             _battleItemCount.text = inventoryItem.Amount.ToString();
         }

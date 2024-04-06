@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using BattleModule.Controllers;
 using BattleModule.UI.View;
 using BattleModule.Actions.BattleActions;
-using BattleModule.Controllers.Turn;
+using BattleModule.Controllers.Modules;
+using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
 using CharacterModule;
 using VContainer;
@@ -67,7 +67,7 @@ namespace BattleModule.UI.Presenter
                     Quaternion.identity,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform);
 
-                battleUISpellView.SetData(spell.SpellImage);
+                battleUISpellView.SetData(spell.ObjectInformation.Icon);
 
                 battleUISpellView.OnButtonClick += OnSpellClick;
 

@@ -1,13 +1,13 @@
 using BattleModule.Actions;
 using BattleModule.Animation;
-using BattleModule.Controllers;
-using BattleModule.Controllers.Turn;
+using BattleModule.Controllers.Modules;
+using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace BattleModule.Scopes
+namespace BattleModule.Scopes.Services
 {
     public class BattleServices : MonoBehaviour
     {

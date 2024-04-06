@@ -4,10 +4,10 @@ using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Stats.Managers;
 using UnityEngine;
 
-namespace CharacterModule.Inventory.Items
+namespace CharacterModule.Inventory.Items.Equipment
 {
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Character/Items/Equipment/Weapon")]
-    public class WeaponItem : EquipmentItem, IEquipment, ITargeting 
+    public class WeaponItem : EquipmentItem, IEquipment, ITargetableObject 
     {
         [field: SerializeField]
         public TargetType TargetType { get; set; }

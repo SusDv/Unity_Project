@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
-namespace BattleModule.Controllers 
+namespace BattleModule.Controllers.Modules 
 {
     public class BattleCamera
     {

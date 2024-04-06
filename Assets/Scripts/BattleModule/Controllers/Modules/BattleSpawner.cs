@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Transition;
 using BattleModule.Utility;
 using CharacterModule;
 using UnityEngine;
 using Utility;
 using VContainer;
 
-namespace BattleModule.Controllers
+namespace BattleModule.Controllers.Modules
 {
     public class BattleSpawner : MonoBehaviour
     {

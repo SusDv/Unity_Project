@@ -12,11 +12,6 @@ namespace BattleModule.Actions.BattleActions
     [UsedImplicitly]
     public class BattleSpellAction : BattleAction
     {
-        public override void Init(object actionObject)
-        {
-            BattleActionContext = new BattleActionContext((actionObject as SpellBase)?.SpellName, actionObject);
-        }
-
         public override void PerformAction(StatManager source, List<Character> targets)
         {
             (BattleActionContext.ActionObject as ISpell)?.UseSpell(source, targets);

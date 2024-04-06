@@ -2,6 +2,7 @@
 using BattleModule.UI.View;
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Player;
 using CharacterModule;
 using UnityEngine;

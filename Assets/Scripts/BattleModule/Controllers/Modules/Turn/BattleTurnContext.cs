@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using CharacterModule;
 
-namespace BattleModule.Controllers.Turn
+namespace BattleModule.Controllers.Modules.Turn
 {
     public class BattleTurnContext
     {
