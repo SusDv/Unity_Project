@@ -4,6 +4,7 @@ using BattleModule.States.StateMachine;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.States.Base;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 
 namespace BattleModule.States
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.Utility.Enums;
@@ -12,7 +13,7 @@ namespace CharacterModule.Spells.Core.Spells
         [field: SerializeField]
         private StatModifierTier SpellClearanceTier { get; set; }
 
-        public override void UseSpell(StatManager source, List<Character> targets)
+        public override void UseSpell(List<Character> targets)
         {
             foreach (var target in targets) 
             {

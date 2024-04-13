@@ -1,4 +1,5 @@
-﻿using BattleModule.Utility.Interfaces;
+﻿using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Utility.Interfaces;
 using Utility;
 using Utility.Information;
 
@@ -8,16 +9,17 @@ namespace BattleModule.Actions.BattleActions.Context
     {
         public BattleActionContext(object actionObject)
         {
-            ObjectInformation = (actionObject as IObjectInformation)?.ObjectInformation;
+            ObjectInformation = actionObject as IObjectInformation;
+
+            BattleObject = actionObject as IBattleObject;
 
             ActionObject = actionObject;
-
-            TargetableObjectObject = actionObject as ITargetableObject;
         }
-        public ObjectInformation ObjectInformation { get; }
+        
+        public IObjectInformation ObjectInformation { get; }
+        
+        public IBattleObject BattleObject { get; }
 
         public object ActionObject { get; }
-
-        public ITargetableObject TargetableObjectObject { get; }
     }
 }

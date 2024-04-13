@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.CharacterType;
 using CharacterModule.Inventory;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class UIInventoryController : MonoBehaviour
     {
         controller = FindObjectOfType<SwapCharacterController>();
         SetSelectionCharacterData();
-        FindObjectOfType<Player>().UIInteractionPanelShow += ShowInteractionPanel;
+        
     }
 
     public void Update()

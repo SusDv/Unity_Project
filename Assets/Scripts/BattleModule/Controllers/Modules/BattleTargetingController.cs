@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.Controllers.Targeting.Processor;
 using BattleModule.Input;
+using BattleModule.Targeting.Processor;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
-using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using UnityEngine;
 using VContainer;
 
@@ -22,7 +22,6 @@ namespace BattleModule.Controllers.Modules
         private BattleTurnContext _battleTurnContext;
 
         private int _mainTargetIndex = -1;
-        
         public event Action<List<Character>> OnCharacterTargetChanged = delegate { };
 
         [Inject]
@@ -39,12 +38,12 @@ namespace BattleModule.Controllers.Modules
 
         public void SetTargetingData(BattleActionContext context)
         {
-            SetPossibleTargets(context.TargetableObjectObject.TargetType);
+            SetPossibleTargets(context.BattleObject.TargetType);
             
             _battleTargetingProcessor.SetTargetingData(
-                context.TargetableObjectObject.TargetSearchType, 
+                context.BattleObject.TargetSearchType, 
                 _currentPossibleTargets, 
-                context.TargetableObjectObject.MaxTargetsCount);
+                context.BattleObject.MaxTargetsCount);
             
             SetMainTarget();
         }

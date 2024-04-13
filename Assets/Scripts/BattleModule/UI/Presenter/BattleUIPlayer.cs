@@ -1,10 +1,10 @@
-﻿using BattleModule.Controllers;
-using BattleModule.UI.View;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BattleModule.UI.View;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Player;
-using CharacterModule;
+using CharacterModule.CharacterType;
+using CharacterModule.CharacterType.Base;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using VContainer;
 

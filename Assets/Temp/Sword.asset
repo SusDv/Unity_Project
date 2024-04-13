@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca6591990906794a86760bcdfb56ec8, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  <ObjectInformation>k__BackingField:
-    <Name>k__BackingField: Sword
+  <Information>k__BackingField:
+    <Name>k__BackingField: 
     <Description>k__BackingField: 
     <Icon>k__BackingField: {fileID: 0}
   <IsStackable>k__BackingField: 0
-  <BattlePoints>k__BackingField: 10
-  <StatModifiers>k__BackingField:
+  <TargetModifiers>k__BackingField:
     _instantModifiers: []
     _temporaryModifiers: []
     _permanentModifiers:
@@ -26,4 +25,6 @@ MonoBehaviour:
       <ValueModifierType>k__BackingField: 0
       <ModifiedValueType>k__BackingField: 0
       <Value>k__BackingField: 75
+  <BattlePoints>k__BackingField: 10
   <TargetType>k__BackingField: 1
+  <SpecialAttack>k__BackingField: {fileID: 11400000, guid: 0a1465a34e5d27144bd5529c668658ac, type: 2}

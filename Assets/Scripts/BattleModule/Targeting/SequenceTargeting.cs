@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Controllers.Targeting.Base;
+using BattleModule.Targeting.Base;
 using BattleModule.Utility;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 
-namespace BattleModule.Controllers.Targeting
+namespace BattleModule.Targeting
 {
     public class SequenceTargeting : BattleTargeting
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using UnityEngine;
 
 namespace BattleModule.Utility

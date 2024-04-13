@@ -12,14 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0fbe1bf70166d46b14d207e5250c46, type: 3}
   m_Name: Heal
   m_EditorClassIdentifier: 
-  <ObjectInformation>k__BackingField:
-    <Name>k__BackingField: Heal
-    <Description>k__BackingField: asdfasdf
+  <Information>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
     <Icon>k__BackingField: {fileID: 21300000, guid: 1a8c7b803030ba4449f4291014d840dc, type: 3}
-  <SourceModifiers>k__BackingField:
-    _instantModifiers: []
-    _temporaryModifiers: []
-    _permanentModifiers: []
+  <BattlePoints>k__BackingField: 0
   <TargetType>k__BackingField: 0
   <TargetSearchType>k__BackingField: 0
   <MaxTargetsCount>k__BackingField: 1

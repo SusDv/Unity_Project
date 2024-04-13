@@ -1,5 +1,4 @@
-using CharacterModule;
-using UnityEngine;
+using CharacterModule.CharacterType.Base;
 
 public class Enemy : Character
 {

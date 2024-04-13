@@ -10,29 +10,23 @@ namespace CharacterModule.Inventory.Items.Base
         public int ID => GetInstanceID();
 
         [field: SerializeField] 
-        public ObjectInformation ObjectInformation { get; set; }
+        public ObjectInformation Information { get; set; }
 
         [field: SerializeField]
-        public bool IsStackable { get; private set; } = false;
+        public bool IsStackable { get; private set; }
 
         [field: SerializeField]
-        public float BattlePoints { get; private set; }
-
-        [field: Header("[Target modifiers]")]
-        [field: Space(10f)]
-
-        [field: SerializeField]
-        public StatModifiers StatModifiers { get; private set; }
+        public StatModifiers TargetModifiers { get; private set; }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            StatModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
+            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
         }
 #else
         private void Awake()
         {
-            StatModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
+            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
         }
 #endif
     }

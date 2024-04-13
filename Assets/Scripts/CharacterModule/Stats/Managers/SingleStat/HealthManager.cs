@@ -1,9 +1,10 @@
 using System;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Utility.Enums;
 using StatModule.Utility;
 
-namespace CharacterModule.Stats.Managers
+namespace CharacterModule.Stats.Managers.SingleStat
 {
     public class HealthManager : IStatObserver
     {

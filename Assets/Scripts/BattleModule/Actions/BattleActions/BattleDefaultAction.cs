@@ -1,36 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BattleModule.Actions.BattleActions.Base;
-using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Utility;
-using CharacterModule;
-using CharacterModule.Inventory.Items.Base;
-using CharacterModule.Inventory.Items.Equipment;
-using CharacterModule.Stats.Managers;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
 using JetBrains.Annotations;
 
 namespace BattleModule.Actions.BattleActions
 {
     [UsedImplicitly]
-    public class BattleDefaultAction : BattleAction 
+    public class BattleDefaultAction : BattleAction
     {
-        public override void PerformAction(StatManager source, List<Character> targets)
+        public override void PerformAction(Character source, List<Character> targets, Action actionFinishedCallback)
         {
-            var characterWeapon = BattleActionContext.ActionObject as WeaponItem;
-
-            foreach(var character in targets) 
+            source.AnimationManager.PlayAnimation("Attack", () =>
             {
-                var target = character.CharacterStats;
+                var characterStats = source.CharacterStats;
+                
+                var target = targets.First().CharacterStats;
 
-                float damage = -BattleAttackDamageProcessor.CalculateAttackDamage(
-                    source.GetStatInfo(StatType.ATTACK).FinalValue,
-                    target.GetStatInfo(StatType.DEFENSE).FinalValue);
+                float damage = -BattleAttackDamageProcessor
+                    .CalculateAttackDamage(
+                        characterStats.GetStatInfo(StatType.ATTACK),
+                        characterStats.GetStatInfo(StatType.CRITICAL_DAMAGE),
+                        target.GetStatInfo(StatType.DEFENSE));
 
-                target.ApplyStatModifier(StatType.HEALTH,
-                    damage);
-            }
+                target.ApplyStatModifier(StatType.HEALTH, damage);
 
-            source.ApplyStatModifier(StatType.BATTLE_POINTS, characterWeapon.BattlePoints);
+                base.PerformAction(source, targets, actionFinishedCallback);
+            });
         }
     }
 }

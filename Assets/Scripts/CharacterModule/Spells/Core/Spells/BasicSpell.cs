@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace CharacterModule.Spells.Core.Spells
         [field: SerializeField]
         public StatModifiers TargetModifiers { get; private set; }
 
-        public override void UseSpell(StatManager source, List<Character> targets)
+        public override void UseSpell(List<Character> targets)
         {
             foreach (var target in targets)
             {

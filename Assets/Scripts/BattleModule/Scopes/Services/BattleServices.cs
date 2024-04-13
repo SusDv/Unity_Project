@@ -1,5 +1,4 @@
 using BattleModule.Actions;
-using BattleModule.Animation;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
@@ -18,8 +17,6 @@ namespace BattleModule.Scopes.Services
             builder.RegisterComponentInHierarchy<BattleSpawner>();
             
             builder.RegisterComponentInHierarchy<BattleInput>();
-
-            builder.RegisterComponentInHierarchy<BattleAnimationManager>();
 
 
             builder.Register<BattleEventManager>(Lifetime.Singleton);

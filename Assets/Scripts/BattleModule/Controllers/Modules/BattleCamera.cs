@@ -1,4 +1,5 @@
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;

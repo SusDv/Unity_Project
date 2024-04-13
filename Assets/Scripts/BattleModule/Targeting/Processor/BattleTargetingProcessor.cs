@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BattleModule.Controllers.Targeting.Base;
+using BattleModule.Targeting.Base;
 using BattleModule.Utility;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 
-namespace BattleModule.Controllers.Targeting.Processor
+namespace BattleModule.Targeting.Processor
 {
     public class BattleTargetingProcessor
     {
