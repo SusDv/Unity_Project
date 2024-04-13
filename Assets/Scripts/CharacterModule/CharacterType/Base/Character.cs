@@ -1,15 +1,18 @@
 using System;
+using CharacterModule.Animation;
 using CharacterModule.Data.Info;
 using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
 using CharacterModule.Stats.Managers;
+using CharacterModule.Stats.Managers.SingleStat;
 using UnityEngine;
 
-namespace CharacterModule
+namespace CharacterModule.CharacterType.Base
 {
     public class Character : MonoBehaviour, IDisposable
     {
-        [SerializeField] private CharacterSettings _characterSettings;
+        [SerializeField] 
+        private CharacterSettings _characterSettings;
         
         public StatManager CharacterStats { get; private set; }
 
@@ -21,9 +24,9 @@ namespace CharacterModule
 
         public HealthManager HealthManager{ get; private set; }
 
-        [field: SerializeField]
-        public Animator CharacterAnimator { get; private set; }
-        
+        [field: SerializeField] 
+        public AnimationManager AnimationManager { get; private set; }
+
         private void Awake()
         {
             CharacterStats = new StatManager(_characterSettings.BaseStats);

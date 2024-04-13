@@ -8,6 +8,7 @@ using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.Utility.Interfaces;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
@@ -45,11 +46,9 @@ namespace BattleModule.Controllers.Modules
             OnBattleActionChanged?.Invoke(_currentBattleAction.GetBattleActionContext());
         }
 
-        public void ExecuteBattleAction(List<Character> targets) 
+        public void ExecuteBattleAction(List<Character> targets)
         {
-            _currentBattleAction.PerformAction(_characterToHaveTurn.CharacterStats, targets);
-
-            _battleEventManager.AdvanceTurn();
+            _currentBattleAction.PerformAction(_characterToHaveTurn, targets, _battleEventManager.AdvanceTurn);
         }
 
         private void SetDefaultBattleAction() 

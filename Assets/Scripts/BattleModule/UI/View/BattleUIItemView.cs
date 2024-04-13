@@ -1,6 +1,5 @@
 ﻿using BattleModule.UI.BattleButton;
 using CharacterModule.Inventory;
-using CharacterModule.Inventory.Items.Base;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +13,7 @@ namespace BattleModule.UI.View
 
         public void SetData(InventoryItem inventoryItem)
         {
-            _battleItemImage.sprite = inventoryItem.Item.ObjectInformation.Icon;
+            _battleItemImage.sprite = inventoryItem.Item.Information.Icon;
 
             _battleItemCount.text = inventoryItem.Amount.ToString();
         }

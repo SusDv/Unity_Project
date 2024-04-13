@@ -5,6 +5,7 @@ using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using JetBrains.Annotations;
 using VContainer.Unity;
 

@@ -1,9 +1,9 @@
-﻿using CharacterModule.Stats.Managers;
+﻿using CharacterModule.CharacterType.Base;
 
 namespace CharacterModule.Inventory.Interfaces
 {
     public interface IConsumable
     {
-        public void Consume(StatManager characterStatManager);
+        public void Consume(Character target);
     }
 }

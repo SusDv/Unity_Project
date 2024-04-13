@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
-using BattleModule.Controllers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
 using BattleModule.UI.View;
-using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
 using VContainer;
 

@@ -2,6 +2,6 @@ namespace Utility.Information
 {
     public interface IObjectInformation
     {
-        public ObjectInformation ObjectInformation { get; set; }
+        public ObjectInformation Information { get; set; }
     }
 }

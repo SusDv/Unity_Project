@@ -1,6 +1,7 @@
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Inventory.Interfaces;
-using CharacterModule.Inventory.Items;
 using CharacterModule.Inventory.Items.Equipment;
+using CharacterModule.WeaponSpecial.Base;
 
 namespace CharacterModule 
 {
@@ -33,10 +34,15 @@ namespace CharacterModule
 
             _weaponItem = null;
         }
-
+        
         public WeaponItem GetWeapon() 
         {
             return _weaponItem;
+        }
+        
+        public SpecialAttack GetSpecialAttack()
+        {
+            return _weaponItem.SpecialAttack;
         }
     }
 }

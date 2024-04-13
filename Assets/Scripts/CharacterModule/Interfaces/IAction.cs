@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 

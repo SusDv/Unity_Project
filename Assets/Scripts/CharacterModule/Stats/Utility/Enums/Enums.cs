@@ -1,31 +1,30 @@
 using System.ComponentModel;
-using StatModule.Utility.Constants;
 
 namespace CharacterModule.Stats.Utility.Enums
 {
     public enum StatType
     {
-        [Description(StatNames.HEALTH_NAME)]
+        [Description(StatNames.HealthName)]
         HEALTH,
-        [Description(StatNames.MANA_NAME)]
+        [Description(StatNames.ManaName)]
         MANA,
-        [Description(StatNames.ATTACK_NAME)]
+        [Description(StatNames.AttackName)]
         ATTACK,
-        [Description(StatNames.MAGIC_ATTACK_NAME)]
+        [Description(StatNames.MagicAttackName)]
         MAGIC_ATTACK,
-        [Description(StatNames.DEFENSE_NAME)]
+        [Description(StatNames.DefenseName)]
         DEFENSE,
-        [Description(StatNames.MAGIC_DEFENSE_NAME)]
+        [Description(StatNames.MagicDefenseName)]
         MAGIC_DEFENSE,
-        [Description(StatNames.LUCK_NAME)]
+        [Description(StatNames.LuckName)]
         LUCK,
-        [Description(StatNames.CRIT_DAMAGE_NAME)]
-        CRIT_DAMAGE,
-        [Description(StatNames.CRIT_RATE_NAME)]
-        CRIT_RATE,
-        [Description(StatNames.EVASION_NAME)]
+        [Description(StatNames.CriticalDamageName)]
+        CRITICAL_DAMAGE,
+        [Description(StatNames.EvasionName)]
         EVASION,
-        [Description(StatNames.BATTLE_POINTS_NAME)]
+        [Description(StatNames.AccuracyName)]
+        ACCURACY,
+        [Description(StatNames.BattlePointsName)]
         BATTLE_POINTS
     }
 

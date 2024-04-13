@@ -6,6 +6,7 @@ using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
@@ -67,7 +68,7 @@ namespace BattleModule.UI.Presenter
                     Quaternion.identity,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform);
 
-                battleUISpellView.SetData(spell.ObjectInformation.Icon);
+                battleUISpellView.SetData(spell.Information.Icon);
 
                 battleUISpellView.OnButtonClick += OnSpellClick;
 

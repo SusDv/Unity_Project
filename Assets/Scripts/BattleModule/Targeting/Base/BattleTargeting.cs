@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using BattleModule.Utility;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 
-namespace BattleModule.Controllers.Targeting.Base
+namespace BattleModule.Targeting.Base
 {
     public abstract class BattleTargeting
     {

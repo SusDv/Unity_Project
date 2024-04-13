@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.Utility.Enums;
@@ -43,6 +44,8 @@ namespace BattleModule.Controllers.Modules.Turn
                 
                 character.CharacterStats.ApplyStatModifier(StatType.BATTLE_POINTS, CalculateDeduction(battlePoints));
             }
+            
+            SortSpawnedCharacters();
         }
 
         private static int CalculateDeduction(float battlePoints)
@@ -69,6 +72,8 @@ namespace BattleModule.Controllers.Modules.Turn
             var characterInTurnStats = _spawnedCharacters.First().CharacterStats;
 
             characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
+            
+            OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
         }
 
         private void TriggerTemporaryModifiers() 
@@ -93,7 +98,7 @@ namespace BattleModule.Controllers.Modules.Turn
 
         public void StartTurn() 
         {
-            SortSpawnedCharacters();
+            ResetFirstCharacterBattlePoints();
             
             TriggerTemporaryModifiers();
         }

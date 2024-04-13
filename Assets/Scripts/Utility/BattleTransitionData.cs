@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CharacterModule.CharacterType;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
 using UnityEngine;

@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3a1c9bfdaae2ccd44b095fb937ee3211, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSettings: {fileID: 11400000, guid: 9769c39f8f8927048811c2d29efcd26f, type: 2}
-  <CharacterAnimator>k__BackingField: {fileID: -6041111671475138606}
+  <AnimationManager>k__BackingField: {fileID: 0}
 --- !u!95 &-6041111671475138606
 Animator:
   serializedVersion: 5

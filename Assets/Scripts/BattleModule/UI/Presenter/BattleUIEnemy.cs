@@ -2,11 +2,11 @@
 using System.Linq;
 using UnityEngine;
 using VContainer;
-using BattleModule.Controllers;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.View;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 
 namespace BattleModule.UI.Presenter
 {
@@ -16,15 +16,13 @@ namespace BattleModule.UI.Presenter
         
         private List<Character> _enemyCharacters;
 
-        private List<BattleUIEnemyView> _battleUIEnemies;
+        private List<BattleUIEnemyView> _battleUIEnemies = new();
         
         [Inject]
         private void Init(BattleEnemySceneSettings battleEnemySceneSettings,
             BattleSpawner battleSpawner)
         {
             _battleEnemySceneSettings = battleEnemySceneSettings;
-            
-            _battleUIEnemies = new List<BattleUIEnemyView>();
             
             battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
         }

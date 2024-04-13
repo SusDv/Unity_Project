@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleModule.Controllers.Targeting.Base;
+using BattleModule.Targeting.Base;
 using BattleModule.Utility;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using UnityEngine;
 
-namespace BattleModule.Controllers.Targeting
+namespace BattleModule.Targeting
 {
     public class MultipleTargeting : BattleTargeting
     {

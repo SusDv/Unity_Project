@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CharacterModule;
+using CharacterModule.CharacterType.Base;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

@@ -4,22 +4,22 @@ using UnityEngine;
 public class CameraZoom : MonoBehaviour
 {
     [SerializeField, Range(1f, 10f)]
-    private float defaultCameraDistance = 6f;
+    private float _defaultCameraDistance = 6f;
     [SerializeField, Range(1f, 10f)]
-    private float minimumCameraDistance = 3f;
+    private float _minimumCameraDistance = 3f;
     [SerializeField, Range(1f, 10f)]
-    private float maximumCameraDistance = 8f;
+    private float _maximumCameraDistance = 8f;
 
     [SerializeField, Range(0.5f, 2f)]
-    private float zoomSensitivity = 1f;
+    private float _zoomSensitivity = 1f;
 
     [SerializeField, Range(0f, 1f)]
-    private float zoomSmoothing = 0.1f;
+    private float _zoomSmoothing = 0.1f;
 
-    CinemachineFramingTransposer framingTransposer;
-    CinemachineInputProvider inputProvider;
+    private CinemachineFramingTransposer _framingTransposer;
+    private CinemachineInputProvider _inputProvider;
 
-    float currentTargetDistance;
+    private float _currentTargetDistance;
 
     private void LateUpdate()
     {
@@ -28,24 +28,24 @@ public class CameraZoom : MonoBehaviour
 
     private void Awake()
     {
-        framingTransposer = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
-        inputProvider = GetComponent<CinemachineInputProvider>();
+        _framingTransposer = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
+        _inputProvider = GetComponent<CinemachineInputProvider>();
 
-        currentTargetDistance = defaultCameraDistance;
+        _currentTargetDistance = _defaultCameraDistance;
     }
     private void Zoom() 
     {
-        float zoomValue = inputProvider.GetAxisValue(2) * zoomSensitivity;
+        float zoomValue = _inputProvider.GetAxisValue(2) * _zoomSensitivity;
 
-        currentTargetDistance = Mathf.Clamp(currentTargetDistance + zoomValue, minimumCameraDistance, maximumCameraDistance);
+        _currentTargetDistance = Mathf.Clamp(_currentTargetDistance + zoomValue, _minimumCameraDistance, _maximumCameraDistance);
 
-        float currentDistance = framingTransposer.m_CameraDistance;
+        float currentDistance = _framingTransposer.m_CameraDistance;
 
-        if (currentDistance == currentTargetDistance)
+        if (currentDistance == _currentTargetDistance)
             return;
 
-        float lerpedZoomValue = Mathf.Lerp(currentDistance, currentTargetDistance, zoomSmoothing);
+        float lerpedZoomValue = Mathf.Lerp(currentDistance, _currentTargetDistance, _zoomSmoothing);
 
-        framingTransposer.m_CameraDistance = lerpedZoomValue;
+        _framingTransposer.m_CameraDistance = lerpedZoomValue;
     }
 }
