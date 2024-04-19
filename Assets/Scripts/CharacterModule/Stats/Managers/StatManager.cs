@@ -6,8 +6,8 @@ using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Settings;
 using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
-using StatModule.Utility;
 
 namespace CharacterModule.Stats.Managers
 {
@@ -18,16 +18,20 @@ namespace CharacterModule.Stats.Managers
 
         private List<BaseStatModifier> _modifiersInUse;
 
+        private List<IStatObserver> _statObservers;
+
         public StatManager(BaseStats baseStats)
         {
-            _stats = new Dictionary<StatType, Stat>();
-
             Init(baseStats);
         }
         
         private void Init(BaseStats baseStats) 
         {
+            _stats = new Dictionary<StatType, Stat>();
+
             _modifiersInUse = new List<BaseStatModifier>();
+
+            _statObservers = new List<IStatObserver>();
 
             foreach (var stat in baseStats.GetStats())
             {
@@ -45,6 +49,21 @@ namespace CharacterModule.Stats.Managers
             _modifiersInUse.Remove(statModifier);
         }
 
+        private void NotifyObservers(StatType statType)
+        {
+            var statInfo = GetStatInfo(statType);
+            
+            foreach (var statObserver in _statObservers.Where(o => o.StatType == statType))
+            {
+                statObserver.UpdateValue(statInfo);
+            }
+        }
+
+        private List<BaseStatModifier> GetModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction)
+        {
+            return _modifiersInUse.Where(conditionFunction).ToList();
+        }
+
         public void ApplyStatModifier(BaseStatModifier statModifier) 
         {
             (statModifier.Clone() as BaseStatModifier)?.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
@@ -56,42 +75,45 @@ namespace CharacterModule.Stats.Managers
                 statType, ValueModifierType.ADDITIVE, ModifiedValueType.FINAL_VALUE, value);
 
             statModifier.Init(_stats[statModifier.StatType], AddModifierToList, RemoveModifierFromList);
+            
+            NotifyObservers(statType);
         }
 
         public StatInfo GetStatInfo(StatType statType)
         {
-            var stat = _stats[statType];
-            
-            return StatInfo.GetInstance(stat.BaseValue, stat.FinalValue, stat.MaxValue);
+            return StatInfo.GetInstance(_stats[statType]);
         }
 
         public void ApplyStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction) 
         {
-            _modifiersInUse.Where(conditionFunction)
-                .ToList()
-                .ForEach(statModifier => 
-                { 
-                    statModifier.Modify();
-                });
+            foreach (var statModifier in GetModifiersByCondition(conditionFunction))
+            {
+                statModifier.Modify();
+                    
+                NotifyObservers(statModifier.StatType);
+            }
         }
 
         public void RemoveStatModifiersByCondition(Func<BaseStatModifier, bool> conditionFunction)
         {
-            _modifiersInUse.Where(conditionFunction).ToList()
-                .ForEach(statModifier =>
-                {
-                    statModifier.Remove();
-                });
+            foreach (var statModifier in GetModifiersByCondition(conditionFunction))
+            {
+                statModifier.Remove();
+                    
+                NotifyObservers(statModifier.StatType);
+            }
         }
 
         public void AttachStatObserver(IStatObserver statObserver)
         {
-            _stats[statObserver.StatType].AttachObserver(statObserver);
+            _statObservers.Add(statObserver);
+            
+            statObserver.UpdateValue(GetStatInfo(statObserver.StatType));
         }
 
         public void DetachStatObserver(IStatObserver statObserver)
         {
-            _stats[statObserver.StatType].DetachObserver(statObserver);
+            _statObservers.Remove(statObserver);
         }
     }
 }

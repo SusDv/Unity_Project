@@ -1,8 +1,8 @@
 using System;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
-using StatModule.Utility;
 
 namespace CharacterModule.Stats.Managers.SingleStat
 {

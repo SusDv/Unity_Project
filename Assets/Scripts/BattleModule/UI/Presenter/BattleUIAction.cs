@@ -22,7 +22,7 @@ namespace BattleModule.UI.Presenter
         private void OnBattleActionChanged(BattleActionContext context) 
         {
             _battleActionSceneSettings.BattleActionView.SetData(
-                $"<b><u>Action:</b></u> {context.ObjectInformation.Information.Name}");
+                $"<b><u>Action:</b></u> {context.ObjectInformation.ObjectInformation.Name}");
         }
     }
 }

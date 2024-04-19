@@ -1,13 +1,16 @@
+using BattleModule.Actions.BattleActions.Interfaces;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Equipment;
-using CharacterModule.WeaponSpecial.Base;
+using CharacterModule.WeaponSpecial.Interfaces;
 
 namespace CharacterModule 
 {
     public class CharacterWeapon
     {
         private WeaponItem _weaponItem;
+
+        private ISpecialAttack _specialAttack;
 
         private readonly Character _characterWithWeapon;
 
@@ -20,6 +23,8 @@ namespace CharacterModule
         {
             _weaponItem = equipmentItem;
 
+            _specialAttack = equipmentItem.SpecialAttack.GetAttack();
+            
             (_weaponItem as IEquipment).Equip(_characterWithWeapon.CharacterStats);
         }
 
@@ -35,14 +40,14 @@ namespace CharacterModule
             _weaponItem = null;
         }
         
-        public WeaponItem GetWeapon() 
+        public IBattleObject GetWeapon() 
         {
             return _weaponItem;
         }
-        
-        public SpecialAttack GetSpecialAttack()
+
+        public ISpecialAttack GetSpecialAttack()
         {
-            return _weaponItem.SpecialAttack;
+            return _specialAttack;
         }
     }
 }

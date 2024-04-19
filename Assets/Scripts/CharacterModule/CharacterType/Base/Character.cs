@@ -40,6 +40,8 @@ namespace CharacterModule.CharacterType.Base
             CharacterInformation = _characterSettings.CharacterInformation;
 
             CharacterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
+            
+            
         }
 
         public void Dispose()

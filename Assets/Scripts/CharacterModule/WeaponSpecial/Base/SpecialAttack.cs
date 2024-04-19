@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+using BattleModule.Actions.BattleActions.Interfaces;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
 using Utility;
@@ -10,37 +10,33 @@ using Utility.Information;
 namespace CharacterModule.WeaponSpecial.Base
 {
     [CreateAssetMenu(fileName = "Special Attack", menuName = "Character/Special")]
-    public class SpecialAttack : ScriptableObject, ISpecialAttack, IObjectInformation
+    public class SpecialAttack : ScriptableObject, IObjectInformation, IBattleObject
     {
-        private float _currentEnergyAmount;
-
         [field: SerializeField] 
-        public ObjectInformation Information { get; set; }
+        public ObjectInformation ObjectInformation { get; private set; }
+        
+        [field: SerializeField, Header("Targeting Data"), Space]
+        public TargetType TargetType { get; private set; }
         
         [field: SerializeField]
-        public TargetType TargetType { get; set; }
-        
-        [field: SerializeField]
-        public TargetSearchType TargetSearchType { get; set; }
+        public TargetSearchType TargetSearchType { get; private set; }
         
         [field: SerializeField]
         [field: Range(BattleTargetingConstants.SpellMin, BattleTargetingConstants.SpellMax)]
-        public int MaxTargetsCount { get; set; }
+        public int MaxTargetsCount { get; private set; }
         
-        [field: SerializeField]
-        public float EnergyToAttack { get; set; }
+        [field: SerializeField, Header("Battle Action Data"), Space]
+        public float BattlePoints { get; private set; }
         
-        public void Attack(List<Character> targets)
-        {
-            if (Mathf.RoundToInt(EnergyToAttack - _currentEnergyAmount) != 0)
-            {
-                return;
-            }
-        }
+        [field: SerializeField, Header("Special Attack Data"), Space]
+        public float MaxEnergy { get; private set; }
 
-        public void Charge(float amount)
+        [field: SerializeField, Space] 
+        public StatModifiers TargetModifiers { get; private set; }
+        
+        public ISpecialAttack GetAttack()
         {
-            _currentEnergyAmount = Mathf.Clamp(_currentEnergyAmount + amount, 0, EnergyToAttack);
+            return new DefaultSpecialAttack(MaxEnergy, TargetModifiers.GetModifiers());
         }
     }
 }

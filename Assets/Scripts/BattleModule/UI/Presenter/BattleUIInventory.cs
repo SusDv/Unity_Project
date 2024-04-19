@@ -104,7 +104,7 @@ namespace BattleModule.UI.Presenter
 
         private void SetupBattleAction(BattleUIItemView battleUIItem) 
         {
-            _battleActionController.SetBattleAction<BattleItemAction>(GetSelectedItem(battleUIItem));
+            _battleActionController.SetBattleAction<ItemAction>(GetSelectedItem(battleUIItem));
         }
 
         private void BattleInventoryButtonClicked(object o)

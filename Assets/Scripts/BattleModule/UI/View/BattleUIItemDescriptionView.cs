@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
+using Utility.Information;
 
 namespace BattleModule.UI.View
 {

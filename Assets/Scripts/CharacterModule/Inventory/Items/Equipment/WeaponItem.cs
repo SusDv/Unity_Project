@@ -9,16 +9,16 @@ namespace CharacterModule.Inventory.Items.Equipment
     public class WeaponItem : EquipmentItem, IBattleObject
     {
         [field: SerializeField]
-        public float BattlePoints { get; set; }
+        public float BattlePoints { get; private set; }
         
         [field: SerializeField]
-        public TargetType TargetType { get; set; }
+        public TargetType TargetType { get; private set; }
         
         [field: SerializeField]
         public SpecialAttack SpecialAttack { get; private set; }
 
-        public TargetSearchType TargetSearchType { get; set; } = TargetSearchType.SEQUENCE;
+        public TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
         
-        public int MaxTargetsCount { get; set; } = 1;
+        public int MaxTargetsCount => 1;
     }
 }

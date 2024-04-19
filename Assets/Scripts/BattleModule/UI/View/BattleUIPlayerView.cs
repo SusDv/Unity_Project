@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Data.Info;
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
-using StatModule.Utility;
+using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility.UI;
@@ -16,20 +17,17 @@ namespace BattleModule.UI.View
         
         [SerializeField] private List<SliderStatObserver> _statObservers;
 
-        public void SetData(CharacterInformation characterInformation, IStatSubject statSubject) 
+        [SerializeField] private BattleUISpecialAttackView _specialAttack;
+
+        public void SetData(ISpecialAttack specialAttack,
+            CharacterInformation characterInformation, 
+            IStatSubject statSubject) 
         {
             _characterImage.sprite = characterInformation.CharacterImage;
             
-            SetInitialData(StatType.HEALTH, statSubject.GetStatInfo(StatType.HEALTH));
-            
-            SetInitialData(StatType.MANA, statSubject.GetStatInfo(StatType.MANA));
-            
-            _statObservers.ForEach(statSubject.AttachStatObserver);
-        }
+            _specialAttack.SetData(specialAttack);
 
-        private void SetInitialData(StatType statType, StatInfo statInfo)
-        {
-            _statObservers.First(o => o.StatType == statType).UpdateValue(statInfo);
+            _statObservers.ForEach(statSubject.AttachStatObserver);
         }
     }
 }

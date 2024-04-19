@@ -1,12 +1,14 @@
-namespace StatModule.Utility
+using CharacterModule.Stats.Base;
+
+namespace CharacterModule.Stats.Utility
 {
     public class StatInfo
     {
-        private StatInfo(float baseValue, float finalValue, float maxValue)
+        private StatInfo(Stat stat)
         {
-            BaseValue = baseValue;
-            FinalValue = finalValue;
-            MaxValue = maxValue;
+            BaseValue = stat.BaseValue;
+            FinalValue = stat.FinalValue;
+            MaxValue = stat.MaxValue;
         }
 
         public float BaseValue { get; private set; }
@@ -16,9 +18,9 @@ namespace StatModule.Utility
         public float MaxValue { get; private set; }
 
 
-        public static StatInfo GetInstance(float baseValue, float finalValue, float maxValue)
+        public static StatInfo GetInstance(Stat stat)
         {
-            return new StatInfo(baseValue, finalValue, maxValue);
+            return new StatInfo(stat);
         }
     }
 }

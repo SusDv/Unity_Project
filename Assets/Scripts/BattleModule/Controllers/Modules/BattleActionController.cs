@@ -53,7 +53,7 @@ namespace BattleModule.Controllers.Modules
 
         private void SetDefaultBattleAction() 
         {
-            SetBattleAction<BattleDefaultAction>(_characterToHaveTurn.CharacterWeapon.GetWeapon());
+            SetBattleAction<DefaultAction>(_characterToHaveTurn.CharacterWeapon.GetWeapon());
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
@@ -65,7 +65,7 @@ namespace BattleModule.Controllers.Modules
         
         public bool Cancel()
         {
-            if (_currentBattleAction is BattleDefaultAction)
+            if (_currentBattleAction is DefaultAction)
             {
                 return true;
             }
