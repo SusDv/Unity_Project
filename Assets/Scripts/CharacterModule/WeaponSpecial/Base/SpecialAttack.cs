@@ -3,7 +3,6 @@ using BattleModule.Utility;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
-using Utility;
 using Utility.Constants;
 using Utility.Information;
 
