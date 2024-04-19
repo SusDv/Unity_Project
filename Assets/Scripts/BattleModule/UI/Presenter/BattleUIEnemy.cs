@@ -5,7 +5,6 @@ using VContainer;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.View;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
 
 namespace BattleModule.UI.Presenter
@@ -45,7 +44,6 @@ namespace BattleModule.UI.Presenter
 
                 battleUICharacterView.SetData(character.CharacterStats);
             }
-
         }
     }
 }

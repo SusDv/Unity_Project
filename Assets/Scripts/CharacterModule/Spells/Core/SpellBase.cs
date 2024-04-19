@@ -13,7 +13,7 @@ namespace CharacterModule.Spells.Core
     public abstract class SpellBase : ScriptableObject, IObjectInformation, ISpell, IBattleObject
     {
         [field: SerializeField] 
-        public ObjectInformation Information { get; set; }
+        public ObjectInformation ObjectInformation { get; set; }
         
         [field: SerializeField]
         public float BattlePoints { get; set; }

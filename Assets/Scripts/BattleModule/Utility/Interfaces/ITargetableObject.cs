@@ -2,10 +2,10 @@
 {
     public interface ITargetableObject
     {
-        public TargetType TargetType { get; set; }
+        public TargetType TargetType { get; }
 
-        public TargetSearchType TargetSearchType { get; set; }
+        public TargetSearchType TargetSearchType { get; }
         
-        public int MaxTargetsCount { get; set; }
+        public int MaxTargetsCount { get; }
     }
 }

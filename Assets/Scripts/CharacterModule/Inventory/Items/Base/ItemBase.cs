@@ -10,7 +10,7 @@ namespace CharacterModule.Inventory.Items.Base
         public int ID => GetInstanceID();
 
         [field: SerializeField] 
-        public ObjectInformation Information { get; set; }
+        public ObjectInformation ObjectInformation { get; set; }
 
         [field: SerializeField]
         public bool IsStackable { get; private set; }

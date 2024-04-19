@@ -12,14 +12,14 @@ namespace CharacterModule.Inventory.Items
     public class ConsumableItem : ItemBase, IConsumable, IBattleObject
     {
         [field: SerializeField]
-        public float BattlePoints { get; set; }
+        public float BattlePoints { get; private set; }
         
         [field: SerializeField]
-        public TargetType TargetType { get; set; }
+        public TargetType TargetType { get; private set; }
 
-        public TargetSearchType TargetSearchType { get; set; } = TargetSearchType.SEQUENCE;
-        
-        public int MaxTargetsCount { get; set; } = 1;
+        public TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
+
+        public int MaxTargetsCount => 1;
 
         public event Action<ItemBase> OnConsumableUsed;
 

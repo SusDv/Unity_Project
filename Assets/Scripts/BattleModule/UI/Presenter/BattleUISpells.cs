@@ -68,7 +68,7 @@ namespace BattleModule.UI.Presenter
                     Quaternion.identity,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform);
 
-                battleUISpellView.SetData(spell.Information.Icon);
+                battleUISpellView.SetData(spell.ObjectInformation.Icon);
 
                 battleUISpellView.OnButtonClick += OnSpellClick;
 
@@ -80,7 +80,7 @@ namespace BattleModule.UI.Presenter
         {
             var selectedSpell = _characterInAction.CharacterSpells.GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
-            _battleActionController.SetBattleAction<BattleSpellAction>(selectedSpell);
+            _battleActionController.SetBattleAction<SpellAction>(selectedSpell);
         }
     }
 }

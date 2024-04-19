@@ -2176,6 +2176,7 @@ GameObject:
   - component: {fileID: 2676119997256727933}
   - component: {fileID: 2676119997256727920}
   - component: {fileID: -5766365198244280859}
+  - component: {fileID: 8174799935207066349}
   m_Layer: 3
   m_Name: Avatar
   m_TagString: Untagged
@@ -2192,8 +2193,8 @@ Transform:
   m_GameObject: {fileID: 8685333226258169277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1847079131201441512}
   - {fileID: 4581008464146188179}
@@ -2248,6 +2249,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterAnimator: {fileID: 2676119997256727933}
+--- !u!136 &8174799935207066349
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8685333226258169277}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &8802153140086827417
 GameObject:
   m_ObjectHideFlags: 0

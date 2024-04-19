@@ -46,7 +46,7 @@ namespace BattleModule.UI.Presenter
 
                 _battleUIPlayers.Add(battleUICharacterView);
 
-                battleUICharacterView.SetData(character.CharacterInformation, character.CharacterStats);
+                battleUICharacterView.SetData(character.CharacterWeapon.GetSpecialAttack(), character.CharacterInformation, character.CharacterStats);
             }
         }
     }
