@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using CharacterModule.Data.Info;
 using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.Utility;
-using CharacterModule.Stats.Utility.Enums;
 using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;

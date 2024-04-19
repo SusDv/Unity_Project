@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using BattleModule.Utility.Interfaces;
 using CharacterModule.CharacterType.Base;
 
 namespace CharacterModule.WeaponSpecial.Interfaces
