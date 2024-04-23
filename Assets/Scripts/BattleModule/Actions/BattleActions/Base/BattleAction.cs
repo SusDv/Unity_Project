@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleModule.AccuracyModule;
+using BattleModule.AccuracyModule.AccuracyRange;
 using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Utility.DamageCalculator;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
 
@@ -9,6 +12,9 @@ namespace BattleModule.Actions.BattleActions.Base
     public abstract class BattleAction
     {
         protected BattleActionContext BattleActionContext;
+
+        protected Accuracy Accuracy;
+
         public BattleActionContext GetBattleActionContext() 
         {
             return BattleActionContext;

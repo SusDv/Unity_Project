@@ -15,7 +15,7 @@ namespace CharacterModule.WeaponSpecial
         
         public float CurrentEnergyAmount { get; private set; }
         
-        public event Action<float> OnEnergyChanged;
+        public event Action<float> OnEnergyChanged = delegate { };
 
         public DefaultSpecialAttack(float maxEnergy,
             List<BaseStatModifier> targetModifiers)
@@ -27,13 +27,32 @@ namespace CharacterModule.WeaponSpecial
 
         public void Attack(List<Character> targets)
         {
-            if (Mathf.RoundToInt(_maxEnergy - CurrentEnergyAmount) != 0)
+            if (IsFullyCharged())
             {
                 return;
             }
 
             CurrentEnergyAmount = 0;
 
+            OnEnergyChanged?.Invoke(GetChargeRatio());
+            
+            ApplyTargetModifiers(targets);
+        }
+
+        public void Charge(float amount)
+        {
+            CurrentEnergyAmount = Mathf.Clamp(CurrentEnergyAmount + amount, 0, _maxEnergy);
+            
+            OnEnergyChanged?.Invoke(GetChargeRatio());
+        }
+
+        private bool IsFullyCharged()
+        {
+            return Mathf.RoundToInt(_maxEnergy - CurrentEnergyAmount) == 0;
+        }
+
+        private void ApplyTargetModifiers(List<Character> targets)
+        {
             foreach (var target in targets)
             {
                 var targetStats = target.CharacterStats;
@@ -45,11 +64,9 @@ namespace CharacterModule.WeaponSpecial
             }
         }
 
-        public void Charge(float amount)
+        private float GetChargeRatio()
         {
-            CurrentEnergyAmount = Mathf.Clamp(CurrentEnergyAmount + amount, 0, _maxEnergy);
-            
-            OnEnergyChanged?.Invoke(CurrentEnergyAmount / _maxEnergy);
+            return CurrentEnergyAmount / _maxEnergy;
         }
     }
 }
