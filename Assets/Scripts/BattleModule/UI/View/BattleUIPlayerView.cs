@@ -1,10 +1,10 @@
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
+using Utility.UI;
 using CharacterModule.Data.Info;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.WeaponSpecial.Interfaces;
-using UnityEngine;
-using UnityEngine.UI;
-using Utility.UI;
 
 namespace BattleModule.UI.View 
 {

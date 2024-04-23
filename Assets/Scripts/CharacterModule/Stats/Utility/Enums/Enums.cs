@@ -40,11 +40,11 @@ namespace CharacterModule.Stats.Utility.Enums
         PERCENTAGE
     }
 
-    public enum TemporaryStatModifierType 
+    public enum TemporaryEffectType 
     {
-        APPLIED_ONCE,
-        APPLIED_EVERY_TURN,
-        APPLIED_EVERY_CYCLE
+        STATIC_EFFECT,
+        SEAL_EFFECT,
+        TIME_EFFECT
     }
 
     public enum StatModifierTier 

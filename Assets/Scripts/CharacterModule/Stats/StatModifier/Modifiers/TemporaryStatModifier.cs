@@ -1,8 +1,8 @@
 ﻿using System;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers;
-using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifiers.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects.Processor;
 using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 
@@ -14,17 +14,17 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         private TemporaryStatModifier(StatType statType, 
             ValueModifierType valueModifierType, 
             ModifiedValueType modifiedValueType,
-            TemporaryStatModifierType temporaryStatModifierType,
+            TemporaryEffectType temporaryEffectType,
             StatModifierTier temporaryStatModifierTier,
             float value,
             int duration) : base(statType, valueModifierType, modifiedValueType, value) 
         {
-            TemporaryStatModifierType = temporaryStatModifierType;
+            TemporaryEffectType = temporaryEffectType;
             Duration = duration;
         }
 
         [field: SerializeField]
-        public TemporaryStatModifierType TemporaryStatModifierType { get; private set; }
+        public TemporaryEffectType TemporaryEffectType { get; private set; }
 
         [field: SerializeField]
         public StatModifierTier StatModifierTier { get; private set; }
@@ -32,7 +32,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         [field: SerializeField]
         public int Duration { get; set; }
 
-        private TemporaryModifier _temporaryModifierProcessor;
+        private TemporaryModifierEffect _temporaryModifierEffect;
 
         public override void Init(Stat statToModify, 
             Action<BaseStatModifier> addModifierCallback,
@@ -40,35 +40,35 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         {
             base.Init(statToModify, addModifierCallback, removeModifierCallback);
             
-            _temporaryModifierProcessor = TemporaryModifierProcessor.GetModifier(TemporaryStatModifierType)
+            _temporaryModifierEffect = TemporaryModifierEffectProcessor.GetEffect(TemporaryEffectType)
                 .Init(this, ValueToModify);
         }
 
         public override void Modify()
         {
-            _temporaryModifierProcessor.Modify();
+            _temporaryModifierEffect.Modify();
         }
 
         public static TemporaryStatModifier GetTemporaryStatModifierInstance(
             StatType statType, 
             ValueModifierType valueModifierType, 
             ModifiedValueType modifiedValueType,
-            TemporaryStatModifierType temporaryStatModifierType,
+            TemporaryEffectType temporaryEffectType,
             StatModifierTier statModifierTier,
             float value,
             int duration)
         {
-            return new TemporaryStatModifier(statType, valueModifierType, modifiedValueType, temporaryStatModifierType, statModifierTier, value, duration);
+            return new TemporaryStatModifier(statType, valueModifierType, modifiedValueType, temporaryEffectType, statModifierTier, value, duration);
         }
 
         public override object Clone()
         {
-            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifiedValueType, TemporaryStatModifierType, StatModifierTier, Value, Duration);
+            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifiedValueType, TemporaryEffectType, StatModifierTier, Value, Duration);
         }
 
         public override bool Equals(BaseStatModifier other)
         {
-            return base.Equals(other) && ((TemporaryStatModifier)other).TemporaryStatModifierType == TemporaryStatModifierType;
+            return base.Equals(other) && ((TemporaryStatModifier)other).TemporaryEffectType == TemporaryEffectType;
         }
     }
 }
