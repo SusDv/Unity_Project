@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseSpells:
   - {fileID: 11400000, guid: cb835789cb121c84ea3d6a9247776feb, type: 2}
-  - {fileID: 11400000, guid: b32bae48bb588ef42a128d1979df3f5c, type: 2}

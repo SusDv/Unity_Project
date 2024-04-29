@@ -21,12 +21,12 @@ namespace CharacterModule.Inventory.Items.Base
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
+            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
         }
 #else
         private void Awake()
         {
-            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.SourceID = ID);
+            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
         }
 #endif
     }

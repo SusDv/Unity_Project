@@ -10,13 +10,13 @@ namespace CharacterModule.Inventory.Items.Equipment
         {
             foreach (var baseStatModifier in TargetModifiers.GetModifiers())
             {
-                stats.ApplyStatModifier(baseStatModifier);
+                stats.StatModifierManager.AddModifier(baseStatModifier);
             }
         }
 
         public virtual void Unequip(StatManager stats)
         {
-            stats.RemoveStatModifiersByCondition((statModifier) => statModifier.SourceID == ID);
+            stats.StatModifierManager.RemoveModifiersOnCondition((statModifier) => statModifier.ModifierData.SourceID == ID);
         }
     }
 }

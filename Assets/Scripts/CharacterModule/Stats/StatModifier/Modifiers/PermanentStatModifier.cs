@@ -1,50 +1,43 @@
 ﻿using System;
-using CharacterModule.Stats.Base;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
+using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
+using UnityEngine;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
-    public class PermanentStatModifier : BaseStatModifier
+    public class PermanentStatModifier : IStatModifier, IModifier
     {
-        private PermanentStatModifier(StatType statType, 
-            ValueModifierType valueModifierType, 
-            ModifiedValueType modifiedValueType,
-            float value) : base(statType, valueModifierType, modifiedValueType, value) { }
-
-        public override void Init(Stat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
+        private PermanentStatModifier(
+            StatType statType,
+            ModifierData modifierData)
         {
-            base.Init(statToModify, addModifierCallback, removeModifierCallback);
+            StatType = statType;
             
-            Modify();
+            ModifierData = modifierData;
+        }
+        
+        [field: SerializeField]
+        public StatType StatType { get; private set; }
+        
+        [field: SerializeField]
+        public ModifierData ModifierData { get; private set; }
+        
+        public void OnAdded()
+        {
+            ValueModifierProcessor.ModifyValue(ModifierData.ValueToModify, this);
         }
 
-        public override void Modify()
+        public void OnRemove()
         {
-            ValueModifierProcessor.ModifyStatValue(ValueToModify, this);
+            ValueModifierProcessor.ModifyValue(ModifierData.ValueToModify, this.GetInverseModifier());
         }
-
-        public override void Remove()
+        
+        public IModifier Clone()
         {
-            base.Remove();
-            
-            ValueModifierProcessor.ModifyStatValue(ValueToModify, -this);
-        }
-
-        public static PermanentStatModifier GetPermanentStatModifierInstance(
-            StatType statType, 
-            ValueModifierType valueModifierType, 
-            ModifiedValueType modifiedValueType,
-            float value)
-        {
-            return new PermanentStatModifier(statType, valueModifierType, modifiedValueType, value);
-        }
-
-        public override object Clone()
-        {
-            return new PermanentStatModifier(StatType, ValueModifierType, ModifiedValueType, Value);
+            return new PermanentStatModifier(StatType, ModifierData);
         }
     }
 }

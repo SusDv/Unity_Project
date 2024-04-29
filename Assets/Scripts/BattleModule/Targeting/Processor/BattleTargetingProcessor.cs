@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using BattleModule.Targeting.Base;
 using BattleModule.Utility;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
+using Utility.Types;
 
 namespace BattleModule.Targeting.Processor
 {
@@ -28,18 +28,10 @@ namespace BattleModule.Targeting.Processor
         private void Init() 
         {
             _targeting.Clear();
-
-            var assembly = Assembly.GetAssembly(typeof(BattleTargeting));
-
-            var allTargetingTypes = assembly.GetTypes()
-                .Where(t => typeof(BattleTargeting)
-                .IsAssignableFrom(t) && !t.IsAbstract);
-
-            foreach(var targeting in allTargetingTypes) 
+            
+            foreach(var targeting in ReflectionUtils.GetConcreteInstances<BattleTargeting>()) 
             {
-                var targetingInstance = Activator.CreateInstance(targeting) as BattleTargeting;
-                
-                _targeting.Add(targetingInstance.TargetSearchType, targetingInstance);
+                _targeting.Add(targeting.TargetSearchType, targeting);
             }
         }
 

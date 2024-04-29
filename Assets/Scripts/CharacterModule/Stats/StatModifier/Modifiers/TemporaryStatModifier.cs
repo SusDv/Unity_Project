@@ -1,74 +1,68 @@
 ﻿using System;
-using CharacterModule.Stats.Base;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
-using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects.Base;
-using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects.Processor;
+using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.StatModifier.Manager;
+using CharacterModule.Stats.StatModifier.Modifiers.Effects.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.Effects.Processor;
+using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
-    public class TemporaryStatModifier : BaseStatModifier 
+    public class TemporaryStatModifier : ITemporaryModifier, IStatModifier
     {
-        private TemporaryStatModifier(StatType statType, 
-            ValueModifierType valueModifierType, 
-            ModifiedValueType modifiedValueType,
+        private TemporaryStatModifier(
+            StatType statType,
+            ModifierData modifierData,
             TemporaryEffectType temporaryEffectType,
-            StatModifierTier temporaryStatModifierTier,
-            float value,
-            int duration) : base(statType, valueModifierType, modifiedValueType, value) 
+            int duration)
         {
+            StatType = statType;
+            
+            ModifierData = modifierData;
+
             TemporaryEffectType = temporaryEffectType;
+
             Duration = duration;
         }
 
         [field: SerializeField]
-        public TemporaryEffectType TemporaryEffectType { get; private set; }
-
+        public StatType StatType { get; private set; }
+        
         [field: SerializeField]
-        public StatModifierTier StatModifierTier { get; private set; }
-
+        public TemporaryEffectType TemporaryEffectType { get; private set; }
+        
         [field: SerializeField]
         public int Duration { get; set; }
+        
+        [field: SerializeField]
+        public ModifierData ModifierData { get; private set; }
+        
+        public TemporaryEffect TemporaryEffect { private get; set; }
 
-        private TemporaryModifierEffect _temporaryModifierEffect;
+        public int LocalCycle { get; private set; }
 
-        public override void Init(Stat statToModify, 
-            Action<BaseStatModifier> addModifierCallback,
-            Action<BaseStatModifier> removeModifierCallback)
+        public void OnAdded()
         {
-            base.Init(statToModify, addModifierCallback, removeModifierCallback);
+            TemporaryEffect = TemporaryEffectProcessor.GetEffect(TemporaryEffectType).Init(this);
             
-            _temporaryModifierEffect = TemporaryModifierEffectProcessor.GetEffect(TemporaryEffectType)
-                .Init(this, ValueToModify);
+            LocalCycle = StatModifierManager.LocalCycle;
         }
 
-        public override void Modify()
+        public void OnRemove()
         {
-            _temporaryModifierEffect.Modify();
+            TemporaryEffect.Remove();
         }
 
-        public static TemporaryStatModifier GetTemporaryStatModifierInstance(
-            StatType statType, 
-            ValueModifierType valueModifierType, 
-            ModifiedValueType modifiedValueType,
-            TemporaryEffectType temporaryEffectType,
-            StatModifierTier statModifierTier,
-            float value,
-            int duration)
+        public void Modify()
         {
-            return new TemporaryStatModifier(statType, valueModifierType, modifiedValueType, temporaryEffectType, statModifierTier, value, duration);
+            TemporaryEffect.Modify();
         }
 
-        public override object Clone()
+        public IModifier Clone()
         {
-            return  new TemporaryStatModifier(StatType, ValueModifierType, ModifiedValueType, TemporaryEffectType, StatModifierTier, Value, Duration);
-        }
-
-        public override bool Equals(BaseStatModifier other)
-        {
-            return base.Equals(other) && ((TemporaryStatModifier)other).TemporaryEffectType == TemporaryEffectType;
+            return new TemporaryStatModifier(StatType, ModifierData, TemporaryEffectType, Duration);
         }
     }
 }

@@ -1,10 +1,10 @@
-using CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects.Base;
+using CharacterModule.Stats.StatModifier.Modifiers.Effects.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
 using CharacterModule.Stats.Utility.Enums;
 
-namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects
+namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
 {
-    public class SealEffect : TemporaryModifierEffect
+    public class SealEffect : TemporaryEffect
     {
         public override TemporaryEffectType TemporaryEffectType =>
             TemporaryEffectType.SEAL_EFFECT;
@@ -13,7 +13,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.TemporaryModifierEffects
         {
             base.Modify();
             
-            ValueModifierProcessor.ModifyStatValue(ValueToModify, TemporaryStatModifier);
+            ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, TemporaryModifier);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using UnityEngine;
 
 namespace CharacterModule.Stats.StatModifier
@@ -17,10 +17,10 @@ namespace CharacterModule.Stats.StatModifier
 
         [field: SerializeField]
         private List<PermanentStatModifier> _permanentModifiers = new();
-
-        public List<BaseStatModifier> GetModifiers()
+        
+        public List<IModifier> GetModifiers()
         {
-            var allModifiers = new List<BaseStatModifier>();
+            var allModifiers = new List<IModifier>();
 
             allModifiers.AddRange(_instantModifiers);
 

@@ -46,12 +46,4 @@ namespace CharacterModule.Stats.Utility.Enums
         SEAL_EFFECT,
         TIME_EFFECT
     }
-
-    public enum StatModifierTier 
-    {
-        TIER_1,
-        TIER_2,
-        TIER_3,
-        TIER_4
-    }
 }

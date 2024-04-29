@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
@@ -16,26 +15,9 @@ namespace CharacterModule.Stats.Settings
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (StatList.Count < Enum.GetNames(typeof(StatType)).Length)
-            {
-                StatList.Clear();
-
-                foreach (StatType statType in Enum.GetValues(typeof(StatType)))
-                {
-                    StatList.Add(new Stat(statType));
-                }
-            }
-
-            if (StatList.Count > Enum.GetNames(typeof(StatType)).Length)
-            {
-                StatList.Remove(StatList[^1]);
-            }
-
             foreach (var stat in StatList)
             {
-                stat.MaxValue = stat.BaseValue;
-                
-                stat.FinalValue = stat.BaseValue;
+                stat.MaxValue = stat.FinalValue = stat.BaseValue;
             }
         }
 #else
@@ -43,14 +25,11 @@ namespace CharacterModule.Stats.Settings
         {
             foreach (var stat in StatList)
             {
-                stat.MaxValue = stat.BaseValue;
-                
-                stat.FinalValue = stat.BaseValue;
+                stat.MaxValue = stat.FinalValue = stat.BaseValue;
             }
         }
 #endif
         
-
         public Dictionary<StatType, Stat> GetStats() 
         {
             return StatList.ToDictionary(stat => stat.StatType, stat => stat.Clone() as Stat);

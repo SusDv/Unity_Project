@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
+using CharacterModule.Stats.StatModifier.Manager;
 using CharacterModule.Stats.StatModifier.Modifiers;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
 using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 using VContainer;
@@ -33,7 +32,7 @@ namespace BattleModule.Controllers.Modules.Turn
             
             _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
 
-            BaseStatModifier.SetLocalCycle(characters.Count);
+            StatModifierManager.LocalCycle = _spawnedCharacters.Count;
         }
 
         private void UpdateCharactersBattlePoints()
@@ -42,7 +41,7 @@ namespace BattleModule.Controllers.Modules.Turn
             {
                 float battlePoints = character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
                 
-                character.CharacterStats.ApplyStatModifier(StatType.BATTLE_POINTS, CalculateDeduction(battlePoints));
+                character.CharacterStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, CalculateDeduction(battlePoints));
             }
             
             SortSpawnedCharacters();
@@ -71,22 +70,26 @@ namespace BattleModule.Controllers.Modules.Turn
         {
             var characterInTurnStats = _spawnedCharacters.First().CharacterStats;
 
-            characterInTurnStats.ApplyStatModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
+            characterInTurnStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
             
             OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
         }
 
         private void TriggerTemporaryModifiers() 
         {
-            _spawnedCharacters.First().CharacterStats.ApplyStatModifiersByCondition(
-                (statModifier) => statModifier is TemporaryStatModifier);
+            _spawnedCharacters.First().CharacterStats.StatModifierManager.TriggerSealAndStaticEffects();
+
+            foreach (var character in _spawnedCharacters)
+            {
+                character.CharacterStats.StatModifierManager.TriggerTimeEffects();
+            }
         }
 
         private void OnCharacterDied(Character deadCharacter)
         {
             _spawnedCharacters.Remove(deadCharacter);
 
-            BaseStatModifier.SetLocalCycle(_spawnedCharacters.Count);
+            StatModifierManager.LocalCycle = _spawnedCharacters.Count;
             
             OnCharactersInTurnChanged.Invoke(GetCurrentBattleTurnContext());
         }

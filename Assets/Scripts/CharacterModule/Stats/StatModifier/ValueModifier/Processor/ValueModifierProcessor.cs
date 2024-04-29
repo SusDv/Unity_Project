@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
+﻿using System.Collections.Generic;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.ValueModifier.Base;
 using CharacterModule.Stats.Utility.Enums;
 using Utility;
+using Utility.Types;
 
 namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
 {
@@ -17,33 +15,24 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
 
         private static void Init() 
         {
-            ValueModifiers.Clear();
-
-            var assembly = Assembly.GetAssembly(typeof(BaseValueModifier));
-
-            var allValueModifiers = assembly.GetTypes()
-                .Where(t => typeof(BaseValueModifier)
-                    .IsAssignableFrom(t) && !t.IsAbstract);
-
-            foreach(var valueModifier in  allValueModifiers) 
+            foreach(var valueModifier in  ReflectionUtils.GetConcreteInstances<BaseValueModifier>()) 
             {
-                var baseValueModifier = Activator.CreateInstance(valueModifier) as BaseValueModifier;
-                ValueModifiers.Add(baseValueModifier.ValueModifierType, baseValueModifier);
+                ValueModifiers.Add(valueModifier.ValueModifierType, valueModifier);
             }
 
             _initialized = true;
         }
 
-        public static void ModifyStatValue(Ref<float> valueToModify, BaseStatModifier modifier) 
+        public static void ModifyValue(Ref<float> valueToModify, IModifier modifier) 
         {
             if (!_initialized)
             {
                 Init();
             }
 
-            var valueModifier = ValueModifiers[modifier.ValueModifierType];
+            var valueModifier = ValueModifiers[modifier.ModifierData.ValueModifierType];
 
-            valueModifier.ModifyValue(valueToModify, modifier.Value);
+            valueModifier.ModifyValue(valueToModify, modifier.ModifierData.Value);
         }
     }
 }
