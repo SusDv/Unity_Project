@@ -23,13 +23,15 @@ namespace BattleModule.Actions.BattleActions.Base
         public void Init(object actionObject)
         {
             BattleActionContext = new BattleActionContext(actionObject);
+
+            Accuracy = new DamageAccuracy();
         }
 
         public virtual void PerformAction(Character source, List<Character> targets, Action actionFinishedCallback)
         {
             source.CharacterWeapon.GetSpecialAttack().Charge(5f);
             
-            source.CharacterStats.ApplyStatModifier(StatType.BATTLE_POINTS, BattleActionContext.BattleObject.BattlePoints);
+            source.CharacterStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, BattleActionContext.BattleObject.BattlePoints);
             
             actionFinishedCallback?.Invoke();
         }

@@ -27,7 +27,7 @@ namespace CharacterModule.Inventory.Items
         {
             foreach (var modifier in TargetModifiers.GetModifiers())
             {
-                target.CharacterStats.ApplyStatModifier(modifier);
+                target.CharacterStats.StatModifierManager.AddModifier(modifier);
             }
 
             OnConsumableUsed?.Invoke(this);

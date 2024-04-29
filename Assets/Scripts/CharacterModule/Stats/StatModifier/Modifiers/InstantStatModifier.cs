@@ -1,46 +1,55 @@
 ﻿using System;
-using CharacterModule.Stats.Base;
-using CharacterModule.Stats.StatModifier.Modifiers.Base;
+using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
+using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
+using UnityEngine;
 
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
-    public class InstantStatModifier : BaseStatModifier
-    {
+    public class InstantStatModifier : IModifier, IStatModifier
+    { 
         private InstantStatModifier(
-            StatType statType, 
-            ValueModifierType valueModifierType, 
-            ModifiedValueType modifiedValueType,
-            float value) : base (statType, valueModifierType, modifiedValueType,value) {}
-
-        public override void Init(Stat statToModify, Action<BaseStatModifier> addModifierCallback, Action<BaseStatModifier> removeModifierCallback)
+            StatType statType,
+            ModifierData modifierData)
         {
-            base.Init(statToModify, addModifierCallback, removeModifierCallback);
+            StatType = statType;
             
-            Modify();
+            ModifierData = modifierData;
         }
+        
+        [field: SerializeField]
+        public StatType StatType { get; private set; }
+        
+        [field: SerializeField]
+        public ModifierData ModifierData { get; private set; }
 
-        public override void Modify()
+        public void OnAdded()
         {
-            ValueModifierProcessor.ModifyStatValue(ValueToModify, this);
-                
-            Remove();
+            ValueModifierProcessor.ModifyValue(ModifierData.ValueToModify, this);
         }
-
-        public static InstantStatModifier GetInstantStatModifierInstance(
+        
+        public void OnRemove()
+        {
+            
+        }
+        
+        public IModifier Clone()
+        {
+            return new InstantStatModifier(StatType, ModifierData);
+        }
+        
+        public static InstantStatModifier GetInstance(
             StatType statType, 
-            ValueModifierType valueModifierType, 
-            ModifiedValueType modifiedValueType,
-            float value) 
+            float value)
         {
-            return new InstantStatModifier(statType, valueModifierType, modifiedValueType, value);
-        }
+            var modifierData = new ModifierData
+            {
+                Value = value
+            };
 
-        public override object Clone()
-        {
-            return new InstantStatModifier(StatType, ValueModifierType, ModifiedValueType, Value);
+            return new InstantStatModifier(statType, modifierData);
         }
     }
 }

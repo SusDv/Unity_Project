@@ -3,15 +3,14 @@ namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility
     public enum IntervalType
     {
         MISS,
-        HALF_DAMAGE,
-        HIT,
-        CRIT_DAMAGE
+        HIT
     }
 
     public enum SubIntervalType
     {
-        HALF_DAMAGE,
-        FULL_DAMAGE,
-        CRIT_DAMAGE
+        MISS,
+        HALF,
+        FULL,
+        CRIT
     }
 }

@@ -11,11 +11,6 @@ namespace BattleModule.Actions.BattleActions.ActionTypes
 {
     public class ItemAction : BattleAction 
     {
-        private ItemAction()
-        {
-            Accuracy = new UtilityAccuracy();
-        }
-
         public override void PerformAction(Character source, List<Character> targets, Action actionFinishedCallback) 
         {
             (BattleActionContext.ActionObject as ItemBase as IConsumable)?.Consume(targets.First());

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Utility;

@@ -12,14 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b8f6b198fc1474da808e2c73b7d915, type: 3}
   m_Name: Poison Bottle
   m_EditorClassIdentifier: 
-  <Information>k__BackingField:
-    <Name>k__BackingField: Poison Potion
-    <Description>k__BackingField: asdfasdfasdf
+  <ObjectInformation>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
     <Icon>k__BackingField: {fileID: 21300000, guid: 33cb473197a954e4aa23202010f207f4, type: 3}
   <IsStackable>k__BackingField: 1
   <TargetModifiers>k__BackingField:
     _instantModifiers: []
-    _temporaryModifiers: []
+    _temporaryModifiers:
+    - <StatType>k__BackingField: 0
+      <TemporaryEffectType>k__BackingField: 2
+      <Duration>k__BackingField: 2
+      <ModifierData>k__BackingField:
+        <ValueModifierType>k__BackingField: 0
+        <ModifiedValueType>k__BackingField: 0
+        <Value>k__BackingField: -100
     _permanentModifiers: []
   <BattlePoints>k__BackingField: 5
   <TargetType>k__BackingField: 1

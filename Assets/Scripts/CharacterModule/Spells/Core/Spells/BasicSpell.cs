@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CharacterModule.CharacterType.Base;
-using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ namespace CharacterModule.Spells.Core.Spells
                 
                 foreach (var baseStatModifier in TargetModifiers.GetModifiers())
                 {
-                    targetStats.ApplyStatModifier(baseStatModifier);
+                    targetStats.StatModifierManager.AddModifier(baseStatModifier);
                 }
             }
         }
