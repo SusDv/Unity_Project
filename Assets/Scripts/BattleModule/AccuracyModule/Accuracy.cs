@@ -47,7 +47,7 @@ namespace BattleModule.AccuracyModule
                 interval.Value.SetMainIntervalPercentage(hitRate);
             }
         }
-
+        
         public BattleActionOutcome Evaluate()
         {
             float randomValue = Random.Range(0, 101) / 100f;

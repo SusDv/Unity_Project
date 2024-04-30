@@ -9,9 +9,9 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
         public override TemporaryEffectType TemporaryEffectType =>
             TemporaryEffectType.SEAL_EFFECT;
 
-        public override void Modify()
+        public override void TriggerEffect()
         {
-            base.Modify();
+            base.TriggerEffect();
             
             ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, TemporaryModifier);
         }

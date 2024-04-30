@@ -1,8 +1,9 @@
+using System;
 using CharacterModule.Stats.Utility;
 
 namespace CharacterModule.Stats.Interfaces
 {
-    public interface IModifier
+    public interface IModifier : IEquatable<IModifier>
     {
         public ModifierData ModifierData { get; }
         

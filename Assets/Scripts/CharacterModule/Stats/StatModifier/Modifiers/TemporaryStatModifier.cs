@@ -19,9 +19,9 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             int duration)
         {
             StatType = statType;
-            
-            ModifierData = modifierData;
 
+            ModifierData = modifierData;
+            
             TemporaryEffectType = temporaryEffectType;
 
             Duration = duration;
@@ -41,7 +41,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         
         public TemporaryEffect TemporaryEffect { private get; set; }
 
-        public int LocalCycle { get; private set; }
+        public int LocalCycle { get; set; }
 
         public void OnAdded()
         {
@@ -55,14 +55,27 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             TemporaryEffect.Remove();
         }
 
-        public void Modify()
+        public void Trigger()
         {
-            TemporaryEffect.Modify();
+            TemporaryEffect.TriggerEffect();
         }
 
         public IModifier Clone()
         {
-            return new TemporaryStatModifier(StatType, ModifierData, TemporaryEffectType, Duration);
+            return new TemporaryStatModifier(StatType, ModifierData.Clone(), TemporaryEffectType, Duration);
+        }
+
+        private bool Equals(TemporaryStatModifier other)
+        {
+            return StatType == other.StatType &&
+                   TemporaryEffectType == other.TemporaryEffectType &&
+                   ModifierData.SourceID == other.ModifierData.SourceID &&
+                   Mathf.RoundToInt(ModifierData.Value - other.ModifierData.Value) == 0;
+        }
+
+        public bool Equals(IModifier modifier)
+        {
+            return Equals((TemporaryStatModifier) modifier);
         }
     }
 }

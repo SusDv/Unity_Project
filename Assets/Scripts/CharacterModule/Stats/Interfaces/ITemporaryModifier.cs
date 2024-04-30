@@ -11,8 +11,8 @@ namespace CharacterModule.Stats.Interfaces
         
         public int Duration { get; set; }
 
-        public int LocalCycle { get; }
+        public int LocalCycle { get; set; }
 
-        public void Modify();
+        public void Trigger();
     }
 }

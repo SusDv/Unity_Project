@@ -16,7 +16,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects.Base
             return this;
         }
 
-        public virtual void Modify()
+        public virtual void TriggerEffect()
         {
             DecreaseDuration();
         }

@@ -13,9 +13,11 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
 
         public override TemporaryEffect Init(ITemporaryModifier modifier)
         {
-            ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, modifier);
+            TemporaryModifier = modifier;
             
-            return base.Init(modifier);
+            ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, TemporaryModifier);
+
+            return this;
         }
 
         public override void Remove()

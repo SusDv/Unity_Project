@@ -37,7 +37,17 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         
         public IModifier Clone()
         {
-            return new PermanentStatModifier(StatType, ModifierData);
+            return new PermanentStatModifier(StatType, ModifierData.Clone());
+        }
+        
+        private bool Equals(PermanentStatModifier other)
+        {
+            return StatType == other.StatType && Equals(ModifierData, other.ModifierData);
+        }
+
+        public bool Equals(IModifier obj)
+        {
+            return Equals((PermanentStatModifier) obj);
         }
     }
 }
