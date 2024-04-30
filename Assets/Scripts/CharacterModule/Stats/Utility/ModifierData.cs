@@ -8,6 +8,24 @@ namespace CharacterModule.Stats.Utility
     [Serializable]
     public class ModifierData
     {
+        public ModifierData()
+        {
+            
+        }
+
+        private ModifierData(ValueModifierType valueModifierType,
+            ModifiedValueType modifiedValueType,
+            float value,
+            int sourceID,
+            Ref<float> valueToModify)
+        {
+            ValueModifierType = valueModifierType;
+            ModifiedValueType = modifiedValueType;
+            Value = value;
+            SourceID = sourceID;
+            ValueToModify = valueToModify;
+        }
+
         [field: SerializeField]
         public ValueModifierType ValueModifierType { get; private set; }
         
@@ -20,5 +38,10 @@ namespace CharacterModule.Stats.Utility
         public int SourceID { get; set; }
 
         public Ref<float> ValueToModify { get; set; }
+
+        public ModifierData Clone()
+        {
+            return new ModifierData(ValueModifierType, ModifiedValueType, Value, SourceID, ValueToModify);
+        }
     }
 }

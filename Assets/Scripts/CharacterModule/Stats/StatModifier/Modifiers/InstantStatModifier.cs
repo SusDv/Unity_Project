@@ -37,7 +37,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
         
         public IModifier Clone()
         {
-            return new InstantStatModifier(StatType, ModifierData);
+            return new InstantStatModifier(StatType, ModifierData.Clone());
         }
         
         public static InstantStatModifier GetInstance(
@@ -50,6 +50,16 @@ namespace CharacterModule.Stats.StatModifier.Modifiers
             };
 
             return new InstantStatModifier(statType, modifierData);
+        }
+
+        private bool Equals(InstantStatModifier other)
+        {
+            return StatType == other.StatType && Equals(ModifierData, other.ModifierData);
+        }
+
+        public bool Equals(IModifier obj)
+        {
+            return Equals((InstantStatModifier) obj);
         }
     }
 }

@@ -1,4 +1,3 @@
-using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Manager;
 using CharacterModule.Stats.StatModifier.Modifiers.Effects.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
@@ -11,18 +10,9 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
         public override TemporaryEffectType TemporaryEffectType =>
             TemporaryEffectType.TIME_EFFECT;
         
-        private float _localCycleTimer;
-
-        public override TemporaryEffect Init(ITemporaryModifier modifier)
-        {
-            _localCycleTimer = StatModifierManager.LocalCycle;
-            
-            return base.Init(modifier);
-        }
-
         protected override void DecreaseDuration()
         {
-            if (--_localCycleTimer != 0)
+            if (--TemporaryModifier.LocalCycle > 0)
             {
                 return;
             }
@@ -31,7 +21,7 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
                 
             ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, TemporaryModifier);
             
-            _localCycleTimer = StatModifierManager.LocalCycle;
+            TemporaryModifier.LocalCycle = StatModifierManager.LocalCycle;
         }
     }
 }
