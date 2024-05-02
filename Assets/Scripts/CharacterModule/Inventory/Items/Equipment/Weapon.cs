@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CharacterModule.Inventory.Items.Equipment
 {
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Character/Items/Equipment/Weapon")]
-    public class WeaponItem : EquipmentItem, IBattleObject
+    public class Weapon : EquipmentItem, IBattleObject
     {
         [field: SerializeField]
         public float BattlePoints { get; private set; }

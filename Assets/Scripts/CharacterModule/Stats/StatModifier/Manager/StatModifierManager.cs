@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleModule.Actions;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.Modifiers;
@@ -15,8 +16,6 @@ namespace CharacterModule.Stats.StatModifier.Manager
 
         private readonly Dictionary<StatType, Stat> _statsRef;
         public event Action<StatType> OnModified = delegate { };
-        
-        public static int LocalCycle;
 
         private bool FoundExistingTemporaryModifier(IModifier modifier)
         {
@@ -40,9 +39,7 @@ namespace CharacterModule.Stats.StatModifier.Manager
         
         private static void TriggerExistingModifier(ITemporaryModifier existingModifier, ITemporaryModifier temporaryModifier)
         {
-            existingModifier.LocalCycle = 0;
-            
-            existingModifier.Trigger();
+            existingModifier.BattleTimer.EndTimer();
             
             existingModifier.Duration = temporaryModifier.Duration;
         }
@@ -51,12 +48,25 @@ namespace CharacterModule.Stats.StatModifier.Manager
         {
             preparedModifier = modifier.Clone();
             
-            preparedModifier.SetValueToModify(_statsRef[((IStatModifier)preparedModifier).StatType]);
+            CheckTemporaryModifier(preparedModifier);
             
+            preparedModifier.SetValueToModify(_statsRef[((IStatModifier)preparedModifier).StatType]);
+
             preparedModifier.OnAdded();
             
             OnModified?.Invoke(((IStatModifier) preparedModifier).StatType);
         }
+
+        private void CheckTemporaryModifier(IModifier modifier)
+        {
+            if (modifier is not ITemporaryModifier temporaryModifier)
+            {
+                return;
+            }
+            
+            temporaryModifier.BattleTimer = BattleEventManager.CreateTimer();
+        }
+
 
         public void AddModifier(IModifier statModifier)
         {
@@ -71,7 +81,7 @@ namespace CharacterModule.Stats.StatModifier.Manager
             {
                 return;
             }
-
+            
             _modifiersInUse.Add(preparedModifier);
         }
         
@@ -87,23 +97,11 @@ namespace CharacterModule.Stats.StatModifier.Manager
             AddModifier(InstantStatModifier.GetInstance(statType, value));
         }
 
-        public void TriggerSealAndStaticEffects()
+        public void TriggerSealEffects()
         {
-            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier>().Where(modifier => modifier.TemporaryEffectType is not TemporaryEffectType.TIME_EFFECT))
+            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier>().Where(modifier => modifier.TemporaryEffectType is TemporaryEffectType.SEAL_EFFECT))
             {
-                temporaryModifier.Trigger();
-                
-                OnModified?.Invoke(((IStatModifier) temporaryModifier).StatType);
-            }
-            
-            RemoveModifiersOnCondition(modifier => modifier is ITemporaryModifier { Duration: <= 0 });
-        }
-
-        public void TriggerTimeEffects()
-        {
-            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier>().Where(modifier => modifier.TemporaryEffectType is TemporaryEffectType.TIME_EFFECT))
-            {
-                temporaryModifier.Trigger();
+                temporaryModifier.BattleTimer.EndTimer();
                 
                 OnModified?.Invoke(((IStatModifier) temporaryModifier).StatType);
             }

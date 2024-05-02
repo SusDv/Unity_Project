@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleModule.Controllers;
-using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Action;
-using CharacterModule;
-using CharacterModule.CharacterType.Base;
+using BattleModule.Utility;
 using VContainer;
 
 namespace BattleModule.Actions
@@ -15,29 +12,36 @@ namespace BattleModule.Actions
         
         public event Action OnActionButtonPressed = delegate { };
         
-
-        private int _maximumTurnsInCycle;
-
-        private int _currentTurnInCycle;
-
+        
+        private static readonly List<BattleTimer> BattleTimers = new();
+        
         [Inject]
-        public BattleEventManager(BattleActionSceneSettings battleActionSceneSettings, BattleSpawner battleSpawner)
+        private BattleEventManager(BattleActionSceneSettings battleActionSceneSettings)
         {
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-            
             battleActionSceneSettings.BattleActionButton.OnButtonClick += _ => OnActionButtonPressed.Invoke();
         }
-
-        private void OnCharactersSpawned(List<Character> characters)
+        
+        private static void ProcessTimers()
         {
-            _maximumTurnsInCycle = characters.Count;
+            BattleTimers.RemoveAll(t => t.Expired);
+            
+            BattleTimers.ForEach(t => t.AdvanceTimer());
         }
-
+        
         public void AdvanceTurn()
         {
-            OnTurnEnded?.Invoke();
+            ProcessTimers();
             
-            _currentTurnInCycle = (_currentTurnInCycle + 1) % _maximumTurnsInCycle;
+            OnTurnEnded?.Invoke();
+        }
+
+        public static BattleTimer CreateTimer(int time = 0)
+        {
+            var battleTimer = new BattleTimer(time);
+            
+            BattleTimers.Add(battleTimer);
+            
+            return battleTimer;
         }
     }
 }

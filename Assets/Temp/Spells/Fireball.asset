@@ -21,13 +21,19 @@ MonoBehaviour:
   <TargetSearchType>k__BackingField: 1
   <MaxTargetsCount>k__BackingField: 1
   <TargetModifiers>k__BackingField:
-    _instantModifiers: []
-    _temporaryModifiers:
-    - <StatType>k__BackingField: 0
-      <TemporaryEffectType>k__BackingField: 0
-      <Duration>k__BackingField: 2
-      <ModifierData>k__BackingField:
-        <ValueModifierType>k__BackingField: 0
-        <ModifiedValueType>k__BackingField: 0
-        <Value>k__BackingField: -50
-    _permanentModifiers: []
+    rid: 5038419726524481536
+  references:
+    version: 2
+    RefIds:
+    - rid: 5038419726524481536
+      type: {class: DynamicStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
+      data:
+        _instantStatModifiers: []
+        _temporaryStatModifiers:
+        - <TemporaryEffectType>k__BackingField: 1
+          <Duration>k__BackingField: 1
+          <ModifierData>k__BackingField:
+            <ValueModifierType>k__BackingField: 0
+            <ModifiedValueType>k__BackingField: 0
+            <Value>k__BackingField: -50
+          <StatType>k__BackingField: 0

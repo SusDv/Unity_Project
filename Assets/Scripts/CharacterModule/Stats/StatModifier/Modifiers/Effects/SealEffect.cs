@@ -9,11 +9,13 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
         public override TemporaryEffectType TemporaryEffectType =>
             TemporaryEffectType.SEAL_EFFECT;
 
-        public override void TriggerEffect()
+        protected override void Modify()
         {
-            base.TriggerEffect();
+            base.Modify();
             
             ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, TemporaryModifier);
+            
+            TemporaryModifier.BattleTimer.StopTimer();
         }
     }
 }

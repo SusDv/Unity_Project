@@ -30,8 +30,8 @@ namespace CharacterModule.WeaponSpecial.Base
         [field: SerializeField, Header("Special Attack Data"), Space]
         public float MaxEnergy { get; private set; }
 
-        [field: SerializeField, Space] 
-        public StatModifiers TargetModifiers { get; private set; }
+        [field: SerializeReference, Space]
+        public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
         
         public ISpecialAttack GetAttack()
         {

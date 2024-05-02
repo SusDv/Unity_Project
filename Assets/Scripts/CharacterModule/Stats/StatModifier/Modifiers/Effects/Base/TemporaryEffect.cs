@@ -8,22 +8,22 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects.Base
         public abstract TemporaryEffectType TemporaryEffectType { get; }
 
         protected ITemporaryModifier TemporaryModifier;
-
+        
         public virtual TemporaryEffect Init(ITemporaryModifier modifier)
         {
             TemporaryModifier = modifier;
+
+            TemporaryModifier.BattleTimer.OnExpired += Modify;
             
             return this;
         }
 
-        public virtual void TriggerEffect()
+        protected virtual void Modify()
         {
-            DecreaseDuration();
-        }
-
-        protected virtual void DecreaseDuration()
-        {
-            TemporaryModifier.Duration--;
+            if (--TemporaryModifier.Duration != 0)
+            {
+                TemporaryModifier.BattleTimer.ResetTimer();
+            }
         }
 
         public virtual void Remove()

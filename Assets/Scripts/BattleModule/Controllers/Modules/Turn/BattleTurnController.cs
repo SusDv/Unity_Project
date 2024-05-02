@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions;
+using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
-using CharacterModule.Stats.StatModifier.Manager;
-using CharacterModule.Stats.StatModifier.Modifiers;
 using CharacterModule.Stats.Utility.Enums;
 using UnityEngine;
 using VContainer;
@@ -32,7 +31,7 @@ namespace BattleModule.Controllers.Modules.Turn
             
             _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
 
-            StatModifierManager.LocalCycle = _spawnedCharacters.Count;
+            BattleTimer.LocalCycle = _spawnedCharacters.Count;
         }
 
         private void UpdateCharactersBattlePoints()
@@ -77,19 +76,14 @@ namespace BattleModule.Controllers.Modules.Turn
 
         private void TriggerTemporaryModifiers() 
         {
-            _spawnedCharacters.First().CharacterStats.StatModifierManager.TriggerSealAndStaticEffects();
-
-            foreach (var character in _spawnedCharacters)
-            {
-                character.CharacterStats.StatModifierManager.TriggerTimeEffects();
-            }
+            _spawnedCharacters.First().CharacterStats.StatModifierManager.TriggerSealEffects();
         }
 
         private void OnCharacterDied(Character deadCharacter)
         {
             _spawnedCharacters.Remove(deadCharacter);
 
-            StatModifierManager.LocalCycle = _spawnedCharacters.Count;
+            BattleTimer.LocalCycle = _spawnedCharacters.Count;
             
             OnCharactersInTurnChanged.Invoke(GetCurrentBattleTurnContext());
         }

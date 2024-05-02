@@ -52,7 +52,7 @@ namespace BattleModule.Controllers.Modules
 
         private void SetDefaultBattleAction() 
         {
-            SetBattleAction<DefaultAction>(_characterToHaveTurn.CharacterWeapon.GetWeapon());
+            SetBattleAction<DefaultAction>(_characterToHaveTurn.WeaponController.GetWeapon());
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 

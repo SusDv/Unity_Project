@@ -1,7 +1,5 @@
 ﻿using System;
 using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.StatModifier.Manager;
-using CharacterModule.Stats.StatModifier.Modifiers.Effects.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Effects.Processor;
 using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
@@ -10,70 +8,42 @@ using UnityEngine;
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
-    public class TemporaryStatModifier : ITemporaryModifier, IStatModifier
+    public class TemporaryStatModifier : TemporaryModifier, IStatModifier
     {
-        private TemporaryStatModifier(
-            StatType statType,
-            ModifierData modifierData,
-            TemporaryEffectType temporaryEffectType,
-            int duration)
-        {
-            StatType = statType;
-
-            ModifierData = modifierData;
-            
-            TemporaryEffectType = temporaryEffectType;
-
-            Duration = duration;
-        }
-
         [field: SerializeField]
         public StatType StatType { get; private set; }
         
-        [field: SerializeField]
-        public TemporaryEffectType TemporaryEffectType { get; private set; }
-        
-        [field: SerializeField]
-        public int Duration { get; set; }
-        
-        [field: SerializeField]
-        public ModifierData ModifierData { get; private set; }
-        
-        public TemporaryEffect TemporaryEffect { private get; set; }
-
-        public int LocalCycle { get; set; }
-
-        public void OnAdded()
+        protected TemporaryStatModifier(
+            StatType statType,
+            ModifierData modifierData,
+            TemporaryEffectType temporaryEffectType,
+            int duration) : base(modifierData, temporaryEffectType, duration)
         {
-            TemporaryEffect = TemporaryEffectProcessor.GetEffect(TemporaryEffectType).Init(this);
-            
-            LocalCycle = StatModifierManager.LocalCycle;
+            StatType = statType;
         }
 
-        public void OnRemove()
+        public override void OnAdded()
+        {
+            TemporaryEffect = TemporaryEffectProcessor.GetEffect(TemporaryEffectType)
+                .Init(this);
+        }
+
+        public override void OnRemove()
         {
             TemporaryEffect.Remove();
         }
 
-        public void Trigger()
-        {
-            TemporaryEffect.TriggerEffect();
-        }
-
-        public IModifier Clone()
+        public override IModifier Clone()
         {
             return new TemporaryStatModifier(StatType, ModifierData.Clone(), TemporaryEffectType, Duration);
         }
 
         private bool Equals(TemporaryStatModifier other)
         {
-            return StatType == other.StatType &&
-                   TemporaryEffectType == other.TemporaryEffectType &&
-                   ModifierData.SourceID == other.ModifierData.SourceID &&
-                   Mathf.RoundToInt(ModifierData.Value - other.ModifierData.Value) == 0;
+            return StatType == other.StatType && base.Equals(other);
         }
 
-        public bool Equals(IModifier modifier)
+        public override bool Equals(IModifier modifier)
         {
             return Equals((TemporaryStatModifier) modifier);
         }

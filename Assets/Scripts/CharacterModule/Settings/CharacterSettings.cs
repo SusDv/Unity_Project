@@ -14,7 +14,7 @@ namespace CharacterModule.Settings
 
         public BaseSpells BaseSpells;
 
-        public WeaponItem BaseWeapon;
+        public Weapon BaseWeapon;
 
         public CharacterInformation CharacterInformation;
     }

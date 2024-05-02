@@ -15,7 +15,7 @@ namespace BattleModule.Actions.BattleActions.ActionTypes
 
         public override void PerformAction(Character source, List<Character> targets, Action actionFinishedCallback)
         {
-            source.CharacterWeapon.GetSpecialAttack().Attack(targets);
+            source.WeaponController.GetSpecialAttack().Attack(targets);
             
             base.PerformAction(source, targets, actionFinishedCallback);
         }

@@ -46,7 +46,7 @@ MonoBehaviour:
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0
   - <StatType>k__BackingField: 8
-    <BaseValue>k__BackingField: 0
+    <BaseValue>k__BackingField: 50
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0
   - <StatType>k__BackingField: 9

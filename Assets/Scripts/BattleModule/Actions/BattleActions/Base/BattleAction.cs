@@ -29,7 +29,7 @@ namespace BattleModule.Actions.BattleActions.Base
 
         public virtual void PerformAction(Character source, List<Character> targets, Action actionFinishedCallback)
         {
-            source.CharacterWeapon.GetSpecialAttack().Charge(5f);
+            source.WeaponController.GetSpecialAttack().Charge(5f);
             
             source.CharacterStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, BattleActionContext.BattleObject.BattlePoints);
             

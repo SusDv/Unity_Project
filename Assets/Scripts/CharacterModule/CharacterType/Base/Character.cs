@@ -1,6 +1,7 @@
 using System;
 using CharacterModule.Animation;
 using CharacterModule.Data.Info;
+using CharacterModule.Equipment;
 using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
 using CharacterModule.Stats.Managers;
@@ -16,7 +17,7 @@ namespace CharacterModule.CharacterType.Base
         
         public StatManager CharacterStats { get; private set; }
 
-        public CharacterWeapon CharacterWeapon { get; private set; }
+        public WeaponController WeaponController { get; private set; }
 
         public SpellContainer CharacterSpells { get; private set; }
 
@@ -33,13 +34,13 @@ namespace CharacterModule.CharacterType.Base
 
             CharacterSpells = new SpellContainer(_characterSettings.BaseSpells);
 
-            CharacterWeapon = new CharacterWeapon(this);
+            WeaponController = new WeaponController(this);
 
             HealthManager = new HealthManager(this);
 
             CharacterInformation = _characterSettings.CharacterInformation;
 
-            CharacterWeapon.EquipWeapon(_characterSettings.BaseWeapon);
+            WeaponController.Equip(_characterSettings.BaseWeapon);
             
             
         }
