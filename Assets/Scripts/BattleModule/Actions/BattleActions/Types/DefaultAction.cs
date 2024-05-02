@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.AccuracyModule;
 using BattleModule.Actions.BattleActions.Base;
-using BattleModule.Actions.BattleActions.Outcome;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
-using Random = UnityEngine.Random;
 
 namespace BattleModule.Actions.BattleActions.ActionTypes
 {
@@ -20,7 +17,9 @@ namespace BattleModule.Actions.BattleActions.ActionTypes
             
             Accuracy.CalculateIntervalRange(characterStats.GetStatInfo(StatType.ACCURACY).FinalValue, target.GetStatInfo(StatType.EVASION).FinalValue);
             
-            target.StatModifierManager.ApplyInstantModifier(StatType.HEALTH, -characterStats.GetStatInfo(StatType.ATTACK).FinalValue);
+            float damage = -characterStats.GetStatInfo(StatType.ATTACK).FinalValue;
+            
+            target.StatModifierManager.ApplyInstantModifier(StatType.HEALTH, damage);
 
             base.PerformAction(source, targets, actionFinishedCallback);
         }

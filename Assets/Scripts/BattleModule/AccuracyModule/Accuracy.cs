@@ -47,7 +47,12 @@ namespace BattleModule.AccuracyModule
                 interval.Value.SetMainIntervalPercentage(hitRate);
             }
         }
-        
+
+        public BattleActionOutcome GetOutcomeByType(SubIntervalType subIntervalType)
+        {
+            return _subIntervals[subIntervalType].GetBattleActionOutcome();
+        }
+
         public BattleActionOutcome Evaluate()
         {
             float randomValue = Random.Range(0, 101) / 100f;

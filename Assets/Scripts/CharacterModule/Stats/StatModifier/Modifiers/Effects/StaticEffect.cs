@@ -8,12 +8,13 @@ namespace CharacterModule.Stats.StatModifier.Modifiers.Effects
 {
     public class StaticEffect : TemporaryEffect
     {
-        public override TemporaryEffectType TemporaryEffectType =>
-            TemporaryEffectType.STATIC_EFFECT;
+        public override TemporaryEffectType TemporaryEffectType => TemporaryEffectType.STATIC_EFFECT;
 
         public override TemporaryEffect Init(ITemporaryModifier modifier)
         {
-            TemporaryModifier = modifier;
+            base.Init(modifier);
+            
+            TemporaryModifier.BattleTimer.StartTimer();
             
             ValueModifierProcessor.ModifyValue(TemporaryModifier.ModifierData.ValueToModify, TemporaryModifier);
 

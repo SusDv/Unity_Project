@@ -18,14 +18,23 @@ MonoBehaviour:
     <Icon>k__BackingField: {fileID: 0}
   <IsStackable>k__BackingField: 0
   <TargetModifiers>k__BackingField:
-    _instantModifiers: []
-    _temporaryModifiers: []
-    _permanentModifiers:
-    - <StatType>k__BackingField: 2
-      <ModifierData>k__BackingField:
-        <ValueModifierType>k__BackingField: 0
-        <ModifiedValueType>k__BackingField: 0
-        <Value>k__BackingField: -5
+    rid: 5038419707950268448
+  <OutcomeTransformers>k__BackingField:
+  - <TransformFrom>k__BackingField: 2
+    <TransformTo>k__BackingField: 3
+    <Cooldown>k__BackingField: 2
   <BattlePoints>k__BackingField: 10
   <TargetType>k__BackingField: 1
   <SpecialAttack>k__BackingField: {fileID: 11400000, guid: 0a1465a34e5d27144bd5529c668658ac, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 5038419707950268448
+      type: {class: StaticStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
+      data:
+        _permanentStatModifiers:
+        - <StatType>k__BackingField: 2
+          <ModifierData>k__BackingField:
+            <ValueModifierType>k__BackingField: 0
+            <ModifiedValueType>k__BackingField: 0
+            <Value>k__BackingField: 50

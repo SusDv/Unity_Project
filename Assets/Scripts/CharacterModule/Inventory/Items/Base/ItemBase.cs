@@ -1,6 +1,4 @@
-using CharacterModule.Stats.StatModifier;
 using UnityEngine;
-using Utility;
 using Utility.Information;
 
 namespace CharacterModule.Inventory.Items.Base 
@@ -14,21 +12,6 @@ namespace CharacterModule.Inventory.Items.Base
 
         [field: SerializeField]
         public bool IsStackable { get; private set; }
-
-        [field: SerializeField]
-        public StatModifiers TargetModifiers { get; private set; }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
-        }
-#else
-        private void Awake()
-        {
-            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
-        }
-#endif
     }
 }
 
