@@ -1,5 +1,6 @@
 ﻿using BattleModule.Utility;
 using BattleModule.Actions.BattleActions.Interfaces;
+using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Base;
 using UnityEngine;
 
@@ -16,6 +17,9 @@ namespace CharacterModule.Inventory.Items.Equipment
         
         [field: SerializeField]
         public SpecialAttack SpecialAttack { get; private set; }
+
+        [field: SerializeReference]
+        public StatModifiers HitModifiers { get; private set; } = new DynamicStatModifiers();
 
         public TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
         

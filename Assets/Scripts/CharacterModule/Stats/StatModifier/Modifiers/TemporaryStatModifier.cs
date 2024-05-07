@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using BattleModule.Utility;
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Stats.StatModifier.Modifiers.Effects.Base;
 using CharacterModule.Stats.StatModifier.Modifiers.Effects.Processor;
 using CharacterModule.Stats.Utility;
 using CharacterModule.Stats.Utility.Enums;
@@ -8,42 +10,63 @@ using UnityEngine;
 namespace CharacterModule.Stats.StatModifier.Modifiers
 {
     [Serializable]
-    public class TemporaryStatModifier : TemporaryModifier, IStatModifier
+    public class TemporaryStatModifier : ITemporaryModifier, IStatModifier
     {
-        [field: SerializeField]
-        public StatType StatType { get; private set; }
+        private TemporaryEffect _temporaryEffect;
         
-        protected TemporaryStatModifier(
+        private TemporaryStatModifier(
             StatType statType,
             ModifierData modifierData,
             TemporaryEffectType temporaryEffectType,
-            int duration) : base(modifierData, temporaryEffectType, duration)
+            int duration)
         {
             StatType = statType;
-        }
+            
+            ModifierData = modifierData;
+            
+            TemporaryEffectType = temporaryEffectType;
 
-        public override void OnAdded()
+            Duration = duration;
+        }
+        
+        [field: SerializeField]
+        public StatType StatType { get; private set; }
+
+        [field: SerializeField]
+        public TemporaryEffectType TemporaryEffectType { get; private set; }
+        
+        [field: SerializeField]
+        public int Duration { get; set; }
+        
+        [field: SerializeField]
+        public ModifierData ModifierData { get; private set; }
+        
+        public BattleTimer BattleTimer { get; set; }
+        
+        public void OnAdded()
         {
-            TemporaryEffect = TemporaryEffectProcessor.GetEffect(TemporaryEffectType)
+            _temporaryEffect = TemporaryEffectProcessor.GetEffect(TemporaryEffectType)
                 .Init(this);
         }
 
-        public override void OnRemove()
+        public void OnRemove()
         {
-            TemporaryEffect.Remove();
+            _temporaryEffect.Remove();
         }
 
-        public override IModifier Clone()
+        public IModifier Clone()
         {
             return new TemporaryStatModifier(StatType, ModifierData.Clone(), TemporaryEffectType, Duration);
         }
 
         private bool Equals(TemporaryStatModifier other)
         {
-            return StatType == other.StatType && base.Equals(other);
+            return StatType == other.StatType && TemporaryEffectType == other.TemporaryEffectType &&
+                   ModifierData.SourceID == other.ModifierData.SourceID &&
+                   Mathf.RoundToInt(ModifierData.Value - other.ModifierData.Value) == 0;
         }
-
-        public override bool Equals(IModifier modifier)
+        
+        public bool Equals(IModifier modifier)
         {
             return Equals((TemporaryStatModifier) modifier);
         }

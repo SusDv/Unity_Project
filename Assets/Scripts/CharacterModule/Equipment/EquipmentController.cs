@@ -6,13 +6,20 @@ namespace CharacterModule.Equipment
 {
     public class EquipmentController
     {
-        private List<OutcomeTransformer> _outcomeTransformers = new ();
+        private readonly List<OutcomeTransformer> _outcomeTransformers = new ();
         
-        public WeaponController WeaponController { private get; set; }
+        public WeaponController WeaponController { get; private set; }
+
+        public ArmorController ArmorController { get; private set; }
 
         public EquipmentController(Character belongsTo)
         {
             WeaponController = new WeaponController(belongsTo);
+        }
+
+        public void RemoveTemporaryTransformers()
+        {
+            _outcomeTransformers.RemoveAll(t => t is TemporaryOutcomeTransformer { Duration: <= 0 });
         }
     }
 }

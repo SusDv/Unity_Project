@@ -18,6 +18,8 @@ namespace BattleModule.Scopes
             _battleUIServices.Configure(builder);
             
             builder.RegisterEntryPoint<BattleController>();
+
+            builder.RegisterEntryPoint<BattleFlow>();
         }
     }
 }

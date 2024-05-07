@@ -1,4 +1,5 @@
 using BattleModule.UI.Presenter;
+using BattleModule.UI.Presenter.SceneSettings.Accuracy;
 using BattleModule.UI.Presenter.SceneSettings.Action;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
@@ -24,6 +25,8 @@ namespace BattleModule.Scopes.Services
         [SerializeField] private BattleSpellsSceneSettings _battleSpellsSceneSettings;
         [SerializeField] private BattleTargetingSceneSettings _battleTargetingSceneSettings;
         [SerializeField] private BattleTurnSceneSettings _battleTurnSceneSettings;
+
+        [SerializeField] private BattleAccuracySceneSettings _battleAccuracySceneSettings;
         
         public void Configure(IContainerBuilder builder)
         {
@@ -44,6 +47,8 @@ namespace BattleModule.Scopes.Services
             builder.RegisterComponent(_battleTargetingSceneSettings);
             
             builder.RegisterComponent(_battleTurnSceneSettings);
+
+            builder.RegisterComponent(_battleAccuracySceneSettings);
         }
     }
 }

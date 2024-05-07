@@ -4,7 +4,6 @@ using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
 using JetBrains.Annotations;
 using VContainer.Unity;
@@ -29,7 +28,8 @@ namespace BattleModule.Controllers
         public readonly BattleEventManager BattleEventManager;
         
         public BattleController(BattleInput battleInput,
-            BattleCamera battleCamera, BattleActionController battleActionController,
+            BattleCamera battleCamera, 
+            BattleActionController battleActionController,
             BattleTargetingController battleTargetingController, 
             BattleTurnController battleTurnController,
             BattleEventManager battleEventManager,

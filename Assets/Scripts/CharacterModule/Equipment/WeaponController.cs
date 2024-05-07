@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using BattleModule.AccuracyModule.Transformer;
 using BattleModule.Actions.BattleActions.Interfaces;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Inventory.Interfaces;
@@ -31,12 +28,7 @@ namespace CharacterModule.Equipment
             
             (_weapon as IEquipment).Equip(_statModifierManager);
         }
-
-        public bool HaveWeapon()
-        {
-            return _weapon == null;
-        }
-
+        
         public void Unequip() 
         {
             (_weapon as IEquipment).Unequip(_statModifierManager);
@@ -52,11 +44,6 @@ namespace CharacterModule.Equipment
         public ISpecialAttack GetSpecialAttack()
         {
             return _specialAttack;
-        }
-
-        public List<OutcomeTransformer> GetTransformers()
-        {
-            return _weapon.OutcomeTransformers.Where(o => o.IsAvailable).ToList();
         }
     }
 }

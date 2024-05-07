@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f5d6f2e5cff44e7b7ed2d7f2cf38bd7, type: 3}
+  m_Name: Armor
+  m_EditorClassIdentifier: 
+  <ObjectInformation>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
+    <Icon>k__BackingField: {fileID: 0}
+  <IsStackable>k__BackingField: 0
+  <TargetModifiers>k__BackingField:
+    rid: 5038419805223518213
+  <ArmorType>k__BackingField: 0
+  _staticOutcomeTransformers:
+  - <TransformFrom>k__BackingField: 1
+    <TransformTo>k__BackingField: 0
+    <Cooldown>k__BackingField: 2
+  references:
+    version: 2
+    RefIds:
+    - rid: 5038419805223518213
+      type: {class: StaticStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
+      data:
+        _permanentStatModifiers:
+        - <StatType>k__BackingField: 0
+          <ModifierData>k__BackingField:
+            <ValueModifierType>k__BackingField: 0
+            <ModifiedValueType>k__BackingField: 1
+            <Value>k__BackingField: 100

@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
-using BattleModule.AccuracyModule;
+using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Base;
 using CharacterModule.CharacterType.Base;
 
-namespace BattleModule.Actions.BattleActions.ActionTypes
+namespace BattleModule.Actions.BattleActions.Types
 {
     public class SpecialAction : BattleAction
     {
-        private SpecialAction()
-        {
-            Accuracy = new DamageAccuracy();
-        }
-
-        public override void PerformAction(Character source, List<Character> targets, Action actionFinishedCallback)
+        public override void PerformAction(Character source,
+            List<Character> targets,
+            Action actionFinishedCallback)
         {
             source.WeaponController.GetSpecialAttack().Attack(targets);
             

@@ -1,3 +1,4 @@
+using BattleModule.Accuracy.Intervals.Utility;
 using BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals.Base;
 using BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility;
 using BattleModule.Actions.BattleActions.Outcome;
@@ -5,22 +6,23 @@ using BattleModule.Actions.BattleActions.Outcome.Outcomes;
 
 namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals
 {
-    public class TrueMiss : SubInterval
+    public class FullDamage : SubInterval
     {
-        public override SubIntervalType SubIntervalType => SubIntervalType.MISS;
+        public override SubIntervalType SubIntervalType => SubIntervalType.FULL;
+
+        public override float SubIntervalPercentage { get; set; } = 0.8f;
         
-        public override float SubIntervalPercentage { get; set; } = 0.5f;
-
-        public override int Priority => 1;
-
+        public override int Priority => 3;
+        
         public override BattleActionOutcome GetBattleActionOutcome()
         {
-            return new BattleActionMiss();
+            return new BattleActionHit();
         }
 
         protected override void UpdateIntervalRange()
         {
-            IntervalRange = new IntervalRange(0f, (1 - HitRate) * SubIntervalPercentage);
+            IntervalRange =
+                new IntervalRange(1 - HitRate, (1 - HitRate) + HitRate * SubIntervalPercentage);
         }
     }
 }

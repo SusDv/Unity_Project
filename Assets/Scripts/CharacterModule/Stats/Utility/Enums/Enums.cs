@@ -42,8 +42,11 @@ namespace CharacterModule.Stats.Utility.Enums
 
     public enum TemporaryEffectType 
     {
+        [Description(StatNames.StaticEffectName)]
         STATIC_EFFECT,
+        [Description(StatNames.SealEffectName)]
         SEAL_EFFECT,
+        [Description(StatNames.TimeEffectName)]
         TIME_EFFECT
     }
 }

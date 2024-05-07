@@ -1,4 +1,6 @@
-namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility
+using UnityEngine;
+
+namespace BattleModule.Accuracy.Intervals.Utility
 {
     public class IntervalRange
     {
@@ -15,7 +17,7 @@ namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility
 
         public bool IsWithinRange(float value)
         {
-            return value >= Start && value < End;
+            return Start == 0 && Mathf.RoundToInt(Start - End) == 0 && (value >= Start && value < End);
         }
     }
 }
