@@ -22,17 +22,52 @@ namespace BattleModule.Controllers.Modules
         private BattleTurnContext _battleTurnContext;
 
         private int _mainTargetIndex = -1;
-        public event Action<List<Character>> OnCharacterTargetChanged = delegate { };
+        
+        public event Action<List<Character>> OnTargetsChanged = delegate { };
+        
+        private static int GetNearbyCharacterIndex(float desiredIndex, float listSize)
+        {
+            return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
+        }
 
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
+        {
+            _battleTurnContext = battleTurnContext;
+            
+            _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
+        }
+
+        private Func<Type, bool> GetSearchFunction(TargetType targetType)
+        {
+            var characterToInTurnType = _battleTurnContext.CharacterInAction.GetType();
+            
+            return (selectedCharacterType) => targetType == TargetType.ALLY ?
+                selectedCharacterType == characterToInTurnType : selectedCharacterType != characterToInTurnType;
+        }
+
+        private void SetPossibleTargets(TargetType targetType)
+        {
+            _currentPossibleTargets = _battleTurnContext.CharactersInTurn.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
+            
+            _mainTargetIndex = _currentPossibleTargets.Count / 2;
+        }
+
+        private void SetMainTarget()
+        {
+            _battleTargetingProcessor.PrepareTargets(_mainTargetIndex);
+        }
+
+        private void CharacterTargetChanged(List<Character> selectedCharacters)
+        {
+            OnTargetsChanged?.Invoke(selectedCharacters);
+        }
+        
         [Inject]
-        public BattleTargetingController(BattleSpawner battleSpawner,
-            BattleInput battleInput,
+        public BattleTargetingController(BattleInput battleInput,
             BattleTurnController battleTurnController)
         {
             battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
-
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-
+            
             battleInput.AddCancelable(this);
         }
 
@@ -82,46 +117,9 @@ namespace BattleModule.Controllers.Modules
             return _battleTargetingProcessor.CancelAction();
         }
 
-        private void OnCharactersSpawned(List<Character> characters)
+        public List<Character> GetPossibleTargets()
         {
-            _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
-
-            _battleTurnContext = new BattleTurnContext(characters.First(), characters);
-        }
-
-        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
-        {
-            _battleTurnContext = battleTurnContext;
-        }
-
-        private Func<Type, bool> GetSearchFunction(TargetType targetType)
-        {
-            var characterToInTurnType = _battleTurnContext.CharacterInAction.GetType();
-            
-            return (selectedCharacterType) => targetType == TargetType.ALLY ?
-                selectedCharacterType == characterToInTurnType : selectedCharacterType != characterToInTurnType;
-        }
-
-        private int GetNearbyCharacterIndex(float desiredIndex, float listSize)
-        {
-            return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
-        }
-
-        private void SetPossibleTargets(TargetType targetType)
-        {
-            _currentPossibleTargets = _battleTurnContext.CharactersInTurn.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
-            
-            _mainTargetIndex = _currentPossibleTargets.Count / 2;
-        }
-
-        private void SetMainTarget()
-        {
-            _battleTargetingProcessor.PrepareTargets(_mainTargetIndex);
-        }
-
-        private void CharacterTargetChanged(List<Character> selectedCharacters)
-        {
-            OnCharacterTargetChanged?.Invoke(selectedCharacters);
+            return _currentPossibleTargets;
         }
     }
 }

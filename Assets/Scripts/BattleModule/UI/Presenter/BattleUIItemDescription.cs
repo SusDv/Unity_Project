@@ -1,14 +1,14 @@
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using CharacterModule.Inventory.Items.Base;
-using JetBrains.Annotations;
+using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    [UsedImplicitly]
     public class BattleUIItemDescription
     {
         private readonly BattleItemDescriptionSceneSettings _battleItemDescriptionSceneSettings;
         
+        [Inject]
         public BattleUIItemDescription(
             BattleItemDescriptionSceneSettings battleItemDescriptionSceneSettings)
         {

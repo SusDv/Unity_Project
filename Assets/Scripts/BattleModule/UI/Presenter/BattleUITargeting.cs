@@ -2,7 +2,6 @@
 using System.Linq;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Targeting;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +26,7 @@ namespace BattleModule.UI.Presenter
             
             battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
             
-            battleTargetingController.OnCharacterTargetChanged += BattleCharacterTarget;
+            battleTargetingController.OnTargetsChanged += BattleTargets;
         }
 
         private void OnCharactersSpawned(List<Character> spawnedCharacters)
@@ -60,7 +59,7 @@ namespace BattleModule.UI.Presenter
             return localPosition;
         }
 
-        private void HideActiveBattleTargets()
+        private void HideActiveTargets()
         {
             foreach (var targetingImage in _battleTargetImages.Where(obj => obj.gameObject.activeSelf))
             {
@@ -68,9 +67,9 @@ namespace BattleModule.UI.Presenter
             }
         }
 
-        private void BattleCharacterTarget(List<Character> charactersTargeted)
+        private void BattleTargets(List<Character> charactersTargeted)
         {
-            HideActiveBattleTargets();
+            HideActiveTargets();
 
             int numberOfTargets = charactersTargeted.Count;
             
@@ -84,7 +83,7 @@ namespace BattleModule.UI.Presenter
         {
             var targetingGroup = _battleTargetGroups[characterIndex];
 
-            targetingGroup.anchoredPosition = position;
+            targetingGroup.anchoredPosition = position + Vector3.up * 0.6f;
             
             SetupTargetImage(imageIndex, targetingGroup);
         }

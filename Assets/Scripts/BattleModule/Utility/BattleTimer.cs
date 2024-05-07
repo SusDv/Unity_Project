@@ -13,6 +13,8 @@ namespace BattleModule.Utility
         public bool Started { get; private set; }
 
         public bool Expired => _expireTime == 0;
+        
+        public event Action OnAdvance = delegate { };
 
         public event Action OnExpired = delegate { };
 
@@ -27,9 +29,11 @@ namespace BattleModule.Utility
             {
                 return;
             }
-
+            
             if (--_expireTime != 0)
             {
+                OnAdvance?.Invoke();
+                
                 return;
             }
 

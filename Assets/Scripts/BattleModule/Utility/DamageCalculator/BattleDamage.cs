@@ -15,7 +15,7 @@ namespace BattleModule.Utility.DamageCalculator
         public override float CalculateAttackDamage(StatInfo sourceDamage, 
             StatInfo criticalDamage, StatInfo targetDefense)
         {
-            return BattleAccuracy.Evaluate().DamageMultiplier * (100f / (100f + targetDefense.FinalValue));
+            return sourceDamage.FinalValue * (100f / (100f + targetDefense.FinalValue));
         }
     }
 

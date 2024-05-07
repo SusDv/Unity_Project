@@ -7,7 +7,9 @@ namespace CharacterModule.Stats.Utility
         private StatInfo(Stat stat)
         {
             BaseValue = stat.BaseValue;
+            
             FinalValue = stat.FinalValue;
+            
             MaxValue = stat.MaxValue;
         }
 
@@ -16,7 +18,6 @@ namespace CharacterModule.Stats.Utility
         public float FinalValue { get; private set; }
 
         public float MaxValue { get; private set; }
-
 
         public static StatInfo GetInstance(Stat stat)
         {

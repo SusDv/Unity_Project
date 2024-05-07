@@ -26,6 +26,8 @@ namespace BattleModule.Scopes.Services
             builder.Register<BattleTargetingController>(Lifetime.Singleton);
             
             builder.Register<BattleActionController>(Lifetime.Singleton);
+
+            builder.Register<BattleAccuracyController>(Lifetime.Singleton);
             
             builder.Register<BattleCamera>(Lifetime.Singleton).WithParameter(_mainCamera);
         }

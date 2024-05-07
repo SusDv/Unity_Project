@@ -1,24 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
-using Utility.Types;
 using BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals.Base;
 using BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility;
 using BattleModule.Actions.BattleActions.Outcome;
+using Utility.Types;
 using Random = UnityEngine.Random;
 
-namespace BattleModule.AccuracyModule
+namespace BattleModule.Accuracy
 {
-    public abstract class Accuracy
+    public class BattleAccuracy
     {
         private readonly Dictionary<SubIntervalType, SubInterval> _subIntervals = new();
-        
-        protected Accuracy()
+
+        public float HitRate { get; private set; }
+
+        public BattleAccuracy()
         {
             CreateIntervals();
             
             SetupIntervals();
         }
-        
+
+        public BattleAccuracy Init(float accuracy, float evasion, bool isAlly)
+        {
+            CalculateIntervalRange(accuracy, evasion, isAlly);
+
+            return this;
+        }
+
         private void CreateIntervals()
         {
             foreach (var subInterval in ReflectionUtils.GetConcreteInstances<SubInterval>().OrderBy(i => i.Priority))
@@ -38,13 +47,13 @@ namespace BattleModule.AccuracyModule
             }
         }
 
-        public void CalculateIntervalRange(float accuracy, float evasion)
+        private void CalculateIntervalRange(float accuracy, float evasion, bool isAlly)
         {
-            float hitRate = accuracy / (accuracy + evasion);
+            HitRate = isAlly ? 1f : accuracy / (accuracy + evasion);
             
             foreach (var interval in _subIntervals)
             {
-                interval.Value.SetMainIntervalPercentage(hitRate);
+                interval.Value.SetMainIntervalPercentage(HitRate);
             }
         }
 
@@ -57,19 +66,9 @@ namespace BattleModule.AccuracyModule
         {
             float randomValue = Random.Range(0, 101) / 100f;
             
-            return _subIntervals.First(i => 
-                i.Value.IntervalRange.IsWithinRange(randomValue))
-                .Value.GetBattleActionOutcome();
+            return _subIntervals.Values.First(i => 
+                i.IntervalRange.IsWithinRange(randomValue))
+                .GetBattleActionOutcome();
         }
-    }
-
-    public class UtilityAccuracy : Accuracy
-    {
-
-    }
-
-    public class DamageAccuracy : Accuracy
-    {
-        
     }
 }

@@ -9,6 +9,7 @@ namespace BattleModule.UI.View
     public class BattleUIItemView : BattleUIButton<BattleUIItemView>
     {
         [SerializeField] private Image _battleItemImage;
+        
         [SerializeField] private TextMeshProUGUI _battleItemCount;
 
         public void SetData(InventoryItem inventoryItem)

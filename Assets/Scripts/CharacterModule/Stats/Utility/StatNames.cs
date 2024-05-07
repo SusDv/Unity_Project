@@ -12,6 +12,9 @@
         public const string CriticalDamageName = "Crit Damage";
         public const string AccuracyName = "Accuracy";
         public const string EvasionName = "Evasion";
-        public const string BattlePointsName = "BattleModule Points";
+        public const string BattlePointsName = "Battle Points";
+        public const string SealEffectName = "Every character's turn";
+        public const string TimeEffectName = "Every local cycle";
+        public const string StaticEffectName = "During a local cycle";
     }
 }
