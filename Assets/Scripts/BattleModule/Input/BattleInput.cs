@@ -1,25 +1,28 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using UnityEngine;
 
 namespace BattleModule.Input
 {
-    public class BattleInput : MonoBehaviour
+    public class BattleInput : MonoBehaviour, ILoadingUnit
     {
         private BattleInputAction BattleInputAction { get; set; }
-
+        
         private BattleInputAction.ControlsActions BattleControls { get; set; }
         
-        public bool MouseLeftButtonPressed { get; private set; }
-        
-        public int ArrowKeysInput { get; private set; }
-        
+        public Action OnMouseButtonPressed  = delegate { };
+
+        public Action<int> OnArrowsKeyPressed = delegate { };
+
         public Vector2 MousePosition { get; private set; }
 
         private List<IBattleCancelable> _cancelableList = new();
         
-        public void AddCancelable(IBattleCancelable battleCancelable)
+        public void AppendCancelable(IBattleCancelable battleCancelable)
         {
             _cancelableList.Add(battleCancelable);
         }
@@ -29,30 +32,42 @@ namespace BattleModule.Input
             _cancelableList = _cancelableList.Prepend(battleCancelable).ToList();
         }
 
-        private void Awake()
+        public Task Load()
         {
             BattleInputAction = new BattleInputAction();
             
             BattleControls = BattleInputAction.Controls;
+            
+            BattleInputAction.Enable();
+
+            BattleControls.MousePosition.performed += MousePosition_Changed;
+
+            return Task.CompletedTask;
         }
 
         private void Update()
         {
-            MouseLeftButtonPressed = GetMouseLeftButtonPressed();
+            GetMouseLeftButtonPressed();
             
-            ArrowKeysInput = GetArrowKeysInput();
+            GetArrowKeysInput();
 
             CancelButtonPressed();
         }
         
-        private bool GetMouseLeftButtonPressed()
+        private void GetMouseLeftButtonPressed()
         {
-            return BattleControls.LeftMouseButton.WasPressedThisFrame();
+            if (BattleControls.LeftMouseButton.WasPressedThisFrame())
+            {
+                OnMouseButtonPressed?.Invoke();
+            }
         }
         
-        private int GetArrowKeysInput()
+        private void GetArrowKeysInput()
         {
-            return (int) (BattleControls.LeftRight.WasPressedThisFrame() ? BattleControls.LeftRight.ReadValue<float>() : 0);
+            if (BattleControls.LeftRight.WasPressedThisFrame())
+            {
+                OnArrowsKeyPressed?.Invoke((int) BattleControls.LeftRight.ReadValue<float>());
+            }
         }
 
         private void CancelButtonPressed()
@@ -74,13 +89,6 @@ namespace BattleModule.Input
                     break;
                 }
             }
-        }
-
-        private void OnEnable()
-        {
-            BattleInputAction.Enable();
-
-            BattleControls.MousePosition.performed += MousePosition_Changed;
         }
 
         private void MousePosition_Changed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)

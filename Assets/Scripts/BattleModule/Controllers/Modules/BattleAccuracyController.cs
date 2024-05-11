@@ -1,48 +1,59 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules.Turn;
+using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
 {
-    public class BattleAccuracyController
+    public class BattleAccuracyController : ILoadingUnit
     {
         private readonly Dictionary<Character, BattleAccuracy> _battleAccuracies = new ();
 
+        private readonly BattleTurnController _battleTurnController;
+        
         public event Action<Dictionary<Character, BattleAccuracy>> OnAccuraciesChanged = delegate { };
-
+        
+        public Task Load()
+        {
+            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+                
+            return Task.CompletedTask;
+        }
+        
+        public Dictionary<Character, BattleAccuracy> GetAccuracies()
+        {
+            return _battleAccuracies;
+        }
+        
         [Inject]
         private BattleAccuracyController(BattleTurnController battleTurnController)
         {
-            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+            _battleTurnController = battleTurnController;
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            GenerateAccuracies(battleTurnContext.CharacterInAction, battleTurnContext.CharactersInTurn);
-        }
-
-        private void GenerateAccuracies(Character characterInTurn, List<Character> characters)
-        {
-            float accuracy = characterInTurn.CharacterStats.GetStatInfo(StatType.ACCURACY).FinalValue;
+            _battleAccuracies.Clear();
+            
+            float accuracy = battleTurnContext.CharacterInAction.CharacterStats.GetStatInfo(StatType.ACCURACY).FinalValue;
  
-            foreach (var character in characters)
+            foreach (var character in battleTurnContext.CharactersInTurn)
             {
                 float evasion = character.CharacterStats.GetStatInfo(StatType.EVASION).FinalValue;
                 
-                _battleAccuracies.Add(character, new BattleAccuracy().Init(accuracy, evasion, character.GetType() == characterInTurn.GetType()));
+                _battleAccuracies.Add(character, 
+                    new BattleAccuracy().Init(
+                    accuracy, 
+                    evasion, 
+                    character.GetType() == battleTurnContext.CharacterInAction.GetType()));
             }
             
             OnAccuraciesChanged?.Invoke(_battleAccuracies);
-        }
-
-        public Dictionary<Character, BattleAccuracy> GetAccuracies()
-        {
-            return _battleAccuracies;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace BattleModule.UI.View
 
         public void SetData(string accuracy)
         {
-            _accuracyText.text = accuracy;
+            _accuracyText.text = $"{accuracy}%";
         }
     }
 }

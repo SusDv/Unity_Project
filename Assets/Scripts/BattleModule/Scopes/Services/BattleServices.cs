@@ -1,4 +1,5 @@
 using BattleModule.Actions;
+using BattleModule.Controllers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
@@ -12,11 +13,15 @@ namespace BattleModule.Scopes.Services
     {
         [SerializeField] private Camera _mainCamera;
         
+        [SerializeField] private BattleSpawner _battleSpawner;
+        
+        [SerializeField] private BattleInput _battleInput;
+        
         public void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<BattleSpawner>();
+            builder.RegisterComponent(_battleSpawner);
             
-            builder.RegisterComponentInHierarchy<BattleInput>();
+            builder.RegisterComponent(_battleInput);
 
 
             builder.Register<BattleEventManager>(Lifetime.Singleton);
@@ -30,6 +35,8 @@ namespace BattleModule.Scopes.Services
             builder.Register<BattleAccuracyController>(Lifetime.Singleton);
             
             builder.Register<BattleCamera>(Lifetime.Singleton).WithParameter(_mainCamera);
+            
+            builder.Register<BattleController>(Lifetime.Singleton);
         }
     }
 }

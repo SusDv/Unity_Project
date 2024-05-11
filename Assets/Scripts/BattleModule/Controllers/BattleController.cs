@@ -1,17 +1,12 @@
-using System.Collections.Generic;
 using BattleModule.Actions;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.States.StateMachine;
-using CharacterModule.CharacterType.Base;
-using JetBrains.Annotations;
-using VContainer.Unity;
 
 namespace BattleModule.Controllers
 {
-    [UsedImplicitly]
-    public class BattleController : ITickable, IFixedTickable 
+    public class BattleController
     {
         private readonly BattleStateMachine _battleStateMachine;
 
@@ -32,8 +27,7 @@ namespace BattleModule.Controllers
             BattleActionController battleActionController,
             BattleTargetingController battleTargetingController, 
             BattleTurnController battleTurnController,
-            BattleEventManager battleEventManager,
-            BattleSpawner battleSpawner)
+            BattleEventManager battleEventManager)
         {
             _battleStateMachine = new BattleStateMachine(this);
             
@@ -48,23 +42,11 @@ namespace BattleModule.Controllers
             BattleTurnController = battleTurnController;
 
             BattleEventManager = battleEventManager;
-
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
         }
 
-        private void OnCharactersSpawned(List<Character> characters)
+        public void StartBattle()
         {
             _battleStateMachine.ChangeState(_battleStateMachine.BattlePlayerActionState);
-        }
-
-        public void Tick()
-        {
-            _battleStateMachine.OnUpdate();
-        }
-
-        public void FixedTick()
-        {
-            _battleStateMachine.OnFixedUpdate();
         }
     }
 }

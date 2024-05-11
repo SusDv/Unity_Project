@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Targeting.Base;
 using BattleModule.Utility;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
 
 namespace BattleModule.Targeting

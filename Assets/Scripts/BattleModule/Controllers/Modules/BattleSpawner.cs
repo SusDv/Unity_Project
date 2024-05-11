@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BattleModule.Utility;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
 using UnityEngine;
 using Utility;
@@ -10,7 +10,7 @@ using VContainer;
 
 namespace BattleModule.Controllers.Modules
 {
-    public class BattleSpawner : MonoBehaviour
+    public class BattleSpawner : MonoBehaviour, ILoadingUnit
     {
         [Header("Spawn Points")]
         [SerializeField]
@@ -19,27 +19,32 @@ namespace BattleModule.Controllers.Modules
         [SerializeField]
         private BattleSpawnPoint _enemySpawnPoint;
         
-        private List<Character> _spawnedCharacters;
-
         private BattleTransitionData _battleTransitionData;
-
+        
+        private readonly List<Character> _spawnedCharacters = new ();
+        
         public event Action<List<Character>> OnCharactersSpawned = delegate { };
 
         [Inject]
         private void Init(BattleTransitionData battleTransitionData)
         {
             _battleTransitionData = battleTransitionData;
-
-            _spawnedCharacters = new List<Character>();
         }
 
-        private void Start()
+        public Task Load()
         {
             SpawnCharacters(_battleTransitionData.PlayerCharacters, _playerSpawnPoint);
 
             SpawnCharacters(_battleTransitionData.EnemyCharacters, _enemySpawnPoint);
             
             OnCharactersSpawned?.Invoke(_spawnedCharacters);
+
+            return Task.CompletedTask;
+        }
+
+        public List<Character> GetSpawnedCharacters()
+        {
+            return _spawnedCharacters;
         }
 
         private void SpawnCharacters<T>(IEnumerable<T> characters, BattleSpawnPoint battleSpawnPoint)

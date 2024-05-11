@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using BattleModule.Actions.BattleActions.ActionTypes;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
+using BattleModule.Utility;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
 using Utility;
@@ -11,15 +13,15 @@ using VContainer;
 
 namespace BattleModule.UI.Presenter 
 {
-    public class BattleUIInventory : MonoBehaviour
+    public class BattleUIInventory : MonoBehaviour, ILoadingUnit
     {
         private BattleInventorySceneSettings _battleInventorySceneSettings;
         
         private BattleActionController _battleActionController;
 
         private BattleUIItemDescription _battleUIItemDescription;
-
-        private InventoryBase _playerInventory;
+        
+        private BattleTransitionData _battleTransitionData;
         
         
         private List<BattleUIItemView> _battleUIItems = new ();
@@ -39,24 +41,24 @@ namespace BattleModule.UI.Presenter
 
             _battleActionController = battleActionController;
             
-            _playerInventory = battleTransitionData.PlayerInventory;
+            _battleTransitionData = battleTransitionData;
         }
 
-        private void Start()
+        public Task Load()
         {
             _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
-
-            _playerInventory.OnInventoryChanged += OnInventoryChanged;
-
-            _battleInventory = _playerInventory.GetBattleInventory();
+        
+            _battleTransitionData.PlayerInventory.OnInventoryChanged += OnInventoryChanged;
+        
+            _battleInventory = _battleTransitionData.PlayerInventory.GetBattleInventory();
             
             UpdateBattleInventory();
+
+            return Task.CompletedTask;
         }
 
         private void OnInventoryChanged(InventoryBase playerInventory)
         {
-            _playerInventory = playerInventory;
-
             _battleInventory = playerInventory.GetBattleInventory();
 
             UpdateBattleInventory();

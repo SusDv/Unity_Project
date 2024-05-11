@@ -49,6 +49,10 @@ namespace BattleModule.Scopes.Services
             builder.RegisterComponent(_battleTurnSceneSettings);
 
             builder.RegisterComponent(_battleAccuracySceneSettings);
+
+            builder.RegisterComponentInHierarchy<BattleUIInventory>();
+            
+            builder.RegisterComponentInHierarchy<BattleUIAccuracy>();
         }
     }
 }

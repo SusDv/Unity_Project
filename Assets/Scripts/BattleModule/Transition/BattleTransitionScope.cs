@@ -1,3 +1,5 @@
+using BattleModule.Utility;
+using UnityEngine;
 using Utility;
 using VContainer;
 using VContainer.Unity;
@@ -6,15 +8,24 @@ namespace BattleModule.Transition
 {
     public class BattleTransitionScope : LifetimeScope
     {
+        [SerializeField] 
+        private BattleTransitionData _battleTransitionData;
+        
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<BattleTransitionData>();
+            builder.RegisterComponent(_battleTransitionData);
+            
+            builder.Register<LoadingService>(Lifetime.Scoped);
+
+            builder.RegisterEntryPoint<BattleTransitionFlow>();
         }
         protected override void Awake()
         {
-            base.Awake();
+            IsRoot = true;
             
             DontDestroyOnLoad(this);
+            
+            base.Awake();
         }
     }
 }

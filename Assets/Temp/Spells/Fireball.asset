@@ -19,7 +19,7 @@ MonoBehaviour:
   <BattlePoints>k__BackingField: 10
   <TargetType>k__BackingField: 1
   <TargetSearchType>k__BackingField: 1
-  <MaxTargetsCount>k__BackingField: 1
+  <MaxTargetsCount>k__BackingField: 3
   <TargetModifiers>k__BackingField:
     rid: 5038419726524481536
   references:
@@ -30,10 +30,10 @@ MonoBehaviour:
       data:
         _instantStatModifiers: []
         _temporaryStatModifiers:
-        - <TemporaryEffectType>k__BackingField: 1
+        - <StatType>k__BackingField: 0
+          <TemporaryEffectType>k__BackingField: 1
           <Duration>k__BackingField: 1
           <ModifierData>k__BackingField:
             <ValueModifierType>k__BackingField: 0
             <ModifiedValueType>k__BackingField: 0
             <Value>k__BackingField: -50
-          <StatType>k__BackingField: 0
