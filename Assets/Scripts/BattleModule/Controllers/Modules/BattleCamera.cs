@@ -1,4 +1,4 @@
-using CharacterModule;
+using BattleModule.Input;
 using CharacterModule.CharacterType.Base;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -10,16 +10,20 @@ namespace BattleModule.Controllers.Modules
     {
         private readonly Camera _mainCamera;
 
+        private readonly BattleInput _battleInput;
+
         [Inject]
-        public BattleCamera(Camera mainCamera)
+        public BattleCamera(Camera mainCamera, BattleInput battleInput)
         {
             _mainCamera = mainCamera;
+
+            _battleInput = battleInput;
         }
 
         [CanBeNull]
         public Character GetCharacterWithRaycast()
         {
-            var mouseRaycast = _mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
+            var mouseRaycast = _mainCamera.ScreenPointToRay(_battleInput.MousePosition);
 
             if (!Physics.Raycast(mouseRaycast, out var hit, 1000f, LayerMask.GetMask("Character")))
             {

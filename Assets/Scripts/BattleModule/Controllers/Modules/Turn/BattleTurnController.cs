@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BattleModule.Actions;
 using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
@@ -10,30 +11,40 @@ using VContainer;
 
 namespace BattleModule.Controllers.Modules.Turn
 {
-    public class BattleTurnController
+    public class BattleTurnController : ILoadingUnit<List<Character>>
     {
+        private readonly BattleEventManager _battleEventManager;
+        
         private List<Character> _spawnedCharacters;
-
+        
         public event Action<BattleTurnContext> OnCharactersInTurnChanged = delegate { };
         
         [Inject]
-        public BattleTurnController(BattleSpawner battleSpawner,
-            BattleEventManager battleEventManager)
+        public BattleTurnController(BattleEventManager battleEventManager)
         {
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-            
-            battleEventManager.OnTurnEnded += UpdateCharactersBattlePoints;
+            _battleEventManager = battleEventManager;
         }
-
-        private void OnCharactersSpawned(List<Character> characters)
+        
+        public Task Load(List<Character> characters)
         {
+            BattleTimer.LocalCycle = characters.Count;
+            
             _spawnedCharacters = characters;
             
-            _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
+            _battleEventManager.OnTurnEnded += UpdateCharactersBattlePoints;
 
-            BattleTimer.LocalCycle = _spawnedCharacters.Count;
+            _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
+            
+            return Task.CompletedTask;
         }
 
+        public void StartTurn() 
+        {
+            ResetFirstCharacterBattlePoints();
+            
+            TriggerTemporaryModifiers();
+        }
+        
         private void UpdateCharactersBattlePoints()
         {
             foreach (var character in _spawnedCharacters)
@@ -59,8 +70,6 @@ namespace BattleModule.Controllers.Modules.Turn
         private void SortSpawnedCharacters()
         {
             _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
-
-            ResetFirstCharacterBattlePoints();
             
             OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
         }
@@ -91,13 +100,6 @@ namespace BattleModule.Controllers.Modules.Turn
         private BattleTurnContext GetCurrentBattleTurnContext()
         {
             return new BattleTurnContext(_spawnedCharacters.First(), _spawnedCharacters);
-        }
-
-        public void StartTurn() 
-        {
-            ResetFirstCharacterBattlePoints();
-            
-            TriggerTemporaryModifiers();
         }
     }
 }

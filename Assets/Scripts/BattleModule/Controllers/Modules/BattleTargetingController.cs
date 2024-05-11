@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
@@ -13,8 +14,15 @@ using VContainer;
 
 namespace BattleModule.Controllers.Modules
 {
-    public class BattleTargetingController : IBattleCancelable
+    public class BattleTargetingController : IBattleCancelable, ILoadingUnit
     {
+        private readonly BattleInput _battleInput;
+
+        private readonly BattleTurnController _battleTurnController;
+
+        private readonly BattleActionController _battleActionController;
+        
+        
         private BattleTargetingProcessor _battleTargetingProcessor;
 
         private List<Character> _currentPossibleTargets;
@@ -23,65 +31,19 @@ namespace BattleModule.Controllers.Modules
 
         private int _mainTargetIndex = -1;
         
-        public event Action<List<Character>> OnTargetsChanged = delegate { };
-        
-        private static int GetNearbyCharacterIndex(float desiredIndex, float listSize)
-        {
-            return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
-        }
-
-        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
-        {
-            _battleTurnContext = battleTurnContext;
-            
-            _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
-        }
-
-        private Func<Type, bool> GetSearchFunction(TargetType targetType)
-        {
-            var characterToInTurnType = _battleTurnContext.CharacterInAction.GetType();
-            
-            return (selectedCharacterType) => targetType == TargetType.ALLY ?
-                selectedCharacterType == characterToInTurnType : selectedCharacterType != characterToInTurnType;
-        }
-
-        private void SetPossibleTargets(TargetType targetType)
-        {
-            _currentPossibleTargets = _battleTurnContext.CharactersInTurn.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
-            
-            _mainTargetIndex = _currentPossibleTargets.Count / 2;
-        }
-
-        private void SetMainTarget()
-        {
-            _battleTargetingProcessor.PrepareTargets(_mainTargetIndex);
-        }
-
-        private void CharacterTargetChanged(List<Character> selectedCharacters)
-        {
-            OnTargetsChanged?.Invoke(selectedCharacters);
-        }
-        
         [Inject]
-        public BattleTargetingController(BattleInput battleInput,
-            BattleTurnController battleTurnController)
+        private BattleTargetingController(BattleInput battleInput,
+            BattleTurnController battleTurnController,
+            BattleActionController battleActionController)
         {
-            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+            _battleInput = battleInput;
             
-            battleInput.AddCancelable(this);
-        }
+            _battleTurnController = battleTurnController;
 
-        public void SetTargetingData(BattleActionContext context)
-        {
-            SetPossibleTargets(context.BattleObject.TargetType);
-            
-            _battleTargetingProcessor.SetTargetingData(
-                context.BattleObject.TargetSearchType, 
-                _currentPossibleTargets, 
-                context.BattleObject.MaxTargetsCount);
-            
-            SetMainTarget();
+            _battleActionController = battleActionController;
         }
+        
+        public event Action<List<Character>> OnTargetsChanged = delegate { };
         
         public void SetMainTargetWithInput(int direction)
         {
@@ -116,10 +78,65 @@ namespace BattleModule.Controllers.Modules
         {
             return _battleTargetingProcessor.CancelAction();
         }
-
-        public List<Character> GetPossibleTargets()
+        
+        public Task Load()
         {
-            return _currentPossibleTargets;
+            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+
+            _battleActionController.OnBattleActionChanged += SetTargetingData;
+            
+            _battleInput.AppendCancelable(this);
+            
+            _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
+            
+            return Task.CompletedTask;
+        }
+        
+        private void SetTargetingData(BattleActionContext context)
+        {
+            SetPossibleTargets(context.BattleObject.TargetType);
+            
+            _battleTargetingProcessor.SetTargetingData(
+                context.BattleObject.TargetSearchType, 
+                _currentPossibleTargets, 
+                context.BattleObject.MaxTargetsCount);
+            
+            SetMainTarget();
+        }
+        
+        private static int GetNearbyCharacterIndex(float desiredIndex, float listSize)
+        {
+            return (int) (desiredIndex - listSize * Mathf.Floor(desiredIndex / listSize));
+        }
+
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
+        {
+            _battleTurnContext = battleTurnContext;
+        }
+
+        private Func<Type, bool> GetSearchFunction(TargetType targetType)
+        {
+            var characterToInTurnType = _battleTurnContext.CharacterInAction.GetType();
+            
+            return (selectedCharacterType) => targetType == TargetType.ALLY ?
+                selectedCharacterType == characterToInTurnType : selectedCharacterType != characterToInTurnType;
+        }
+
+        private void SetPossibleTargets(TargetType targetType)
+        {
+            _currentPossibleTargets = _battleTurnContext.CharactersInTurn.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
+            
+            _mainTargetIndex = _currentPossibleTargets.Count / 2;
+        }
+
+        private void SetMainTarget()
+        {
+            _battleTargetingProcessor.PrepareTargets(_mainTargetIndex);
+        }
+
+        private void CharacterTargetChanged(List<Character> selectedCharacters)
+        {
+            OnTargetsChanged?.Invoke(selectedCharacters);
         }
     }
 }

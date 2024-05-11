@@ -1,4 +1,3 @@
-using BattleModule.Controllers;
 using BattleModule.Scopes.Services;
 using UnityEngine;
 using VContainer;
@@ -9,6 +8,7 @@ namespace BattleModule.Scopes
     public class BattleScope : LifetimeScope
     {
         [SerializeField] private BattleServices _battleServices;
+        
         [SerializeField] private BattleUIServices _battleUIServices;
         
         protected override void Configure(IContainerBuilder builder)
@@ -17,8 +17,6 @@ namespace BattleModule.Scopes
             
             _battleUIServices.Configure(builder);
             
-            builder.RegisterEntryPoint<BattleController>();
-
             builder.RegisterEntryPoint<BattleFlow>();
         }
     }

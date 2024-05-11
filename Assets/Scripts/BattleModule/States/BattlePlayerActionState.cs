@@ -1,9 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using BattleModule.States.StateMachine;
-using BattleModule.Actions.BattleActions.Context;
 using BattleModule.States.Base;
-using CharacterModule;
 using CharacterModule.CharacterType.Base;
 
 namespace BattleModule.States
@@ -19,9 +17,7 @@ namespace BattleModule.States
         public override void OnEnter()
         {
             _currentTargets = new List<Character>();
-
-            BattleStateMachine.BattleController.BattleActionController.OnBattleActionChanged += OnBattleActionChanged;
-
+            
             StartTurn();
 
             SetupBattleEvents();
@@ -36,54 +32,40 @@ namespace BattleModule.States
             base.OnExit();
         }
 
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            SelectCharacterUsingMouse();
-            
-            SelectCharacterUsingKeys();
-        }
-
         private void SelectCharacterUsingMouse()
         {
-            if (!BattleStateMachine.BattleController.BattleInput.MouseLeftButtonPressed)
-            {
-                return;
-            }
-            
             BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(
                 BattleStateMachine.BattleController.BattleCamera.GetCharacterWithRaycast());
         }
 
-        private void SelectCharacterUsingKeys()
+        private void SelectCharacterUsingKeys(int direction)
         {
-            if (BattleStateMachine.BattleController.BattleInput.ArrowKeysInput == 0)
-            {
-                return;
-            }
-            
-            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(BattleStateMachine.BattleController.BattleInput.ArrowKeysInput);
+            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(direction);
         }
 
         private void SetupBattleEvents()
         {
             BattleStateMachine.BattleController.BattleEventManager.OnActionButtonPressed += BattleActionHandler;
+
+            BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed += SelectCharacterUsingMouse;
+            
+            BattleStateMachine.BattleController.BattleInput.OnArrowsKeyPressed += SelectCharacterUsingKeys;
         }
 
         private void ClearBattleEvents() 
         {
             BattleStateMachine.BattleController.BattleEventManager.OnActionButtonPressed -= BattleActionHandler;
+            
+            BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed += SelectCharacterUsingMouse;
+            
+            BattleStateMachine.BattleController.BattleInput.OnArrowsKeyPressed += SelectCharacterUsingKeys;
         }
         
         private void StartTurn()
         {
             BattleStateMachine.BattleController.BattleTurnController.StartTurn();  
-        }
-
-        private void OnBattleActionChanged(BattleActionContext context)
-        {
-            BattleStateMachine.BattleController.BattleTargetingController.SetTargetingData(context);
+            
+            BattleStateMachine.BattleController.BattleActionController.SetDefaultBattleAction();
         }
 
         private void BattleActionHandler()

@@ -1,55 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BattleModule.Actions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Actions.BattleActions.Types;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
+using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.CharacterType.Base;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
 {
-    public class BattleActionController : IBattleCancelable
+    public class BattleActionController : IBattleCancelable, ILoadingUnit
     {
-        private readonly BattleEventManager _battleEventManager;
-
+        private readonly BattleInput _battleInput;
+        
+        private readonly BattleTurnController _battleTurnController;
+        
         private readonly BattleAccuracyController _battleAccuracyController;
-
+        
+        private readonly BattleEventManager _battleEventManager;
+        
+        
         private BattleAction _currentBattleAction;
 
         private Character _characterToHaveTurn;
         
-        public event Action<BattleActionContext> OnBattleActionChanged;
-        
         [Inject]
-        public BattleActionController(BattleTurnController battleTurnController, 
-            BattleInput battleInput,
+        private BattleActionController(BattleInput battleInput,
+            BattleTurnController battleTurnController,
             BattleAccuracyController battleAccuracyController,
             BattleEventManager battleEventManager)
         {
-            _battleEventManager = battleEventManager;
+            _battleInput = battleInput;
 
+            _battleTurnController = battleTurnController;
+            
             _battleAccuracyController = battleAccuracyController;
             
-            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
-            
-            battleInput.PrependCancelable(this);
+            _battleEventManager = battleEventManager;
         }
         
-        private void SetDefaultBattleAction() 
-        {
-            SetBattleAction<DefaultAction>(_characterToHaveTurn.WeaponController.GetWeapon());
-        }
-
-        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
-        {
-            _characterToHaveTurn = battleTurnContext.CharacterInAction;
-
-            SetDefaultBattleAction();
-        }
+        public event Action<BattleActionContext> OnBattleActionChanged;
         
         public void SetBattleAction<T>(object actionObject)
             where T : BattleAction
@@ -76,6 +71,25 @@ namespace BattleModule.Controllers.Modules
             SetDefaultBattleAction();
             
             return true;
+        }
+        
+        public Task Load()
+        {
+            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+            
+            _battleInput.PrependCancelable(this);
+
+            return Task.CompletedTask;
+        }
+        
+        public void SetDefaultBattleAction() 
+        {
+            SetBattleAction<DefaultAction>(_characterToHaveTurn.WeaponController.GetWeapon());
+        }
+        
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
+        {
+            _characterToHaveTurn = battleTurnContext.CharacterInAction;
         }
     }
 }

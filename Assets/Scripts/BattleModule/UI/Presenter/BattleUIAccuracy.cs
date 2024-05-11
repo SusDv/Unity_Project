@@ -1,39 +1,40 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Accuracy;
 using BattleModule.UI.View;
+using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
 using UnityEngine;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUIAccuracy : MonoBehaviour
+    public class BattleUIAccuracy : MonoBehaviour, ILoadingUnit<List<Character>>
     {
         private BattleAccuracySceneSettings _sceneSettings;
 
-        private List<Character> _spawnedCharacters = new ();
+        private BattleAccuracyController _battleAccuracyController;
+
+        private BattleTargetingController _battleTargetingController;
+        
+        private Dictionary<Character, BattleAccuracy> _battleAccuracies = new ();
         
         private readonly Dictionary<Character, BattleUIAccuracyView> _accuracyViews = new ();
-
-        private Dictionary<Character, BattleAccuracy> _battleAccuracies = new ();
         
         [Inject]
         private void Init(BattleAccuracySceneSettings battleAccuracySceneSettings,
             BattleAccuracyController battleAccuracyController,
-            BattleTargetingController battleTargetingController,
-            BattleSpawner battleSpawner)
+            BattleTargetingController battleTargetingController)
         {
             _sceneSettings = battleAccuracySceneSettings;
-            
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-            
-            battleTargetingController.OnTargetsChanged += OnTargetsChanged;
-            
-            battleAccuracyController.OnAccuraciesChanged += OnAccuraciesChanged;
+
+            _battleAccuracyController = battleAccuracyController;
+
+            _battleTargetingController = battleTargetingController;
         }
 
         private void HideActiveUI()
@@ -43,25 +44,31 @@ namespace BattleModule.UI.Presenter
                 accuracyView.gameObject.SetActive(false);
             }
         }
-
-
+        
         private void OnTargetsChanged(List<Character> targets)
         {
             HideActiveUI();
             
             foreach (var target in targets.Distinct().ToList())
             {
-                _accuracyViews[target].SetData(Mathf.RoundToInt(_battleAccuracies[target].HitRate * 100).ToString(CultureInfo.CurrentCulture));
+                if (_accuracyViews.TryGetValue(target, out var accuracyView))
+                {
+                    accuracyView.SetData(Mathf.RoundToInt(_battleAccuracies[target].HitRate * 100).ToString(CultureInfo.CurrentCulture));
                 
-                _accuracyViews[target].gameObject.SetActive(true);
+                    accuracyView.gameObject.SetActive(true);
+                }
             }
         }
 
-        private void OnCharactersSpawned(List<Character> characters)
+        public Task Load(List<Character> characters)
         {
-            _spawnedCharacters = characters;
+            _battleAccuracyController.OnAccuraciesChanged += OnAccuraciesChanged;
+
+            _battleTargetingController.OnTargetsChanged += OnTargetsChanged;
             
-            CreateAccuracyView(_spawnedCharacters);
+            CreateAccuracyView(characters);
+
+            return Task.CompletedTask;
         }
 
         private void OnAccuraciesChanged(Dictionary<Character, BattleAccuracy> accuracies)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Context;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
