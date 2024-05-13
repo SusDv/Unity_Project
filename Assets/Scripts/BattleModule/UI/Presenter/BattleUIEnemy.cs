@@ -1,48 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using BattleModule.UI.Presenter.SceneSettings.Enemy;
+using CharacterModule.CharacterType.Base;
+using BattleModule.UI.View;
+using BattleModule.Utility;
+using Cysharp.Threading.Tasks;
+using Utility;
 using UnityEngine;
 using VContainer;
-using BattleModule.Controllers.Modules;
-using BattleModule.UI.Presenter.SceneSettings.Enemy;
-using BattleModule.UI.View;
-using CharacterModule.CharacterType.Base;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUIEnemy : MonoBehaviour
+    public class BattleUIEnemy : MonoBehaviour, ILoadingUnit<List<Character>>
     {
+        [SerializeField]
         private BattleEnemySceneSettings _battleEnemySceneSettings;
+        
+        private AssetLoader _assetLoader;
+        
+        private BattleUIEnemyView _battleUIEnemyView;
         
         private List<Character> _enemyCharacters;
 
         private List<BattleUIEnemyView> _battleUIEnemies = new();
         
         [Inject]
-        private void Init(BattleEnemySceneSettings battleEnemySceneSettings,
-            BattleSpawner battleSpawner)
+        private void Init(AssetLoader assetLoader)
         {
-            _battleEnemySceneSettings = battleEnemySceneSettings;
-            
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-        }
-        
-        private void OnCharactersSpawned(List<Character> characters)
-        {
-            _enemyCharacters = characters.Where((character) => character is Enemy).ToList();
-            
-            CreateBattleUIEnemies();
+            _assetLoader = assetLoader;
         }
 
-        private void CreateBattleUIEnemies()
+        public UniTask Load(List<Character> characters)
         {
-            foreach (var character in _enemyCharacters)
+            _battleUIEnemyView = _assetLoader.GetLoadedAsset<BattleUIEnemyView>(RuntimeConstants.AssetsName.EnemyView);
+            
+            CreateBattleUIEnemies(characters.Where(c => c is Enemy));
+            
+            return UniTask.CompletedTask;
+        }
+
+        private void CreateBattleUIEnemies(IEnumerable<Character> enemies)
+        {
+            foreach (var enemy in enemies)
             {
-                var battleUICharacterView = Instantiate(
-                    _battleEnemySceneSettings.BattleUIEnemyView, character.gameObject.transform);
+                var battleUICharacterView = Instantiate(_battleUIEnemyView, enemy.gameObject.transform);
                 
                 _battleUIEnemies.Add(battleUICharacterView);
 
-                battleUICharacterView.SetData(character.CharacterStats);
+                battleUICharacterView.SetData(enemy.CharacterStats);
             }
         }
     }

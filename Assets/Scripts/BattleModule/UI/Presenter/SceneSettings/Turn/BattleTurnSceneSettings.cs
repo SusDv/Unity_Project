@@ -1,5 +1,4 @@
 using System;
-using BattleModule.UI.View;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter.SceneSettings.Turn
@@ -9,8 +8,5 @@ namespace BattleModule.UI.Presenter.SceneSettings.Turn
     {
         [Header("Panel")]
         [SerializeField] public GameObject BattleTurnParent;
-
-        [Header("View")]
-        [SerializeField] public BattleUITurnView BattleUITurnView;
     }
 }

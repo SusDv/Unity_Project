@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleModule.UI.Presenter.SceneSettings.Action;
+using BattleModule.UI.Presenter;
 using BattleModule.Utility;
 using VContainer;
 
@@ -10,15 +10,13 @@ namespace BattleModule.Actions
     {
         public event Action OnTurnEnded = delegate { };
         
-        public event Action OnActionButtonPressed = delegate { };
-        
         
         private static readonly List<BattleTimer> BattleTimers = new();
         
         [Inject]
-        private BattleEventManager(BattleActionSceneSettings battleActionSceneSettings)
+        private BattleEventManager()
         {
-            battleActionSceneSettings.BattleActionButton.OnButtonClick += _ => OnActionButtonPressed.Invoke();
+           
         }
         
         private static void ProcessTimers()

@@ -1,6 +1,5 @@
 using System;
 using BattleModule.UI.BattleButton;
-using BattleModule.UI.View;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter.SceneSettings.Inventory
@@ -12,13 +11,9 @@ namespace BattleModule.UI.Presenter.SceneSettings.Inventory
         [SerializeField] public GameObject BattleInventoryWindow;
         
         [Header("Item's Parent")]
-        [SerializeField] public GameObject BattleInventoryItemsParent;
-
-        [Header("Prefab")]
-        [SerializeField] public BattleUIItemView BattleUIItemView;
-
+        [SerializeField] public Transform BattleInventoryItemsParent;
+        
         [Header("Button")]
         [SerializeField] public BattleUIDefaultButton BattleInventoryButton;
-
     }
 }

@@ -1,5 +1,7 @@
 using BattleModule.Utility;
+using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using Utility;
 using VContainer.Unity;
 
 namespace BattleModule.Transition
@@ -7,15 +9,20 @@ namespace BattleModule.Transition
     public class BattleTransitionFlow : IStartable
     {
         private readonly LoadingService _loadingService;
+        
+        private readonly AssetLoader _assetLoader;
 
-        private BattleTransitionFlow(LoadingService loadingService)
+        private BattleTransitionFlow(LoadingService loadingService,
+            AssetLoader assetLoader)
         {
             _loadingService = loadingService;
+            
+            _assetLoader = assetLoader;
         }
 
-        public void Start()
+        public async void Start()
         {
-            SceneManager.LoadScene("BattleScene");
+            await SceneManager.LoadSceneAsync("BattleScene");
         }
     }
 }

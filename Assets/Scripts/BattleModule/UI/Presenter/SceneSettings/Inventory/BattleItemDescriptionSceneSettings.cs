@@ -1,5 +1,4 @@
 using System;
-using BattleModule.UI.View;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter.SceneSettings.Inventory
@@ -9,9 +8,5 @@ namespace BattleModule.UI.Presenter.SceneSettings.Inventory
     {
         [Header("Window")]
         [SerializeField] public GameObject BattleItemDescriptionWindow;
-        
-        [Header("Prefab")]
-        [SerializeField] public BattleUIItemDescriptionView BattleUIItemDescriptionView;
-
     }
 }

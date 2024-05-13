@@ -6,16 +6,8 @@ namespace BattleModule.Controllers.Modules.Turn
 {
     public class BattleTurnContext
     {
-        public Character CharacterInAction { get; private set; }
+        public Character CharacterInAction { get; set; }
 
-        public List<Character> CharactersInTurn { get; private set; }
-
-
-        public BattleTurnContext(Character characterInAction, List<Character> charactersInTurn)
-        {
-            CharacterInAction = characterInAction;
-            
-            CharactersInTurn = charactersInTurn;
-        }
+        public List<Character> CharactersInTurn { get; set; }
     }
 }

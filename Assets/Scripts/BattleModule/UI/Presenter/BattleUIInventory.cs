@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using BattleModule.Actions.BattleActions.ActionTypes;
 using BattleModule.Controllers.Modules;
@@ -8,6 +7,7 @@ using BattleModule.UI.View;
 using BattleModule.Utility;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
+using Cysharp.Threading.Tasks;
 using Utility;
 using VContainer;
 
@@ -15,7 +15,10 @@ namespace BattleModule.UI.Presenter
 {
     public class BattleUIInventory : MonoBehaviour, ILoadingUnit
     {
+        [SerializeField]
         private BattleInventorySceneSettings _battleInventorySceneSettings;
+
+        private AssetLoader _assetLoader;
         
         private BattleActionController _battleActionController;
 
@@ -27,15 +30,16 @@ namespace BattleModule.UI.Presenter
         private List<BattleUIItemView> _battleUIItems = new ();
         
         private List<InventoryItem> _battleInventory = new();
-
+        
+        private BattleUIItemView _battleUIItemView;
 
         [Inject]
-        private void Init(BattleInventorySceneSettings battleInventorySceneSettings,
+        private void Init(AssetLoader assetLoader,
             BattleUIItemDescription battleUIItemDescription,
             BattleActionController battleActionController,
             BattleTransitionData battleTransitionData)
         {
-            _battleInventorySceneSettings = battleInventorySceneSettings;
+            _assetLoader = assetLoader;
             
             _battleUIItemDescription = battleUIItemDescription;
 
@@ -44,8 +48,19 @@ namespace BattleModule.UI.Presenter
             _battleTransitionData = battleTransitionData;
         }
 
-        public Task Load()
+        public UniTask Load()
         {
+            _battleUIItemView = _assetLoader.GetLoadedAsset<BattleUIItemView>(RuntimeConstants.AssetsName.ItemView);
+            
+            // DEBUG BEGIN //
+            _battleTransitionData.PlayerInventory.InitializeInventory();
+            
+            foreach (var item in _battleTransitionData.Items)
+            {
+                _battleTransitionData.PlayerInventory.AddItem(item, 2);
+            }
+            // DEBUG END //
+            
             _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
         
             _battleTransitionData.PlayerInventory.OnInventoryChanged += OnInventoryChanged;
@@ -54,7 +69,7 @@ namespace BattleModule.UI.Presenter
             
             UpdateBattleInventory();
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         private void OnInventoryChanged(InventoryBase playerInventory)
@@ -71,7 +86,7 @@ namespace BattleModule.UI.Presenter
             foreach (var inventoryItem in _battleInventory)
             {
                 var battleUIItem =
-                    _battleInventorySceneSettings.BattleUIItemView.CreateInstance(_battleInventorySceneSettings
+                    _battleUIItemView.CreateInstance(_battleInventorySceneSettings
                         .BattleInventoryItemsParent.transform);
                 
                 battleUIItem.OnButtonOver += BattleItemPointerOver;

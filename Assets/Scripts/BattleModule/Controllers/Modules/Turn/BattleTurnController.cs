@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BattleModule.Actions;
 using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
@@ -16,6 +16,8 @@ namespace BattleModule.Controllers.Modules.Turn
         private readonly BattleEventManager _battleEventManager;
         
         private List<Character> _spawnedCharacters;
+
+        private BattleTurnContext _battleTurnContext;
         
         public event Action<BattleTurnContext> OnCharactersInTurnChanged = delegate { };
         
@@ -25,17 +27,21 @@ namespace BattleModule.Controllers.Modules.Turn
             _battleEventManager = battleEventManager;
         }
         
-        public Task Load(List<Character> characters)
+        public UniTask Load(List<Character> characters)
         {
             BattleTimer.LocalCycle = characters.Count;
             
             _spawnedCharacters = characters;
             
+            _battleTurnContext = new BattleTurnContext();
+            
+            SetBattleTurnContext();
+            
             _battleEventManager.OnTurnEnded += UpdateCharactersBattlePoints;
 
             _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
             
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         public void StartTurn() 
@@ -54,7 +60,9 @@ namespace BattleModule.Controllers.Modules.Turn
                 character.CharacterStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, CalculateDeduction(battlePoints));
             }
             
-            SortSpawnedCharacters();
+            SetBattleTurnContext();
+            
+            OnCharactersInTurnChanged?.Invoke(_battleTurnContext);
         }
 
         private static int CalculateDeduction(float battlePoints)
@@ -67,20 +75,13 @@ namespace BattleModule.Controllers.Modules.Turn
                     : 4 + 2 * (tierNumber - 1));
         }
 
-        private void SortSpawnedCharacters()
-        {
-            _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
-            
-            OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
-        }
-
         private void ResetFirstCharacterBattlePoints()
         {
-            var characterInTurnStats = _spawnedCharacters.First().CharacterStats;
+            var characterInTurnStats = _battleTurnContext.CharacterInAction.CharacterStats;
 
             characterInTurnStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
-            
-            OnCharactersInTurnChanged?.Invoke(GetCurrentBattleTurnContext());
+
+            OnCharactersInTurnChanged?.Invoke(_battleTurnContext);
         }
 
         private void TriggerTemporaryModifiers() 
@@ -94,12 +95,19 @@ namespace BattleModule.Controllers.Modules.Turn
 
             BattleTimer.LocalCycle = _spawnedCharacters.Count;
             
-            OnCharactersInTurnChanged.Invoke(GetCurrentBattleTurnContext());
+            SetBattleTurnContext();
+            
+            OnCharactersInTurnChanged?.Invoke(_battleTurnContext);
         }
 
-        private BattleTurnContext GetCurrentBattleTurnContext()
+        private void SetBattleTurnContext()
         {
-            return new BattleTurnContext(_spawnedCharacters.First(), _spawnedCharacters);
+            var orderedCharacters = _spawnedCharacters.OrderBy((character) =>
+                character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
+
+            _battleTurnContext.CharactersInTurn = orderedCharacters;
+
+            _battleTurnContext.CharacterInAction = orderedCharacters.First();
         }
     }
 }

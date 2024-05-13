@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
@@ -9,12 +8,13 @@ using BattleModule.Targeting.Processor;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.CharacterType.Base;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
 {
-    public class BattleTargetingController : IBattleCancelable, ILoadingUnit
+    public class BattleTargetingController : IBattleCancelable, ILoadingUnit<List<Character>>
     {
         private readonly BattleInput _battleInput;
 
@@ -22,12 +22,14 @@ namespace BattleModule.Controllers.Modules
 
         private readonly BattleActionController _battleActionController;
         
-        
         private BattleTargetingProcessor _battleTargetingProcessor;
+        
 
-        private List<Character> _currentPossibleTargets;
-
-        private BattleTurnContext _battleTurnContext;
+        private List<Character> _possibleTargets;
+        
+        private List<Character> _spawnedCharacters;
+        
+        private Character _characterInAction;
 
         private int _mainTargetIndex = -1;
         
@@ -47,19 +49,19 @@ namespace BattleModule.Controllers.Modules
         
         public void SetMainTargetWithInput(int direction)
         {
-            _mainTargetIndex = GetNearbyCharacterIndex(_mainTargetIndex + direction, _currentPossibleTargets.Count);
+            _mainTargetIndex = GetNearbyCharacterIndex(_mainTargetIndex + direction, _possibleTargets.Count);
             
             SetMainTarget();
         }
 
         public void SetMainTargetWithInput(Character character)
         {
-            if (!character || !_currentPossibleTargets.Contains(character))
+            if (!character || !_possibleTargets.Contains(character))
             {
                 return;
             }
 
-            _mainTargetIndex = _currentPossibleTargets.IndexOf(character);
+            _mainTargetIndex = _possibleTargets.IndexOf(character);
             
             SetMainTarget();
         }
@@ -79,8 +81,10 @@ namespace BattleModule.Controllers.Modules
             return _battleTargetingProcessor.CancelAction();
         }
         
-        public Task Load()
+        public UniTask Load(List<Character> characters)
         {
+            _spawnedCharacters = characters;
+            
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
 
             _battleActionController.OnBattleActionChanged += SetTargetingData;
@@ -89,7 +93,7 @@ namespace BattleModule.Controllers.Modules
             
             _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
             
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
         
         private void SetTargetingData(BattleActionContext context)
@@ -98,7 +102,7 @@ namespace BattleModule.Controllers.Modules
             
             _battleTargetingProcessor.SetTargetingData(
                 context.BattleObject.TargetSearchType, 
-                _currentPossibleTargets, 
+                _possibleTargets, 
                 context.BattleObject.MaxTargetsCount);
             
             SetMainTarget();
@@ -111,12 +115,12 @@ namespace BattleModule.Controllers.Modules
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            _battleTurnContext = battleTurnContext;
+            _characterInAction = battleTurnContext.CharacterInAction;
         }
 
         private Func<Type, bool> GetSearchFunction(TargetType targetType)
         {
-            var characterToInTurnType = _battleTurnContext.CharacterInAction.GetType();
+            var characterToInTurnType = _characterInAction.GetType();
             
             return (selectedCharacterType) => targetType == TargetType.ALLY ?
                 selectedCharacterType == characterToInTurnType : selectedCharacterType != characterToInTurnType;
@@ -124,9 +128,9 @@ namespace BattleModule.Controllers.Modules
 
         private void SetPossibleTargets(TargetType targetType)
         {
-            _currentPossibleTargets = _battleTurnContext.CharactersInTurn.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
+            _possibleTargets = _spawnedCharacters.Where((character) => GetSearchFunction(targetType).Invoke(character.GetType())).ToList();
             
-            _mainTargetIndex = _currentPossibleTargets.Count / 2;
+            _mainTargetIndex = _possibleTargets.Count / 2;
         }
 
         private void SetMainTarget()
