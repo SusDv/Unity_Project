@@ -1,48 +1,59 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
-using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
 using BattleModule.UI.View;
+using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
+using Cysharp.Threading.Tasks;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 
 {
-    public class BattleUITurn : MonoBehaviour
+    public class BattleUITurn : MonoBehaviour, ILoadingUnit<List<Character>>
     {
+        [SerializeField]
         private BattleTurnSceneSettings _battleTurnSceneSettings;
 
+        private AssetLoader _assetLoader;
+        
+        private BattleTurnController _battleTurnController;
+
+        private BattleUITurnView _battleUITurnView;
+        
         private readonly List<BattleUITurnView> _battleUITurnViews = new();
         
         [Inject]
-        private void Init(BattleTurnSceneSettings battleTargetingSceneSettings,
-            BattleTurnController battleTurnController, BattleSpawner battleSpawner)
+        private void Init(AssetLoader assetLoader,
+            BattleTurnController battleTurnController)
         {
-            _battleTurnSceneSettings = battleTargetingSceneSettings;
-
-            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+            _assetLoader = assetLoader;
             
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
+            _battleTurnController = battleTurnController;
         }
 
-        private void OnCharactersSpawned(List<Character> characters)
+        public UniTask Load(List<Character> characters)
         {
+            _battleUITurnView = _assetLoader.GetLoadedAsset<BattleUITurnView>(RuntimeConstants.AssetsName.TurnView);
+
+            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+
             CreateTurnPanels(characters);
+            
+            return UniTask.CompletedTask;
         }
 
-        private void CreateTurnPanels(List<Character> characters)
+        private void CreateTurnPanels(IEnumerable<Character> characters)
         {
-            foreach (var character in characters)
+            foreach (var battleUITurn in characters.Select(_ => Instantiate(_battleUITurnView,
+                         _battleTurnSceneSettings.BattleTurnParent.transform.position, Quaternion.identity,
+                         _battleTurnSceneSettings.BattleTurnParent.transform)))
             {
-                var battleUITurn = Instantiate(_battleTurnSceneSettings.BattleUITurnView,
-                    _battleTurnSceneSettings.BattleTurnParent.transform.position, Quaternion.identity,
-                    _battleTurnSceneSettings.BattleTurnParent.transform);
-
-                battleUITurn.SetData(character.CharacterInformation.CharacterName, character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), false);
-                
                 _battleUITurnViews.Add(battleUITurn);
             }
         }

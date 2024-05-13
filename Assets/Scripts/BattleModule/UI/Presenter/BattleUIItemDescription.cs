@@ -1,18 +1,36 @@
+using System.Threading.Tasks;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
+using BattleModule.UI.View;
+using BattleModule.Utility;
 using CharacterModule.Inventory.Items.Base;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUIItemDescription
+    public class BattleUIItemDescription : MonoBehaviour, ILoadingUnit
     {
-        private readonly BattleItemDescriptionSceneSettings _battleItemDescriptionSceneSettings;
+        [SerializeField]
+        private BattleItemDescriptionSceneSettings _battleItemDescriptionSceneSettings;
+
+        private AssetLoader _assetLoader;
+        
+        private BattleUIItemDescriptionView _battleUIItemDescriptionView;
         
         [Inject]
-        public BattleUIItemDescription(
-            BattleItemDescriptionSceneSettings battleItemDescriptionSceneSettings)
+        private void Init(AssetLoader assetLoader)
         {
-            _battleItemDescriptionSceneSettings = battleItemDescriptionSceneSettings;
+            _assetLoader = assetLoader;
+        }
+
+        public UniTask Load()
+        {
+            _battleUIItemDescriptionView = Instantiate(_assetLoader.GetLoadedAsset<BattleUIItemDescriptionView>(RuntimeConstants.AssetsName.ItemDescriptionView),
+               _battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.transform);
+           
+            return UniTask.CompletedTask;
         }
 
         public void SetDescriptionPanelVisibility(bool inventoryVisibilityStatus)
@@ -26,7 +44,7 @@ namespace BattleModule.UI.Presenter
             
             if (_battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.activeSelf)
             {
-                _battleItemDescriptionSceneSettings.BattleUIItemDescriptionView.SetData(itemBase.ObjectInformation);
+                _battleUIItemDescriptionView.SetData(itemBase.ObjectInformation);
             }
         }
     }

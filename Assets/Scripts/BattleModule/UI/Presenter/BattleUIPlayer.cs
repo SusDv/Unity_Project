@@ -1,52 +1,56 @@
-﻿using BattleModule.UI.View;
-using BattleModule.Controllers.Modules;
-using BattleModule.UI.Presenter.SceneSettings.Player;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using CharacterModule.CharacterType;
 using CharacterModule.CharacterType.Base;
-using System.Collections.Generic;
-using System.Linq;
+using BattleModule.UI.View;
+using BattleModule.UI.Presenter.SceneSettings.Player;
+using BattleModule.Utility;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUIPlayer : MonoBehaviour
+    public class BattleUIPlayer : MonoBehaviour, ILoadingUnit<List<Character>>
     {
+        [SerializeField]
         private BattlePlayerSceneSettings _battlePlayerSceneSettings;
 
-        private List<Character> _players;
-
-        private List<BattleUIPlayerView> _battleUIPlayers;
+        private AssetLoader _assetLoader;
+        
+        private List<BattleUIPlayerView> _battleUIPlayers = new();
+        
+        private BattleUIPlayerView _battleUIPlayerView;
         
         [Inject]
-        private void Init(BattlePlayerSceneSettings battlePlayerSceneSettings, BattleSpawner battleSpawner)
+        private void Init(AssetLoader assetLoader)
         {
-            _battlePlayerSceneSettings = battlePlayerSceneSettings;
+            _assetLoader = assetLoader;
+        }
+        
+        public UniTask Load(List<Character> characters)
+        {
+            _battleUIPlayerView = _assetLoader.GetLoadedAsset<BattleUIPlayerView>(RuntimeConstants.AssetsName.PlayerView);
             
-            _battleUIPlayers = new List<BattleUIPlayerView>();
+            CreateBattleUICharacters(characters.Where((character) => (character is Player)));
 
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
+            return UniTask.CompletedTask;
         }
         
-        private void OnCharactersSpawned(List<Character> characters)
+        private void CreateBattleUICharacters(IEnumerable<Character> players) 
         {
-            _players = characters.Where((character) => (character is Player)).ToList();
-            
-            CreateBattleUICharacters();
-        }
-        
-        private void CreateBattleUICharacters() 
-        {
-            foreach (var character in _players)
+            foreach (var player in players)
             {
                 var battleUICharacterView = Instantiate(
-                    _battlePlayerSceneSettings.BattleUIPlayerView,
+                    _battleUIPlayerView,
                     _battlePlayerSceneSettings.BattleUIPlayersPanel.transform.position,
                     Quaternion.identity, _battlePlayerSceneSettings.BattleUIPlayersPanel.transform);
 
                 _battleUIPlayers.Add(battleUICharacterView);
 
-                battleUICharacterView.SetData(character.WeaponController.GetSpecialAttack(), character.CharacterInformation, character.CharacterStats);
+                battleUICharacterView.SetData(player.WeaponController.GetSpecialAttack(), player.CharacterInformation, player.CharacterStats);
             }
         }
     }

@@ -8,30 +8,38 @@ using BattleModule.UI.Presenter.SceneSettings.Accuracy;
 using BattleModule.UI.View;
 using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
     public class BattleUIAccuracy : MonoBehaviour, ILoadingUnit<List<Character>>
     {
-        private BattleAccuracySceneSettings _sceneSettings;
-
+        [SerializeField]
+        private BattleAccuracySceneSettings _battleAccuracySceneSettings;
+        
+        private AssetLoader _assetLoader;
+        
         private BattleAccuracyController _battleAccuracyController;
 
         private BattleTargetingController _battleTargetingController;
+        
+        private BattleUIAccuracyView _accuracyViewPrefab;
         
         private Dictionary<Character, BattleAccuracy> _battleAccuracies = new ();
         
         private readonly Dictionary<Character, BattleUIAccuracyView> _accuracyViews = new ();
         
+        
         [Inject]
-        private void Init(BattleAccuracySceneSettings battleAccuracySceneSettings,
+        private void Init(AssetLoader assetLoader,
             BattleAccuracyController battleAccuracyController,
             BattleTargetingController battleTargetingController)
         {
-            _sceneSettings = battleAccuracySceneSettings;
-
+            _assetLoader = assetLoader;
+            
             _battleAccuracyController = battleAccuracyController;
 
             _battleTargetingController = battleTargetingController;
@@ -60,15 +68,17 @@ namespace BattleModule.UI.Presenter
             }
         }
 
-        public Task Load(List<Character> characters)
+        public UniTask Load(List<Character> characters)
         {
+            _accuracyViewPrefab = _assetLoader.GetLoadedAsset<BattleUIAccuracyView>(RuntimeConstants.AssetsName.AccuracyView);
+            
             _battleAccuracyController.OnAccuraciesChanged += OnAccuraciesChanged;
 
             _battleTargetingController.OnTargetsChanged += OnTargetsChanged;
             
             CreateAccuracyView(characters);
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         private void OnAccuraciesChanged(Dictionary<Character, BattleAccuracy> accuracies)
@@ -81,10 +91,10 @@ namespace BattleModule.UI.Presenter
             foreach (var character in characters)
             {
                 var accuracyView = Instantiate(
-                    _sceneSettings.AccuracyViewPrefab,
+                    _accuracyViewPrefab,
                     character.transform.position + Vector3.up * 1.6f, 
                     Quaternion.identity, 
-                    _sceneSettings.Parent.transform);
+                    _battleAccuracySceneSettings.Parent);
                 
                 accuracyView.gameObject.SetActive(false);
                 

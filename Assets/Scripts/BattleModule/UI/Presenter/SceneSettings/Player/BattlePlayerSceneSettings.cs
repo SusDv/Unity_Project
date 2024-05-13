@@ -1,5 +1,4 @@
 using System;
-using BattleModule.UI.View;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter.SceneSettings.Player
@@ -9,8 +8,5 @@ namespace BattleModule.UI.Presenter.SceneSettings.Player
     {
         [Header("Panel")]
         [SerializeField] public GameObject BattleUIPlayersPanel;
-
-        [Header("View")]
-        [SerializeField] public BattleUIPlayerView BattleUIPlayerView;
     }
 }

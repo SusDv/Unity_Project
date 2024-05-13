@@ -6,6 +6,7 @@ using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
+using Cysharp.Threading.Tasks;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
@@ -18,11 +19,11 @@ namespace BattleModule.Controllers.Modules
         
         public event Action<Dictionary<Character, BattleAccuracy>> OnAccuraciesChanged = delegate { };
         
-        public Task Load()
+        public UniTask Load()
         {
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
                 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
         
         public Dictionary<Character, BattleAccuracy> GetAccuracies()

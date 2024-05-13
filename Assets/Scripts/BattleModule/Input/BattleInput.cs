@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace BattleModule.Input
@@ -17,10 +18,13 @@ namespace BattleModule.Input
         public Action OnMouseButtonPressed  = delegate { };
 
         public Action<int> OnArrowsKeyPressed = delegate { };
-
+        
         public Vector2 MousePosition { get; private set; }
+        
 
         private List<IBattleCancelable> _cancelableList = new();
+
+        private bool isLoaded;
         
         public void AppendCancelable(IBattleCancelable battleCancelable)
         {
@@ -32,7 +36,7 @@ namespace BattleModule.Input
             _cancelableList = _cancelableList.Prepend(battleCancelable).ToList();
         }
 
-        public Task Load()
+        public UniTask Load()
         {
             BattleInputAction = new BattleInputAction();
             
@@ -41,12 +45,19 @@ namespace BattleModule.Input
             BattleInputAction.Enable();
 
             BattleControls.MousePosition.performed += MousePosition_Changed;
-
-            return Task.CompletedTask;
+            
+            isLoaded = true;
+            
+            return UniTask.CompletedTask;
         }
 
         private void Update()
         {
+            if (!isLoaded)
+            {
+                return;
+            }
+
             GetMouseLeftButtonPressed();
             
             GetArrowKeysInput();
@@ -94,13 +105,6 @@ namespace BattleModule.Input
         private void MousePosition_Changed(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
         {
             MousePosition = ctx.ReadValue<Vector2>();
-        }
-
-        private void OnDisable()
-        {
-            BattleInputAction.Disable();
-
-            BattleControls.MousePosition.performed -= MousePosition_Changed;
         }
     }
 }

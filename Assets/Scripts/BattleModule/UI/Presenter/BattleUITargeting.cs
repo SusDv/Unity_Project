@@ -1,48 +1,65 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using CharacterModule.CharacterType.Base;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Targeting;
-using CharacterModule.CharacterType.Base;
+using BattleModule.Utility;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUITargeting : MonoBehaviour
+    public class BattleUITargeting : MonoBehaviour, ILoadingUnit<List<Character>>
     {
+        [SerializeField]
         private BattleTargetingSceneSettings _battleTargetingSceneSettings;
-
+        
+        private AssetLoader _assetLoader;
+        
+        private BattleTargetingController _battleTargetingController;
+        
+        private RectTransform _targetGroupPrefab;
+        
+        private Image _targetImagePrefab;
+        
         private readonly List<RectTransform> _battleTargetGroups = new ();
 
         private readonly List<Image> _battleTargetImages = new ();
         
         [Inject]
-        private void Init(BattleTargetingSceneSettings battleTargetingSceneSettings,
-            BattleTargetingController battleTargetingController,
-            BattleSpawner battleSpawner)
+        private void Init(AssetLoader assetLoader,
+            BattleTargetingController battleTargetingController)
         {
-            _battleTargetingSceneSettings = battleTargetingSceneSettings;
-            
-            battleSpawner.OnCharactersSpawned += OnCharactersSpawned;
-            
-            battleTargetingController.OnTargetsChanged += BattleTargets;
+            _assetLoader = assetLoader;
+  
+            _battleTargetingController = battleTargetingController;
         }
 
-        private void OnCharactersSpawned(List<Character> spawnedCharacters)
+        public UniTask Load(List<Character> spawnedCharacters)
         {
+            _targetGroupPrefab = _assetLoader.GetLoadedAsset<RectTransform>(RuntimeConstants.AssetsName.TargetGroupView);
+
+            _targetImagePrefab = _assetLoader.GetLoadedAsset<Image>(RuntimeConstants.AssetsName.TargetImageView);
+            
+            _battleTargetingController.OnTargetsChanged += BattleTargets;
+            
             CreateBattleTargets(spawnedCharacters.Count(s => s is Enemy));
+            
+            return UniTask.CompletedTask;
         }
 
         private void CreateBattleTargets(int spawnedCharactersCount)
         {
             for (var i = 0; i < spawnedCharactersCount; i++) 
             {
-                var targetGroup = Instantiate(_battleTargetingSceneSettings.TargetGroupPrefab,
+                var targetGroup = Instantiate(_targetGroupPrefab,
                     _battleTargetingSceneSettings.BattleTargetingCanvas.transform);
 
-                var targetImage = Instantiate(_battleTargetingSceneSettings.CharacterTargetImage,
-                    targetGroup.transform);
+                var targetImage = Instantiate(_targetImagePrefab, targetGroup.transform);
                 
                 _battleTargetGroups.Add(targetGroup);
                 

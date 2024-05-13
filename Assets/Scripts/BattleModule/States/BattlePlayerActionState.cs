@@ -45,7 +45,7 @@ namespace BattleModule.States
 
         private void SetupBattleEvents()
         {
-            BattleStateMachine.BattleController.BattleEventManager.OnActionButtonPressed += BattleActionHandler;
+            BattleStateMachine.BattleController.BattleActionController.OnBattleActionInvoked += BattleActionHandler;
 
             BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed += SelectCharacterUsingMouse;
             
@@ -54,11 +54,11 @@ namespace BattleModule.States
 
         private void ClearBattleEvents() 
         {
-            BattleStateMachine.BattleController.BattleEventManager.OnActionButtonPressed -= BattleActionHandler;
+            BattleStateMachine.BattleController.BattleActionController.OnBattleActionInvoked -= BattleActionHandler;
             
-            BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed += SelectCharacterUsingMouse;
+            BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed -= SelectCharacterUsingMouse;
             
-            BattleStateMachine.BattleController.BattleInput.OnArrowsKeyPressed += SelectCharacterUsingKeys;
+            BattleStateMachine.BattleController.BattleInput.OnArrowsKeyPressed -= SelectCharacterUsingKeys;
         }
         
         private void StartTurn()

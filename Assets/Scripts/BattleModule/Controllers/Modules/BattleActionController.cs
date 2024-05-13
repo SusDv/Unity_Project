@@ -10,6 +10,7 @@ using BattleModule.Input;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.CharacterType.Base;
+using Cysharp.Threading.Tasks;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
@@ -44,7 +45,9 @@ namespace BattleModule.Controllers.Modules
             _battleEventManager = battleEventManager;
         }
         
-        public event Action<BattleActionContext> OnBattleActionChanged;
+        public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
+
+        public event Action OnBattleActionInvoked = delegate { };
         
         public void SetBattleAction<T>(object actionObject)
             where T : BattleAction
@@ -73,20 +76,25 @@ namespace BattleModule.Controllers.Modules
             return true;
         }
         
-        public Task Load()
+        public UniTask Load()
         {
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
             
             _battleInput.PrependCancelable(this);
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
         
         public void SetDefaultBattleAction() 
         {
             SetBattleAction<DefaultAction>(_characterToHaveTurn.WeaponController.GetWeapon());
         }
-        
+
+        public Action<object> GetInvokeAction()
+        {
+            return _ => OnBattleActionInvoked?.Invoke();
+        }
+
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
         {
             _characterToHaveTurn = battleTurnContext.CharacterInAction;

@@ -1,37 +1,57 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using BattleModule.UI.View;
 using BattleModule.Actions.BattleActions.ActionTypes;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
+using BattleModule.Utility;
 using CharacterModule.CharacterType.Base;
+using Cysharp.Threading.Tasks;
+using Utility;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUISpells : MonoBehaviour
+    public class BattleUISpells : MonoBehaviour, ILoadingUnit
     {
+        [SerializeField]
         private BattleSpellsSceneSettings _battleSpellsSceneSettings;
+
+        private BattleTurnController _battleTurnController;
+        
+        private BattleActionController _battleActionController;
+        
+        private AssetLoader _assetLoader;
         
         private List<BattleUISpellView> _battleUISpells;
-
-        private BattleActionController _battleActionController;
-
+        
+        private BattleUISpellView _battleUISpellView;
+        
         private Character _characterInAction;
 
         [Inject]
-        private void Init(BattleSpellsSceneSettings battleSpellsSceneSettings, 
+        private void Init(AssetLoader assetLoader,
             BattleActionController battleActionController,
             BattleTurnController battleTurnController)
         {
-            _battleSpellsSceneSettings = battleSpellsSceneSettings;
+            _assetLoader = assetLoader;
             
             _battleActionController = battleActionController;
 
+            _battleTurnController = battleTurnController;
+        }
+
+        public UniTask Load()
+        {
+            _battleUISpellView = _assetLoader.GetLoadedAsset<BattleUISpellView>(RuntimeConstants.AssetsName.SpellView);
+            
             _battleSpellsSceneSettings.BattleSpellsMenuButton.OnButtonClick += OnSpellsButtonClick;
 
-            battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+
+            return UniTask.CompletedTask;
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
@@ -62,7 +82,7 @@ namespace BattleModule.UI.Presenter
 
             foreach (var spell in _characterInAction.CharacterSpells.GetSpells()) 
             {
-                var battleUISpellView = Instantiate(_battleSpellsSceneSettings.BattleUISpellView,
+                var battleUISpellView = Instantiate(_battleUISpellView,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform.position,
                     Quaternion.identity,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform);

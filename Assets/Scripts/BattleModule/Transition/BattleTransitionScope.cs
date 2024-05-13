@@ -17,6 +17,8 @@ namespace BattleModule.Transition
             
             builder.Register<LoadingService>(Lifetime.Scoped);
 
+            builder.Register<AssetLoader>(Lifetime.Singleton);
+
             builder.RegisterEntryPoint<BattleTransitionFlow>();
         }
         protected override void Awake()

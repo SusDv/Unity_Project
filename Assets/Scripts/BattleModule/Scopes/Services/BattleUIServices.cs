@@ -1,12 +1,5 @@
 using BattleModule.UI.Presenter;
-using BattleModule.UI.Presenter.SceneSettings.Accuracy;
-using BattleModule.UI.Presenter.SceneSettings.Action;
-using BattleModule.UI.Presenter.SceneSettings.Enemy;
-using BattleModule.UI.Presenter.SceneSettings.Inventory;
-using BattleModule.UI.Presenter.SceneSettings.Player;
-using BattleModule.UI.Presenter.SceneSettings.Spells;
-using BattleModule.UI.Presenter.SceneSettings.Targeting;
-using BattleModule.UI.Presenter.SceneSettings.Turn;
+using BattleModule.Utility;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -15,44 +8,29 @@ namespace BattleModule.Scopes.Services
 {
     public class BattleUIServices : MonoBehaviour
     {
-        [SerializeField] private BattleActionSceneSettings _battleActionSceneSettings;
-        [SerializeField] private BattleEnemySceneSettings _battleEnemySceneSettings;
-
-        [SerializeField] private BattleInventorySceneSettings _battleInventorySceneSettings;
-        [SerializeField] private BattleItemDescriptionSceneSettings _battleItemDescriptionSceneSettings;
-        [SerializeField] private BattlePlayerSceneSettings _battlePlayerSceneSettings;
-
-        [SerializeField] private BattleSpellsSceneSettings _battleSpellsSceneSettings;
-        [SerializeField] private BattleTargetingSceneSettings _battleTargetingSceneSettings;
-        [SerializeField] private BattleTurnSceneSettings _battleTurnSceneSettings;
-
-        [SerializeField] private BattleAccuracySceneSettings _battleAccuracySceneSettings;
-        
+        [SerializeField] private CanvasProvider _canvasProvider;
+        [SerializeField] private BattleUIAccuracy _battleUIAccuracy;
+        [SerializeField] private BattleUIAction _battleUIAction;
+        [SerializeField] private BattleUIInventory _battleUIInventory;
+        [SerializeField] private BattleUIItemDescription _battleUIItemDescription;
+        [SerializeField] private BattleUIEnemy _battleUIEnemy;
+        [SerializeField] private BattleUIPlayer _battleUIPlayer;
+        [SerializeField] private BattleUISpells _battleUISpells;
+        [SerializeField] private BattleUITargeting _battleUITargeting;
+        [SerializeField] private BattleUITurn _battleUITurn;
+            
         public void Configure(IContainerBuilder builder)
         {
-            builder.Register<BattleUIItemDescription>(Lifetime.Singleton);
-            
-            builder.RegisterComponent(_battleActionSceneSettings);
-            
-            builder.RegisterComponent(_battleEnemySceneSettings);
-            
-            builder.RegisterComponent(_battleInventorySceneSettings);
-            
-            builder.RegisterComponent(_battleItemDescriptionSceneSettings);
-            
-            builder.RegisterComponent(_battlePlayerSceneSettings);
-            
-            builder.RegisterComponent(_battleSpellsSceneSettings);
-            
-            builder.RegisterComponent(_battleTargetingSceneSettings);
-            
-            builder.RegisterComponent(_battleTurnSceneSettings);
-
-            builder.RegisterComponent(_battleAccuracySceneSettings);
-
-            builder.RegisterComponentInHierarchy<BattleUIInventory>();
-            
-            builder.RegisterComponentInHierarchy<BattleUIAccuracy>();
+            builder.RegisterComponent(_canvasProvider);
+            builder.RegisterComponent(_battleUIAccuracy);
+            builder.RegisterComponent(_battleUIAction);
+            builder.RegisterComponent(_battleUIInventory);
+            builder.RegisterComponent(_battleUIItemDescription);
+            builder.RegisterComponent(_battleUIEnemy);
+            builder.RegisterComponent(_battleUIPlayer);
+            builder.RegisterComponent(_battleUISpells);
+            builder.RegisterComponent(_battleUITargeting);
+            builder.RegisterComponent(_battleUITurn);
         }
     }
 }

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: BattleAssets
+  m_EditorClassIdentifier: 
+  m_GroupName: BattleAssets
+  m_Data:
+    m_SerializedData: []
+  m_GUID: dbf112d01abf302499189e5ecf9deabb
+  m_SerializeEntries:
+  - m_GUID: fed8982d1c7c07f4a839228570bff927
+    m_Address: Assets/Prefabs/UI/Battle/Accuracy/AccuracyView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: e39bbf58f0ef35b4d845111a831c6db9
+    m_Address: Assets/Prefabs/UI/Battle/Action/ActionView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 061afd53eb3b9e0499ef976ebd41a39c
+    m_Address: Assets/Prefabs/UI/Battle/Enemy/EnemyView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 7e370eae3ba3103489981855fd5d26b8
+    m_Address: Assets/Prefabs/UI/Battle/Item/DescriptionView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: c654dc39f371ed049a17aa634dab5180
+    m_Address: Assets/Prefabs/UI/Battle/Item/ItemView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 0c0063c02ba6350449917731370c8573
+    m_Address: Assets/Prefabs/UI/Battle/Player/PlayerView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 4f0d23a0042c1474b891168c478ab10f
+    m_Address: Assets/Prefabs/UI/Battle/Spell/SpellView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 99a08023b0342b94eb9c12d667fd331d
+    m_Address: Assets/Prefabs/UI/Battle/Target/TargetImageView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 8d909a205c0ba84438cbe1f2959db764
+    m_Address: Assets/Prefabs/UI/Battle/Target/TargetGroupView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  - m_GUID: 16c6bbeba8bb3cd4d8499af6e66af8f9
+    m_Address: Assets/Prefabs/UI/Battle/Turn/TurnView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BattleLoadedAssets
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: e3108ad0f550c51479b1761f3322f0ab, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 98c0383f4592dcb4c87c5a5f2bc41591, type: 2}
+    - {fileID: 11400000, guid: 1ff8c22ba464ca1418a11cd22af13843, type: 2}

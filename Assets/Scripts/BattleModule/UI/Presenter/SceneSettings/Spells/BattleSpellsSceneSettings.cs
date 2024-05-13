@@ -1,6 +1,5 @@
 using System;
 using BattleModule.UI.BattleButton;
-using BattleModule.UI.View;
 using UnityEngine;
 
 namespace BattleModule.UI.Presenter.SceneSettings.Spells
@@ -15,11 +14,7 @@ namespace BattleModule.UI.Presenter.SceneSettings.Spells
         [Header("Parent")]
         [SerializeField]
         public GameObject BattleUISpellsParent;
-
-        [Header("View")]
-        [SerializeField]
-        public BattleUISpellView BattleUISpellView;
-
+        
         [Header("Button")]
         [SerializeField]
         public BattleUIDefaultButton BattleSpellsMenuButton;

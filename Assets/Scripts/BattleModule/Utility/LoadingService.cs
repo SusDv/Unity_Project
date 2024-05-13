@@ -1,27 +1,63 @@
-using System.Threading.Tasks;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace BattleModule.Utility
 {
     public interface ILoadingUnit
     {
-        public Task Load();
+        public UniTask Load();
     }
 
     public interface ILoadingUnit<in T>
     {
-        public Task Load(T param);
+        public UniTask Load(T param);
     }
 
     public sealed class LoadingService
     {
-        public async Task BeginLoading(ILoadingUnit loadingUnit)
+        private async UniTask OnFinishedLoading()
         {
-            await loadingUnit.Load();
+            int currentThreadId = Thread.CurrentThread.ManagedThreadId;
+            
+            int mainThreadId = PlayerLoopHelper.MainThreadId;
+
+            if (mainThreadId != currentThreadId) 
+            {
+               await UniTask.SwitchToMainThread();
+            }
         }
 
-        public async Task BeginLoading<T>(ILoadingUnit<T> loadingUnit, T param)
+        public async UniTask BeginLoading(ILoadingUnit loadingUnit)
         {
-            await loadingUnit.Load(param);
+            try 
+            {
+                await loadingUnit.Load();
+            }
+            catch
+            {
+                throw new Exception();
+            }
+            finally
+            {
+                await OnFinishedLoading();
+            }
+        }
+        
+        public async UniTask BeginLoading<T>(ILoadingUnit<T> loadingUnit, T param)
+        {
+            try 
+            {
+                await loadingUnit.Load(param);
+            }
+            catch
+            {
+                throw new Exception();
+            }
+            finally
+            {
+                await OnFinishedLoading();
+            }
         }
     }
 }
