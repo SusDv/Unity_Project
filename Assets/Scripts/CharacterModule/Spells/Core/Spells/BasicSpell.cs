@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Actions.BattleActions.Processors;
 using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
@@ -11,19 +13,11 @@ namespace CharacterModule.Spells.Core.Spells
         [field: SerializeReference]
         public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
 
-        public override void UseSpell(List<Character> targets)
+        public override IAction GetAction()
         {
-            foreach (var target in targets)
-            {
-                var targetStats = target.CharacterStats;
-                
-                foreach (var baseStatModifier in TargetModifiers.GetModifiers())
-                {
-                    targetStats.StatModifierManager.AddModifier(baseStatModifier);
-                }
-            }
+            return new ActionProcessor(BattlePoints, TargetModifiers);
         }
-        
+
 #if UNITY_EDITOR
         private void OnValidate()
         {

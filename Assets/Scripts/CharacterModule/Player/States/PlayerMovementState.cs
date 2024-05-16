@@ -1,5 +1,4 @@
-﻿using System;
-using CharacterModule.StateMachine;
+﻿using CharacterModule.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerMovementState : IState

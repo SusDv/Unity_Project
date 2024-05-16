@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using BattleModule.Accuracy;
-using BattleModule.AccuracyModule;
 using BattleModule.Actions.BattleActions.Base;
 using CharacterModule.CharacterType.Base;
-using CharacterModule.Inventory.Interfaces;
-using CharacterModule.Inventory.Items.Base;
 
-namespace BattleModule.Actions.BattleActions.ActionTypes
+namespace BattleModule.Actions.BattleActions.Types
 {
     public class ItemAction : BattleAction 
     {
         public override void PerformAction(Character source,
-            List<Character> targets,
-            Action actionFinishedCallback) 
+            List<Character> targets, Dictionary<Character, BattleAccuracy> accuracies) 
         {
-            (BattleActionContext.ActionObject as ItemBase as IConsumable)?.Consume(targets.First());
-            
-            base.PerformAction(source, targets, actionFinishedCallback);
+            base.PerformAction(source, targets, accuracies);
         }
     }
 }

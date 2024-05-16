@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BattleModule.Actions;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
@@ -56,12 +55,14 @@ namespace BattleModule.Controllers.Modules
             
             _currentBattleAction.Init(actionObject);
 
+            _currentBattleAction.OnActionFinished += OnActionFinished;
+
             OnBattleActionChanged?.Invoke(_currentBattleAction.GetBattleActionContext());
         }
 
         public void ExecuteBattleAction(List<Character> targets)
         {
-            _currentBattleAction.PerformAction(_characterToHaveTurn, targets, _battleEventManager.AdvanceTurn);
+            _currentBattleAction.PerformAction(_characterToHaveTurn, targets, _battleAccuracyController.GetAccuracies());
         }
         
         public bool Cancel()
@@ -93,6 +94,11 @@ namespace BattleModule.Controllers.Modules
         public Action<object> GetInvokeAction()
         {
             return _ => OnBattleActionInvoked?.Invoke();
+        }
+
+        private void OnActionFinished()
+        {
+            _battleEventManager.AdvanceTurn();
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 

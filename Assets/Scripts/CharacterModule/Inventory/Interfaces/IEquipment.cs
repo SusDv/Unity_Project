@@ -1,5 +1,4 @@
-﻿using CharacterModule.Stats.Managers;
-using CharacterModule.Stats.StatModifier.Manager;
+﻿using CharacterModule.Stats.StatModifier.Manager;
 
 namespace CharacterModule.Inventory.Interfaces
 {

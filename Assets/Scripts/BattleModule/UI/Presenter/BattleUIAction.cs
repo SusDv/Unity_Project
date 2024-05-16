@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Action;

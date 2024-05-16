@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Base;
@@ -11,8 +10,7 @@ namespace BattleModule.Actions.BattleActions.Types
     public class DefaultAction : BattleAction
     {
         public override void PerformAction(Character source,
-            List<Character> targets,
-            Action actionFinishedCallback)
+            List<Character> targets, Dictionary<Character, BattleAccuracy> accuracies)
         {
             var characterStats = source.CharacterStats;
                 
@@ -22,7 +20,7 @@ namespace BattleModule.Actions.BattleActions.Types
             
             target.StatModifierManager.ApplyInstantModifier(StatType.HEALTH, damage);
 
-            base.PerformAction(source, targets, actionFinishedCallback);
+            base.PerformAction(source, targets, accuracies);
         }
     }
 }

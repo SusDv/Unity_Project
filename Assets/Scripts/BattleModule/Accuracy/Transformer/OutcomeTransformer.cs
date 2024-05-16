@@ -1,11 +1,10 @@
 using System;
-using BattleModule.Accuracy;
 using BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility;
 using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.Utility;
 using UnityEngine;
 
-namespace BattleModule.AccuracyModule.Transformer
+namespace BattleModule.Accuracy.Transformer
 {
     [Serializable]
     public abstract class OutcomeTransformer

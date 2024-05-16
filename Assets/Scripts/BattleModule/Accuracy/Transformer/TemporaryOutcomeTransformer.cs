@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace BattleModule.AccuracyModule.Transformer
+namespace BattleModule.Accuracy.Transformer
 {
     [Serializable]
     public class TemporaryOutcomeTransformer : OutcomeTransformer

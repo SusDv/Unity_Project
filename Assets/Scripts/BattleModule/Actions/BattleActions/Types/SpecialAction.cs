@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Base;
@@ -9,12 +8,11 @@ namespace BattleModule.Actions.BattleActions.Types
     public class SpecialAction : BattleAction
     {
         public override void PerformAction(Character source,
-            List<Character> targets,
-            Action actionFinishedCallback)
+            List<Character> targets, Dictionary<Character, BattleAccuracy> accuracies)
         {
             source.WeaponController.GetSpecialAttack().Attack(targets);
             
-            base.PerformAction(source, targets, actionFinishedCallback);
+            base.PerformAction(source, targets, accuracies);
         }
     }
 }

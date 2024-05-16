@@ -16,7 +16,7 @@ namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals
         
         public override BattleActionOutcome GetBattleActionOutcome()
         {
-            return new BattleActionCrit();
+            return new Actions.BattleActions.Outcome.Outcomes.CritDamage();
         }
 
         protected override void UpdateIntervalRange()

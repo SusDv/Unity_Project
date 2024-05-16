@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using CharacterModule.CharacterType;
 using CharacterModule.Inventory;
 using UnityEngine;
 

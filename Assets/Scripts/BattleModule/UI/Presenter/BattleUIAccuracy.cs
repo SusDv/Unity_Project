@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Accuracy;

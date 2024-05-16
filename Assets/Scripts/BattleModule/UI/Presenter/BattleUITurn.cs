@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
