@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using BattleModule.Actions.BattleActions.ActionTypes;
+using BattleModule.Actions.BattleActions.Types;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;

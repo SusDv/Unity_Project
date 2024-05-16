@@ -4,6 +4,7 @@ using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.UI.Presenter;
 using BattleModule.Utility;
+using Cysharp.Threading.Tasks;
 using Utility;
 using VContainer;
 using VContainer.Unity;
@@ -77,6 +78,13 @@ namespace BattleModule.Scopes
 
         public async void Start()
         {
+            await LoadBattle();
+            
+            _battleController.StartBattle();
+        }
+
+        private async UniTask LoadBattle()
+        {
             await _assetLoader.LoadBattleAssets();
 
             await _loadingService.BeginLoading(_battleInput);
@@ -95,8 +103,6 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleUISpells);
             await _loadingService.BeginLoading(_battleUITargeting, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleUITurn, _battleSpawner.GetSpawnedCharacters());
-            
-            _battleController.StartBattle();
         }
     }
 }

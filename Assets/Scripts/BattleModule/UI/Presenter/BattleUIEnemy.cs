@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using CharacterModule.CharacterType.Base;
 using BattleModule.UI.View;

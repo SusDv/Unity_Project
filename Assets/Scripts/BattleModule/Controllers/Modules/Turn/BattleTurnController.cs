@@ -17,7 +17,7 @@ namespace BattleModule.Controllers.Modules.Turn
         
         private List<Character> _spawnedCharacters;
 
-        private BattleTurnContext _battleTurnContext;
+        private readonly BattleTurnContext _battleTurnContext = new ();
         
         public event Action<BattleTurnContext> OnCharactersInTurnChanged = delegate { };
         
@@ -33,13 +33,11 @@ namespace BattleModule.Controllers.Modules.Turn
             
             _spawnedCharacters = characters;
             
-            _battleTurnContext = new BattleTurnContext();
-            
-            SetBattleTurnContext();
-            
             _battleEventManager.OnTurnEnded += UpdateCharactersBattlePoints;
 
             _spawnedCharacters.ForEach(character => character.HealthManager.OnCharacterDied += OnCharacterDied);
+            
+            SetBattleTurnContext();
             
             return UniTask.CompletedTask;
         }
@@ -61,8 +59,6 @@ namespace BattleModule.Controllers.Modules.Turn
             }
             
             SetBattleTurnContext();
-            
-            OnCharactersInTurnChanged?.Invoke(_battleTurnContext);
         }
 
         private static int CalculateDeduction(float battlePoints)
@@ -77,16 +73,16 @@ namespace BattleModule.Controllers.Modules.Turn
 
         private void ResetFirstCharacterBattlePoints()
         {
-            var characterInTurnStats = _battleTurnContext.CharacterInAction.CharacterStats;
+            var stats = _battleTurnContext.CharacterInAction.CharacterStats;
 
-            characterInTurnStats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, -characterInTurnStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
-
+            stats.StatModifierManager.ApplyInstantModifier(StatType.BATTLE_POINTS, -stats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue);
+            
             OnCharactersInTurnChanged?.Invoke(_battleTurnContext);
         }
 
         private void TriggerTemporaryModifiers() 
         {
-            _spawnedCharacters.First().CharacterStats.StatModifierManager.TriggerSealEffects();
+            _battleTurnContext.CharacterInAction.CharacterStats.StatModifierManager.TriggerSealEffects();
         }
 
         private void OnCharacterDied(Character deadCharacter)
@@ -102,12 +98,10 @@ namespace BattleModule.Controllers.Modules.Turn
 
         private void SetBattleTurnContext()
         {
-            var orderedCharacters = _spawnedCharacters.OrderBy((character) =>
+            _battleTurnContext.CharactersInTurn = _spawnedCharacters.OrderBy((character) =>
                 character.CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
 
-            _battleTurnContext.CharactersInTurn = orderedCharacters;
-
-            _battleTurnContext.CharacterInAction = orderedCharacters.First();
+            _battleTurnContext.CharacterInAction = _battleTurnContext.CharactersInTurn.First();
         }
     }
 }

@@ -1,5 +1,4 @@
 using BattleModule.Utility;
-using CharacterModule.Stats.StatModifier.Modifiers.Effects.Base;
 using CharacterModule.Stats.Utility.Enums;
 
 namespace CharacterModule.Stats.Interfaces

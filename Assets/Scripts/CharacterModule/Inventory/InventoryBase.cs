@@ -34,7 +34,7 @@ namespace CharacterModule.Inventory
 
                 if (item is ConsumableItem consumableItem)
                 {
-                    consumableItem.OnConsumableUsed += ConsumableItemUsed;
+                    consumableItem.OnConsumableUsed = ConsumableItemUsed;
                 }
             }
             else

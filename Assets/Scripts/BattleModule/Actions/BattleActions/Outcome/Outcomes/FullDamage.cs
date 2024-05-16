@@ -1,6 +1,6 @@
 namespace BattleModule.Actions.BattleActions.Outcome.Outcomes
 {
-    public class BattleActionCrit : BattleActionOutcome
+    public class FullDamage : BattleActionOutcome
     {
         public override bool Success => true;
         

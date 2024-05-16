@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using BattleModule.UI.Presenter.SceneSettings.Inventory;
 using BattleModule.UI.View;
 using BattleModule.Utility;

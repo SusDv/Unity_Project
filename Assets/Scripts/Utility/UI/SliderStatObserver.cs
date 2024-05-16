@@ -24,6 +24,8 @@ namespace Utility.UI
 
         public override void UpdateValue(StatInfo statInfo)
         {
+            StopCoroutine(AnimateSlider());
+            
             _statSliderImage.fillAmount = statInfo.FinalValue / statInfo.MaxValue;
             
             _sliderText.text = $"{statInfo.FinalValue}/{statInfo.MaxValue}";

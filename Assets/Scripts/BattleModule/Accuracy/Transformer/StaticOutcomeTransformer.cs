@@ -1,6 +1,6 @@
 using System;
 
-namespace BattleModule.AccuracyModule.Transformer
+namespace BattleModule.Accuracy.Transformer
 {
     [Serializable]
     public class StaticOutcomeTransformer : OutcomeTransformer

@@ -1,16 +1,12 @@
-﻿using Utility;
-using Utility.Constants;
+﻿using Utility.Constants;
 using Utility.Information;
 using BattleModule.Utility;
 using BattleModule.Actions.BattleActions.Interfaces;
-using CharacterModule.CharacterType.Base;
-using CharacterModule.Spells.Interfaces;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core
 {
-    public abstract class SpellBase : ScriptableObject, IObjectInformation, ISpell, IBattleObject
+    public abstract class SpellBase : ScriptableObject, IObjectInformation, IActionProvider, IBattleObject
     {
         [field: SerializeField] 
         public ObjectInformation ObjectInformation { get; set; }
@@ -28,6 +24,6 @@ namespace CharacterModule.Spells.Core
         [field: Range(BattleTargetingConstants.SpellMin, BattleTargetingConstants.SpellMax)]
         public int MaxTargetsCount { get; set; }
 
-        public abstract void UseSpell(List<Character> targets);
+        public abstract IAction GetAction();
     }
 }

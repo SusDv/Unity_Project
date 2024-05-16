@@ -1,8 +1,7 @@
 using System;
 using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Actions.BattleActions.Processors;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
-using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
@@ -10,7 +9,7 @@ using UnityEngine;
 namespace CharacterModule.Inventory.Items 
 {
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
-    public class ConsumableItem : ItemBase, IConsumable, IBattleObject
+    public class ConsumableItem : ItemBase, IActionProvider, IBattleObject
     {
         [field: SerializeReference]
         public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
@@ -25,19 +24,14 @@ namespace CharacterModule.Inventory.Items
 
         public int MaxTargetsCount => 1;
         
+        public Action<ItemBase> OnConsumableUsed;
 
-        public event Action<ItemBase> OnConsumableUsed;
-
-        public void Consume(Character target)
+        public IAction GetAction()
         {
-            foreach (var modifier in TargetModifiers.GetModifiers())
-            {
-                target.CharacterStats.StatModifierManager.AddModifier(modifier);
-            }
-
-            OnConsumableUsed?.Invoke(this);
+            return new ItemActionProcessor(BattlePoints, TargetModifiers, this);
         }
-        
+
+
 #if UNITY_EDITOR
         private void OnValidate()
         {

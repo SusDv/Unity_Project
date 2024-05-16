@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BattleModule.AccuracyModule.Transformer;
+using BattleModule.Accuracy.Transformer;
 using CharacterModule.CharacterType.Base;
 
 namespace CharacterModule.Equipment

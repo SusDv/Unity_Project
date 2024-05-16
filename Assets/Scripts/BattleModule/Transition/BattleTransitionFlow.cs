@@ -20,9 +20,9 @@ namespace BattleModule.Transition
             _assetLoader = assetLoader;
         }
 
-        public async void Start()
+        public void Start()
         {
-            await SceneManager.LoadSceneAsync("BattleScene");
+            SceneManager.LoadScene("BattleScene");
         }
     }
 }
