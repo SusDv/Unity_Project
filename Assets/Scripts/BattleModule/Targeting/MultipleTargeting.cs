@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using BattleModule.Targeting.Base;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using UnityEngine;
 
 namespace BattleModule.Targeting

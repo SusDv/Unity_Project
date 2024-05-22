@@ -42,7 +42,7 @@ MonoBehaviour:
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0
   - <StatType>k__BackingField: 7
-    <BaseValue>k__BackingField: 0
+    <BaseValue>k__BackingField: 50
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0
   - <StatType>k__BackingField: 8
@@ -50,10 +50,6 @@ MonoBehaviour:
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0
   - <StatType>k__BackingField: 9
-    <BaseValue>k__BackingField: 0
-    <BaseValueScaleFactor>k__BackingField: 0
-    <IsCapped>k__BackingField: 0
-  - <StatType>k__BackingField: 10
     <BaseValue>k__BackingField: 3
     <BaseValueScaleFactor>k__BackingField: 0
     <IsCapped>k__BackingField: 0

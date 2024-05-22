@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Base;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.BattleActions.Types
 {

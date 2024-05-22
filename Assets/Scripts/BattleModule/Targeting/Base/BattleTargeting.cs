@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Targeting.Base
 {

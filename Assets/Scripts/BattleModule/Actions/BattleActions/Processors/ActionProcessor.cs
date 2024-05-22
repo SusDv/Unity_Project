@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Actions.BattleActions.Outcome;
+using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
-using CharacterModule.Stats.StatModifier.Manager;
 using CharacterModule.Stats.Utility.Enums;
 
 namespace BattleModule.Actions.BattleActions.Processors
@@ -20,14 +20,17 @@ namespace BattleModule.Actions.BattleActions.Processors
             TargetModifiers = statModifiers;
         }
 
-        public virtual void ApplyModifiers(StatModifierManager source, List<StatModifierManager> targets)
+        public virtual void ApplyModifiers(StatManager source, 
+            StatManager target, BattleActionOutcome battleActionOutcome)
         {
-            foreach (var target in targets)
+            foreach (var modifier in TargetModifiers.GetModifiers().modifiers)
             {
-                foreach (var modifier in TargetModifiers.GetModifiers())
-                {
-                    target.AddModifier(modifier);
-                }
+                target.AddModifier(modifier);
+            }
+            
+            foreach (var modifier in TargetModifiers.GetModifiers().temporaryModifiers)
+            {
+                target.AddModifier(modifier);
             }
             
             source.ApplyInstantModifier(StatType.BATTLE_POINTS, BattlePoints);

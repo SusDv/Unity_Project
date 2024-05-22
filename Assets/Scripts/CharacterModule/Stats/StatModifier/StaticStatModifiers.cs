@@ -12,13 +12,13 @@ namespace CharacterModule.Stats.StatModifier
         [field: SerializeField] 
         private List<PermanentStatModifier> _permanentStatModifiers = new();
         
-        public override List<IModifier> GetModifiers()
+        public override (List<ITemporaryModifier>, List<IModifier>) GetModifiers()
         {
-            Modifiers = new List<IModifier>();
+            ClearLists();
             
             Modifiers.AddRange(_permanentStatModifiers);
 
-            return Modifiers;
+            return base.GetModifiers();
         }
     }
 }

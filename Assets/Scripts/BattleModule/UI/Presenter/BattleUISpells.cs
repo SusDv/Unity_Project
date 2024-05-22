@@ -6,7 +6,7 @@ using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Spells;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using Utility;
 using VContainer;

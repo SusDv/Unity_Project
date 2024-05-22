@@ -11,27 +11,16 @@ namespace CharacterModule.Stats.Settings
     {
         [field: SerializeField]
         private List<Stat> StatList { get; set; } = new();
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            foreach (var stat in StatList)
-            {
-                stat.MaxValue = stat.FinalValue = stat.BaseValue;
-            }
-        }
-#else
-        private void Awake()
-        {
-            foreach (var stat in StatList)
-            {
-                stat.MaxValue = stat.FinalValue = stat.BaseValue;
-            }
-        }
-#endif
         
         public Dictionary<StatType, Stat> GetStats() 
         {
+            foreach (var stat in StatList)
+            {
+                stat.MaxValue = stat.BaseValue;
+                
+                stat.FinalValue = stat.BaseValue;
+            }
+            
             return StatList.ToDictionary(stat => stat.StatType, stat => stat.Clone() as Stat);
         }
     }

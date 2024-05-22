@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 namespace CharacterModule.Spells.Interfaces
 {

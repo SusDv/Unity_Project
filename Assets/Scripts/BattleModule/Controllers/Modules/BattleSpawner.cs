@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utility;
@@ -42,7 +42,8 @@ namespace BattleModule.Controllers.Modules
             return _spawnedCharacters;
         }
 
-        private void SpawnCharacters<T>(IEnumerable<T> characters, SpawnPoint spawnPoint)
+        private void SpawnCharacters<T>(IEnumerable<T> characters, 
+            SpawnPoint spawnPoint)
             where T : Character
         {
             var spawnedCharacters = (from character 
@@ -51,6 +52,8 @@ namespace BattleModule.Controllers.Modules
                     characterTransform.position, 
                     characterTransform.rotation, 
                     spawnPoint.CharacterSpawnPoint)).ToList();
+            
+            spawnedCharacters.ForEach(c => c.Init());
 
             _spawnedCharacters.AddRange(spawnedCharacters);
 

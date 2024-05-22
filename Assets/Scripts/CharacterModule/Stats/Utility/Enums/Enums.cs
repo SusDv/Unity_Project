@@ -18,8 +18,6 @@ namespace CharacterModule.Stats.Utility.Enums
         MAGIC_DEFENSE,
         [Description(StatNames.LuckName)]
         LUCK,
-        [Description(StatNames.CriticalDamageName)]
-        CRITICAL_DAMAGE,
         [Description(StatNames.EvasionName)]
         EVASION,
         [Description(StatNames.AccuracyName)]

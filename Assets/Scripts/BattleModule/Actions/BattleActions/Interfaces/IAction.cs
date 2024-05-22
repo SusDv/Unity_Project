@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using CharacterModule.Stats.StatModifier.Manager;
+using BattleModule.Actions.BattleActions.Outcome;
+using CharacterModule.Stats.Managers;
 
 namespace BattleModule.Actions.BattleActions.Interfaces
 {
     public interface IAction
     {
-        public void ApplyModifiers(StatModifierManager source, List<StatModifierManager> targets);
+        public void ApplyModifiers(StatManager source, StatManager target, BattleActionOutcome battleActionOutcome);
     }
 }

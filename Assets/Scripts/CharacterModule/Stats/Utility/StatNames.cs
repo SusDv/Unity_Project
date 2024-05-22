@@ -9,7 +9,6 @@
         public const string DefenseName = "Defense";
         public const string MagicDefenseName = "Magic Defense";
         public const string LuckName = "Luck";
-        public const string CriticalDamageName = "Crit Damage";
         public const string AccuracyName = "Accuracy";
         public const string EvasionName = "Evasion";
         public const string BattlePointsName = "Battle Points";

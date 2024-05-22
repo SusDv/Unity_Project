@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.CharacterType;
-using CharacterModule.CharacterType.Base;
 using BattleModule.UI.View;
 using BattleModule.UI.Presenter.SceneSettings.Player;
 using BattleModule.Utility;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utility;
@@ -46,10 +46,10 @@ namespace BattleModule.UI.Presenter
                     _battleUIPlayerView,
                     _battlePlayerSceneSettings.BattleUIPlayersPanel.transform.position,
                     Quaternion.identity, _battlePlayerSceneSettings.BattleUIPlayersPanel.transform);
-
+                
+                battleUICharacterView.SetData(player.EquipmentController.WeaponController.GetSpecialAttack(), player.CharacterInformation, player.CharacterStats);
+                
                 _battleUIPlayers.Add(battleUICharacterView);
-
-                battleUICharacterView.SetData(player.WeaponController.GetSpecialAttack(), player.CharacterInformation, player.CharacterStats);
             }
         }
     }

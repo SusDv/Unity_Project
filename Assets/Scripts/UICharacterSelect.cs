@@ -1,5 +1,5 @@
 using System;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

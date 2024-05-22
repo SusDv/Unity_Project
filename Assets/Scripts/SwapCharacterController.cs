@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using UnityEngine;
 
 public class SwapCharacterController : MonoBehaviour

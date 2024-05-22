@@ -1,32 +1,31 @@
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;
+using CharacterModule.Inventory.Processor;
 using CharacterModule.Stats.StatModifier;
-using CharacterModule.Stats.StatModifier.Manager;
 using UnityEngine;
 
 namespace CharacterModule.Inventory.Items
 {
-    public abstract class EquipmentItem : ItemBase, IEquipment
+    public abstract class EquipmentItem : ItemBase, IEquipmentProvider
     {
         [field: SerializeReference]
         public StatModifiers WearerModifiers { get; private set; } = new StaticStatModifiers();
-        
-        public virtual void Equip(StatModifierManager stats)
+
+        public IEquipment GetEquipment()
         {
-            foreach (var baseStatModifier in WearerModifiers.GetModifiers())
-            {
-                stats.AddModifier(baseStatModifier);
-            }
+            return new EquipmentProcessor(ID, WearerModifiers);
         }
 
-        public virtual void Unequip(StatModifierManager stats)
+#if UNITY_EDITOR
+        private void OnValidate()
         {
-            stats.RemoveModifiersOnCondition((statModifier) => statModifier.ModifierData.SourceID == ID);
+            WearerModifiers.SetSourceID(GetInstanceID());
         }
-        
+#else
         private void Awake()
         {
-            WearerModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
+            WearerModifiers.SetSourceID(GetInstanceID());
         }
+#endif
     }
 }

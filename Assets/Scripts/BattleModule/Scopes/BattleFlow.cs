@@ -23,7 +23,8 @@ namespace BattleModule.Scopes
         private readonly BattleTargetingController _battleTargetingController;
         private readonly BattleActionController _battleActionController;
         private readonly BattleAccuracyController _battleAccuracyController;
-        
+
+        private readonly UILoadingScreen _uiLoadingScreen;
         private readonly BattleUIInventory _battleUIInventory;
         private readonly BattleUIItemDescription _battleUIItemDescription;
         private readonly BattleUIAccuracy _battleUIAccuracy;
@@ -44,6 +45,7 @@ namespace BattleModule.Scopes
             BattleTargetingController battleTargetingController,
             BattleActionController battleActionController,
             BattleAccuracyController battleAccuracyController,
+            UILoadingScreen uiLoadingScreen,
             BattleUIInventory battleUIInventory,
             BattleUIItemDescription battleUIItemDescription,
             BattleUIAccuracy battleUIAccuracy,
@@ -64,7 +66,8 @@ namespace BattleModule.Scopes
             _battleTargetingController = battleTargetingController;
             _battleActionController = battleActionController;
             _battleAccuracyController = battleAccuracyController;
-            
+
+            _uiLoadingScreen = uiLoadingScreen;
             _battleUIAccuracy = battleUIAccuracy;
             _battleUIAction = battleUIAction;
             _battleUIInventory = battleUIInventory;
@@ -85,6 +88,8 @@ namespace BattleModule.Scopes
 
         private async UniTask LoadBattle()
         {
+            _uiLoadingScreen.SetVisibility(true);
+            
             await _assetLoader.LoadBattleAssets();
 
             await _loadingService.BeginLoading(_battleInput);
@@ -103,6 +108,8 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleUISpells);
             await _loadingService.BeginLoading(_battleUITargeting, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleUITurn, _battleSpawner.GetSpawnedCharacters());
+            
+            _uiLoadingScreen.SetVisibility(false);
         }
     }
 }

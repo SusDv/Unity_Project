@@ -8,16 +8,19 @@ using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Managers.SingleStat;
 using UnityEngine;
 
-namespace CharacterModule.CharacterType.Base
+namespace CharacterModule.Types.Base
 {
     public class Character : MonoBehaviour, IDisposable
     {
         [SerializeField] 
         private CharacterSettings _characterSettings;
         
+        [field: SerializeField] 
+        public AnimationManager AnimationManager { get; private set; }
+        
         public StatManager CharacterStats { get; private set; }
 
-        public WeaponController WeaponController { get; private set; }
+        public EquipmentController EquipmentController { get; private set; }
 
         public SpellContainer CharacterSpells { get; private set; }
 
@@ -25,24 +28,19 @@ namespace CharacterModule.CharacterType.Base
 
         public HealthManager HealthManager{ get; private set; }
 
-        [field: SerializeField] 
-        public AnimationManager AnimationManager { get; private set; }
-
-        private void Awake()
+        public void Init()
         {
             CharacterStats = new StatManager(_characterSettings.BaseStats);
 
             CharacterSpells = new SpellContainer(_characterSettings.BaseSpells);
 
-            WeaponController = new WeaponController(this);
+            EquipmentController = new EquipmentController(this);
 
             HealthManager = new HealthManager(this);
 
             CharacterInformation = _characterSettings.CharacterInformation;
 
-            WeaponController.Equip(_characterSettings.BaseWeapon);
-            
-            
+            EquipmentController.WeaponController.Equip(_characterSettings.BaseWeapon);
         }
 
         public void Dispose()

@@ -1,5 +1,4 @@
 using BattleModule.Utility;
-using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Utility;
 using VContainer.Unity;
