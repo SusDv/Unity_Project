@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Actions.BattleActions.Interfaces;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.BattleActions.Base
 {
     public abstract class BattleAction
     {
-        protected BattleActionContext BattleActionContext;
+        private BattleActionContext _battleActionContext;
 
         protected IAction ActionObject;
 
@@ -18,24 +17,21 @@ namespace BattleModule.Actions.BattleActions.Base
 
         public BattleActionContext GetBattleActionContext() 
         {
-            return BattleActionContext;
+            return _battleActionContext;
         }
 
         public void Init(object actionObject)
         {
-            BattleActionContext = new BattleActionContext(actionObject);
+            _battleActionContext = new BattleActionContext(actionObject);
 
             ActionObject = (actionObject as IActionProvider)?.GetAction();
         }
 
-        public virtual void PerformAction(Character source, List<Character> targets,
+        public virtual void PerformAction(Character source, 
+            List<Character> targets,
             Dictionary<Character, BattleAccuracy> accuracies)
         {
-            source.WeaponController.GetSpecialAttack().Charge(5f);
-            
-            ActionObject.ApplyModifiers(
-                source.CharacterStats.StatModifierManager, 
-                targets.Select(c => c.CharacterStats.StatModifierManager).ToList());
+            source.EquipmentController.WeaponController.GetSpecialAttack().Charge(5f);
             
             OnActionFinished?.Invoke();
         }

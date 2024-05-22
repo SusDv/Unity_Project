@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using VContainer;
 

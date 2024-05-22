@@ -1,4 +1,3 @@
-using BattleModule.Actions;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
@@ -19,15 +18,12 @@ namespace BattleModule.Controllers
         public readonly BattleTargetingController BattleTargetingController;     
 
         public readonly BattleTurnController BattleTurnController;
-
-        public readonly BattleEventManager BattleEventManager;
         
         public BattleController(BattleInput battleInput,
             BattleCamera battleCamera, 
             BattleActionController battleActionController,
             BattleTargetingController battleTargetingController, 
-            BattleTurnController battleTurnController,
-            BattleEventManager battleEventManager)
+            BattleTurnController battleTurnController)
         {
             _battleStateMachine = new BattleStateMachine(this);
             
@@ -40,8 +36,6 @@ namespace BattleModule.Controllers
             BattleTargetingController = battleTargetingController;
             
             BattleTurnController = battleTurnController;
-
-            BattleEventManager = battleEventManager;
         }
 
         public void StartBattle()

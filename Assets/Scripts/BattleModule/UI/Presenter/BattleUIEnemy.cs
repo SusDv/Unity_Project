@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
-using CharacterModule.CharacterType.Base;
 using BattleModule.UI.View;
 using BattleModule.Utility;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using Utility;
 using UnityEngine;

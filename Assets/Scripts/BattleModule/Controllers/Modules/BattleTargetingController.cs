@@ -7,7 +7,7 @@ using BattleModule.Input;
 using BattleModule.Targeting.Processor;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;

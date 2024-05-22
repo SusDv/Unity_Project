@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+using BattleModule.Actions.BattleActions.Outcome;
 using CharacterModule.Inventory.Items;
+using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
-using CharacterModule.Stats.StatModifier.Manager;
 
 namespace BattleModule.Actions.BattleActions.Processors
 {
@@ -16,11 +16,17 @@ namespace BattleModule.Actions.BattleActions.Processors
             _consumableItem = consumableItem;
         }
 
-        public override void ApplyModifiers(StatModifierManager source, 
-            List<StatModifierManager> targets)
+        public override void ApplyModifiers(StatManager source, 
+            StatManager target, 
+            BattleActionOutcome battleActionOutcome)
         {
-            base.ApplyModifiers(source, targets);
+            base.ApplyModifiers(source, target, battleActionOutcome);
             
+            if (!battleActionOutcome.Success)
+            {
+                return;
+            }
+
             _consumableItem.OnConsumableUsed?.Invoke(_consumableItem);
         }
     }

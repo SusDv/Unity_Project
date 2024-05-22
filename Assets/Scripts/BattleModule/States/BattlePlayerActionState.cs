@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using BattleModule.States.StateMachine;
 using BattleModule.States.Base;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.States
 {

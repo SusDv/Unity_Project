@@ -1,6 +1,7 @@
 using BattleModule.UI.Presenter;
 using BattleModule.Utility;
 using UnityEngine;
+using Utility;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,6 +10,8 @@ namespace BattleModule.Scopes.Services
     public class BattleUIServices : MonoBehaviour
     {
         [SerializeField] private CanvasProvider _canvasProvider;
+        [SerializeField] private UILoadingScreen _uiLoadingScreen;
+        
         [SerializeField] private BattleUIAccuracy _battleUIAccuracy;
         [SerializeField] private BattleUIAction _battleUIAction;
         [SerializeField] private BattleUIInventory _battleUIInventory;
@@ -22,6 +25,8 @@ namespace BattleModule.Scopes.Services
         public void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponent(_canvasProvider);
+            builder.RegisterComponent(_uiLoadingScreen);
+            
             builder.RegisterComponent(_battleUIAccuracy);
             builder.RegisterComponent(_battleUIAction);
             builder.RegisterComponent(_battleUIInventory);

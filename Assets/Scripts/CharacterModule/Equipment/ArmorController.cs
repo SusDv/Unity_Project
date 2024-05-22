@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using CharacterModule.CharacterType.Base;
 using CharacterModule.Inventory.Items.Equipment;
-using CharacterModule.Stats.StatModifier.Manager;
+using CharacterModule.Stats.Managers;
+using CharacterModule.Types.Base;
 
 namespace CharacterModule.Equipment
 {
@@ -9,11 +9,11 @@ namespace CharacterModule.Equipment
     {
         private Dictionary<ArmorType, Armor> _armorList;
         
-        private readonly StatModifierManager _statModifierManager;
+        private readonly StatManager _statManager;
         
         public ArmorController(Character belongTo)
         {
-            _statModifierManager = belongTo.CharacterStats.StatModifierManager;
+            _statManager = belongTo.CharacterStats;
         }
 
         public void Equip(Armor armor)

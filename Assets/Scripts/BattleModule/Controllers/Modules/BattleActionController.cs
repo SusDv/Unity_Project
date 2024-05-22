@@ -8,7 +8,7 @@ using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Input;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
@@ -88,7 +88,7 @@ namespace BattleModule.Controllers.Modules
         
         public void SetDefaultBattleAction() 
         {
-            SetBattleAction<DefaultAction>(_characterToHaveTurn.WeaponController.GetWeapon());
+            SetBattleAction<DefaultAction>(_characterToHaveTurn.EquipmentController.WeaponController.GetWeapon());
         }
 
         public Action<object> GetInvokeAction()

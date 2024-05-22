@@ -2,8 +2,8 @@
 using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Base;
-using CharacterModule.CharacterType.Base;
 using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.BattleActions.Types
 {
@@ -18,7 +18,7 @@ namespace BattleModule.Actions.BattleActions.Types
             
             float damage = -characterStats.GetStatInfo(StatType.ATTACK).FinalValue;
             
-            target.StatModifierManager.ApplyInstantModifier(StatType.HEALTH, damage);
+            target.ApplyInstantModifier(StatType.HEALTH, damage);
 
             base.PerformAction(source, targets, accuracies);
         }

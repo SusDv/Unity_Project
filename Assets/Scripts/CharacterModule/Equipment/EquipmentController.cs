@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using BattleModule.Accuracy.Transformer;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 namespace CharacterModule.Equipment
 {
@@ -15,6 +15,8 @@ namespace CharacterModule.Equipment
         public EquipmentController(Character belongsTo)
         {
             WeaponController = new WeaponController(belongsTo);
+
+            ArmorController = new ArmorController(belongsTo);
         }
 
         public void RemoveTemporaryTransformers()

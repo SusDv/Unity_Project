@@ -1,11 +1,11 @@
-﻿using CharacterModule.Stats.StatModifier.Manager;
+﻿using CharacterModule.Stats.Managers;
 
 namespace CharacterModule.Inventory.Interfaces
 {
     public interface IEquipment
     {
-        public void Equip(StatModifierManager character);
+        public void Equip(StatManager character);
 
-        public void Unequip(StatModifierManager character);
+        public void Unequip(StatManager character);
     }
 }

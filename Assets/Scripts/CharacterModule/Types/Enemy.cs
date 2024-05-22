@@ -1,4 +1,4 @@
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 
 public class Enemy : Character
 {

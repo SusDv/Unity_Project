@@ -1,5 +1,5 @@
 using BattleModule.Input;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;

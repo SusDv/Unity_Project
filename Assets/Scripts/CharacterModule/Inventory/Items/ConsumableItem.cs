@@ -35,12 +35,12 @@ namespace CharacterModule.Inventory.Items
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
+            TargetModifiers.SetSourceID(GetInstanceID());
         }
 #else
         private void Awake()
         {
-            TargetModifiers.GetModifiers().ForEach(statModifier => statModifier.ModifierData.SourceID = ID);
+            TargetModifiers.SetSourceID(GetInstanceID());
         }
 #endif
     }

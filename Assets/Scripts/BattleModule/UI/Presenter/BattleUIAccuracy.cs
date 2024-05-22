@@ -6,7 +6,7 @@ using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Accuracy;
 using BattleModule.UI.View;
 using BattleModule.Utility;
-using CharacterModule.CharacterType.Base;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utility;

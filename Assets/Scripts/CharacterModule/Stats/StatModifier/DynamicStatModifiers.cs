@@ -15,15 +15,15 @@ namespace CharacterModule.Stats.StatModifier
         [field: SerializeField] 
         private List<TemporaryStatModifier> _temporaryStatModifiers = new();
         
-        public override List<IModifier> GetModifiers()
+        public override (List<ITemporaryModifier>, List<IModifier>) GetModifiers()
         {
-            Modifiers = new List<IModifier>();
+            ClearLists();
             
             Modifiers.AddRange(_instantStatModifiers);
             
-            Modifiers.AddRange(_temporaryStatModifiers);
+            TemporaryModifiers.AddRange(_temporaryStatModifiers);
             
-            return Modifiers;
+            return base.GetModifiers();
         }
     }
 }
