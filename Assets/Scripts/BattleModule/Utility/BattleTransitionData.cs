@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using CharacterModule.CharacterType;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
+using CharacterModule.Types;
 using UnityEngine;
 
-namespace Utility
+namespace BattleModule.Utility
 {
     public class BattleTransitionData : MonoBehaviour
     {

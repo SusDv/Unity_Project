@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CharacterModule.CharacterType;
 using BattleModule.UI.View;
 using BattleModule.UI.Presenter.SceneSettings.Player;
 using BattleModule.Utility;
+using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Utility;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
@@ -47,7 +47,7 @@ namespace BattleModule.UI.Presenter
                     _battlePlayerSceneSettings.BattleUIPlayersPanel.transform.position,
                     Quaternion.identity, _battlePlayerSceneSettings.BattleUIPlayersPanel.transform);
                 
-                battleUICharacterView.SetData(player.EquipmentController.WeaponController.GetSpecialAttack(), player.CharacterInformation, player.CharacterStats);
+                battleUICharacterView.SetData(player.EquipmentController.WeaponController.GetSpecialAttack(), player.BaseInformation, player.Stats);
                 
                 _battleUIPlayers.Add(battleUICharacterView);
             }

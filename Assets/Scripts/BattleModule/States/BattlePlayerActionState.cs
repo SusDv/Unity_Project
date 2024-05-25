@@ -16,8 +16,6 @@ namespace BattleModule.States
 
         public override void OnEnter()
         {
-            _currentTargets = new List<Character>();
-            
             StartTurn();
 
             SetupBattleEvents();
@@ -45,7 +43,7 @@ namespace BattleModule.States
 
         private void SetupBattleEvents()
         {
-            BattleStateMachine.BattleController.BattleActionController.OnBattleActionInvoked += BattleActionHandler;
+            BattleStateMachine.BattleController.BattleTurnEvents.OnActionInvoked += ActionHandler;
 
             BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed += SelectCharacterUsingMouse;
             
@@ -54,7 +52,7 @@ namespace BattleModule.States
 
         private void ClearBattleEvents() 
         {
-            BattleStateMachine.BattleController.BattleActionController.OnBattleActionInvoked -= BattleActionHandler;
+            BattleStateMachine.BattleController.BattleTurnEvents.OnActionInvoked -= ActionHandler;
             
             BattleStateMachine.BattleController.BattleInput.OnMouseButtonPressed -= SelectCharacterUsingMouse;
             
@@ -63,12 +61,14 @@ namespace BattleModule.States
         
         private void StartTurn()
         {
-            BattleStateMachine.BattleController.BattleTurnController.StartTurn();  
+            _currentTargets = new List<Character>();
+            
+            BattleStateMachine.BattleController.BattleTurnController.TriggerTurnEffects();
             
             BattleStateMachine.BattleController.BattleActionController.SetDefaultBattleAction();
         }
 
-        private void BattleActionHandler()
+        private void ActionHandler()
         {
             _currentTargets = BattleStateMachine.BattleController.BattleTargetingController.GetSelectedTargets();
             
@@ -79,6 +79,8 @@ namespace BattleModule.States
             
             BattleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets.ToList());
 
+            BattleStateMachine.BattleController.BattleTurnEvents.AdvanceTurn();
+            
             BattleStateMachine.ChangeState(BattleStateMachine.BattlePlayerActionState);
         }
     }

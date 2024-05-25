@@ -11,4 +11,12 @@
         MULTIPLE_TARGET,
         SEQUENCE
     }
+    
+    public enum SubIntervalType
+    {
+        MISS,
+        HALF,
+        FULL,
+        CRIT
+    }
 }

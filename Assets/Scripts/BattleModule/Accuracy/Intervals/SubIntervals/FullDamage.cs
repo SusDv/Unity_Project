@@ -1,9 +1,8 @@
-using BattleModule.Accuracy.Intervals.Utility;
-using BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals.Base;
-using BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility;
+using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Utility;
 
-namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals
+namespace BattleModule.Accuracy.Intervals.SubIntervals
 {
     public class FullDamage : SubInterval
     {

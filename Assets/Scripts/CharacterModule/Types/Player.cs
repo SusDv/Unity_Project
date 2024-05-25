@@ -1,6 +1,6 @@
 using CharacterModule.Types.Base;
 
-namespace CharacterModule.CharacterType
+namespace CharacterModule.Types
 {
     public class Player : Character
     {

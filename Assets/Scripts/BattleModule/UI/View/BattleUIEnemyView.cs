@@ -1,5 +1,5 @@
-﻿using CharacterModule.Stats.Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
+using Utility.ObserverPattern;
 using Utility.UI;
 
 namespace BattleModule.UI.View

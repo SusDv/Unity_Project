@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleModule.Actions;
+using System.Linq;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Actions.BattleActions.Types;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.Input;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Types.Base;
@@ -16,55 +15,47 @@ namespace BattleModule.Controllers.Modules
 {
     public class BattleActionController : IBattleCancelable, ILoadingUnit
     {
-        private readonly BattleInput _battleInput;
+        private readonly BattleCancelableController _battleCancelableController;
         
         private readonly BattleTurnController _battleTurnController;
         
         private readonly BattleAccuracyController _battleAccuracyController;
         
-        private readonly BattleEventManager _battleEventManager;
-        
-        
         private BattleAction _currentBattleAction;
 
         private Character _characterToHaveTurn;
         
+        public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
+        
         [Inject]
-        private BattleActionController(BattleInput battleInput,
+        private BattleActionController(BattleCancelableController battleCancelableController,
             BattleTurnController battleTurnController,
-            BattleAccuracyController battleAccuracyController,
-            BattleEventManager battleEventManager)
+            BattleAccuracyController battleAccuracyController)
         {
-            _battleInput = battleInput;
+            _battleCancelableController = battleCancelableController;
 
             _battleTurnController = battleTurnController;
             
             _battleAccuracyController = battleAccuracyController;
-            
-            _battleEventManager = battleEventManager;
         }
-        
-        public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
-
-        public event Action OnBattleActionInvoked = delegate { };
         
         public void SetBattleAction<T>(object actionObject)
             where T : BattleAction
         {
             _currentBattleAction = Activator.CreateInstance<T>();
-            
-            _currentBattleAction.Init(actionObject);
 
-            _currentBattleAction.OnActionFinished += OnActionFinished;
-
-            OnBattleActionChanged?.Invoke(_currentBattleAction.GetBattleActionContext());
+            OnBattleActionChanged?.Invoke(
+                _currentBattleAction.Init(actionObject, _characterToHaveTurn));
         }
 
         public void ExecuteBattleAction(List<Character> targets)
         {
-            _currentBattleAction.PerformAction(_characterToHaveTurn, targets, _battleAccuracyController.GetAccuracies());
+            _currentBattleAction.PerformAction(
+                _characterToHaveTurn, 
+                targets, 
+                _battleAccuracyController.GetAccuracies());
         }
-        
+
         public bool Cancel()
         {
             if (_currentBattleAction is DefaultAction)
@@ -81,7 +72,7 @@ namespace BattleModule.Controllers.Modules
         {
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
             
-            _battleInput.PrependCancelable(this);
+            _battleCancelableController.PrependCancelable(this);
 
             return UniTask.CompletedTask;
         }
@@ -91,19 +82,9 @@ namespace BattleModule.Controllers.Modules
             SetBattleAction<DefaultAction>(_characterToHaveTurn.EquipmentController.WeaponController.GetWeapon());
         }
 
-        public Action<object> GetInvokeAction()
-        {
-            return _ => OnBattleActionInvoked?.Invoke();
-        }
-
-        private void OnActionFinished()
-        {
-            _battleEventManager.AdvanceTurn();
-        }
-
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
         {
-            _characterToHaveTurn = battleTurnContext.CharacterInAction;
+            _characterToHaveTurn = battleTurnContext.CharactersInTurn.First();
         }
     }
 }

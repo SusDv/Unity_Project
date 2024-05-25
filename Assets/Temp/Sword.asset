@@ -31,7 +31,7 @@ MonoBehaviour:
       type: {class: StaticStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
       data:
         _permanentStatModifiers:
-        - <StatType>k__BackingField: 2
+        - <Type>k__BackingField: 0
           <ModifierData>k__BackingField:
             <ValueModifierType>k__BackingField: 0
             <ModifiedValueType>k__BackingField: 0
@@ -40,4 +40,11 @@ MonoBehaviour:
       type: {class: DynamicStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
       data:
         _instantStatModifiers: []
-        _temporaryStatModifiers: []
+        _temporaryStatModifiers:
+        - <Type>k__BackingField: 0
+          <TemporaryEffectType>k__BackingField: 0
+          <Duration>k__BackingField: 0
+          <ModifierData>k__BackingField:
+            <ValueModifierType>k__BackingField: 0
+            <ModifiedValueType>k__BackingField: 0
+            <Value>k__BackingField: 0

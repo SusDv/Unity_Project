@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Types.Base;
+using CharacterModule.Utility;
 using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
 
@@ -12,14 +13,14 @@ namespace CharacterModule.WeaponSpecial
     {
         private readonly float _maxEnergy;
 
-        private readonly (List<ITemporaryModifier> temporaryModifiers, List<IModifier> modifiers) _targetModifiers;
+        private readonly (List<ITemporaryModifier<StatType>> temporaryModifiers, List<IModifier<StatType>> modifiers) _targetModifiers;
         
         public float CurrentEnergyAmount { get; private set; }
         
         public event Action<float> OnEnergyChanged = delegate { };
 
         public DefaultSpecialAttack(float maxEnergy,
-            (List<ITemporaryModifier> temporaryModifiers, List<IModifier> modifiers) targetModifiers)
+            (List<ITemporaryModifier<StatType>> temporaryModifiers, List<IModifier<StatType>> modifiers) targetModifiers)
         {
             _maxEnergy = maxEnergy;
 
@@ -54,7 +55,7 @@ namespace CharacterModule.WeaponSpecial
 
         private void ApplyTargetModifiers(List<Character> targets)
         {
-            foreach (var targetStats in targets.Select(target => target.CharacterStats))
+            foreach (var targetStats in targets.Select(target => target.Stats))
             {
                 foreach (var modifier in _targetModifiers.modifiers)
                 {

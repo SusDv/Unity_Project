@@ -1,6 +1,5 @@
 using BattleModule.Utility;
 using UnityEngine;
-using Utility;
 using VContainer;
 using VContainer.Unity;
 
@@ -21,6 +20,7 @@ namespace BattleModule.Transition
 
             builder.RegisterEntryPoint<BattleTransitionFlow>();
         }
+        
         protected override void Awake()
         {
             IsRoot = true;

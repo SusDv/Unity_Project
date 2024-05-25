@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseStats: {fileID: 11400000, guid: 5119b190281ace44889dc93b123935f0, type: 2}
   BaseSpells: {fileID: 11400000, guid: 76a30603362dd0748b1394a798bc88a0, type: 2}
+  BaseInformation: {fileID: 11400000, guid: b0e9e083b9d387b45bd3a358d83d5319, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 1822837534a96e2488bb1eb735923d62, type: 2}
-  CharacterInformation: {fileID: 11400000, guid: b0e9e083b9d387b45bd3a358d83d5319, type: 2}

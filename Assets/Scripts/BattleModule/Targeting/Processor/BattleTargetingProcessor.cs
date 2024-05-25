@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BattleModule.Targeting.Base;
 using BattleModule.Utility;
 using CharacterModule.Types.Base;
-using Utility.Types;
+using Utility;
 
 namespace BattleModule.Targeting.Processor
 {

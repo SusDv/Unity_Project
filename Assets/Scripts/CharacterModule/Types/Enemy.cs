@@ -1,9 +1,12 @@
 using CharacterModule.Types.Base;
 
-public class Enemy : Character
+namespace CharacterModule.Types
 {
-    public Enemy() 
+    public class Enemy : Character
     {
+        public Enemy() 
+        {
 
+        }
     }
 }

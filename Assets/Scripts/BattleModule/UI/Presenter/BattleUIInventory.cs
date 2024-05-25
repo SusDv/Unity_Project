@@ -8,7 +8,7 @@ using BattleModule.Utility;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
 using Cysharp.Threading.Tasks;
-using Utility;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 

@@ -1,4 +1,3 @@
-using BattleModule.Actions;
 using BattleModule.Controllers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
@@ -24,19 +23,23 @@ namespace BattleModule.Scopes.Services
             builder.RegisterComponent(_battleInput);
 
 
-            builder.Register<BattleEventManager>(Lifetime.Singleton);
+            builder.Register<BattleCancelableController>(Lifetime.Scoped);
             
-            builder.Register<BattleTurnController>(Lifetime.Singleton);
+            builder.Register<BattleTimerController>(Lifetime.Scoped);
             
-            builder.Register<BattleTargetingController>(Lifetime.Singleton);
+            builder.Register<BattleTurnEvents>(Lifetime.Scoped);
             
-            builder.Register<BattleActionController>(Lifetime.Singleton);
+            builder.Register<BattleTurnController>(Lifetime.Scoped);
+            
+            builder.Register<BattleTargetingController>(Lifetime.Scoped);
+            
+            builder.Register<BattleActionController>(Lifetime.Scoped);
 
-            builder.Register<BattleAccuracyController>(Lifetime.Singleton);
+            builder.Register<BattleAccuracyController>(Lifetime.Scoped);
             
-            builder.Register<BattleCamera>(Lifetime.Singleton).WithParameter(_mainCamera);
+            builder.Register<BattleCamera>(Lifetime.Scoped).WithParameter(_mainCamera);
             
-            builder.Register<BattleController>(Lifetime.Singleton);
+            builder.Register<BattleController>(Lifetime.Scoped);
         }
     }
 }

@@ -3,11 +3,12 @@ using System.Linq;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneSettings.Targeting;
 using BattleModule.Utility;
+using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Utility;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter

@@ -1,7 +1,6 @@
-using CharacterModule.Stats.Utility;
-using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Utility;
 
-namespace CharacterModule.Stats.Interfaces
+namespace Utility.ObserverPattern
 {
     public interface IStatSubject
     {
