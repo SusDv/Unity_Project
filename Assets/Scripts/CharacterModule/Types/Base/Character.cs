@@ -1,6 +1,5 @@
 using System;
 using CharacterModule.Animation;
-using CharacterModule.Data.Info;
 using CharacterModule.Equipment;
 using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
@@ -13,34 +12,34 @@ namespace CharacterModule.Types.Base
     public class Character : MonoBehaviour, IDisposable
     {
         [SerializeField] 
-        private CharacterSettings _characterSettings;
+        private BaseSettings _baseSettings;
         
         [field: SerializeField] 
         public AnimationManager AnimationManager { get; private set; }
         
-        public StatManager CharacterStats { get; private set; }
+        public StatManager Stats { get; private set; }
 
         public EquipmentController EquipmentController { get; private set; }
 
-        public SpellContainer CharacterSpells { get; private set; }
+        public SpellContainer SpellContainer { get; private set; }
 
-        public CharacterInformation CharacterInformation { get; private set; }
+        public BaseInformation BaseInformation { get; private set; }
 
-        public HealthManager HealthManager{ get; private set; }
+        public HealthManager HealthManager{  get; private set; }
 
         public void Init()
         {
-            CharacterStats = new StatManager(_characterSettings.BaseStats);
+            Stats = new StatManager(_baseSettings.BaseStats);
 
-            CharacterSpells = new SpellContainer(_characterSettings.BaseSpells);
+            SpellContainer = new SpellContainer(_baseSettings.BaseSpells);
 
             EquipmentController = new EquipmentController(this);
 
             HealthManager = new HealthManager(this);
 
-            CharacterInformation = _characterSettings.CharacterInformation;
+            BaseInformation = _baseSettings.BaseInformation;
 
-            EquipmentController.WeaponController.Equip(_characterSettings.BaseWeapon);
+            EquipmentController.WeaponController.Equip(_baseSettings.BaseWeapon);
         }
 
         public void Dispose()

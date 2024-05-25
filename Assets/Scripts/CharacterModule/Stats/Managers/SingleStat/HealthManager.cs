@@ -1,8 +1,7 @@
 using System;
-using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.Utility;
-using CharacterModule.Stats.Utility.Enums;
 using CharacterModule.Types.Base;
+using CharacterModule.Utility;
+using Utility.ObserverPattern;
 
 namespace CharacterModule.Stats.Managers.SingleStat
 {
@@ -18,7 +17,7 @@ namespace CharacterModule.Stats.Managers.SingleStat
         {
             _observableCharacter = character;
             
-            character.CharacterStats.AttachStatObserver(this);
+            character.Stats.AttachStatObserver(this);
         }
 
         public void UpdateValue(StatInfo statInfo)

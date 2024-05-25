@@ -1,5 +1,5 @@
 using System;
-using CharacterModule.Stats.Utility;
+using CharacterModule.Utility;
 
 namespace CharacterModule.Stats.Interfaces
 {
@@ -12,5 +12,18 @@ namespace CharacterModule.Stats.Interfaces
         public void OnAdded();
         
         public IModifier Clone();
+    }
+
+    public interface IModifier<T> : IEquatable<IModifier<T>>
+    {
+        public T Type { get; }
+
+        public ModifierData ModifierData { get; }
+        
+        public void OnRemove();
+        
+        public void OnAdded();
+        
+        public IModifier<T> Clone();
     }
 }

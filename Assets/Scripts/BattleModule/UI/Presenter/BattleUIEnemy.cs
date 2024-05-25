@@ -3,10 +3,11 @@ using System.Linq;
 using BattleModule.UI.Presenter.SceneSettings.Enemy;
 using BattleModule.UI.View;
 using BattleModule.Utility;
+using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
-using Utility;
 using UnityEngine;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
@@ -47,7 +48,7 @@ namespace BattleModule.UI.Presenter
                 
                 _battleUIEnemies.Add(battleUICharacterView);
 
-                battleUICharacterView.SetData(enemy.CharacterStats);
+                battleUICharacterView.SetData(enemy.Stats);
             }
         }
     }

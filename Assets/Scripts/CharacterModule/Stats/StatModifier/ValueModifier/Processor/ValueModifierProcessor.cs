@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.StatModifier.ValueModifier.Base;
-using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Utility;
 using Utility;
-using Utility.Types;
 
 namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
 {
@@ -23,16 +21,16 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
             _initialized = true;
         }
 
-        public static void ModifyValue(Ref<float> valueToModify, IModifier modifier) 
+        public static void ModifyValue(ModifierData data) 
         {
             if (!_initialized)
             {
                 Init();
             }
 
-            var valueModifier = ValueModifiers[modifier.ModifierData.ValueModifierType];
+            var valueModifier = ValueModifiers[data.ValueModifierType];
 
-            valueModifier.ModifyValue(valueToModify, modifier.ModifierData.Value);
+            valueModifier.ModifyValue(data.ValueToModify, data.Value);
         }
     }
 }

@@ -1,6 +1,5 @@
 using BattleModule.Utility;
 using UnityEngine.SceneManagement;
-using Utility;
 using VContainer.Unity;
 
 namespace BattleModule.Transition

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Actions.BattleActions.Interfaces;
@@ -13,18 +12,13 @@ namespace BattleModule.Actions.BattleActions.Base
 
         protected IAction ActionObject;
 
-        public Action OnActionFinished = delegate { };
-
-        public BattleActionContext GetBattleActionContext() 
+        public BattleActionContext Init(object actionObject, Character currentCharacterType)
         {
-            return _battleActionContext;
-        }
-
-        public void Init(object actionObject)
-        {
-            _battleActionContext = new BattleActionContext(actionObject);
+            _battleActionContext = new BattleActionContext(actionObject, currentCharacterType);
 
             ActionObject = (actionObject as IActionProvider)?.GetAction();
+
+            return _battleActionContext;
         }
 
         public virtual void PerformAction(Character source, 
@@ -32,8 +26,6 @@ namespace BattleModule.Actions.BattleActions.Base
             Dictionary<Character, BattleAccuracy> accuracies)
         {
             source.EquipmentController.WeaponController.GetSpecialAttack().Charge(5f);
-            
-            OnActionFinished?.Invoke();
         }
     }
 }

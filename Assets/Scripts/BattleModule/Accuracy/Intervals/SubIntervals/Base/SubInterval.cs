@@ -1,8 +1,7 @@
-using BattleModule.Accuracy.Intervals.Utility;
-using BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Utility;
 
-namespace BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals.Base
+namespace BattleModule.Accuracy.Intervals.SubIntervals.Base
 {
     public abstract class SubInterval
     {

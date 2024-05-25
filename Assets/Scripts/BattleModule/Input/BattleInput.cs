@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using BattleModule.Utility;
-using BattleModule.Utility.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -14,26 +11,16 @@ namespace BattleModule.Input
         
         private BattleInputAction.ControlsActions BattleControls { get; set; }
         
-        public Action OnMouseButtonPressed  = delegate { };
+        public event Action OnMouseButtonPressed  = delegate { };
 
-        public Action<int> OnArrowsKeyPressed = delegate { };
-        
+        public event Action<int> OnArrowsKeyPressed = delegate { };
+
+        public event Action OnCancelButtonPressed = delegate { };
+
         public Vector2 MousePosition { get; private set; }
         
 
-        private List<IBattleCancelable> _cancelableList = new();
-
-        private bool isLoaded;
-        
-        public void AppendCancelable(IBattleCancelable battleCancelable)
-        {
-            _cancelableList.Add(battleCancelable);
-        }
-
-        public void PrependCancelable(IBattleCancelable battleCancelable)
-        {
-            _cancelableList = _cancelableList.Prepend(battleCancelable).ToList();
-        }
+        private bool _isLoaded;
 
         public UniTask Load()
         {
@@ -45,14 +32,14 @@ namespace BattleModule.Input
 
             BattleControls.MousePosition.performed += MousePosition_Changed;
             
-            isLoaded = true;
+            _isLoaded = true;
             
             return UniTask.CompletedTask;
         }
 
         private void Update()
         {
-            if (!isLoaded)
+            if (!_isLoaded)
             {
                 return;
             }
@@ -82,22 +69,9 @@ namespace BattleModule.Input
 
         private void CancelButtonPressed()
         {
-            if (!BattleControls.Cancel.WasPressedThisFrame())
+            if (BattleControls.Cancel.WasPressedThisFrame())
             {
-                return;
-            }
-            
-            HandleCancelAction();
-        }
-
-        private void HandleCancelAction()
-        {
-            for (int i = _cancelableList.Count - 1; i >= 0; i--)
-            {
-                if (!_cancelableList[i].Cancel())
-                {
-                    break;
-                }
+                OnCancelButtonPressed?.Invoke();
             }
         }
 

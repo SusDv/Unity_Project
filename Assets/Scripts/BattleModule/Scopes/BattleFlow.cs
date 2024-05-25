@@ -18,7 +18,9 @@ namespace BattleModule.Scopes
         
         private readonly BattleInput _battleInput;
         private readonly BattleSpawner _battleSpawner;
+        private readonly BattleTimerController _battleTimerController;
         private readonly BattleController _battleController;
+        private readonly BattleCancelableController _battleCancelableController;
         private readonly BattleTurnController _battleTurnController;
         private readonly BattleTargetingController _battleTargetingController;
         private readonly BattleActionController _battleActionController;
@@ -41,6 +43,8 @@ namespace BattleModule.Scopes
             BattleInput battleInput,
             BattleSpawner battleSpawner,
             BattleController battleController,
+            BattleCancelableController battleCancelableController,
+            BattleTimerController battleTimerController,
             BattleTurnController battleTurnController,
             BattleTargetingController battleTargetingController,
             BattleActionController battleActionController,
@@ -62,6 +66,8 @@ namespace BattleModule.Scopes
             _battleInput = battleInput;
             _battleSpawner = battleSpawner;
             _battleController = battleController;
+            _battleCancelableController = battleCancelableController;
+            _battleTimerController = battleTimerController;
             _battleTurnController = battleTurnController;
             _battleTargetingController = battleTargetingController;
             _battleActionController = battleActionController;
@@ -93,7 +99,9 @@ namespace BattleModule.Scopes
             await _assetLoader.LoadBattleAssets();
 
             await _loadingService.BeginLoading(_battleInput);
+            await _loadingService.BeginLoading(_battleTimerController);
             await _loadingService.BeginLoading(_battleSpawner);
+            await _loadingService.BeginLoading(_battleCancelableController);
             await _loadingService.BeginLoading(_battleTurnController, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleTargetingController, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleActionController);

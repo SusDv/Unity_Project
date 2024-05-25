@@ -13,7 +13,7 @@ namespace CharacterModule.Equipment
         
         public ArmorController(Character belongTo)
         {
-            _statManager = belongTo.CharacterStats;
+            _statManager = belongTo.Stats;
         }
 
         public void Equip(Armor armor)

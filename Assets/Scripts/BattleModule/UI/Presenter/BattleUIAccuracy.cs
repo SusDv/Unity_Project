@@ -9,7 +9,7 @@ using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Utility;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter

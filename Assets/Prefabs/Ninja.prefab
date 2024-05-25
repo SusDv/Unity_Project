@@ -1311,7 +1311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ddb50d3810fb44bae9f20a26bd6a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterSettings: {fileID: 11400000, guid: cb0b7510adc85f2468fc300403b75d82, type: 2}
+  _baseSettings: {fileID: 11400000, guid: cb0b7510adc85f2468fc300403b75d82, type: 2}
   <AnimationManager>k__BackingField: {fileID: 201906273005953310}
 --- !u!95 &-3300252270310966431
 Animator:

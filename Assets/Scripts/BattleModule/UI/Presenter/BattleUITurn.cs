@@ -6,10 +6,10 @@ using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneSettings.Turn;
 using BattleModule.UI.View;
 using BattleModule.Utility;
-using CharacterModule.Stats.Utility.Enums;
 using CharacterModule.Types.Base;
+using CharacterModule.Utility;
 using Cysharp.Threading.Tasks;
-using Utility;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter 
@@ -63,13 +63,14 @@ namespace BattleModule.UI.Presenter
             
             for (var i = 0; i < battleTurnContext.CharactersInTurn.Count; i++)
             {
-                _battleUITurnViews[i].SetData(battleTurnContext.CharactersInTurn[i].CharacterInformation.CharacterName,battleTurnContext.CharactersInTurn[i].CharacterStats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), battleTurnContext.CharactersInTurn[i] == battleTurnContext.CharacterInAction);
+                _battleUITurnViews[i].SetData(battleTurnContext.CharactersInTurn[i].BaseInformation.CharacterName,battleTurnContext.CharactersInTurn[i].Stats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue.ToString(CultureInfo.InvariantCulture), battleTurnContext.CharactersInTurn[i] == battleTurnContext.CharactersInTurn.First());
             }
         }
 
         private void CheckCharactersCount(BattleTurnContext battleTurnContext)
         {
-            for (int i = battleTurnContext.CharactersInTurn.Count; i < _battleUITurnViews.Count; i++)
+            for (int i = battleTurnContext.CharactersInTurn.Count; 
+                 i < _battleUITurnViews.Count; i++)
             {
                 Destroy(_battleUITurnViews[i].gameObject);
                 

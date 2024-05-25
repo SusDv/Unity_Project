@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using CharacterModule.Stats.Interfaces;
+using CharacterModule.Utility;
 
 namespace CharacterModule.Stats.StatModifier
 {
     [Serializable]
     public abstract class StatModifiers
     {
-        protected List<IModifier> Modifiers = new();
+        protected List<IModifier<StatType>> Modifiers = new();
 
-        protected List<ITemporaryModifier> TemporaryModifiers = new();
+        protected List<ITemporaryModifier<StatType>> TemporaryModifiers = new();
 
-        public virtual (List<ITemporaryModifier> temporaryModifiers, List<IModifier> modifiers) GetModifiers()
+        public virtual (List<ITemporaryModifier<StatType>> temporaryModifiers, List<IModifier<StatType>> modifiers) GetModifiers()
         {
-            return (TemporaryModifiers.Select(t => t.Clone()).Cast<ITemporaryModifier>().ToList(), Modifiers.Select(m => m.Clone()).ToList());
+            return (TemporaryModifiers.Select(t => t.Clone()).Cast<ITemporaryModifier<StatType>>().ToList(), Modifiers.Select(m => m.Clone()).ToList());
         }
 
         public void SetSourceID(int id)
         {
-            var modifiers = new List<IModifier>();
+            var modifiers = new List<IModifier<StatType>>();
             
             modifiers.AddRange(Modifiers);
             

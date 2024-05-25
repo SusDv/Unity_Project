@@ -1,6 +1,6 @@
 ﻿﻿using System;
- using CharacterModule.Stats.Utility.Enums;
-using UnityEngine;
+ using CharacterModule.Utility;
+ using UnityEngine;
 
 namespace CharacterModule.Stats.Base 
 {

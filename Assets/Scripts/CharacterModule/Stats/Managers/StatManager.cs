@@ -1,37 +1,42 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Actions;
+using System.Collections.Generic;
 using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.Settings;
-using CharacterModule.Stats.StatModifier.Modifiers;
-using CharacterModule.Stats.Utility;
-using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Stats.Modifiers;
+using BattleModule.Utility;
+using CharacterModule.Settings;
+using CharacterModule.Utility;
+using Utility.ObserverPattern;
 
 namespace CharacterModule.Stats.Managers
 {
     public class StatManager : IStatSubject
     {
-        private readonly List<IModifier> _modifiersInUse = new ();
+        private readonly List<IModifier<StatType>> _modifiersInUse = new ();
         
         private readonly List<IStatObserver> _statObservers = new ();
         
         private readonly Dictionary<StatType, Stat> _stats = new ();
+
+        private Func<int, BattleTimer> _battleTimerFactory;
         
         private void NotifyObservers(StatType statType)
         {
             var statInfo = GetStatInfo(statType);
             
-            foreach (var statObserver in _statObservers.Where(o => o.StatType == statType))
+            foreach (var statObserver in 
+                     _statObservers
+                         .Where(o => o.StatType == statType))
             {
                 statObserver.UpdateValue(statInfo);
             }
         }
         
-        private bool FoundExistingTemporaryModifier(ITemporaryModifier temporaryModifier)
+        private bool FindExistingTemporaryModifier(ITemporaryModifier<StatType> temporaryModifier)
         {
-            if (!TryGetExistingModifier(temporaryModifier, out var existingModifier))
+            if (!TryGetExistingModifier(temporaryModifier, 
+                    out var existingModifier))
             {
                 return false;
             }
@@ -41,27 +46,30 @@ namespace CharacterModule.Stats.Managers
             return true;
         }
 
-        private bool TryGetExistingModifier(IModifier temporaryModifier, out ITemporaryModifier existingModifier)
+        private bool TryGetExistingModifier(IModifier<StatType> temporaryModifier, out ITemporaryModifier<StatType> existingModifier)
         {
-            existingModifier = _modifiersInUse.OfType<ITemporaryModifier>().FirstOrDefault(t => t.Equals(temporaryModifier));
+            existingModifier = _modifiersInUse
+                .OfType<ITemporaryModifier<StatType>>()
+                .FirstOrDefault(t => 
+                    t.Equals(temporaryModifier));
 
             return existingModifier != default;
         }
         
-        private void TriggerExistingModifier(ITemporaryModifier existingModifier, ITemporaryModifier temporaryModifier)
+        private void TriggerExistingModifier(ITemporaryModifier<StatType> existingModifier, ITemporaryModifier<StatType> temporaryModifier)
         {
             existingModifier.BattleTimer.EndTimer();
             
             existingModifier.Duration = temporaryModifier.Duration;
         }
 
-        private void InitializeModifier(IModifier modifier)
+        private void InitializeModifier(IModifier<StatType> modifier)
         {
-            modifier.SetValueToModify(_stats[((IStatModifier)modifier).StatType]);
+            modifier.SetValueToModify(_stats[modifier.Type]);
 
             modifier.OnAdded();
             
-            NotifyObservers(((IStatModifier) modifier).StatType);
+            NotifyObservers(modifier.Type);
         }
         
         public StatManager(BaseStats baseStats)
@@ -72,24 +80,17 @@ namespace CharacterModule.Stats.Managers
             }
         }
 
+        public void SetBattleTimerFactory(Func<int, BattleTimer> battleTimerFactory)
+        {
+            _battleTimerFactory = battleTimerFactory;
+        }
+
         public StatInfo GetStatInfo(StatType statType)
         {
             return StatInfo.GetInstance(_stats[statType]);
         }
-
-        public void AttachStatObserver(IStatObserver statObserver)
-        {
-            _statObservers.Add(statObserver);
-            
-            statObserver.UpdateValue(GetStatInfo(statObserver.StatType));
-        }
-
-        public void DetachStatObserver(IStatObserver statObserver)
-        {
-            _statObservers.Remove(statObserver);
-        }
         
-        public void AddModifier(IModifier statModifier)
+        public void AddModifier(IModifier<StatType> statModifier)
         {
             InitializeModifier(statModifier);
             
@@ -101,14 +102,16 @@ namespace CharacterModule.Stats.Managers
             _modifiersInUse.Add(statModifier);
         }
 
-        public void AddModifier(ITemporaryModifier temporaryModifier)
+        public void AddModifier(ITemporaryModifier<StatType> temporaryModifier)
         {
-            if (FoundExistingTemporaryModifier(temporaryModifier))
+            if (FindExistingTemporaryModifier(temporaryModifier))
             {
                 return;
             }
             
-            temporaryModifier.BattleTimer = BattleEventManager.CreateTimer();
+            temporaryModifier.BattleTimer = _battleTimerFactory.Invoke(0);
+            
+            temporaryModifier.SetRemoveCallback((modifier) => _modifiersInUse.Remove(modifier));
             
             InitializeModifier(temporaryModifier);
             
@@ -122,35 +125,50 @@ namespace CharacterModule.Stats.Managers
 
         public void TriggerSealEffects()
         {
-            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier>().Where(modifier => modifier.TemporaryEffectType is TemporaryEffectType.SEAL_EFFECT))
+            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier<StatType>>().Where(modifier => modifier.TemporaryEffectType is TemporaryEffectType.SEAL_EFFECT))
             {
                 temporaryModifier.BattleTimer.EndTimer();
                 
-                NotifyObservers(((IStatModifier) temporaryModifier).StatType);
+                NotifyObservers(temporaryModifier.Type);
             }
-            
-            RemoveModifiersOnCondition(modifier => modifier is ITemporaryModifier { Duration: <= 0 });
         }
 
-        public void RemoveModifiersOnCondition(Func<IModifier, bool> conditionFunction)
+        public void RemoveModifiersOnCondition(Func<IModifier<StatType>, bool> conditionFunction)
         {
             _modifiersInUse.RemoveAll(RemoveConditionPredicate);
             
             return;
 
-            bool RemoveConditionPredicate(IModifier modifier)
+            bool RemoveConditionPredicate(IModifier<StatType> modifier)
             {
-                bool shouldRemove = conditionFunction.Invoke(modifier);
-
-                if (shouldRemove)
+                if (!conditionFunction.Invoke(modifier))
                 {
-                    modifier.OnRemove();
+                    return false;
                 }
                 
-                NotifyObservers(((IStatModifier) modifier).StatType);
-
-                return shouldRemove;
+                modifier.OnRemove();
+                    
+                NotifyObservers(modifier.Type);
+                
+                return true;
             }
+        }
+
+        public void ResetStatValue(StatType statType)
+        {
+            ApplyInstantModifier(statType, -GetStatInfo(statType).FinalValue);
+        }
+
+        public void AttachStatObserver(IStatObserver statObserver)
+        {
+            _statObservers.Add(statObserver);
+            
+            statObserver.UpdateValue(GetStatInfo(statObserver.StatType));
+        }
+
+        public void DetachStatObserver(IStatObserver statObserver)
+        {
+            _statObservers.Remove(statObserver);
         }
     }
 }

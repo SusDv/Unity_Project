@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CharacterModule.Spells.Settings;
+using CharacterModule.Settings;
 
 namespace CharacterModule.Spells.Core
 {

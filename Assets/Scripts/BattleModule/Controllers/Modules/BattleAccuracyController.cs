@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility;
-using CharacterModule.Stats.Utility.Enums;
 using CharacterModule.Types.Base;
+using CharacterModule.Utility;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
@@ -40,17 +41,17 @@ namespace BattleModule.Controllers.Modules
         {
             _battleAccuracies.Clear();
             
-            float accuracy = battleTurnContext.CharacterInAction.CharacterStats.GetStatInfo(StatType.ACCURACY).FinalValue;
+            float accuracy = battleTurnContext.CharactersInTurn.First().Stats.GetStatInfo(StatType.ACCURACY).FinalValue;
  
             foreach (var character in battleTurnContext.CharactersInTurn)
             {
-                float evasion = character.CharacterStats.GetStatInfo(StatType.EVASION).FinalValue;
+                float evasion = character.Stats.GetStatInfo(StatType.EVASION).FinalValue;
                 
                 _battleAccuracies.Add(character, 
                     new BattleAccuracy().Init(
                     accuracy, 
                     evasion, 
-                    character.GetType() == battleTurnContext.CharacterInAction.GetType()));
+                    character.GetType() == battleTurnContext.CharactersInTurn.First().GetType()));
             }
             
             OnAccuraciesChanged?.Invoke(_battleAccuracies);

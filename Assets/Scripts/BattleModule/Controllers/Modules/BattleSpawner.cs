@@ -4,7 +4,6 @@ using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
@@ -18,7 +17,9 @@ namespace BattleModule.Controllers.Modules
         [SerializeField]
         private SpawnPoint _enemySpawnPoint;
         
+        
         private BattleTransitionData _battleTransitionData;
+        
         
         private readonly List<Character> _spawnedCharacters = new ();
         
@@ -52,7 +53,7 @@ namespace BattleModule.Controllers.Modules
                     characterTransform.position, 
                     characterTransform.rotation, 
                     spawnPoint.CharacterSpawnPoint)).ToList();
-            
+
             spawnedCharacters.ForEach(c => c.Init());
 
             _spawnedCharacters.AddRange(spawnedCharacters);

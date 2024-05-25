@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.StatModifier.Modifiers;
+using CharacterModule.Stats.Modifiers;
+using CharacterModule.Utility;
 using UnityEngine;
 
 namespace CharacterModule.Stats.StatModifier
@@ -15,7 +16,7 @@ namespace CharacterModule.Stats.StatModifier
         [field: SerializeField] 
         private List<TemporaryStatModifier> _temporaryStatModifiers = new();
         
-        public override (List<ITemporaryModifier>, List<IModifier>) GetModifiers()
+        public override (List<ITemporaryModifier<StatType>>, List<IModifier<StatType>>) GetModifiers()
         {
             ClearLists();
             

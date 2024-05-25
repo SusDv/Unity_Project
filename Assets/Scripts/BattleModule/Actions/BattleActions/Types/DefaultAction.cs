@@ -2,8 +2,8 @@
 using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Base;
-using CharacterModule.Stats.Utility.Enums;
 using CharacterModule.Types.Base;
+using CharacterModule.Utility;
 
 namespace BattleModule.Actions.BattleActions.Types
 {
@@ -12,9 +12,9 @@ namespace BattleModule.Actions.BattleActions.Types
         public override void PerformAction(Character source,
             List<Character> targets, Dictionary<Character, BattleAccuracy> accuracies)
         {
-            var characterStats = source.CharacterStats;
+            var characterStats = source.Stats;
                 
-            var target = targets.First().CharacterStats;
+            var target = targets.First().Stats;
             
             float damage = -characterStats.GetStatInfo(StatType.ATTACK).FinalValue;
             

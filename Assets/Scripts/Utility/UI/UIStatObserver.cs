@@ -1,7 +1,6 @@
-using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.Utility;
-using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Utility;
 using UnityEngine;
+using Utility.ObserverPattern;
 
 namespace Utility.UI
 {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.AccuracyModule.AccuracyRange.Intervals.SubIntervals.Base;
-using BattleModule.AccuracyModule.AccuracyRange.Intervals.Utility;
+using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
-using Utility.Types;
+using BattleModule.Utility;
+using Utility;
 using Random = UnityEngine.Random;
 
 namespace BattleModule.Accuracy
@@ -11,7 +11,7 @@ namespace BattleModule.Accuracy
     public class BattleAccuracy
     {
         private readonly Dictionary<SubIntervalType, SubInterval> _subIntervals = new();
-
+        
         public float HitRate { get; private set; }
 
         public BattleAccuracy()

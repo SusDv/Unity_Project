@@ -15,15 +15,18 @@ namespace BattleModule.Controllers
 
         public readonly BattleActionController BattleActionController;
 
-        public readonly BattleTargetingController BattleTargetingController;     
+        public readonly BattleTargetingController BattleTargetingController;
+
+        public readonly BattleTurnEvents BattleTurnEvents;
 
         public readonly BattleTurnController BattleTurnController;
         
         public BattleController(BattleInput battleInput,
             BattleCamera battleCamera, 
             BattleActionController battleActionController,
-            BattleTargetingController battleTargetingController, 
-            BattleTurnController battleTurnController)
+            BattleTargetingController battleTargetingController,
+            BattleTurnController battleTurnController,
+            BattleTurnEvents battleTurnEvents)
         {
             _battleStateMachine = new BattleStateMachine(this);
             
@@ -32,10 +35,12 @@ namespace BattleModule.Controllers
             BattleCamera = battleCamera;
             
             BattleActionController = battleActionController;
-            
+
             BattleTargetingController = battleTargetingController;
-            
+
             BattleTurnController = battleTurnController;
+            
+            BattleTurnEvents = battleTurnEvents;
         }
 
         public void StartBattle()

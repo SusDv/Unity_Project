@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BattleModule.Actions.BattleActions.Types;
 using UnityEngine;
 using BattleModule.UI.View;
@@ -8,7 +9,7 @@ using BattleModule.UI.Presenter.SceneSettings.Spells;
 using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
-using Utility;
+using Utility.Constants;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
@@ -55,7 +56,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            _characterInAction = battleTurnContext.CharacterInAction;
+            _characterInAction = battleTurnContext.CharactersInTurn.First();
 
             DisplayCharacterSpells();
         }
@@ -79,7 +80,7 @@ namespace BattleModule.UI.Presenter
         {
             BattleSpellsClear();
 
-            foreach (var spell in _characterInAction.CharacterSpells.GetSpells()) 
+            foreach (var spell in _characterInAction.SpellContainer.GetSpells()) 
             {
                 var battleUISpellView = Instantiate(_battleUISpellView,
                     _battleSpellsSceneSettings.BattleUISpellsParent.transform.position,
@@ -96,7 +97,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            var selectedSpell = _characterInAction.CharacterSpells.GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            var selectedSpell = _characterInAction.SpellContainer.GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
             _battleActionController.SetBattleAction<SpellAction>(selectedSpell);
         }

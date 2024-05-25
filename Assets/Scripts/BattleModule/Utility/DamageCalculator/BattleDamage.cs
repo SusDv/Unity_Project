@@ -1,4 +1,4 @@
-﻿using CharacterModule.Stats.Utility;
+﻿using CharacterModule.Utility;
 
 namespace BattleModule.Utility.DamageCalculator
 {

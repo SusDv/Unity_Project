@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using CharacterModule.Settings;
 using Utility.UI;
-using CharacterModule.Data.Info;
-using CharacterModule.Stats.Interfaces;
 using CharacterModule.WeaponSpecial.Interfaces;
+using Utility.ObserverPattern;
 
 namespace BattleModule.UI.View 
 {
@@ -17,10 +17,10 @@ namespace BattleModule.UI.View
         [SerializeField] private BattleUISpecialAttackView _specialAttack;
 
         public void SetData(ISpecialAttack specialAttack,
-            CharacterInformation characterInformation, 
+            BaseInformation baseInformation, 
             IStatSubject statSubject) 
         {
-            _characterImage.sprite = characterInformation.CharacterImage;
+            _characterImage.sprite = baseInformation.CharacterImage;
             
             _specialAttack.SetData(specialAttack);
 

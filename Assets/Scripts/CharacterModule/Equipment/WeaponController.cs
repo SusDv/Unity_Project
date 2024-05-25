@@ -19,7 +19,7 @@ namespace CharacterModule.Equipment
 
         public WeaponController (Character character)
         {
-            _statModifierManager = character.CharacterStats;
+            _statModifierManager = character.Stats;
         }
 
         public void Equip(Weapon equipment) 

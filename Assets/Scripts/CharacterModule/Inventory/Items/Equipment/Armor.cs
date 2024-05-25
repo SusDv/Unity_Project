@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BattleModule.Accuracy.Transformer;
+using BattleModule.Actions.BattleActions.Transformer;
 using UnityEngine;
 
 namespace CharacterModule.Inventory.Items.Equipment

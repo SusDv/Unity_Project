@@ -2,7 +2,7 @@ using BattleModule.Actions.BattleActions.Interfaces;
 using BattleModule.Actions.BattleActions.Outcome;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
-using CharacterModule.Stats.Utility.Enums;
+using CharacterModule.Utility;
 
 namespace BattleModule.Actions.BattleActions.Processors
 {
