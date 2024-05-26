@@ -25,6 +25,13 @@ namespace BattleModule.Actions.BattleActions.Base
             List<Character> targets,
             Dictionary<Character, BattleAccuracy> accuracies)
         {
+            var sourceStats = source.Stats;
+
+            foreach (var target in targets)
+            {
+                ActionObject.ApplyModifiers(sourceStats, target.Stats, accuracies[target].Evaluate());
+            }
+            
             source.EquipmentController.WeaponController.GetSpecialAttack().Charge(5f);
         }
     }

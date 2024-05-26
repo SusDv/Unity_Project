@@ -8,19 +8,17 @@ namespace BattleModule.Utility
 
         private int _expireTime;
         
-        public static int LocalCycle { get; set; }
-
-        public bool Started { get; private set; }
-
         public bool Expired => _expireTime == 0;
         
         public event Action OnAdvance = delegate { };
 
         public event Action OnExpired = delegate { };
+        
+        private bool Started { get; set; }
 
         public BattleTimer(int expireTime = 0)
         {
-            _expireTimeStored = _expireTime = expireTime == 0 ? LocalCycle : expireTime;
+            _expireTimeStored = _expireTime = expireTime;
         }
         
         public void AdvanceTimer()

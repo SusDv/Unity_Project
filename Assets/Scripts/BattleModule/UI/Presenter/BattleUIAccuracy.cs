@@ -60,7 +60,7 @@ namespace BattleModule.UI.Presenter
             {
                 if (_accuracyViews.TryGetValue(target, out var accuracyView))
                 {
-                    accuracyView.SetData(Mathf.RoundToInt(_battleAccuracies[target].HitRate * 100).ToString(CultureInfo.CurrentCulture));
+                    accuracyView.SetData(_battleAccuracies[target].HitRate.ToString(CultureInfo.CurrentCulture));
                 
                     accuracyView.gameObject.SetActive(true);
                 }

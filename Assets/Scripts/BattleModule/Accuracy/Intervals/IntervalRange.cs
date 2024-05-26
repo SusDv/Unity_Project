@@ -4,20 +4,27 @@ namespace BattleModule.Accuracy.Intervals
 {
     public class IntervalRange
     {
-        public float Start { get; }
+        public int Start { get; }
 
-        public float End { get; }
+        public int End { get; }
         
-        public IntervalRange(float start, float end)
+        public IntervalRange(int start, int end)
         {
             Start = start;
 
             End = end;
         }
 
-        public bool IsWithinRange(float value)
+        private bool IsValidInterval()
         {
-            return Start == 0 && Mathf.RoundToInt(Start - End) == 0 && (value >= Start && value < End);
+            return !(Start == 0 && Mathf.RoundToInt(Start - End) == 0);
         }
+
+        public bool IsWithinRange(int value)
+        {
+            return IsValidInterval() && (value >= Start && value <= End);
+        }
+        
+        
     }
 }

@@ -20,5 +20,10 @@ namespace Utility.Constants
             public const string TargetImageView = "TargetImageView";
             public const string TurnView = "TurnView";
         }
+
+        public static class AccuracyConstants
+        {
+            public const int AccuracyMeasureValue = 100;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace BattleModule.Accuracy.Intervals.SubIntervals
 
         protected override void UpdateIntervalRange()
         {
-            IntervalRange = new IntervalRange(PreviousInterval.IntervalRange.End, PreviousInterval.IntervalRange.End + HitRate * SubIntervalPercentage);
+            IntervalRange = new IntervalRange(PreviousInterval.IntervalRange.End + 1, (int)(PreviousInterval.IntervalRange.End + HitRate * SubIntervalPercentage));
         }
     }
 }

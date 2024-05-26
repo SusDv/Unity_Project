@@ -24,6 +24,8 @@ namespace CharacterModule.Stats.Modifiers.Base
         [field: SerializeField]
         public ModifierData ModifierData { get; private set; }
         
+        public bool IsNegative => ModifierData.Value < 0;
+        
         public virtual void OnAdded()
         {
             ValueModifierProcessor.ModifyValue(ModifierData);

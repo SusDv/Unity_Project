@@ -1,4 +1,3 @@
-using System;
 using BattleModule.Utility;
 using CharacterModule.Stats.Modifiers.Effects.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
@@ -10,9 +9,9 @@ namespace CharacterModule.Stats.Modifiers.Effects
     public class TimeEffect : TemporaryEffect
     {
         public override void Init(ModifierData modifierData,
-            BattleTimer battleTimer, Ref<int> duration, Action removeModifier)
+            BattleTimer battleTimer, Ref<int> duration)
         {
-            base.Init(modifierData, battleTimer, duration, removeModifier);
+            base.Init(modifierData, battleTimer, duration);
             
             BattleTimer.StartTimer();
         }

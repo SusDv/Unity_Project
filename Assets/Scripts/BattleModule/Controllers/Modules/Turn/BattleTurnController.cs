@@ -84,7 +84,7 @@ namespace BattleModule.Controllers.Modules.Turn
         {
             ResetFirstCharacterBattlePoints();
             
-            _spawnedCharacters.ForEach(c => c.Stats.TriggerSealEffects());
+            _spawnedCharacters.First().Stats.TriggerSealEffects();
         }
 
         public UniTask Load(List<Character> characters)

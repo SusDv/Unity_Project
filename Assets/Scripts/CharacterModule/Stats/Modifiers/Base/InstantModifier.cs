@@ -17,11 +17,13 @@ namespace CharacterModule.Stats.Modifiers.Base
             ModifierData = modifierData;
         }
 
-        
-        public T Type { get; }
+        [field: SerializeField]
+        public T Type { get; private set; }
 
         [field: SerializeField]
         public ModifierData ModifierData { get; private set; }
+
+        public bool IsNegative => ModifierData.Value < 0;
 
         public virtual void OnAdded()
         {

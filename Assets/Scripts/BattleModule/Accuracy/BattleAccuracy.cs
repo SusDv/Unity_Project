@@ -3,7 +3,9 @@ using System.Linq;
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.Utility;
+using UnityEngine;
 using Utility;
+using Utility.Constants;
 using Random = UnityEngine.Random;
 
 namespace BattleModule.Accuracy
@@ -49,7 +51,7 @@ namespace BattleModule.Accuracy
 
         private void CalculateIntervalRange(float accuracy, float evasion, bool isAlly)
         {
-            HitRate = isAlly ? 1f : accuracy / (accuracy + evasion);
+            HitRate = isAlly ? RuntimeConstants.AccuracyConstants.AccuracyMeasureValue : Mathf.RoundToInt(accuracy / (accuracy + evasion) * 100);
             
             foreach (var interval in _subIntervals)
             {
@@ -64,7 +66,7 @@ namespace BattleModule.Accuracy
 
         public BattleActionOutcome Evaluate()
         {
-            float randomValue = Random.Range(0, 101) / 100f;
+            int randomValue = Mathf.RoundToInt(Random.Range(0, 100));
             
             return _subIntervals.Values.First(i => 
                 i.IntervalRange.IsWithinRange(randomValue))

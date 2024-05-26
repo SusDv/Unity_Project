@@ -17,11 +17,10 @@ namespace BattleModule.Controllers.Modules
         [SerializeField]
         private SpawnPoint _enemySpawnPoint;
         
-        
         private BattleTransitionData _battleTransitionData;
         
-        
         private readonly List<Character> _spawnedCharacters = new ();
+        
         
         [Inject]
         private void Init(BattleTransitionData battleTransitionData)
