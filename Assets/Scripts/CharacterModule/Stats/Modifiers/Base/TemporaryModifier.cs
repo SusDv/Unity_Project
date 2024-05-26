@@ -13,8 +13,6 @@ namespace CharacterModule.Stats.Modifiers.Base
     public abstract class TemporaryModifier<T> : ITemporaryModifier<T>
     {
         protected TemporaryEffect TemporaryEffect;
-
-        protected Action<ITemporaryModifier<T>> RemoveModifier;
         
         protected TemporaryModifier(
             T type,
@@ -43,12 +41,10 @@ namespace CharacterModule.Stats.Modifiers.Base
         [field: SerializeField]
         public ModifierData ModifierData { get; private set; }
         
+        public bool IsNegative => ModifierData.Value < 0;
+        
         public BattleTimer BattleTimer { get; set; }
-
-        private void SelfRemove()
-        {
-            RemoveModifier?.Invoke(this);
-        }
+        
 
         public virtual void OnAdded()
         {
@@ -56,17 +52,12 @@ namespace CharacterModule.Stats.Modifiers.Base
             
             TemporaryEffect.Init(ModifierData, BattleTimer, 
                     new Ref<int>(() => Duration, 
-                        d => Duration = d), SelfRemove);
+                        d => Duration = d));
         }
 
         public virtual void OnRemove()
         {
             TemporaryEffect.Remove();
-        }
-
-        public void SetRemoveCallback(Action<IModifier<T>> callback)
-        {
-            RemoveModifier = callback;
         }
 
         public abstract IModifier<T> Clone();

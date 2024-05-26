@@ -20,14 +20,18 @@ namespace BattleModule.Actions.BattleActions.Processors
             StatManager target, 
             BattleActionOutcome battleActionOutcome)
         {
-            base.ApplyModifiers(source, target, battleActionOutcome);
+            _consumableItem.OnConsumableUsed?.Invoke(_consumableItem);
+            
+            AddBattlePoints(source);
             
             if (!battleActionOutcome.Success)
             {
                 return;
             }
 
-            _consumableItem.OnConsumableUsed?.Invoke(_consumableItem);
+            ApplyModifiers(target);
+            
+            ApplyTemporaryModifiers(target);
         }
     }
 }

@@ -1,6 +1,7 @@
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.Utility;
+using Utility.Constants;
 
 namespace BattleModule.Accuracy.Intervals.SubIntervals
 {
@@ -19,8 +20,8 @@ namespace BattleModule.Accuracy.Intervals.SubIntervals
 
         protected override void UpdateIntervalRange()
         {
-            IntervalRange = new IntervalRange(PreviousInterval.IntervalRange.End, 
-                PreviousInterval.IntervalRange.End + (1 - HitRate) * SubIntervalPercentage);
+            IntervalRange = new IntervalRange(PreviousInterval.IntervalRange.End + 1,(int)(
+                PreviousInterval.IntervalRange.End + (RuntimeConstants.AccuracyConstants.AccuracyMeasureValue - HitRate) * SubIntervalPercentage));
         }
     }
 }

@@ -58,9 +58,9 @@ namespace CharacterModule.Stats.Managers
         
         private void TriggerExistingModifier(ITemporaryModifier<StatType> existingModifier, ITemporaryModifier<StatType> temporaryModifier)
         {
-            existingModifier.BattleTimer.EndTimer();
+            existingModifier.Duration = temporaryModifier.Duration + 1;
             
-            existingModifier.Duration = temporaryModifier.Duration;
+            existingModifier.BattleTimer.EndTimer();
         }
 
         private void InitializeModifier(IModifier<StatType> modifier)
@@ -71,7 +71,7 @@ namespace CharacterModule.Stats.Managers
             
             NotifyObservers(modifier.Type);
         }
-        
+
         public StatManager(BaseStats baseStats)
         {
             foreach (var stat in baseStats.GetStats())
@@ -110,9 +110,7 @@ namespace CharacterModule.Stats.Managers
             }
             
             temporaryModifier.BattleTimer = _battleTimerFactory.Invoke(0);
-            
-            temporaryModifier.SetRemoveCallback((modifier) => _modifiersInUse.Remove(modifier));
-            
+
             InitializeModifier(temporaryModifier);
             
             _modifiersInUse.Add(temporaryModifier);
@@ -131,6 +129,8 @@ namespace CharacterModule.Stats.Managers
                 
                 NotifyObservers(temporaryModifier.Type);
             }
+            
+            RemoveModifiersOnCondition(m => m is TemporaryStatModifier {Duration: < 0});
         }
 
         public void RemoveModifiersOnCondition(Func<IModifier<StatType>, bool> conditionFunction)

@@ -1,4 +1,3 @@
-using System;
 using BattleModule.Utility;
 using CharacterModule.Utility;
 
@@ -11,7 +10,5 @@ namespace CharacterModule.Stats.Interfaces
         public int Duration { get; set; }
         
         public BattleTimer BattleTimer { get; set; }
-
-        public void SetRemoveCallback(Action<IModifier<T>> callback);
     }
 }

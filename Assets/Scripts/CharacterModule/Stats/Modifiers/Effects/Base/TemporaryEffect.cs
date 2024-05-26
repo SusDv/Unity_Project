@@ -1,4 +1,3 @@
-using System;
 using BattleModule.Utility;
 using CharacterModule.Utility;
 using Utility;
@@ -11,35 +10,31 @@ namespace CharacterModule.Stats.Modifiers.Effects.Base
 
         protected BattleTimer BattleTimer;
 
-        private Action _removeModifier;
-
         private Ref<int> _duration;
         
         public virtual void Init(ModifierData modifierData,
-            BattleTimer battleTimer, Ref<int> duration, Action removeModifier)
+            BattleTimer battleTimer, Ref<int> duration)
         {
             ModifierData = modifierData;
             
             BattleTimer = battleTimer;
-                
-            BattleTimer.OnExpired += Modify;
 
-            _removeModifier = removeModifier;
-            
             _duration = duration;
+            
+            BattleTimer.OnExpired += Modify;
         }
 
         protected virtual void Modify()
         {
-            if (--_duration.Value != 0)
+            --_duration.Value;
+            
+            if (_duration.Value != 0)
             {
                 BattleTimer.ResetTimer();
             }
         }
 
         public virtual void Remove()
-        {
-            _removeModifier();
-        }
+        { }
     }
 }

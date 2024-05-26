@@ -20,6 +20,8 @@ namespace CharacterModule.Stats.Interfaces
 
         public ModifierData ModifierData { get; }
         
+        public bool IsNegative { get; }
+        
         public void OnRemove();
         
         public void OnAdded();
