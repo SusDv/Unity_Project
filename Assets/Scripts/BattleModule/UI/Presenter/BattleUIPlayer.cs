@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleModule.UI.Presenter.SceneReferences.Player;
 using BattleModule.UI.View;
-using BattleModule.UI.Presenter.SceneSettings.Player;
-using BattleModule.Utility;
 using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -15,7 +15,7 @@ namespace BattleModule.UI.Presenter
     public class BattleUIPlayer : MonoBehaviour, ILoadingUnit<List<Character>>
     {
         [SerializeField]
-        private BattlePlayerSceneSettings _battlePlayerSceneSettings;
+        private BattlePlayerSceneReference _battlePlayerSceneReference;
 
         private AssetLoader _assetLoader;
         
@@ -44,8 +44,8 @@ namespace BattleModule.UI.Presenter
             {
                 var battleUICharacterView = Instantiate(
                     _battleUIPlayerView,
-                    _battlePlayerSceneSettings.BattleUIPlayersPanel.transform.position,
-                    Quaternion.identity, _battlePlayerSceneSettings.BattleUIPlayersPanel.transform);
+                    _battlePlayerSceneReference.BattleUIPlayersPanel.transform.position,
+                    Quaternion.identity, _battlePlayerSceneReference.BattleUIPlayersPanel.transform);
                 
                 battleUICharacterView.SetData(player.EquipmentController.WeaponController.GetSpecialAttack(), player.BaseInformation, player.Stats);
                 

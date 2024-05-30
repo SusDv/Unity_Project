@@ -6,10 +6,10 @@ using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.Actions.BattleActions.Types;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules

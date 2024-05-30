@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Utility
+namespace Utility.UI
 {
     public class UILoadingScreen : MonoBehaviour
     {

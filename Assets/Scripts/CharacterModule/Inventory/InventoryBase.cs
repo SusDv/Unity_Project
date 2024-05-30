@@ -77,9 +77,14 @@ namespace CharacterModule.Inventory
             return (-1, InventoryItem.GetEmptyItem());
         }
 
+        public InventoryItem GetItem(int index)
+        {
+            return _inventoryItems[index];
+        }
+
         public List<InventoryItem> GetBattleInventory()
         {
-            return _inventoryItems.Where(item => item.Item.GetType() == typeof(ConsumableItem)).ToList();
+            return _inventoryItems.Where(i => i.Item is ConsumableItem).ToList();
         }
 
         private void ConsumableItemUsed(ItemBase inventoryItem)

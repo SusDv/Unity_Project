@@ -1,5 +1,6 @@
 using System;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 
 namespace CharacterModule.Stats.Interfaces
 {

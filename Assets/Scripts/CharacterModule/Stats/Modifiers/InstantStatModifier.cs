@@ -2,6 +2,7 @@
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Modifiers.Base;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 
 namespace CharacterModule.Stats.Modifiers
 {

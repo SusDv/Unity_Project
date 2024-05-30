@@ -4,7 +4,7 @@ using CharacterModule.Stats.Base;
 using CharacterModule.Stats.Interfaces;
 using Utility;
 
-namespace CharacterModule.Utility
+namespace CharacterModule.Utility.Stats
 {
     public static class StatModifierExtension
     {

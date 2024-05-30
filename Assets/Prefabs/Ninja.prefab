@@ -1272,6 +1272,7 @@ GameObject:
   - component: {fileID: 5625005941891779630}
   - component: {fileID: -3300252270310966431}
   - component: {fileID: 201906273005953310}
+  - component: {fileID: 6981196854878898231}
   m_Layer: 3
   m_Name: Ninja
   m_TagString: Untagged
@@ -1313,6 +1314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseSettings: {fileID: 11400000, guid: cb0b7510adc85f2468fc300403b75d82, type: 2}
   <AnimationManager>k__BackingField: {fileID: 201906273005953310}
+  <SizeHelper>k__BackingField:
+    _capsuleCollider: {fileID: 6981196854878898231}
 --- !u!95 &-3300252270310966431
 Animator:
   serializedVersion: 5
@@ -1347,6 +1350,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterAnimator: {fileID: -3300252270310966431}
+--- !u!136 &6981196854878898231
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4997827589811443351}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &5088980699377726924
 GameObject:
   m_ObjectHideFlags: 0

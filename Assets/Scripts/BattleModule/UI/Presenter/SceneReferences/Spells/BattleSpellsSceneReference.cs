@@ -2,10 +2,10 @@ using System;
 using BattleModule.UI.BattleButton;
 using UnityEngine;
 
-namespace BattleModule.UI.Presenter.SceneSettings.Spells
+namespace BattleModule.UI.Presenter.SceneReferences.Spells
 {
     [Serializable]
-    public class BattleSpellsSceneSettings
+    public class BattleSpellsSceneReference
     {
         [Header("Panel")] 
         [SerializeField] 

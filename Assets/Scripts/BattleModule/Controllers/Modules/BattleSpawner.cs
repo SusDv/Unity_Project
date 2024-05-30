@@ -4,6 +4,7 @@ using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules

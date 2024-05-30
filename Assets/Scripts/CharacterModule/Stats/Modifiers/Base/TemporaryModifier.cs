@@ -4,6 +4,7 @@ using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Modifiers.Effects.Base;
 using CharacterModule.Stats.Modifiers.Effects.Processor;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using UnityEngine;
 using Utility;
 

@@ -6,20 +6,22 @@ namespace BattleModule.Transition
 {
     public class BattleTransitionFlow : IStartable
     {
-        private readonly LoadingService _loadingService;
-        
-        private readonly AssetLoader _assetLoader;
+        private readonly BattleTransitionData _battleTransitionData;
 
-        private BattleTransitionFlow(LoadingService loadingService,
-            AssetLoader assetLoader)
+        private BattleTransitionFlow(BattleTransitionData battleTransitionData)
         {
-            _loadingService = loadingService;
-            
-            _assetLoader = assetLoader;
+            _battleTransitionData = battleTransitionData;
         }
 
         public void Start()
         {
+            _battleTransitionData.PlayerInventory.InitializeInventory();
+            
+            foreach (var item in _battleTransitionData.Items)
+            {
+                _battleTransitionData.PlayerInventory.AddItem(item, 2);
+            }
+            
             SceneManager.LoadScene("BattleScene");
         }
     }

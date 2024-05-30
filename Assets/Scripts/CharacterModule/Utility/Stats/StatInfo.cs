@@ -1,6 +1,6 @@
 using CharacterModule.Stats.Base;
 
-namespace CharacterModule.Utility
+namespace CharacterModule.Utility.Stats
 {
     public class StatInfo
     {

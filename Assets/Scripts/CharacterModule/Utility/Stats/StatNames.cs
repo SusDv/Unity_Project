@@ -1,4 +1,4 @@
-﻿namespace CharacterModule.Utility
+﻿namespace CharacterModule.Utility.Stats
 {
     public static class StatNames
     {

@@ -2,11 +2,9 @@
 using System.Linq;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility;
-using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using Utility;
 using Utility.Constants;
 using VContainer;
@@ -21,13 +19,13 @@ namespace BattleModule.UI.Presenter
         
         private BattleTargetingController _battleTargetingController;
         
-        private RectTransform _targetGroupPrefab;
+        private GameObject _targetGroupPrefab;
         
-        private Image _targetImagePrefab;
+        private GameObject _targetImagePrefab;
         
-        private readonly List<RectTransform> _battleTargetGroups = new ();
+        private readonly List<GameObject> _battleTargetGroups = new ();
 
-        private readonly List<Image> _battleTargetImages = new ();
+        private readonly List<GameObject> _battleTargetImages = new ();
         
         [Inject]
         private void Init(AssetLoader assetLoader, BattleUIHelper battleUIHelper,
@@ -42,79 +40,80 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load(List<Character> spawnedCharacters)
         {
-            _targetGroupPrefab = _assetLoader.GetLoadedAsset<RectTransform>(RuntimeConstants.AssetsName.TargetGroupView);
+            _targetGroupPrefab = _assetLoader.GetLoadedAsset(RuntimeConstants.AssetsName.TargetGroupView);
 
-            _targetImagePrefab = _assetLoader.GetLoadedAsset<Image>(RuntimeConstants.AssetsName.TargetImageView);
+            _targetImagePrefab = _assetLoader.GetLoadedAsset(RuntimeConstants.AssetsName.TargetImageView);
             
             _battleTargetingController.OnTargetsChanged += BattleTargets;
             
-            CreateBattleTargets(spawnedCharacters.Count(s => s is Enemy));
+            CreateTargetGroups(spawnedCharacters.Count);
+            
+            CreateTargetImagePool(spawnedCharacters.Count);
             
             return UniTask.CompletedTask;
         }
 
-        private void CreateBattleTargets(int spawnedCharactersCount)
+        private void CreateTargetGroups(int count)
         {
-            for (var i = 0; i < spawnedCharactersCount; i++) 
+            for (var i = 0; i < count; i++)
             {
-                var targetGroup = Instantiate(_targetGroupPrefab,
-                    _battleUIHelper.WorldCanvas.transform);
-
-                var targetImage = Instantiate(_targetImagePrefab, targetGroup.transform);
-                
-                _battleTargetGroups.Add(targetGroup);
-                
-                _battleTargetImages.Add(targetImage);
+                _battleTargetGroups.Add(Instantiate(_targetGroupPrefab, _battleUIHelper.WorldCanvas.transform));
             }
         }
 
-        private Vector2 GetLocalPosition(Vector3 position)
+        private void CreateTargetImagePool(int count)
         {
-            Vector3 screenPosition = RectTransformUtility.WorldToScreenPoint(_battleUIHelper.MainCamera, position);
-            
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleUIHelper.WorldCanvas.transform as RectTransform, screenPosition, _battleUIHelper.MainCamera, out var localPosition);
-
-            return localPosition;
+            for (var i = 0; i < count; i++)
+            {
+                _battleTargetImages.Add(Instantiate(_targetImagePrefab));
+            }
         }
 
         private void HideActiveTargets()
         {
             foreach (var targetingImage in _battleTargetImages.Where(obj => obj.gameObject.activeSelf))
             {
+                targetingImage.transform.SetParent(_battleUIHelper.DynamicCanvas.transform);
+                
                 targetingImage.gameObject.SetActive(false);
             }
+        }
+
+        private void AssignTargetImage(Transform parent)
+        {
+            var targetingImage = _battleTargetImages.First(i => i.transform.parent == _battleUIHelper.DynamicCanvas.transform);
+            
+            targetingImage.transform.SetParent(parent);
+            
+            targetingImage.gameObject.SetActive(true);
         }
 
         private void BattleTargets(List<Character> charactersTargeted)
         {
             HideActiveTargets();
-
-            int numberOfTargets = charactersTargeted.Count;
             
             foreach (var characterTargeted in charactersTargeted)
             {
-                SetupTargetingGroup(--numberOfTargets, charactersTargeted.IndexOf(characterTargeted), GetLocalPosition(characterTargeted.transform.position));
+                SetupTargetingGroup(charactersTargeted.IndexOf(characterTargeted), characterTargeted.SizeHelper.GetCharacterCenter());
             }
         }
+        
+        private Vector3 GetLocalPosition(Vector3 position)
+        {
+            Vector3 screenPosition = RectTransformUtility.WorldToScreenPoint(_battleUIHelper.MainCamera, position);
+            
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleUIHelper.WorldCanvas.transform as RectTransform, screenPosition, _battleUIHelper.MainCamera, out var localPosition);
 
-        private void SetupTargetingGroup(int imageIndex, int characterIndex, Vector3 position)
+            return new Vector3(localPosition.x, localPosition.y, position.z);
+        }
+
+        private void SetupTargetingGroup(int characterIndex, Vector3 position)
         {
             var targetingGroup = _battleTargetGroups[characterIndex];
 
-            targetingGroup.anchoredPosition = position + Vector3.up * 0.6f;
+            targetingGroup.transform.position = position;
             
-            SetupTargetImage(imageIndex, targetingGroup);
-        }
-
-        private void SetupTargetImage(int index, Transform targetingGroup)
-        {
-            var targetingImage = _battleTargetImages[index];
-            
-            targetingImage.transform.SetParent(targetingGroup);
-            
-            targetingImage.transform.LookAt(_battleUIHelper.MainCamera.transform.position);
-
-            targetingImage.gameObject.SetActive(true);
+            AssignTargetImage(targetingGroup.transform);
         }
     }
 }

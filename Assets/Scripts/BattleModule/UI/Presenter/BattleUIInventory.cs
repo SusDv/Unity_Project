@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-using BattleModule.Actions.BattleActions.Types;
-using BattleModule.Controllers.Modules;
-using BattleModule.UI.Presenter.SceneSettings.Inventory;
-using BattleModule.UI.View;
-using BattleModule.Utility;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
+using BattleModule.Actions.BattleActions.Types;
+using BattleModule.Controllers.Modules;
+using BattleModule.UI.Presenter.SceneReferences.Inventory;
+using BattleModule.UI.View;
+using BattleModule.Utility;
 using Cysharp.Threading.Tasks;
+using Utility;
 using Utility.Constants;
 using VContainer;
+using UnityEngine;
 
 namespace BattleModule.UI.Presenter 
 {
     public class BattleUIInventory : MonoBehaviour, ILoadingUnit
     {
         [SerializeField]
-        private BattleInventorySceneSettings _battleInventorySceneSettings;
+        private BattleInventorySceneReference _battleInventorySceneReference;
 
         private AssetLoader _assetLoader;
         
@@ -25,11 +26,11 @@ namespace BattleModule.UI.Presenter
         private BattleUIItemDescription _battleUIItemDescription;
         
         private BattleTransitionData _battleTransitionData;
+
+        private InventoryBase _battleInventory;
         
         
         private List<BattleUIItemView> _battleUIItems = new ();
-        
-        private List<InventoryItem> _battleInventory = new();
         
         private BattleUIItemView _battleUIItemView;
 
@@ -51,22 +52,13 @@ namespace BattleModule.UI.Presenter
         public UniTask Load()
         {
             _battleUIItemView = _assetLoader.GetLoadedAsset<BattleUIItemView>(RuntimeConstants.AssetsName.ItemView);
+
+            _battleInventorySceneReference.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
+
+            _battleInventory = _battleTransitionData.PlayerInventory;
             
-            // DEBUG BEGIN //
-            _battleTransitionData.PlayerInventory.InitializeInventory();
-            
-            foreach (var item in _battleTransitionData.Items)
-            {
-                _battleTransitionData.PlayerInventory.AddItem(item, 2);
-            }
-            // DEBUG END //
-            
-            _battleInventorySceneSettings.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
-        
             _battleTransitionData.PlayerInventory.OnInventoryChanged += OnInventoryChanged;
-        
-            _battleInventory = _battleTransitionData.PlayerInventory.GetBattleInventory();
-            
+
             UpdateBattleInventory();
 
             return UniTask.CompletedTask;
@@ -74,8 +66,6 @@ namespace BattleModule.UI.Presenter
 
         private void OnInventoryChanged(InventoryBase playerInventory)
         {
-            _battleInventory = playerInventory.GetBattleInventory();
-
             UpdateBattleInventory();
         }
 
@@ -83,10 +73,10 @@ namespace BattleModule.UI.Presenter
         { 
             BattleUIInventoryClear();
 
-            foreach (var inventoryItem in _battleInventory)
+            foreach (var inventoryItem in _battleInventory.GetBattleInventory())
             {
                 var battleUIItem =
-                    _battleUIItemView.CreateInstance(_battleInventorySceneSettings
+                    _battleUIItemView.CreateInstance(_battleInventorySceneReference
                         .BattleInventoryItemsParent.transform);
                 
                 battleUIItem.OnButtonOver += BattleItemPointerOver;
@@ -103,9 +93,9 @@ namespace BattleModule.UI.Presenter
         {
             _battleUIItems = new List<BattleUIItemView>();
 
-            for (var i = 0; i < _battleInventorySceneSettings.BattleInventoryItemsParent.transform.childCount; i++)
+            for (var i = 0; i < _battleInventorySceneReference.BattleInventoryItemsParent.transform.childCount; i++)
             {
-                Destroy(_battleInventorySceneSettings.BattleInventoryItemsParent.transform.GetChild(i).gameObject);
+                Destroy(_battleInventorySceneReference.BattleInventoryItemsParent.transform.GetChild(i).gameObject);
             }
         }
 
@@ -126,14 +116,14 @@ namespace BattleModule.UI.Presenter
 
         private void BattleInventoryButtonClicked()
         {
-            _battleInventorySceneSettings.BattleInventoryWindow.SetActive(!_battleInventorySceneSettings.BattleInventoryWindow.activeSelf);
+            _battleInventorySceneReference.BattleInventoryWindow.SetActive(!_battleInventorySceneReference.BattleInventoryWindow.activeSelf);
             
-            _battleUIItemDescription.SetDescriptionPanelVisibility(_battleInventorySceneSettings.BattleInventoryWindow.activeSelf);
+            _battleUIItemDescription.SetDescriptionPanelVisibility(_battleInventorySceneReference.BattleInventoryWindow.activeSelf);
         }
 
         private ItemBase GetSelectedItem(BattleUIItemView battleUIItem) 
         {
-            return _battleInventory[_battleUIItems.IndexOf(battleUIItem)].Item;
+            return _battleInventory.GetItem(_battleUIItems.IndexOf(battleUIItem)).Item;
         }
     }
 }

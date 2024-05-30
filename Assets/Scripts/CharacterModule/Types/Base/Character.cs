@@ -5,6 +5,7 @@ using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Managers.SingleStat;
+using CharacterModule.Utility;
 using UnityEngine;
 
 namespace CharacterModule.Types.Base
@@ -16,7 +17,10 @@ namespace CharacterModule.Types.Base
         
         [field: SerializeField] 
         public AnimationManager AnimationManager { get; private set; }
-        
+
+        [field: SerializeField] 
+        public SizeHelper SizeHelper { get; private set; }
+
         public StatManager Stats { get; private set; }
 
         public EquipmentController EquipmentController { get; private set; }

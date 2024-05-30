@@ -1,4 +1,5 @@
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using UnityEngine;
 using Utility.ObserverPattern;
 

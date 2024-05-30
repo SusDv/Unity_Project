@@ -2,10 +2,10 @@ using System;
 using BattleModule.UI.BattleButton;
 using UnityEngine;
 
-namespace BattleModule.UI.Presenter.SceneSettings.Action
+namespace BattleModule.UI.Presenter.SceneReferences.Action
 {
     [Serializable]
-    public class BattleActionSceneSettings
+    public class BattleActionSceneReference
     {
         [Header("Battle Button")]
         [SerializeField] public BattleUIActionButton BattleActionButton;

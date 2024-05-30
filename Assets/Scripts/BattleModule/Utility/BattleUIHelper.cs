@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Utility
+namespace BattleModule.Utility
 {
     [Serializable]
     public class BattleUIHelper : MonoBehaviour

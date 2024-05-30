@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Utility;
 
-namespace CharacterModule.Utility
+namespace CharacterModule.Utility.Stats
 {
     [Serializable]
     public class ModifierData
