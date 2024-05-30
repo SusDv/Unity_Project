@@ -6,6 +6,7 @@ using BattleModule.UI.View;
 using BattleModule.Utility;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -22,20 +23,20 @@ namespace BattleModule.UI.Presenter
 
         private AssetLoader _assetLoader;
 
-        private CanvasProvider _canvasProvider;
+        private BattleUIHelper _battleUIHelper;
         
         
         private BattleUIActionView _battleActionView;
         
         [Inject]
         private void Init(AssetLoader assetLoader,
-            CanvasProvider canvasProvider,
+            BattleUIHelper battleUIHelper,
             BattleActionController battleActionController,
             BattleTurnEvents battleTurnEvents)
         {
             _assetLoader = assetLoader;
 
-            _canvasProvider = canvasProvider;
+            _battleUIHelper = battleUIHelper;
             
             _battleActionController = battleActionController;
 
@@ -44,7 +45,7 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load()
         {
-            _battleActionView = Instantiate(_assetLoader.GetLoadedAsset<BattleUIActionView>(RuntimeConstants.AssetsName.ActionView), _canvasProvider.Canvas.transform);
+            _battleActionView = Instantiate(_assetLoader.GetLoadedAsset<BattleUIActionView>(RuntimeConstants.AssetsName.ActionView), _battleUIHelper.DynamicCanvas.transform);
 
             _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
 

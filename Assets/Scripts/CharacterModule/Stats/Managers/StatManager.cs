@@ -41,7 +41,7 @@ namespace CharacterModule.Stats.Managers
                 return false;
             }
 
-            TriggerExistingModifier(existingModifier, temporaryModifier);
+            TriggerBeforeTime(existingModifier, temporaryModifier);
             
             return true;
         }
@@ -56,7 +56,7 @@ namespace CharacterModule.Stats.Managers
             return existingModifier != default;
         }
         
-        private void TriggerExistingModifier(ITemporaryModifier<StatType> existingModifier, ITemporaryModifier<StatType> temporaryModifier)
+        private void TriggerBeforeTime(ITemporaryModifier<StatType> existingModifier, ITemporaryModifier<StatType> temporaryModifier)
         {
             existingModifier.Duration = temporaryModifier.Duration + 1;
             

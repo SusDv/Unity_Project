@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f06b3b863ea2f94581ae3c359c27651, type: 3}
   m_Name: EnemySettings
   m_EditorClassIdentifier: 
-  BaseStats: {fileID: 11400000, guid: cdc24f4def3c98445901ba254f0ac9fe, type: 2}
-  BaseSpells: {fileID: 11400000, guid: e06aec0d12bc8c54893ab38fd6892849, type: 2}
-  BaseInformation: {fileID: 11400000, guid: 1da91592792f6d240ac81af257242201, type: 2}
-  BaseWeapon: {fileID: 11400000, guid: 1822837534a96e2488bb1eb735923d62, type: 2}
+  <BaseStats>k__BackingField: {fileID: 11400000, guid: cdc24f4def3c98445901ba254f0ac9fe, type: 2}
+  <BaseSpells>k__BackingField: {fileID: 11400000, guid: e06aec0d12bc8c54893ab38fd6892849, type: 2}
+  <BaseInformation>k__BackingField: {fileID: 11400000, guid: 1da91592792f6d240ac81af257242201, type: 2}
+  <BaseEquipment>k__BackingField:
+    <BaseWeapon>k__BackingField: {fileID: 11400000, guid: 1822837534a96e2488bb1eb735923d62, type: 2}
+    <BaseArmor>k__BackingField:
+    - {fileID: 11400000, guid: 68005fcf595af9e47b8b59fa451e0f50, type: 2}

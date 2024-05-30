@@ -1,11 +1,12 @@
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.BattleActions.Outcome.Outcomes;
 using BattleModule.Utility;
 using Utility.Constants;
 
 namespace BattleModule.Accuracy.Intervals.SubIntervals
 {
-    public class TrueMiss : SubInterval
+    public class TrueMissInterval : SubInterval
     {
         public override SubIntervalType SubIntervalType => SubIntervalType.MISS;
         
@@ -15,7 +16,7 @@ namespace BattleModule.Accuracy.Intervals.SubIntervals
 
         public override BattleActionOutcome GetBattleActionOutcome()
         {
-            return new Actions.BattleActions.Outcome.Outcomes.TrueMiss();
+            return new TrueMiss();
         }
 
         protected override void UpdateIntervalRange()

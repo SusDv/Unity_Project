@@ -1,4 +1,5 @@
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Inventory.Items;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
@@ -9,20 +10,17 @@ namespace BattleModule.Actions.BattleActions.Processors
     {
         private readonly ConsumableItem _consumableItem;
         
-        public ItemActionProcessor(float battlePoints, 
-            StatModifiers statModifiers, ConsumableItem consumableItem) 
-            : base(battlePoints, statModifiers)
+        public ItemActionProcessor(int sourceId, StatModifiers statModifiers, 
+            ConsumableItem consumableItem) 
+            : base(sourceId, statModifiers)
         {
             _consumableItem = consumableItem;
         }
 
-        public override void ApplyModifiers(StatManager source, 
-            StatManager target, 
-            BattleActionOutcome battleActionOutcome)
+        public override void ApplyModifiers(StatManager target,
+            BattleActionOutcome battleActionOutcome, BattleDamage battleDamage)
         {
             _consumableItem.OnConsumableUsed?.Invoke(_consumableItem);
-            
-            AddBattlePoints(source);
             
             if (!battleActionOutcome.Success)
             {

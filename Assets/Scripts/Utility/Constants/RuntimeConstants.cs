@@ -1,6 +1,6 @@
 namespace Utility.Constants
 {
-    public class RuntimeConstants
+    public sealed class RuntimeConstants
     {
         public static class AssetsLabels
         {
@@ -19,6 +19,7 @@ namespace Utility.Constants
             public const string TargetGroupView = "TargetGroupView";
             public const string TargetImageView = "TargetImageView";
             public const string TurnView = "TurnView";
+            public const string OutcomeView = "OutcomeView";
         }
 
         public static class AccuracyConstants

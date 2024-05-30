@@ -1,28 +1,52 @@
-﻿using CharacterModule.Utility;
+﻿using CharacterModule.Stats.Managers;
+using CharacterModule.Utility;
 
 namespace BattleModule.Utility.DamageCalculator
 {
     public abstract class BattleDamage
     {
-        public abstract float CalculateAttackDamage(StatInfo sourceDamage,
-            StatInfo criticalDamage,
-            StatInfo targetDefense);
+        protected readonly StatManager SourceStats;
+
+        protected float DamageSource;
+        
+        protected BattleDamage(StatManager source)
+        {
+            SourceStats = source;
+        }
+
+        public void SetDamageSource(float damage)
+        {
+            DamageSource = damage;
+        }
+
+        public abstract float CalculateAttackDamage(StatManager target, float multiplier);
     }
 
     public class PhysicalDamage : BattleDamage
     {
-        public override float CalculateAttackDamage(StatInfo sourceDamage, 
-            StatInfo criticalDamage, StatInfo targetDefense)
+        public PhysicalDamage(StatManager source)
+            : base(source)
         {
-            return sourceDamage.FinalValue * (100f / (100f + targetDefense.FinalValue));
+            DamageSource = SourceStats.GetStatInfo(StatType.ATTACK).FinalValue;
+        }
+        
+        public override float CalculateAttackDamage(StatManager target, float multiplier)
+        {
+            return -DamageSource * multiplier * (100f / (100f + target.GetStatInfo(StatType.DEFENSE).FinalValue));
         }
     }
 
     public class MagicDamage : BattleDamage
     {
-        public override float CalculateAttackDamage(StatInfo sourceDamage, StatInfo criticalDamage, StatInfo targetDefense)
+        public MagicDamage(StatManager source)
+            : base(source)
         {
-            throw new System.NotImplementedException();
+            DamageSource = SourceStats.GetStatInfo(StatType.MAGIC_ATTACK).FinalValue;
+        }
+        
+        public override float CalculateAttackDamage(StatManager target, float multiplier)
+        {
+            return -DamageSource * multiplier * (100f / (100f + target.GetStatInfo(StatType.MAGIC_DEFENSE).FinalValue));
         }
     }
 }

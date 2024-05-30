@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.BattleActions.Base;
 using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.Actions.BattleActions.Types;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility;
@@ -26,7 +27,9 @@ namespace BattleModule.Controllers.Modules
         private Character _characterToHaveTurn;
         
         public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
-        
+
+        public event Action<Dictionary<Character, BattleActionOutcome>> OnBattleActionFinished = delegate { };
+
         [Inject]
         private BattleActionController(BattleCancelableController battleCancelableController,
             BattleTurnController battleTurnController,
@@ -49,11 +52,11 @@ namespace BattleModule.Controllers.Modules
         }
 
         public void ExecuteBattleAction(List<Character> targets)
-        {
-            _currentBattleAction.PerformAction(
-                _characterToHaveTurn, 
+        { 
+            OnBattleActionFinished?.Invoke(
+                _currentBattleAction.PerformAction(_characterToHaveTurn,
                 targets, 
-                _battleAccuracyController.GetAccuracies());
+                _battleAccuracyController.GetAccuracies()));
         }
 
         public bool Cancel()

@@ -1,4 +1,5 @@
 using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Actions.BattleActions.Processors;
 using BattleModule.Utility;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Interfaces;
@@ -9,7 +10,7 @@ using Utility.Information;
 namespace CharacterModule.WeaponSpecial.Base
 {
     [CreateAssetMenu(fileName = "Special Attack", menuName = "Character/Special")]
-    public class SpecialAttack : ScriptableObject, IObjectInformation, IBattleObject
+    public class SpecialAttack : ScriptableObject, IObjectInformation, IBattleObject, IActionProvider
     {
         [field: SerializeField] 
         public ObjectInformation ObjectInformation { get; private set; }
@@ -35,7 +36,12 @@ namespace CharacterModule.WeaponSpecial.Base
         
         public ISpecialAttack GetAttack()
         {
-            return new DefaultSpecialAttack(MaxEnergy, TargetModifiers.GetModifiers());
+            return new DefaultSpecialAttack(MaxEnergy);
+        }
+
+        public IAction GetAction()
+        {
+            return new SpecialActionProcessor(GetInstanceID(), TargetModifiers, GetAttack());
         }
     }
 }
