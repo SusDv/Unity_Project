@@ -17,6 +17,6 @@ namespace BattleModule.UI.Presenter.SceneSettings.Spells
         
         [Header("Button")]
         [SerializeField]
-        public BattleUIDefaultButton BattleSpellsMenuButton;
+        public BattleUIButton BattleSpellsMenuButton;
     }
 }

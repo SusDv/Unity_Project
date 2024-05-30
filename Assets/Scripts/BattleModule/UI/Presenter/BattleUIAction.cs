@@ -45,8 +45,6 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load()
         {
-            _battleActionView = Instantiate(_assetLoader.GetLoadedAsset<BattleUIActionView>(RuntimeConstants.AssetsName.ActionView), _battleUIHelper.DynamicCanvas.transform);
-
             _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
 
             _battleActionSceneSettings.BattleActionButton.OnButtonClick += _battleTurnEvents.InvokeAction;
@@ -56,7 +54,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnBattleActionChanged(BattleActionContext context) 
         {
-            _battleActionView.SetData($"<b><u>Action:</b></u> {context.ObjectInformation.ObjectInformation.Name}");
+            _battleActionSceneSettings.BattleActionButton.SetButtonImage(context.ObjectInformation.ObjectInformation.Icon);
         }
     }
 }

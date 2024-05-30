@@ -15,6 +15,6 @@ namespace BattleModule.Controllers.Modules.Turn
             OnTurnEnd?.Invoke();
         }
 
-        public void InvokeAction(object obj) => OnActionInvoked?.Invoke();
+        public void InvokeAction() => OnActionInvoked?.Invoke();
     }
 }

@@ -7,8 +7,8 @@ namespace CharacterModule.WeaponSpecial
     public class DefaultSpecialAttack : ISpecialAttack
     {
         private readonly float _maxEnergy;
-        
-        public float CurrentEnergyAmount { get; private set; }
+
+        public float CurrentEnergyAmount { get; private set; } = 0;
         
         public event Action<float> OnEnergyChanged = delegate { };
 

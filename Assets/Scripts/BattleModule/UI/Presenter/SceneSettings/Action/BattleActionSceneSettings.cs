@@ -8,6 +8,6 @@ namespace BattleModule.UI.Presenter.SceneSettings.Action
     public class BattleActionSceneSettings
     {
         [Header("Battle Button")]
-        [SerializeField] public BattleUIDefaultButton BattleActionButton;
+        [SerializeField] public BattleUIActionButton BattleActionButton;
     }
 }

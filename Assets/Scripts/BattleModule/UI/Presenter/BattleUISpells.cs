@@ -61,7 +61,7 @@ namespace BattleModule.UI.Presenter
             DisplayCharacterSpells();
         }
 
-        private void OnSpellsButtonClick(object o)
+        private void OnSpellsButtonClick()
         {
             _battleSpellsSceneSettings.BattleUISpellsPanel.SetActive(!_battleSpellsSceneSettings.BattleUISpellsPanel.activeSelf);
         }
