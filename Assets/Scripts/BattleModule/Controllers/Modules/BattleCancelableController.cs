@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Input;
-using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using Cysharp.Threading.Tasks;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules

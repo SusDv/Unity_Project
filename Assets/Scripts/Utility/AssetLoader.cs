@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Utility.Constants;
 
-namespace BattleModule.Utility
+namespace Utility
 {
     public class AssetLoader
     {
@@ -29,6 +29,11 @@ namespace BattleModule.Utility
             var asset = _loadedAssets[name];
             
             return asset.GetComponent<T>();
+        }
+
+        public GameObject GetLoadedAsset(string name)
+        {
+            return _loadedAssets[name];
         }
     }
 }

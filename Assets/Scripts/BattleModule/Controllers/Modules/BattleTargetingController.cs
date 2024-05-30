@@ -9,6 +9,7 @@ using BattleModule.Utility.Interfaces;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
@@ -92,7 +93,7 @@ namespace BattleModule.Controllers.Modules
         
         private void SetTargetingData(BattleActionContext context)
         {
-            SetPossibleTargets(context.CurrentCharacter.GetType(),
+            SetPossibleTargets(context.CharacterInTurnType,
                 context.BattleObject.TargetType);
             
             _battleTargetingProcessor.SetTargetingData(

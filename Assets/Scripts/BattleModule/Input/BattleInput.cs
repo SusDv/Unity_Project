@@ -1,7 +1,7 @@
 using System;
-using BattleModule.Utility;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 
 namespace BattleModule.Input
 {

@@ -1,5 +1,6 @@
 using System.Collections;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

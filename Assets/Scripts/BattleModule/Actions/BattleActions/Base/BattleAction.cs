@@ -20,13 +20,13 @@ namespace BattleModule.Actions.BattleActions.Base
         private BattleDamage _battleDamage;
 
         public BattleActionContext Init(object actionObject, 
-            Character currentCharacterType)
+            Character character)
         {
-            _battleActionContext = new BattleActionContext(actionObject, currentCharacterType);
+            _battleActionContext = new BattleActionContext(actionObject, character.GetType());
 
             _actionObject = (actionObject as IActionProvider)?.GetAction();
 
-            _battleDamage = GetDamageCalculator(currentCharacterType.Stats);
+            _battleDamage = GetDamageCalculator(character.Stats);
 
             return _battleActionContext;
         }

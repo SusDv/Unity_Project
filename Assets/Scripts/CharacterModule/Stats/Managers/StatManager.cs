@@ -7,6 +7,7 @@ using CharacterModule.Stats.Modifiers;
 using BattleModule.Utility;
 using CharacterModule.Settings;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using Utility.ObserverPattern;
 
 namespace CharacterModule.Stats.Managers

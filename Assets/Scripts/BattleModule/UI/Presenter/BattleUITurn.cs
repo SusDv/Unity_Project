@@ -3,12 +3,12 @@ using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.UI.Presenter.SceneSettings.Turn;
+using BattleModule.UI.Presenter.SceneReferences.Turn;
 using BattleModule.UI.View;
-using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
 using Cysharp.Threading.Tasks;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -17,7 +17,7 @@ namespace BattleModule.UI.Presenter
     public class BattleUITurn : MonoBehaviour, ILoadingUnit<List<Character>>
     {
         [SerializeField]
-        private BattleTurnSceneSettings _battleTurnSceneSettings;
+        private BattleTurnSceneReference _battleTurnSceneReference;
 
         private AssetLoader _assetLoader;
         
@@ -50,8 +50,8 @@ namespace BattleModule.UI.Presenter
         private void CreateTurnPanels(IEnumerable<Character> characters)
         {
             foreach (var battleUITurn in characters.Select(_ => Instantiate(_battleUITurnView,
-                         _battleTurnSceneSettings.BattleTurnParent.transform.position, Quaternion.identity,
-                         _battleTurnSceneSettings.BattleTurnParent.transform)))
+                         _battleTurnSceneReference.BattleTurnParent.transform.position, Quaternion.identity,
+                         _battleTurnSceneReference.BattleTurnParent.transform)))
             {
                 _battleUITurnViews.Add(battleUITurn);
             }

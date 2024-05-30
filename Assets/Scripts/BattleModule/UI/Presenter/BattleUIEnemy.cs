@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleModule.UI.Presenter.SceneSettings.Enemy;
+using BattleModule.UI.Presenter.SceneReferences.Enemy;
 using BattleModule.UI.View;
-using BattleModule.Utility;
 using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -15,7 +15,7 @@ namespace BattleModule.UI.Presenter
     public class BattleUIEnemy : MonoBehaviour, ILoadingUnit<List<Character>>
     {
         [SerializeField]
-        private BattleEnemySceneSettings _battleEnemySceneSettings;
+        private BattleEnemySceneReference _battleEnemySceneReference;
         
         private AssetLoader _assetLoader;
         

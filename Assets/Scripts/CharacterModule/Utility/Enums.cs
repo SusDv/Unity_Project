@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using CharacterModule.Utility.Stats;
 
 namespace CharacterModule.Utility
 {

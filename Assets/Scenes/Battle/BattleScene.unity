@@ -287,7 +287,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19025221}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 3.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a031425c70f53140a61c1e81cda3f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleInventorySceneSettings:
+  _battleInventorySceneReference:
     BattleInventoryWindow: {fileID: 1746057275}
     BattleInventoryItemsParent: {fileID: 71577778}
     BattleInventoryButton: {fileID: 1962585583}
@@ -967,7 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b80df62802447c18d74e08f36bedc56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleAccuracySceneSettings:
+  _battleAccuracySceneReference:
     Parent: {fileID: 19025225}
 --- !u!1 &623703148
 GameObject:
@@ -1338,7 +1338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0902244664cf03748a1287dbfd5b1957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleActionSceneSettings:
+  _battleActionSceneReference:
     BattleActionButton: {fileID: 203923505485206421}
 --- !u!1 &813122964
 GameObject:
@@ -1519,7 +1519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78841fa2159432348a5c4e20e83a8585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleSpellsSceneSettings:
+  _battleSpellsSceneReference:
     BattleUISpellsPanel: {fileID: 610058888}
     BattleUISpellsParent: {fileID: 1753788108}
     BattleSpellsMenuButton: {fileID: 1966167487}
@@ -2135,7 +2135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79069f571c49c624fa516399bdf2200d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleTurnSceneSettings:
+  _battleTurnSceneReference:
     BattleTurnParent: {fileID: 1785510479}
 --- !u!1 &1574314205
 GameObject:
@@ -3610,7 +3610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ea6b3905f3aa42aad04af34cd2911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battlePlayerSceneSettings:
+  _battlePlayerSceneReference:
     BattleUIPlayersPanel: {fileID: 1927973696}
 --- !u!1 &2077620289
 GameObject:
@@ -3656,7 +3656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8acc9c5e7d2041f6acb708902702b169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleItemDescriptionSceneSettings:
+  _battleItemDescriptionSceneReference:
     BattleItemDescriptionWindow: {fileID: 7063970}
 --- !u!114 &203923505485206420
 MonoBehaviour:

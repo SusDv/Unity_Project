@@ -114,6 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseSettings: {fileID: 11400000, guid: 9769c39f8f8927048811c2d29efcd26f, type: 2}
   <AnimationManager>k__BackingField: {fileID: 0}
+  <SizeHelper>k__BackingField:
+    _capsuleCollider: {fileID: 2385003726938632914}
 --- !u!95 &-6041111671475138606
 Animator:
   serializedVersion: 5

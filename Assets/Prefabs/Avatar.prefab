@@ -2236,6 +2236,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseSettings: {fileID: 11400000, guid: cb0b7510adc85f2468fc300403b75d82, type: 2}
   <AnimationManager>k__BackingField: {fileID: -5766365198244280859}
+  <SizeHelper>k__BackingField:
+    _capsuleCollider: {fileID: 8174799935207066349}
 --- !u!114 &-5766365198244280859
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CharacterModule.Stats.StatModifier.ValueModifier.Base;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using Utility;
 
 namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor

@@ -1,6 +1,7 @@
 using System;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using Utility.ObserverPattern;
 
 namespace CharacterModule.Stats.Managers.SingleStat

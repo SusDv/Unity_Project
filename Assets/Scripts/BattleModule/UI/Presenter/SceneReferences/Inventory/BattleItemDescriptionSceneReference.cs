@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-namespace BattleModule.UI.Presenter.SceneSettings.Inventory
+namespace BattleModule.UI.Presenter.SceneReferences.Inventory
 {
     [Serializable]
-    public class BattleItemDescriptionSceneSettings
+    public class BattleItemDescriptionSceneReference
     {
         [Header("Window")]
         [SerializeField] public GameObject BattleItemDescriptionWindow;

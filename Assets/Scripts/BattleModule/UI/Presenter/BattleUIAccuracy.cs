@@ -3,12 +3,12 @@ using System.Globalization;
 using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules;
-using BattleModule.UI.Presenter.SceneSettings.Accuracy;
+using BattleModule.UI.Presenter.SceneReferences.Accuracy;
 using BattleModule.UI.View;
-using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -17,7 +17,7 @@ namespace BattleModule.UI.Presenter
     public class BattleUIAccuracy : MonoBehaviour, ILoadingUnit<List<Character>>
     {
         [SerializeField]
-        private BattleAccuracySceneSettings _battleAccuracySceneSettings;
+        private BattleAccuracySceneReference _battleAccuracySceneReference;
         
         private AssetLoader _assetLoader;
         
@@ -91,9 +91,9 @@ namespace BattleModule.UI.Presenter
             {
                 var accuracyView = Instantiate(
                     _accuracyViewPrefab,
-                    character.transform.position + Vector3.up * 1.6f, 
+                    character.SizeHelper.GetCharacterTop(), 
                     Quaternion.identity, 
-                    _battleAccuracySceneSettings.Parent);
+                    _battleAccuracySceneReference.Parent);
                 
                 accuracyView.gameObject.SetActive(false);
                 

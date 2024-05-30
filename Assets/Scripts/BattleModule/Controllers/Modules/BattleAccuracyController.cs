@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Accuracy;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
 using Cysharp.Threading.Tasks;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules

@@ -13,7 +13,7 @@ namespace BattleModule.UI.View
         {
             _outcomeText.text = battleActionOutcome.SubIntervalType.ToString();
             
-            Destroy(gameObject, 1f);
+            Destroy(gameObject, 0.5f);
         }
     }
 }

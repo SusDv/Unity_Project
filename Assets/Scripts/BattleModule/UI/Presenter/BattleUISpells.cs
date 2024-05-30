@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BattleModule.Actions.BattleActions.Types;
-using UnityEngine;
+﻿using System.Linq;
+using System.Collections.Generic;
 using BattleModule.UI.View;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.UI.Presenter.SceneSettings.Spells;
-using BattleModule.Utility;
+using BattleModule.Actions.BattleActions.Types;
+using BattleModule.UI.Presenter.SceneReferences.Spells;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
+using Utility;
 using Utility.Constants;
+using UnityEngine;
 using VContainer;
 
 namespace BattleModule.UI.Presenter
@@ -17,7 +17,7 @@ namespace BattleModule.UI.Presenter
     public class BattleUISpells : MonoBehaviour, ILoadingUnit
     {
         [SerializeField]
-        private BattleSpellsSceneSettings _battleSpellsSceneSettings;
+        private BattleSpellsSceneReference _battleSpellsSceneReference;
 
         private BattleTurnController _battleTurnController;
         
@@ -47,7 +47,7 @@ namespace BattleModule.UI.Presenter
         {
             _battleUISpellView = _assetLoader.GetLoadedAsset<BattleUISpellView>(RuntimeConstants.AssetsName.SpellView);
             
-            _battleSpellsSceneSettings.BattleSpellsMenuButton.OnButtonClick += OnSpellsButtonClick;
+            _battleSpellsSceneReference.BattleSpellsMenuButton.OnButtonClick += OnSpellsButtonClick;
 
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
 
@@ -63,16 +63,16 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellsButtonClick()
         {
-            _battleSpellsSceneSettings.BattleUISpellsPanel.SetActive(!_battleSpellsSceneSettings.BattleUISpellsPanel.activeSelf);
+            _battleSpellsSceneReference.BattleUISpellsPanel.SetActive(!_battleSpellsSceneReference.BattleUISpellsPanel.activeSelf);
         }
 
         private void BattleSpellsClear()
         {
             _battleUISpells = new List<BattleUISpellView>();
 
-            for (var i = 0; i < _battleSpellsSceneSettings.BattleUISpellsParent.transform.childCount; i++)
+            for (var i = 0; i < _battleSpellsSceneReference.BattleUISpellsParent.transform.childCount; i++)
             {
-                Destroy(_battleSpellsSceneSettings.BattleUISpellsParent.transform.GetChild(i).gameObject);
+                Destroy(_battleSpellsSceneReference.BattleUISpellsParent.transform.GetChild(i).gameObject);
             }
         }
 
@@ -83,9 +83,9 @@ namespace BattleModule.UI.Presenter
             foreach (var spell in _characterInAction.SpellContainer.GetSpells()) 
             {
                 var battleUISpellView = Instantiate(_battleUISpellView,
-                    _battleSpellsSceneSettings.BattleUISpellsParent.transform.position,
+                    _battleSpellsSceneReference.BattleUISpellsParent.transform.position,
                     Quaternion.identity,
-                    _battleSpellsSceneSettings.BattleUISpellsParent.transform);
+                    _battleSpellsSceneReference.BattleUISpellsParent.transform);
 
                 battleUISpellView.SetData(spell.ObjectInformation.Icon);
 

@@ -1,9 +1,9 @@
-using BattleModule.UI.Presenter.SceneSettings.Inventory;
+using BattleModule.UI.Presenter.SceneReferences.Inventory;
 using BattleModule.UI.View;
-using BattleModule.Utility;
 using CharacterModule.Inventory.Items.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -12,7 +12,7 @@ namespace BattleModule.UI.Presenter
     public class BattleUIItemDescription : MonoBehaviour, ILoadingUnit
     {
         [SerializeField]
-        private BattleItemDescriptionSceneSettings _battleItemDescriptionSceneSettings;
+        private BattleItemDescriptionSceneReference _battleItemDescriptionSceneReference;
 
         private AssetLoader _assetLoader;
         
@@ -27,21 +27,21 @@ namespace BattleModule.UI.Presenter
         public UniTask Load()
         {
             _battleUIItemDescriptionView = Instantiate(_assetLoader.GetLoadedAsset<BattleUIItemDescriptionView>(RuntimeConstants.AssetsName.ItemDescriptionView),
-               _battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.transform);
+               _battleItemDescriptionSceneReference.BattleItemDescriptionWindow.transform);
            
             return UniTask.CompletedTask;
         }
 
         public void SetDescriptionPanelVisibility(bool inventoryVisibilityStatus)
         {
-            _battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.SetActive(inventoryVisibilityStatus && _battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.activeSelf);
+            _battleItemDescriptionSceneReference.BattleItemDescriptionWindow.SetActive(inventoryVisibilityStatus && _battleItemDescriptionSceneReference.BattleItemDescriptionWindow.activeSelf);
         }
 
         public void SetItemDescription(ItemBase itemBase)
         {
-            _battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.SetActive(!_battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.activeSelf);
+            _battleItemDescriptionSceneReference.BattleItemDescriptionWindow.SetActive(!_battleItemDescriptionSceneReference.BattleItemDescriptionWindow.activeSelf);
             
-            if (_battleItemDescriptionSceneSettings.BattleItemDescriptionWindow.activeSelf)
+            if (_battleItemDescriptionSceneReference.BattleItemDescriptionWindow.activeSelf)
             {
                 _battleUIItemDescriptionView.SetData(itemBase.ObjectInformation);
             }
