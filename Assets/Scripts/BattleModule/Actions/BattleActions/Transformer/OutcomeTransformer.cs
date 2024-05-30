@@ -24,7 +24,7 @@ namespace BattleModule.Actions.BattleActions.Transformer
         public BattleTimer BattleTimer { get; protected set; }
 
         private bool IsApplicable(
-            Type givenType, Type expectedType)
+            SubIntervalType givenType, SubIntervalType expectedType)
         {
             if (givenType != expectedType
                  || !IsAvailable)
@@ -47,8 +47,8 @@ namespace BattleModule.Actions.BattleActions.Transformer
         public BattleActionOutcome TransformOutcome(BattleAccuracy battleAccuracy,
             BattleActionOutcome battleActionOutcome)
         {
-            if (!IsApplicable(battleAccuracy.GetOutcomeByType(TransformFrom).GetType(),
-                    battleActionOutcome.GetType()))
+            if (!IsApplicable(TransformFrom,
+                    battleActionOutcome.SubIntervalType))
             {
                 return battleActionOutcome;
             }

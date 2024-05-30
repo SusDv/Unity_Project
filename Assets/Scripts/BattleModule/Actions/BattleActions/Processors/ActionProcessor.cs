@@ -1,6 +1,7 @@
 using System.Linq;
 using BattleModule.Actions.BattleActions.Interfaces;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Modifiers;
 using CharacterModule.Stats.StatModifier;
@@ -8,39 +9,19 @@ using CharacterModule.Utility;
 
 namespace BattleModule.Actions.BattleActions.Processors
 {
-    public class ActionProcessor : IAction
+    public abstract class ActionProcessor : IAction
     {
-        private float BattlePoints { get; }
+        protected StatModifiers TargetModifiers { get; }
 
-        private StatModifiers TargetModifiers { get; }
-
-        public ActionProcessor(float battlePoints, 
-            StatModifiers statModifiers)
+        protected ActionProcessor(int sourceID, StatModifiers statModifiers)
         {
-            BattlePoints = battlePoints;
-
             TargetModifiers = statModifiers;
+            
+            TargetModifiers.SetSourceID(sourceID);
         }
 
-        public virtual void ApplyModifiers(StatManager source, 
-            StatManager target, BattleActionOutcome battleActionOutcome)
-        {
-            ProcessDamageModifiers(target, battleActionOutcome);
-            
-            foreach (var modifier in TargetModifiers.GetModifiers().modifiers.Where(m => m is not InstantStatModifier))
-            {
-                target.AddModifier(modifier);
-            }
-            
-            ApplyTemporaryModifiers(target);
-            
-            AddBattlePoints(source);
-        }
-
-        protected void AddBattlePoints(StatManager source)
-        {
-            source.ApplyInstantModifier(StatType.BATTLE_POINTS, BattlePoints);
-        }
+        public abstract void ApplyModifiers(StatManager target,
+            BattleActionOutcome battleActionOutcome, BattleDamage battleDamage);
 
         protected void ApplyTemporaryModifiers(StatManager target)
         {
@@ -58,14 +39,28 @@ namespace BattleModule.Actions.BattleActions.Processors
             }
         }
 
-        protected void ProcessDamageModifiers(StatManager target, BattleActionOutcome battleActionOutcome)
+        protected void ProcessDamageModifiers(StatManager target, 
+            BattleActionOutcome battleActionOutcome, BattleDamage battleDamage)
         {
-            foreach (var modifier in TargetModifiers.GetModifiers().modifiers.Where(m => m is InstantStatModifier { IsNegative: true, Type: StatType.HEALTH}))
+            var damageModifier = TargetModifiers.GetModifiers().modifiers.FirstOrDefault(m => m is InstantStatModifier
             {
-                modifier.ModifierData.Value *= battleActionOutcome.DamageMultiplier;
+                IsNegative: true, 
+                Type: StatType.HEALTH
+            });
+
+            if (damageModifier != default)
+            {
+                battleDamage.SetDamageSource(damageModifier.ModifierData.Value);
                 
-                target.AddModifier(modifier);
+                damageModifier.ModifierData.Value =
+                    battleDamage.CalculateAttackDamage(target, battleActionOutcome.DamageMultiplier);
+                
+                target.AddModifier(damageModifier);
+                
+                return;
             }
+            
+            target.AddModifier(InstantStatModifier.GetInstance(StatType.HEALTH, battleDamage.CalculateAttackDamage(target, battleActionOutcome.DamageMultiplier)));
         }
     }
 }

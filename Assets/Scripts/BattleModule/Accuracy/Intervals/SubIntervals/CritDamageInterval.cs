@@ -1,10 +1,11 @@
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.BattleActions.Outcome.Outcomes;
 using BattleModule.Utility;
 
 namespace BattleModule.Accuracy.Intervals.SubIntervals
 {
-    public class CritDamage : SubInterval
+    public class CritDamageInterval : SubInterval
     {
         public override SubIntervalType SubIntervalType => SubIntervalType.CRIT;
 
@@ -14,7 +15,7 @@ namespace BattleModule.Accuracy.Intervals.SubIntervals
         
         public override BattleActionOutcome GetBattleActionOutcome()
         {
-            return new Actions.BattleActions.Outcome.Outcomes.CritDamage();
+            return new CritDamage();
         }
 
         protected override void UpdateIntervalRange()

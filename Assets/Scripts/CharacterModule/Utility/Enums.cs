@@ -47,4 +47,12 @@ namespace CharacterModule.Utility
         [Description(StatNames.TimeEffectName)]
         TIME_EFFECT
     }
+    
+    public enum ArmorType
+    {
+        CHEST,
+        HELMET,
+        BOOTS,
+        GLOVES
+    }
 }

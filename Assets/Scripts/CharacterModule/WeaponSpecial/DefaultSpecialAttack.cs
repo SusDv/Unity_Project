@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using CharacterModule.Stats.Interfaces;
-using CharacterModule.Types.Base;
-using CharacterModule.Utility;
 using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
 
@@ -12,33 +7,14 @@ namespace CharacterModule.WeaponSpecial
     public class DefaultSpecialAttack : ISpecialAttack
     {
         private readonly float _maxEnergy;
-
-        private readonly (List<ITemporaryModifier<StatType>> temporaryModifiers, List<IModifier<StatType>> modifiers) _targetModifiers;
         
         public float CurrentEnergyAmount { get; private set; }
         
         public event Action<float> OnEnergyChanged = delegate { };
 
-        public DefaultSpecialAttack(float maxEnergy,
-            (List<ITemporaryModifier<StatType>> temporaryModifiers, List<IModifier<StatType>> modifiers) targetModifiers)
+        public DefaultSpecialAttack(float maxEnergy)
         {
             _maxEnergy = maxEnergy;
-
-            _targetModifiers = targetModifiers;
-        }
-
-        public void Attack(List<Character> targets)
-        {
-            if (IsFullyCharged())
-            {
-                return;
-            }
-
-            CurrentEnergyAmount = 0;
-
-            OnEnergyChanged?.Invoke(GetChargeRatio());
-            
-            ApplyTargetModifiers(targets);
         }
 
         public void Charge(float amount)
@@ -48,27 +24,20 @@ namespace CharacterModule.WeaponSpecial
             OnEnergyChanged?.Invoke(GetChargeRatio());
         }
 
-        private bool IsFullyCharged()
+        public bool IsReady()
         {
-            return Mathf.RoundToInt(_maxEnergy - CurrentEnergyAmount) == 0;
-        }
-
-        private void ApplyTargetModifiers(List<Character> targets)
-        {
-            foreach (var targetStats in targets.Select(target => target.Stats))
+            if (Mathf.RoundToInt(_maxEnergy - CurrentEnergyAmount) != 0)
             {
-                foreach (var modifier in _targetModifiers.modifiers)
-                {
-                    targetStats.AddModifier(modifier);
-                }
-                
-                foreach (var modifier in _targetModifiers.temporaryModifiers)
-                {
-                    targetStats.AddModifier(modifier);
-                }
+                return false;
             }
-        }
 
+            CurrentEnergyAmount = 0;
+            
+            OnEnergyChanged?.Invoke(GetChargeRatio());
+
+            return true;
+        }
+        
         private float GetChargeRatio()
         {
             return CurrentEnergyAmount / _maxEnergy;

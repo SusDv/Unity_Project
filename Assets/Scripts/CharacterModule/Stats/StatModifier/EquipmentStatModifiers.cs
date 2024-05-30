@@ -8,7 +8,7 @@ using UnityEngine;
 namespace CharacterModule.Stats.StatModifier
 {
     [Serializable]
-    public class StaticStatModifiers : StatModifiers
+    public class EquipmentStatModifiers : StatModifiers
     {
         [field: SerializeField] 
         private List<PermanentStatModifier> _permanentStatModifiers = new();

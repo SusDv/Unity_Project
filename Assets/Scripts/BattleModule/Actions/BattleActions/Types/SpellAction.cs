@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using BattleModule.Accuracy;
-using BattleModule.Actions.BattleActions.Base;
-using CharacterModule.Types.Base;
+﻿using BattleModule.Actions.BattleActions.Base;
+using BattleModule.Utility.DamageCalculator;
+using CharacterModule.Stats.Managers;
 
 namespace BattleModule.Actions.BattleActions.Types
 {
     public class SpellAction : BattleAction
     {
-        public override void PerformAction(Character source,
-            List<Character> targets, Dictionary<Character, BattleAccuracy> accuracies)
+        protected override BattleDamage GetDamageCalculator(StatManager statManager)
         {
-            base.PerformAction(source, targets, accuracies);
+            return new MagicDamage(statManager);
         }
     }
 }

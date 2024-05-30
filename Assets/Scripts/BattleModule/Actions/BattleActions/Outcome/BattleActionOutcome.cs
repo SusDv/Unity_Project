@@ -1,10 +1,10 @@
-using BattleModule.Actions.BattleActions.Outcome.Information;
+using BattleModule.Utility;
 
 namespace BattleModule.Actions.BattleActions.Outcome
 {
     public abstract class BattleActionOutcome
     {
-        public OutcomeInformation OutcomeInformation { get; protected set; }
+        public abstract SubIntervalType SubIntervalType { get; }
 
         public abstract bool Success { get; }
 

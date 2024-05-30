@@ -1,11 +1,12 @@
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.BattleActions.Outcome.Outcomes;
 using BattleModule.Utility;
 using Utility.Constants;
 
 namespace BattleModule.Accuracy.Intervals.SubIntervals
 {
-    public class HalfDamage : SubInterval
+    public class HalfDamageInterval : SubInterval
     {
         public override SubIntervalType SubIntervalType => SubIntervalType.HALF;
 
@@ -15,7 +16,7 @@ namespace BattleModule.Accuracy.Intervals.SubIntervals
         
         public override BattleActionOutcome GetBattleActionOutcome()
         {
-            return new Actions.BattleActions.Outcome.Outcomes.HalfDamage();
+            return new HalfDamage();
         }
 
         protected override void UpdateIntervalRange()

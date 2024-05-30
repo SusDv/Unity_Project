@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Controllers.Modules;
-using BattleModule.UI.Presenter.SceneSettings.Targeting;
 using BattleModule.Utility;
 using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility;
 using Utility.Constants;
 using VContainer;
 
@@ -15,10 +15,9 @@ namespace BattleModule.UI.Presenter
 {
     public class BattleUITargeting : MonoBehaviour, ILoadingUnit<List<Character>>
     {
-        [SerializeField]
-        private BattleTargetingSceneSettings _battleTargetingSceneSettings;
-        
         private AssetLoader _assetLoader;
+
+        private BattleUIHelper _battleUIHelper;
         
         private BattleTargetingController _battleTargetingController;
         
@@ -31,11 +30,13 @@ namespace BattleModule.UI.Presenter
         private readonly List<Image> _battleTargetImages = new ();
         
         [Inject]
-        private void Init(AssetLoader assetLoader,
+        private void Init(AssetLoader assetLoader, BattleUIHelper battleUIHelper,
             BattleTargetingController battleTargetingController)
         {
             _assetLoader = assetLoader;
-  
+
+            _battleUIHelper = battleUIHelper;
+            
             _battleTargetingController = battleTargetingController;
         }
 
@@ -57,7 +58,7 @@ namespace BattleModule.UI.Presenter
             for (var i = 0; i < spawnedCharactersCount; i++) 
             {
                 var targetGroup = Instantiate(_targetGroupPrefab,
-                    _battleTargetingSceneSettings.BattleTargetingCanvas.transform);
+                    _battleUIHelper.WorldCanvas.transform);
 
                 var targetImage = Instantiate(_targetImagePrefab, targetGroup.transform);
                 
@@ -69,9 +70,9 @@ namespace BattleModule.UI.Presenter
 
         private Vector2 GetLocalPosition(Vector3 position)
         {
-            Vector3 screenPosition = RectTransformUtility.WorldToScreenPoint(_battleTargetingSceneSettings.MainCamera, position);
+            Vector3 screenPosition = RectTransformUtility.WorldToScreenPoint(_battleUIHelper.MainCamera, position);
             
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleTargetingSceneSettings.BattleTargetingCanvas.transform as RectTransform, screenPosition, _battleTargetingSceneSettings.MainCamera, out var localPosition);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_battleUIHelper.WorldCanvas.transform as RectTransform, screenPosition, _battleUIHelper.MainCamera, out var localPosition);
 
             return localPosition;
         }
@@ -111,7 +112,7 @@ namespace BattleModule.UI.Presenter
             
             targetingImage.transform.SetParent(targetingGroup);
             
-            targetingImage.transform.LookAt(_battleTargetingSceneSettings.MainCamera.transform.position);
+            targetingImage.transform.LookAt(_battleUIHelper.MainCamera.transform.position);
 
             targetingImage.gameObject.SetActive(true);
         }

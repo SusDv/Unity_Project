@@ -36,6 +36,7 @@ namespace BattleModule.Scopes
         private readonly BattleUISpells _battleUISpells;
         private readonly BattleUITargeting _battleUITargeting;
         private readonly BattleUITurn _battleUITurn;
+        private readonly BattleUIOutcome _battleUIOutcome;
         
         [Inject]
         private BattleFlow(LoadingService loadingService,
@@ -58,7 +59,8 @@ namespace BattleModule.Scopes
             BattleUIPlayer battleUIPlayer,
             BattleUISpells battleUISpells,
             BattleUITargeting battleUITargeting,
-            BattleUITurn battleUITurn)
+            BattleUITurn battleUITurn,
+            BattleUIOutcome battleUIOutcome)
         {
             _loadingService = loadingService;
             _assetLoader = assetLoader;
@@ -83,6 +85,7 @@ namespace BattleModule.Scopes
             _battleUISpells = battleUISpells;
             _battleUITargeting = battleUITargeting;
             _battleUITurn = battleUITurn;
+            _battleUIOutcome = battleUIOutcome;
         }
 
         public async void Start()
@@ -97,7 +100,7 @@ namespace BattleModule.Scopes
             _uiLoadingScreen.SetVisibility(true);
             
             await _assetLoader.LoadBattleAssets();
-
+            
             await _loadingService.BeginLoading(_battleInput);
             await _loadingService.BeginLoading(_battleTimerController);
             await _loadingService.BeginLoading(_battleSpawner);
@@ -116,6 +119,7 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleUISpells);
             await _loadingService.BeginLoading(_battleUITargeting, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleUITurn, _battleSpawner.GetSpawnedCharacters());
+            await _loadingService.BeginLoading(_battleUIOutcome);
             
             _uiLoadingScreen.SetVisibility(false);
         }

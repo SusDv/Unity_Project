@@ -1,11 +1,12 @@
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.BattleActions.Outcome.Outcomes;
 using BattleModule.Utility;
 using Utility.Constants;
 
 namespace BattleModule.Accuracy.Intervals.SubIntervals
 {
-    public class FullDamage : SubInterval
+    public class FullDamageInterval : SubInterval
     {
         public override SubIntervalType SubIntervalType => SubIntervalType.FULL;
 
@@ -15,13 +16,14 @@ namespace BattleModule.Accuracy.Intervals.SubIntervals
         
         public override BattleActionOutcome GetBattleActionOutcome()
         {
-            return new Actions.BattleActions.Outcome.Outcomes.FullDamage();
+            return new FullDamage();
         }
 
         protected override void UpdateIntervalRange()
         {
             IntervalRange =
-                new IntervalRange((int)(RuntimeConstants.AccuracyConstants.AccuracyMeasureValue - HitRate), (int)((RuntimeConstants.AccuracyConstants.AccuracyMeasureValue - HitRate) + HitRate * SubIntervalPercentage) - 1);
+                new IntervalRange((int)(RuntimeConstants.AccuracyConstants.AccuracyMeasureValue - HitRate), 
+                    (int)((RuntimeConstants.AccuracyConstants.AccuracyMeasureValue - HitRate) + HitRate * SubIntervalPercentage) - 1);
         }
     }
 }

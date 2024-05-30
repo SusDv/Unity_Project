@@ -28,20 +28,7 @@ namespace CharacterModule.Inventory.Items
 
         public IAction GetAction()
         {
-            return new ItemActionProcessor(BattlePoints, TargetModifiers, this);
+            return new ItemActionProcessor(ID, TargetModifiers, this);
         }
-
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            TargetModifiers.SetSourceID(GetInstanceID());
-        }
-#else
-        private void Awake()
-        {
-            TargetModifiers.SetSourceID(GetInstanceID());
-        }
-#endif
     }
 }

@@ -11,8 +11,6 @@ namespace BattleModule.UI.View
         public void SetData(ISpecialAttack specialAttack)
         {
             specialAttack.OnEnergyChanged += UpdateValue;
-            
-            UpdateValue(specialAttack.CurrentEnergyAmount);
         }
 
         private void UpdateValue(float updatedValue)

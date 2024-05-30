@@ -26,6 +26,6 @@ namespace CharacterModule.Inventory.Items.Equipment
         
         public int MaxTargetsCount => 1;
 
-        public IAction GetAction() => new ActionProcessor(BattlePoints, HitModifiers);
+        public IAction GetAction() => new DefaultActionProcessor(ID, HitModifiers);
     }
 }

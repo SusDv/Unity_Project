@@ -13,19 +13,7 @@ namespace CharacterModule.Spells.Core.Spells
 
         public override IAction GetAction()
         {
-            return new ActionProcessor(BattlePoints, TargetModifiers);
+            return new DefaultActionProcessor(GetInstanceID(), TargetModifiers);
         }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            TargetModifiers.SetSourceID(GetInstanceID());
-        }
-#else
-        private void Awake()
-        {
-            TargetModifiers.SetSourceID(GetInstanceID());
-        }
-#endif
     }
 }

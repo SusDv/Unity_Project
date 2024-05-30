@@ -1,17 +1,20 @@
-﻿using CharacterModule.Inventory.Items.Equipment;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CharacterModule.Settings
 {
     [CreateAssetMenu(fileName = "Character Settings", menuName = "Character/Settings/Character Settings")]
     public class BaseSettings : ScriptableObject
     {
-        public BaseStats BaseStats;
+        [field: SerializeField] 
+        public BaseStats BaseStats { get; private set; }
 
-        public BaseSpells BaseSpells;
-
-        public BaseInformation BaseInformation;
+        [field: SerializeField]
+        public BaseSpells BaseSpells { get; private set; }
         
-        public Weapon BaseWeapon;
+        [field: SerializeField]
+        public BaseInformation BaseInformation { get; private set; }
+        
+        [field: SerializeField]
+        public BaseEquipment BaseEquipment { get; private set; }
     }
 }

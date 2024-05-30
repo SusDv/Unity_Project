@@ -33,13 +33,11 @@ namespace CharacterModule.Types.Base
 
             SpellContainer = new SpellContainer(_baseSettings.BaseSpells);
 
-            EquipmentController = new EquipmentController(this);
+            EquipmentController = new EquipmentController(this, _baseSettings.BaseEquipment);
 
             HealthManager = new HealthManager(this);
 
             BaseInformation = _baseSettings.BaseInformation;
-
-            EquipmentController.WeaponController.Equip(_baseSettings.BaseWeapon);
         }
 
         public void Dispose()
