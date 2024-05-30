@@ -14,6 +14,6 @@ namespace BattleModule.UI.Presenter.SceneSettings.Inventory
         [SerializeField] public Transform BattleInventoryItemsParent;
         
         [Header("Button")]
-        [SerializeField] public BattleUIDefaultButton BattleInventoryButton;
+        [SerializeField] public BattleUIButton BattleInventoryButton;
     }
 }

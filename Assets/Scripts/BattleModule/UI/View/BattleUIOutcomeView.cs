@@ -12,6 +12,8 @@ namespace BattleModule.UI.View
         public void SetData(BattleActionOutcome battleActionOutcome)
         {
             _outcomeText.text = battleActionOutcome.SubIntervalType.ToString();
+            
+            Destroy(gameObject, 1f);
         }
     }
 }

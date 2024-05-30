@@ -124,7 +124,7 @@ namespace BattleModule.UI.Presenter
             _battleActionController.SetBattleAction<ItemAction>(GetSelectedItem(battleUIItem));
         }
 
-        private void BattleInventoryButtonClicked(object o)
+        private void BattleInventoryButtonClicked()
         {
             _battleInventorySceneSettings.BattleInventoryWindow.SetActive(!_battleInventorySceneSettings.BattleInventoryWindow.activeSelf);
             
