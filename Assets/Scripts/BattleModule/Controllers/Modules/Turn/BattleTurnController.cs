@@ -80,11 +80,11 @@ namespace BattleModule.Controllers.Modules.Turn
             };
         }
 
-        public void TriggerTurnEffects()
+        public void BeginTurn()
         {
-            ResetFirstCharacterBattlePoints();
-            
             _spawnedCharacters.First().Stats.TriggerSealEffects();
+            
+            ResetFirstCharacterBattlePoints();
         }
 
         public UniTask Load(List<Character> characters)

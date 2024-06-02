@@ -58,28 +58,17 @@ namespace BattleModule.UI.Presenter
             
             foreach (var target in targets.Distinct().ToList())
             {
-                if (_accuracyViews.TryGetValue(target, out var accuracyView))
+                if (!_accuracyViews.TryGetValue(target, out var accuracyView))
                 {
-                    accuracyView.SetData(_battleAccuracies[target].HitRate.ToString(CultureInfo.CurrentCulture));
-                
-                    accuracyView.gameObject.SetActive(true);
+                    continue;
                 }
+
+                accuracyView.SetData(_battleAccuracies[target].HitRate.ToString(CultureInfo.CurrentCulture));
+                
+                accuracyView.gameObject.SetActive(true);
             }
         }
-
-        public UniTask Load(List<Character> characters)
-        {
-            _accuracyViewPrefab = _assetLoader.GetLoadedAsset<BattleUIAccuracyView>(RuntimeConstants.AssetsName.AccuracyView);
-            
-            _battleAccuracyController.OnAccuraciesChanged += OnAccuraciesChanged;
-
-            _battleTargetingController.OnTargetsChanged += OnTargetsChanged;
-            
-            CreateAccuracyView(characters);
-
-            return UniTask.CompletedTask;
-        }
-
+        
         private void OnAccuraciesChanged(Dictionary<Character, BattleAccuracy> accuracies)
         {
             _battleAccuracies = accuracies;
@@ -99,6 +88,19 @@ namespace BattleModule.UI.Presenter
                 
                 _accuracyViews.Add(character, accuracyView);
             }
+        }
+
+        public UniTask Load(List<Character> characters)
+        {
+            _accuracyViewPrefab = _assetLoader.GetLoadedAsset<BattleUIAccuracyView>(RuntimeConstants.AssetsName.AccuracyView);
+            
+            _battleAccuracyController.OnAccuraciesChanged += OnAccuraciesChanged;
+
+            _battleTargetingController.OnTargetsChanged += OnTargetsChanged;
+            
+            CreateAccuracyView(characters);
+
+            return UniTask.CompletedTask;
         }
     }
 }

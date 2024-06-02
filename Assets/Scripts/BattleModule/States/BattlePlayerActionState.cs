@@ -63,7 +63,9 @@ namespace BattleModule.States
         {
             _currentTargets = new List<Character>();
             
-            BattleStateMachine.BattleController.BattleTurnController.TriggerTurnEffects();
+            BattleStateMachine.BattleController.BattleTargetingController.ResetTargetIndex();
+            
+            BattleStateMachine.BattleController.BattleTurnController.BeginTurn();
             
             BattleStateMachine.BattleController.BattleActionController.SetDefaultBattleAction();
         }

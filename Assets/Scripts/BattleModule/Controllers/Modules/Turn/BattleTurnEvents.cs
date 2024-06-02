@@ -4,6 +4,8 @@ namespace BattleModule.Controllers.Modules.Turn
 {
     public class BattleTurnEvents
     {
+        public event Action OnTurnStart = delegate { };
+
         public event Action OnTurnEnd = delegate { };
 
         public event Action OnCycleEnd = delegate { };
@@ -15,6 +17,14 @@ namespace BattleModule.Controllers.Modules.Turn
             OnTurnEnd?.Invoke();
         }
 
-        public void InvokeAction() => OnActionInvoked?.Invoke();
+        public void StartTurn()
+        {
+            OnTurnStart?.Invoke();
+        }
+
+        public void InvokeAction()
+        {
+            OnActionInvoked?.Invoke();
+        }
     }
 }
