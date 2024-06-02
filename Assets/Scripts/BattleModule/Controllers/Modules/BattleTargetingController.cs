@@ -43,7 +43,12 @@ namespace BattleModule.Controllers.Modules
         }
         
         public event Action<List<Character>> OnTargetsChanged = delegate { };
-        
+
+        public void ResetTargetIndex()
+        {
+            _mainTargetIndex = -1;
+        }
+
         public void SetMainTargetWithInput(int direction)
         {
             _mainTargetIndex = GetNearbyCharacterIndex(_mainTargetIndex + direction, _possibleTargets.Count);
@@ -118,8 +123,8 @@ namespace BattleModule.Controllers.Modules
         private void SetPossibleTargets(Type characterType, TargetType targetType)
         {
             _possibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(characterType, targetType).Invoke(character.GetType())).ToList();
-            
-            _mainTargetIndex = _possibleTargets.Count / 2;
+
+            _mainTargetIndex = _mainTargetIndex == -1 ? _possibleTargets.Count / 2 : _mainTargetIndex;
         }
 
         private void SetMainTarget()
