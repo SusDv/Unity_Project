@@ -28,7 +28,7 @@ namespace BattleModule.Controllers.Modules
         
         public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
 
-        public event Action<Dictionary<Character, BattleActionOutcome>> OnBattleActionFinished = delegate { };
+        public event Action<List<Character>, IReadOnlyList<BattleActionOutcome>> OnBattleActionFinished = delegate { };
 
         [Inject]
         private BattleActionController(BattleCancelableController battleCancelableController,
@@ -51,12 +51,12 @@ namespace BattleModule.Controllers.Modules
                 _currentBattleAction.Init(actionObject, _characterToHaveTurn));
         }
 
-        public void ExecuteBattleAction(List<Character> targets)
-        { 
-            OnBattleActionFinished?.Invoke(
-                _currentBattleAction.PerformAction(_characterToHaveTurn,
-                targets, 
-                _battleAccuracyController.GetAccuracies()));
+        public async UniTask ExecuteBattleAction(List<Character> targets)
+        {
+            var result = await _currentBattleAction.PerformAction(_characterToHaveTurn, targets,
+                _battleAccuracyController.GetAccuracies());
+            
+            OnBattleActionFinished?.Invoke(targets, result);
         }
 
         public bool Cancel()

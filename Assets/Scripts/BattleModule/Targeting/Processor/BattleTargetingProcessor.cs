@@ -10,13 +10,12 @@ namespace BattleModule.Targeting.Processor
     public class BattleTargetingProcessor
     {
         private readonly Dictionary<TargetSearchType, BattleTargeting> _targeting = new();
+
+        private readonly Action<List<Character>> _targetsChangedCallback;
         
         private BattleTargeting _currentTargetingClass;
 
-        private readonly Action<List<Character>> _targetsChangedCallback;
-
-        public BattleTargetingProcessor(
-            Action<List<Character>> targetsChangedCallback)
+        public BattleTargetingProcessor(Action<List<Character>> targetsChangedCallback)
         {
             Init();
 

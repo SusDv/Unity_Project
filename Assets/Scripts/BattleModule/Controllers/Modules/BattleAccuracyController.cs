@@ -19,24 +19,12 @@ namespace BattleModule.Controllers.Modules
         
         public event Action<Dictionary<Character, BattleAccuracy>> OnAccuraciesChanged = delegate { };
         
-        public UniTask Load()
-        {
-            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
-                
-            return UniTask.CompletedTask;
-        }
-        
-        public Dictionary<Character, BattleAccuracy> GetAccuracies()
-        {
-            return _battleAccuracies;
-        }
-        
         [Inject]
         private BattleAccuracyController(BattleTurnController battleTurnController)
         {
             _battleTurnController = battleTurnController;
         }
-
+        
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
             _battleAccuracies.Clear();
@@ -49,12 +37,24 @@ namespace BattleModule.Controllers.Modules
                 
                 _battleAccuracies.Add(character, 
                     new BattleAccuracy().Init(
-                    accuracy, 
-                    evasion, 
-                    character.GetType() == battleTurnContext.CharactersInTurn.First().GetType()));
+                        accuracy, 
+                        evasion, 
+                        character.GetType() == battleTurnContext.CharactersInTurn.First().GetType()));
             }
             
             OnAccuraciesChanged?.Invoke(_battleAccuracies);
+        }
+        
+        public UniTask Load()
+        {
+            _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
+                
+            return UniTask.CompletedTask;
+        }
+        
+        public Dictionary<Character, BattleAccuracy> GetAccuracies()
+        {
+            return _battleAccuracies;
         }
     }
 }

@@ -517,7 +517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcda21473b5a4dfa9aace5a4e36c7bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 1660436865}
   _battleSpawner: {fileID: 968566756}
   _battleInput: {fileID: 1599748546}
 --- !u!4 &404523932
@@ -568,7 +567,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 4
+  m_Priority: 3
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -889,7 +888,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610058888}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1266,7 +1265,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 3
+  m_Priority: 4
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -1434,7 +1433,7 @@ GameObject:
   - component: {fileID: 901738693}
   - component: {fileID: 901738694}
   m_Layer: 0
-  m_Name: CanvasProvider
+  m_Name: BattleUIHelper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1470,6 +1469,8 @@ MonoBehaviour:
   <DynamicCanvas>k__BackingField: {fileID: 509415160}
   <WorldCanvas>k__BackingField: {fileID: 19025224}
   <MainCamera>k__BackingField: {fileID: 1660436865}
+  <PlayerAttackCamera>k__BackingField: {fileID: 463631439}
+  <ActionOnPlayerCamera>k__BackingField: {fileID: 747773532}
 --- !u!1 &919194935
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,7 +2688,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753788108}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

@@ -1,5 +1,4 @@
 using BattleModule.Utility;
-using CharacterModule.Utility;
 using CharacterModule.Utility.Stats;
 using Utility;
 

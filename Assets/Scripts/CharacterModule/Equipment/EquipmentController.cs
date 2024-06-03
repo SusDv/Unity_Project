@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Transformer;
+using BattleModule.Utility;
 using CharacterModule.Settings;
 using CharacterModule.Types.Base;
 
@@ -8,6 +10,8 @@ namespace CharacterModule.Equipment
     public class EquipmentController
     {
         private readonly List<OutcomeTransformer> _outcomeTransformers = new ();
+
+        private Func<int, BattleTimer> _battleTimerFactory;
         
         public WeaponController WeaponController { get; private set; }
 
@@ -19,7 +23,17 @@ namespace CharacterModule.Equipment
             
             ArmorController.Equip(baseEquipment.BaseArmor);
             
-            _outcomeTransformers.AddRange(ArmorController.GetTransformers());
+            SetupTransformers();
+        }
+
+        private void SetupTransformers()
+        {
+            foreach (var outcomeTransformer in ArmorController.GetTransformers())
+            {
+                outcomeTransformer.SetTimer(_battleTimerFactory.Invoke(0));
+                
+                _outcomeTransformers.Add(outcomeTransformer);
+            }
         }
 
         public EquipmentController(Character belongsTo, BaseEquipment baseEquipment)
@@ -31,7 +45,12 @@ namespace CharacterModule.Equipment
             Init(baseEquipment);
         }
 
-        public List<OutcomeTransformer> GetTransformers()
+        public void SetBattleTimerFactory(Func<int, BattleTimer> battleTimerFactory)
+        {
+            _battleTimerFactory = battleTimerFactory;
+        }
+
+        public IEnumerable<OutcomeTransformer> GetTransformers()
         {
             return _outcomeTransformers;
         }

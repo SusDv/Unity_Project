@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using UnityEngine;
 
 namespace BattleModule.Utility
@@ -14,5 +15,11 @@ namespace BattleModule.Utility
 
         [field: SerializeField] 
         public Camera MainCamera { get; private set; }
+
+        [field: SerializeField]
+        public CinemachineVirtualCamera PlayerAttackCamera { get; private set; }
+        
+        [field: SerializeField]
+        public CinemachineVirtualCamera ActionOnPlayerCamera { get; private set; }
     }
 }

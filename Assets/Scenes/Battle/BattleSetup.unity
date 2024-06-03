@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4512266, g: 0.50095135, b: 0.57357925, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -104,7 +103,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +116,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -158,11 +157,11 @@ MonoBehaviour:
   - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
   - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
   <EnemyCharacters>k__BackingField:
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
-  - {fileID: -9208476568328332278, guid: 93819cd274ae24a4cbae376880409a1c, type: 3}
+  - {fileID: -5542458549176267773, guid: 4424fbf74f635804e982a4691b56d463, type: 3}
+  - {fileID: -5542458549176267773, guid: 4424fbf74f635804e982a4691b56d463, type: 3}
+  - {fileID: -5542458549176267773, guid: 4424fbf74f635804e982a4691b56d463, type: 3}
+  - {fileID: -5542458549176267773, guid: 4424fbf74f635804e982a4691b56d463, type: 3}
+  - {fileID: -5542458549176267773, guid: 4424fbf74f635804e982a4691b56d463, type: 3}
   <PlayerInventory>k__BackingField: {fileID: 11400000, guid: 8a4cfdf1ff57d5e4d83de0a3f1c13429, type: 2}
   <Items>k__BackingField:
   - {fileID: 11400000, guid: 2f037f7412cc11545abf639a5671cb5a, type: 2}
@@ -175,13 +174,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 577267226}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1769379560
 GameObject:
@@ -207,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769379560}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1769379562
 MonoBehaviour:
@@ -232,3 +231,9 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _battleTransitionData: {fileID: 577267227}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 577267228}
+  - {fileID: 1769379561}

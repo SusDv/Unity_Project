@@ -1,14 +1,10 @@
 ﻿using BattleModule.Actions.BattleActions.Base;
-using BattleModule.Utility.DamageCalculator;
-using CharacterModule.Stats.Managers;
+using Utility.Constants;
 
 namespace BattleModule.Actions.BattleActions.Types
 {
     public class SpellAction : BattleAction
     {
-        protected override BattleDamage GetDamageCalculator(StatManager statManager)
-        {
-            return new MagicDamage(statManager);
-        }
+        protected override string ActionAnimationName => RuntimeConstants.AnimationConstants.SpellActionName;
     }
 }

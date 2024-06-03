@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.States.StateMachine;
 using CharacterModule.StateMachine;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.States.Base
 {
@@ -14,16 +17,23 @@ namespace BattleModule.States.Base
 
         public virtual void OnEnter()
         {
-            BattleStateMachine.CurrentState = this;
+            BattleStateMachine.BattleController.BattleActionController.OnBattleActionFinished += OnBattleActionFinished;
         }
 
-        public virtual void OnExit() { }
+        public virtual void OnExit()
+        {
+            BattleStateMachine.BattleController.BattleActionController.OnBattleActionFinished -= OnBattleActionFinished;
+        }
 
         public virtual void OnFixedUpdate() { }
 
-        public virtual void OnUpdate()
+        public virtual void OnUpdate() { }
+
+        private void OnBattleActionFinished(List<Character> targets, IReadOnlyList<BattleActionOutcome> outcomes)
         {
-           
+            BattleStateMachine.BattleController.BattleTurnEvents.AdvanceTurn();
+            
+            BattleStateMachine.ChangeState(BattleStateMachine.BattleDeciderState);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using CharacterModule.Utility;
 using CharacterModule.Utility.Stats;
 using TMPro;
 using UnityEngine;
@@ -23,13 +22,13 @@ namespace Utility.UI
             _sliderText.gameObject.SetActive(_displayText);
         }
 
-        public override void UpdateValue(StatInfo statInfo)
+        public override void UpdateValue(StatInfo statInfo, bool negativeChange)
         {
             StopCoroutine(AnimateSlider());
             
             _statSliderImage.fillAmount = statInfo.FinalValue / statInfo.MaxValue;
             
-            _sliderText.text = $"{statInfo.FinalValue}/{statInfo.MaxValue}";
+            _sliderText.text = $"{Mathf.Round(statInfo.FinalValue)}";
 
             StartCoroutine(AnimateSlider());
         }

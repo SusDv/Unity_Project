@@ -26,5 +26,13 @@ namespace Utility.Constants
         {
             public const int AccuracyMeasureValue = 100;
         }
+
+        public static class AnimationConstants
+        {
+            public const string DefaultActionName = "Attack";
+            public const string ItemActionName = "Potion";
+            public const string SpellActionName = "";
+            public const string SpecialActionName = "";
+        }
     }
 }

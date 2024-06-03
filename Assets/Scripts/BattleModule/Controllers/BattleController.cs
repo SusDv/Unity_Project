@@ -45,7 +45,7 @@ namespace BattleModule.Controllers
 
         public void StartBattle()
         {
-            _battleStateMachine.ChangeState(_battleStateMachine.BattlePlayerActionState);
+            _battleStateMachine.ChangeState(_battleStateMachine.BattlePrepareState);
         }
     }
 }

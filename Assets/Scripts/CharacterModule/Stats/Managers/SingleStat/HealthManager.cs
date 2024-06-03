@@ -21,13 +21,18 @@ namespace CharacterModule.Stats.Managers.SingleStat
             character.Stats.AttachStatObserver(this);
         }
 
-        public void UpdateValue(StatInfo statInfo)
+        public async void UpdateValue(StatInfo statInfo, bool negativeChange)
         {
+            if (negativeChange)
+            {
+                await _observableCharacter.AnimationManager.PlayAnimation("Damaged");
+            }
+
             if (!(statInfo.FinalValue <= 0))
             {
                 return;
             }
-
+            
             OnCharacterDied?.Invoke(_observableCharacter);
             
             _observableCharacter.Dispose();

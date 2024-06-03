@@ -33,12 +33,5 @@ MonoBehaviour:
           <ModifierData>k__BackingField:
             <ValueModifierType>k__BackingField: 0
             <ModifiedValueType>k__BackingField: 0
-            <Value>k__BackingField: -200
-        _temporaryStatModifiers:
-        - <Type>k__BackingField: 0
-          <TemporaryEffectType>k__BackingField: 1
-          <Duration>k__BackingField: 1
-          <ModifierData>k__BackingField:
-            <ValueModifierType>k__BackingField: 0
-            <ModifiedValueType>k__BackingField: 0
-            <Value>k__BackingField: -50
+            <Value>k__BackingField: 200
+        _temporaryStatModifiers: []

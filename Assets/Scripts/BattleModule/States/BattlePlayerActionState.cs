@@ -23,13 +23,6 @@ namespace BattleModule.States
             base.OnEnter();
         }
 
-        public override void OnExit()
-        {
-            ClearBattleEvents();
-
-            base.OnExit();
-        }
-
         private void SelectCharacterUsingMouse()
         {
             BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(
@@ -62,15 +55,9 @@ namespace BattleModule.States
         private void StartTurn()
         {
             _currentTargets = new List<Character>();
-            
-            BattleStateMachine.BattleController.BattleTargetingController.ResetTargetIndex();
-            
-            BattleStateMachine.BattleController.BattleTurnController.BeginTurn();
-            
-            BattleStateMachine.BattleController.BattleActionController.SetDefaultBattleAction();
         }
 
-        private void ActionHandler()
+        private async void ActionHandler()
         {
             _currentTargets = BattleStateMachine.BattleController.BattleTargetingController.GetSelectedTargets();
             
@@ -78,12 +65,10 @@ namespace BattleModule.States
             {
                 return;
             }
-            
-            BattleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets.ToList());
 
-            BattleStateMachine.BattleController.BattleTurnEvents.AdvanceTurn();
+            ClearBattleEvents();
             
-            BattleStateMachine.ChangeState(BattleStateMachine.BattlePlayerActionState);
+            await BattleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets.ToList());
         }
     }
 }

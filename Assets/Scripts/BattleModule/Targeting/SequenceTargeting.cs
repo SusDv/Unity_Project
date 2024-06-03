@@ -24,6 +24,13 @@ namespace BattleModule.Targeting
         {
             var previewList = SelectedCharacters.ToList();
 
+            // If all possible characters selected
+            // We don't want to preview next target
+            if (previewList.Count == NumberOfCharactersToSelect)
+            {
+                return previewList;
+            }
+
             previewList.Add(TargetPool[_mainTargetIndex]);
 
             return previewList;

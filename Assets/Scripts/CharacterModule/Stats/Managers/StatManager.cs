@@ -22,7 +22,7 @@ namespace CharacterModule.Stats.Managers
 
         private Func<int, BattleTimer> _battleTimerFactory;
         
-        private void NotifyObservers(StatType statType)
+        private void NotifyObservers(StatType statType, bool negativeChange)
         {
             var statInfo = GetStatInfo(statType);
             
@@ -30,7 +30,7 @@ namespace CharacterModule.Stats.Managers
                      _statObservers
                          .Where(o => o.StatType == statType))
             {
-                statObserver.UpdateValue(statInfo);
+                statObserver.UpdateValue(statInfo, negativeChange);
             }
         }
         
@@ -70,7 +70,7 @@ namespace CharacterModule.Stats.Managers
 
             modifier.OnAdded();
             
-            NotifyObservers(modifier.Type);
+            NotifyObservers(modifier.Type, modifier.IsNegative);
         }
 
         public StatManager(BaseStats baseStats)
@@ -128,7 +128,7 @@ namespace CharacterModule.Stats.Managers
             {
                 temporaryModifier.BattleTimer.EndTimer();
                 
-                NotifyObservers(temporaryModifier.Type);
+                NotifyObservers(temporaryModifier.Type, temporaryModifier.IsNegative);
             }
             
             RemoveModifiersOnCondition(m => m is TemporaryStatModifier {Duration: < 0});
@@ -149,7 +149,7 @@ namespace CharacterModule.Stats.Managers
                 
                 modifier.OnRemove();
                     
-                NotifyObservers(modifier.Type);
+                NotifyObservers(modifier.Type, !modifier.IsNegative);
                 
                 return true;
             }
@@ -164,7 +164,7 @@ namespace CharacterModule.Stats.Managers
         {
             _statObservers.Add(statObserver);
             
-            statObserver.UpdateValue(GetStatInfo(statObserver.StatType));
+            statObserver.UpdateValue(GetStatInfo(statObserver.StatType), false);
         }
 
         public void DetachStatObserver(IStatObserver statObserver)
