@@ -10,6 +10,6 @@ namespace Utility.UI
         [field: SerializeField] 
         public StatType StatType { get; set; }
 
-        public abstract void UpdateValue(StatInfo statInfo);
+        public abstract void UpdateValue(StatInfo statInfo, bool negativeChange);
     }
 }

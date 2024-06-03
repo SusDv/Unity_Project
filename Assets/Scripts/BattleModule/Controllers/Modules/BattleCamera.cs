@@ -1,29 +1,51 @@
+using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Input;
+using BattleModule.Utility;
 using CharacterModule.Types.Base;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules 
 {
-    public class BattleCamera
+    public class BattleCamera : ILoadingUnit
     {
-        private readonly Camera _mainCamera;
+        private readonly BattleUIHelper _battleUIHelper;
+
+        private readonly BattleActionController _battleActionController;
 
         private readonly BattleInput _battleInput;
 
         [Inject]
-        public BattleCamera(Camera mainCamera, BattleInput battleInput)
+        public BattleCamera(BattleUIHelper battleUIHelper,
+            BattleActionController battleActionController,
+            BattleInput battleInput)
         {
-            _mainCamera = mainCamera;
+            _battleUIHelper = battleUIHelper;
 
+            _battleActionController = battleActionController;
+            
             _battleInput = battleInput;
+        }
+
+        public UniTask Load()
+        {
+            _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
+            
+            return UniTask.CompletedTask;
+        }
+
+        private void OnBattleActionChanged(BattleActionContext context)
+        {
+            
         }
 
         [CanBeNull]
         public Character GetCharacterWithRaycast()
         {
-            var mouseRaycast = _mainCamera.ScreenPointToRay(_battleInput.MousePosition);
+            var mouseRaycast = _battleUIHelper.MainCamera.ScreenPointToRay(_battleInput.MousePosition);
 
             if (!Physics.Raycast(mouseRaycast, out var hit, 1000f, LayerMask.GetMask("Character")))
             {

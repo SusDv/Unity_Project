@@ -10,8 +10,6 @@ namespace BattleModule.Scopes.Services
 {
     public class BattleServices : MonoBehaviour
     {
-        [SerializeField] private Camera _mainCamera;
-        
         [SerializeField] private BattleSpawner _battleSpawner;
         
         [SerializeField] private BattleInput _battleInput;
@@ -36,8 +34,8 @@ namespace BattleModule.Scopes.Services
             builder.Register<BattleActionController>(Lifetime.Scoped);
 
             builder.Register<BattleAccuracyController>(Lifetime.Scoped);
-            
-            builder.Register<BattleCamera>(Lifetime.Scoped).WithParameter(_mainCamera);
+
+            builder.Register<BattleCamera>(Lifetime.Scoped);
             
             builder.Register<BattleController>(Lifetime.Scoped);
         }

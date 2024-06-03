@@ -1,4 +1,4 @@
-using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CharacterModule.Animation
@@ -6,19 +6,24 @@ namespace CharacterModule.Animation
     public class AnimationManager : MonoBehaviour
     {
         [SerializeField] private Animator _characterAnimator;
-
-        private Action _animationEndCallback;
+        
+        private bool _isAnimationEnded;
         
         public void AnimationEventTriggered()
         {
-            _animationEndCallback?.Invoke();
+            _isAnimationEnded = true;
         }
 
-        public void PlayAnimation(string animationName, Action animationEndCallback)
+        public async UniTask PlayAnimation(string animationName)
         {
+            _isAnimationEnded = false;
+            
             _characterAnimator.SetTrigger(animationName);
             
-            _animationEndCallback = animationEndCallback;
+            while (!_isAnimationEnded)
+            {
+                await UniTask.Yield();
+            }
         }
     }
 }

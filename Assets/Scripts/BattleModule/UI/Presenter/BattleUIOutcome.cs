@@ -34,13 +34,15 @@ namespace BattleModule.UI.Presenter
             _battleActionController = battleActionController;
         }
 
-        private void ShowActionOutcomes(Dictionary<Character, BattleActionOutcome> battleActionOutcomes)
+        private void ShowActionOutcomes(List<Character> targets, IReadOnlyList<BattleActionOutcome> battleActionOutcomes)
         {
-            foreach (var outcome in battleActionOutcomes)
+            for (var i = 0; i < targets.Count; i++)
             {
-                var outcomeView = Instantiate(_battleUIOutcomeView, outcome.Key.transform.position + Vector3.up * 2, Quaternion.identity, _battleUIHelper.WorldCanvas.transform);
+                var outcomeView = Instantiate(_battleUIOutcomeView, 
+                    targets[i].SizeHelper.GetCharacterTop() + Vector3.up, 
+                    Quaternion.identity, _battleUIHelper.WorldCanvas.transform);
                 
-                outcomeView.SetData(outcome.Value);
+                outcomeView.SetData(battleActionOutcomes[i]);
             }
         }
 

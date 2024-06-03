@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
 using Cysharp.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace BattleModule.Controllers.Modules.Turn
         private readonly BattleTurnEvents _battleTurnEvents;
         
         private List<Character> _spawnedCharacters;
+
+        public bool IsNextEnemy => _spawnedCharacters.First() is Enemy;
         
         public event Action<BattleTurnContext> OnCharactersInTurnChanged = delegate { };
         
@@ -72,6 +75,13 @@ namespace BattleModule.Controllers.Modules.Turn
             _spawnedCharacters = _spawnedCharacters.OrderBy((character) => character.Stats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue).ToList();
         }
 
+        private void OnBattleInit()
+        {
+            SortCharacters();
+            
+            OnCharactersInTurnChanged?.Invoke(GetBattleTurnContext());
+        }
+
         private BattleTurnContext GetBattleTurnContext()
         {
             return new BattleTurnContext
@@ -95,6 +105,8 @@ namespace BattleModule.Controllers.Modules.Turn
             {
                 character.Stats.SetBattleTimerFactory(_battleTimerController.CreateTimer);
                 
+                character.EquipmentController.SetBattleTimerFactory(_battleTimerController.CreateTimer);
+                
                 character.HealthManager.OnCharacterDied += OnCharacterDied;
             });
             
@@ -102,6 +114,8 @@ namespace BattleModule.Controllers.Modules.Turn
 
             _battleTurnEvents.OnTurnEnd += UpdateCharactersBattlePoints;
 
+            _battleTurnEvents.OnBattleInit += OnBattleInit;
+            
             return UniTask.CompletedTask;
         }
     }

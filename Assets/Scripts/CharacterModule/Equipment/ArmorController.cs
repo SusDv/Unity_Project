@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BattleModule.Actions.BattleActions.Transformer;
+using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Equipment;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Types.Base;
@@ -9,7 +10,7 @@ namespace CharacterModule.Equipment
 {
     public class ArmorController
     {
-        private readonly Dictionary<ArmorType, Armor> _armorList = new ();
+        private readonly Dictionary<ArmorType, IEquipment> _armorList = new ();
 
         private readonly List<OutcomeTransformer> _outcomeTransformers = new ();
         
@@ -22,9 +23,23 @@ namespace CharacterModule.Equipment
 
         public void Equip(Armor armor)
         {
-            _armorList.TryAdd(armor.ArmorType, armor);
+            _armorList.TryAdd(armor.ArmorType, armor.GetEquipment());
+            
+            _armorList[armor.ArmorType].Equip(_statManager);
             
             _outcomeTransformers.AddRange(armor.StaticOutcomeTransformers);
+        }
+
+        public void Unequip(ArmorType armorType)
+        {
+            if (!_armorList.TryGetValue(armorType, out var armor))
+            {
+                return;
+            }
+            
+            armor.Unequip(_statManager);
+
+            _armorList.Remove(armorType);
         }
 
         public void Equip(List<Armor> armorList)

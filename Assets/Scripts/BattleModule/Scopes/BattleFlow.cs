@@ -15,7 +15,8 @@ namespace BattleModule.Scopes
     {
         private readonly LoadingService _loadingService;
         private readonly AssetLoader _assetLoader;
-        
+
+        private readonly BattleCamera _battleCamera;
         private readonly BattleInput _battleInput;
         private readonly BattleSpawner _battleSpawner;
         private readonly BattleTimerController _battleTimerController;
@@ -41,6 +42,7 @@ namespace BattleModule.Scopes
         [Inject]
         private BattleFlow(LoadingService loadingService,
             AssetLoader assetLoader,
+            BattleCamera battleCamera,
             BattleInput battleInput,
             BattleSpawner battleSpawner,
             BattleController battleController,
@@ -64,7 +66,8 @@ namespace BattleModule.Scopes
         {
             _loadingService = loadingService;
             _assetLoader = assetLoader;
-            
+
+            _battleCamera = battleCamera;
             _battleInput = battleInput;
             _battleSpawner = battleSpawner;
             _battleController = battleController;
@@ -93,6 +96,8 @@ namespace BattleModule.Scopes
             await LoadBattle();
             
             _battleController.StartBattle();
+            
+            _uiLoadingScreen.SetVisibility(false);
         }
 
         private async UniTask LoadBattle()
@@ -101,6 +106,7 @@ namespace BattleModule.Scopes
             
             await _assetLoader.LoadBattleAssets();
             
+            await _loadingService.BeginLoading(_battleCamera);
             await _loadingService.BeginLoading(_battleInput);
             await _loadingService.BeginLoading(_battleTimerController);
             await _loadingService.BeginLoading(_battleSpawner);
@@ -120,8 +126,6 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleUITargeting, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleUITurn, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleUIOutcome);
-            
-            _uiLoadingScreen.SetVisibility(false);
         }
     }
 }

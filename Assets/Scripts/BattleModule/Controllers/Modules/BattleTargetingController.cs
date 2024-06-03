@@ -11,6 +11,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utility;
 using VContainer;
+using Random = UnityEngine.Random;
 
 namespace BattleModule.Controllers.Modules
 {
@@ -64,6 +65,13 @@ namespace BattleModule.Controllers.Modules
             }
 
             _mainTargetIndex = _possibleTargets.IndexOf(character);
+            
+            SetMainTarget();
+        }
+
+        public void SetMainTargetWithInput()
+        {
+            _mainTargetIndex = Random.Range(0, _possibleTargets.Count);
             
             SetMainTarget();
         }

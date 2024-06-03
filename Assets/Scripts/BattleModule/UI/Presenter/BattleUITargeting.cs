@@ -3,6 +3,7 @@ using System.Linq;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.View;
 using BattleModule.Utility;
+using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace BattleModule.UI.Presenter
         
         private RectTransform _targetImagePrefab;
         
-        private readonly Dictionary<GameObject, BattleUITargetView> _battleTargetGroups = new ();
+        private readonly List<BattleUITargetView> _battleTargetGroups = new ();
 
         private readonly List<RectTransform> _battleTargetImages = new ();
         
@@ -38,29 +39,12 @@ namespace BattleModule.UI.Presenter
             
             _battleTargetingController = battleTargetingController;
         }
-
-        public UniTask Load(List<Character> spawnedCharacters)
+        private void CreateTargetGroups(int count)
         {
-            _targetGroupPrefab = _assetLoader.GetLoadedAsset<BattleUITargetView>(RuntimeConstants.AssetsName.TargetGroupView);
-
-            _targetImagePrefab = _assetLoader.GetLoadedAsset<RectTransform>(RuntimeConstants.AssetsName.TargetImageView);
-            
-            _battleTargetingController.OnTargetsChanged += BattleTargets;
-            
-            CreateTargetGroups(spawnedCharacters);
-            
-            CreateTargetImagePool(spawnedCharacters.Count);
-            
-            return UniTask.CompletedTask;
-        }
-
-        private void CreateTargetGroups(List<Character> characters)
-        {
-            foreach (var character in characters)
+            for (var i = 0; i < count; i++)
             {
-                _battleTargetGroups.Add(character.gameObject,
-                    Instantiate(_targetGroupPrefab, 
-                        _battleUIHelper.WorldCanvas.transform));
+                _battleTargetGroups.Add(Instantiate(_targetGroupPrefab, 
+                    _battleUIHelper.WorldCanvas.transform));
             }
         }
 
@@ -75,7 +59,7 @@ namespace BattleModule.UI.Presenter
 
         private void ResetActiveTargets()
         {
-            foreach (var targetGroup in _battleTargetGroups.Values)
+            foreach (var targetGroup in _battleTargetGroups)
             {
                 targetGroup.ClearTargets(_battleUIHelper.WorldCanvas.transform);
             }
@@ -92,17 +76,43 @@ namespace BattleModule.UI.Presenter
 
             foreach (var character in charactersTargeted)
             {
-                SetupTargetingGroup(character.gameObject, character.SizeHelper.GetCharacterCenter(-0.5f));
+                SetupTargetingGroup(charactersTargeted.IndexOf(character), character.SizeHelper.GetCharacterCenter(-0.5f));
             }
         }
 
-        private void SetupTargetingGroup(GameObject character, Vector3 position)
+        private void SetupTargetingGroup(int characterIndex, Vector3 position)
         {
-            var targetingGroup = _battleTargetGroups[character];
+            var targetingGroup = _battleTargetGroups[characterIndex];
 
             targetingGroup.transform.position = position;
             
             targetingGroup.AddTarget(GetTargetImage());
+        }
+
+        private int GetMaxCharacterType(IEnumerable<Character> characters)
+        {
+            return characters
+                .GroupBy(c => c.GetType())
+                .Select(g => new { Type = g.Key, Count = g.Count() })
+                .Where(x => x.Type == typeof(Player) || x.Type == typeof(Enemy))
+                .Max(x => x.Count);
+        }
+
+        public UniTask Load(List<Character> spawnedCharacters)
+        {
+            _targetGroupPrefab = _assetLoader.GetLoadedAsset<BattleUITargetView>(RuntimeConstants.AssetsName.TargetGroupView);
+
+            _targetImagePrefab = _assetLoader.GetLoadedAsset<RectTransform>(RuntimeConstants.AssetsName.TargetImageView);
+            
+            _battleTargetingController.OnTargetsChanged += BattleTargets;
+
+            int maxCharacterType = GetMaxCharacterType(spawnedCharacters);
+            
+            CreateTargetGroups(maxCharacterType);
+            
+            CreateTargetImagePool(maxCharacterType);
+            
+            return UniTask.CompletedTask;
         }
     }
 }

@@ -1,7 +1,6 @@
 using BattleModule.Utility;
 using CharacterModule.Stats.Modifiers.Effects.Base;
 using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
-using CharacterModule.Utility;
 using CharacterModule.Utility.Stats;
 using Utility;
 

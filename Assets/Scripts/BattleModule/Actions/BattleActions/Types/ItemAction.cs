@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
-using BattleModule.Accuracy;
+using System.Linq;
 using BattleModule.Actions.BattleActions.Base;
-using BattleModule.Actions.BattleActions.Outcome;
 using CharacterModule.Types.Base;
+using Cysharp.Threading.Tasks;
+using Utility.Constants;
 
 namespace BattleModule.Actions.BattleActions.Types
 {
     public class ItemAction : BattleAction 
     {
-        public override Dictionary<Character, BattleActionOutcome> PerformAction(Character source,
-            List<Character> targets, Dictionary<Character, BattleAccuracy> accuracies) 
+        protected override string ActionAnimationName => RuntimeConstants.AnimationConstants.ItemActionName;
+
+        protected override async UniTask PlayActionAnimation(Character source, List<Character> targets)
         {
-            return base.PerformAction(source, targets, accuracies);
+            await targets.First().AnimationManager.PlayAnimation(ActionAnimationName);
         }
     }
 }

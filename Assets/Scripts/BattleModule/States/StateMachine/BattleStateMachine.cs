@@ -5,10 +5,11 @@ namespace BattleModule.States.StateMachine
 {
     public class BattleStateMachine : StateMachineBase
     {
-        public IState CurrentState;
-
         public BattleController BattleController { get; }
-
+        
+        public BattlePrepareState BattlePrepareState { get; }
+        public BattleDeciderState BattleDeciderState { get; }
+        
         public BattlePlayerActionState BattlePlayerActionState { get; }
 
         public BattleEnemyAttackState BattleEnemyAttackState { get; }
@@ -17,9 +18,13 @@ namespace BattleModule.States.StateMachine
         {
             BattleController = battleController;
 
+            BattlePrepareState = new BattlePrepareState(this);
+
             BattlePlayerActionState = new BattlePlayerActionState(this);
 
             BattleEnemyAttackState = new BattleEnemyAttackState(this);
+            
+            BattleDeciderState = new BattleDeciderState(this);
         }
     }
 }

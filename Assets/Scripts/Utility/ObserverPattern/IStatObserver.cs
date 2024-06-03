@@ -7,6 +7,6 @@ namespace Utility.ObserverPattern
     {
         public StatType StatType { get; set; }
 
-        public void UpdateValue(StatInfo statInfo);
+        public void UpdateValue(StatInfo statInfo, bool negativeChange);
     }
 }
