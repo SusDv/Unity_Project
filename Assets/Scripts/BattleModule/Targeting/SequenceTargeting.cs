@@ -26,7 +26,7 @@ namespace BattleModule.Targeting
 
             // If all possible characters selected
             // We don't want to preview next target
-            if (previewList.Count == NumberOfCharactersToSelect)
+            if (TargetingComplete())
             {
                 return previewList;
             }

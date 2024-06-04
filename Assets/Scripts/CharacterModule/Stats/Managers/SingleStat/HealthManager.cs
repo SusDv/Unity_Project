@@ -18,18 +18,18 @@ namespace CharacterModule.Stats.Managers.SingleStat
         {
             _observableCharacter = character;
             
-            character.Stats.AttachStatObserver(this);
+            character.Stats.AttachObserver(this);
         }
 
         public async void UpdateValue(StatInfo statInfo, bool negativeChange)
         {
-            if (negativeChange)
-            {
-                await _observableCharacter.AnimationManager.PlayAnimation("Damaged");
-            }
-
             if (!(statInfo.FinalValue <= 0))
             {
+                if (negativeChange)
+                {
+                    await _observableCharacter.AnimationManager.PlayAnimation("Damaged");
+                }
+                
                 return;
             }
             

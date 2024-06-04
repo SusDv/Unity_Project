@@ -1,19 +1,19 @@
-using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using Utility.ObserverPattern;
 
 namespace BattleModule.UI.View
 {
-    public class BattleUISpecialAttackView : MonoBehaviour
+    public class BattleUISpecialAttackView : MonoBehaviour, IObserver
     {
         [SerializeField] private Image _sliderImage;
         
-        public void SetData(ISpecialAttack specialAttack)
+        public void SetData(ISubject specialAttack)
         {
-            specialAttack.OnEnergyChanged += UpdateValue;
+            specialAttack.AttachObserver(this);
         }
 
-        private void UpdateValue(float updatedValue)
+        public void UpdateValue(float updatedValue, bool negativeChange)
         {
             _sliderImage.fillAmount = updatedValue;
         }
