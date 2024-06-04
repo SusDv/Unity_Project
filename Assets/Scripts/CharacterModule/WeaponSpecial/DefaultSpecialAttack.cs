@@ -1,6 +1,7 @@
-using System;
+using System.Collections.Generic;
 using CharacterModule.WeaponSpecial.Interfaces;
 using UnityEngine;
+using Utility.ObserverPattern;
 
 namespace CharacterModule.WeaponSpecial
 {
@@ -8,39 +9,58 @@ namespace CharacterModule.WeaponSpecial
     {
         private readonly float _maxEnergy;
 
-        public float CurrentEnergyAmount { get; private set; } = 0;
-        
-        public event Action<float> OnEnergyChanged = delegate { };
+        private float _currentEnergyAmount;
+
+        private readonly List<IObserver> _observers;
 
         public DefaultSpecialAttack(float maxEnergy)
         {
             _maxEnergy = maxEnergy;
+
+            _observers = new List<IObserver>();
         }
 
         public void Charge(float amount)
         {
-            CurrentEnergyAmount = Mathf.Clamp(CurrentEnergyAmount + amount, 0, _maxEnergy);
+            _currentEnergyAmount = Mathf.Clamp(_currentEnergyAmount + amount, 0, _maxEnergy);
             
-            OnEnergyChanged?.Invoke(GetChargeRatio());
+            NotifyObservers(amount < 0);
         }
 
         public bool IsReady()
         {
-            if (Mathf.RoundToInt(_maxEnergy - CurrentEnergyAmount) != 0)
+            if (Mathf.RoundToInt(_maxEnergy - _currentEnergyAmount) != 0)
             {
                 return false;
             }
 
-            CurrentEnergyAmount = 0;
+            _currentEnergyAmount = 0;
             
-            OnEnergyChanged?.Invoke(GetChargeRatio());
+            NotifyObservers(false);
 
             return true;
         }
         
         private float GetChargeRatio()
         {
-            return CurrentEnergyAmount / _maxEnergy;
+            return _currentEnergyAmount / _maxEnergy;
+        }
+
+        private void NotifyObservers(bool negativeChange)
+        {
+            _observers.ForEach(o => o.UpdateValue(GetChargeRatio(), negativeChange));
+        }
+
+        public void AttachObserver(IObserver observer)
+        {
+            _observers.Add(observer);
+            
+            observer.UpdateValue(GetChargeRatio(), false);
+        }
+
+        public void DetachObserver(IObserver observer)
+        {
+            _observers.Remove(observer);
         }
     }
 }

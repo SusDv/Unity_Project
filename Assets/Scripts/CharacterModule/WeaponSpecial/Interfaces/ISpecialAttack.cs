@@ -1,11 +1,9 @@
-using System;
+using Utility.ObserverPattern;
 
 namespace CharacterModule.WeaponSpecial.Interfaces
 {
-    public interface ISpecialAttack
+    public interface ISpecialAttack : ISubject
     {
-        public event Action<float> OnEnergyChanged;
-
         public void Charge(float amount);
 
         public bool IsReady();

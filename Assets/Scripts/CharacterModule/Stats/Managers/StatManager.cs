@@ -160,14 +160,14 @@ namespace CharacterModule.Stats.Managers
             ApplyInstantModifier(statType, -GetStatInfo(statType).FinalValue);
         }
 
-        public void AttachStatObserver(IStatObserver statObserver)
+        public void AttachObserver(IStatObserver statObserver)
         {
             _statObservers.Add(statObserver);
             
             statObserver.UpdateValue(GetStatInfo(statObserver.StatType), false);
         }
 
-        public void DetachStatObserver(IStatObserver statObserver)
+        public void DetachObserver(IStatObserver statObserver)
         {
             _statObservers.Remove(statObserver);
         }

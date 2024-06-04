@@ -7,22 +7,17 @@ namespace CharacterModule.Animation
     {
         [SerializeField] private Animator _characterAnimator;
         
-        private bool _isAnimationEnded;
-        
-        public void AnimationEventTriggered()
+        public async UniTask PlayAnimation(string animationName, float triggerPercentage = 0.5f)
         {
-            _isAnimationEnded = true;
-        }
-
-        public async UniTask PlayAnimation(string animationName)
-        {
-            _isAnimationEnded = false;
-            
             _characterAnimator.SetTrigger(animationName);
+
+            var animatorStateInfo = _characterAnimator.GetCurrentAnimatorStateInfo(0);
             
-            while (!_isAnimationEnded)
+            while (!animatorStateInfo.IsName(animationName) || animatorStateInfo.normalizedTime < triggerPercentage)
             {
                 await UniTask.Yield();
+                
+                animatorStateInfo = _characterAnimator.GetCurrentAnimatorStateInfo(0);
             }
         }
     }

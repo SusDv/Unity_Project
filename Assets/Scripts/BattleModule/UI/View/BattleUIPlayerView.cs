@@ -24,7 +24,7 @@ namespace BattleModule.UI.View
             
             _specialAttack.SetData(specialAttack);
 
-            _statObservers.ForEach(statSubject.AttachStatObserver);
+            _statObservers.ForEach(statSubject.AttachObserver);
         }
     }
 }

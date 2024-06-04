@@ -10,7 +10,7 @@ namespace BattleModule.UI.View
 
         public void SetData(IStatSubject statSubject) 
         {
-            statSubject.AttachStatObserver(_healthObserver);
+            statSubject.AttachObserver(_healthObserver);
         }
     }
 }
