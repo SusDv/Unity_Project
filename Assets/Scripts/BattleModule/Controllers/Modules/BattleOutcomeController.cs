@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Actions.BattleActions.Outcome;
-using BattleModule.Actions.BattleActions.Transformer;
+using BattleModule.Actions.Outcome;
+using BattleModule.Actions.Transformer;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using Utility;
@@ -16,7 +16,6 @@ namespace BattleModule.Controllers.Modules
         
         private readonly Dictionary<Character, List<OutcomeTransformer>> _outcomeTransformers = new();
         
-
         private BattleOutcomeController(BattleTimerController battleTimerController,
             BattleAccuracyController battleAccuracyController)
         {
@@ -31,12 +30,19 @@ namespace BattleModule.Controllers.Modules
 
             foreach (var character in characters)
             {
-                SetOutcomeTimers(character.EquipmentController.GetPassiveTransformers());
+                var cloned = CloneTransformers(character.EquipmentController.GetPassiveTransformers());
                 
-                _outcomeTransformers.Add(character, character.EquipmentController.GetPassiveTransformers());
+                SetOutcomeTimers(cloned);
+                
+                _outcomeTransformers.Add(character, cloned);
             }
         }
-        
+
+        private List<OutcomeTransformer> CloneTransformers(IEnumerable<OutcomeTransformer> outcomeTransformers)
+        {
+            return outcomeTransformers.Select(transformer => transformer.Clone()).ToList();
+        }
+
         public List<BattleActionOutcome> EvaluateAccuracies(List<Character> targets)
         {
             var accuracyResult = new List<BattleActionOutcome>();
@@ -55,24 +61,22 @@ namespace BattleModule.Controllers.Modules
             return accuracyResult;
         }
 
-        public void SetOutcomeTimers(List<OutcomeTransformer> outcomeTransformers)
+        public void SetOutcomeTimers(IEnumerable<OutcomeTransformer> outcomeTransformers)
         {
-            outcomeTransformers.ForEach(t => t.SetTimer(_battleTimerController.CreateTimer()));
+            outcomeTransformers.Where(t => !t.Initialized).ToList()
+                .ForEach(t => t.SetTimerFactory(_battleTimerController.CreateTimer));
         }
 
         public void AddTransformer(Dictionary<Character, List<OutcomeTransformer>> toAdd)
         {
             foreach (var transformer in toAdd)
             {
-                SetOutcomeTimers(transformer.Value);
-                
-                _outcomeTransformers[transformer.Key].AddRange(transformer.Value);
-            }
-        }
+                var cloned = CloneTransformers(transformer.Value);
 
-        public Dictionary<Character, List<OutcomeTransformer>> GetTransformers()
-        {
-            return _outcomeTransformers;
+                SetOutcomeTimers(cloned);
+                
+                _outcomeTransformers[transformer.Key].AddRange(cloned);
+            }
         }
 
         public UniTask Load(List<Character> characters)

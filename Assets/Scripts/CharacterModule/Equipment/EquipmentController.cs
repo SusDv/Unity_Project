@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BattleModule.Actions.BattleActions.Transformer;
+using BattleModule.Actions.Transformer;
 using CharacterModule.Settings;
 using CharacterModule.Types.Base;
 

@@ -1,4 +1,4 @@
-using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Actions.Context;
 using BattleModule.Input;
 using BattleModule.Utility;
 using CharacterModule.Types.Base;

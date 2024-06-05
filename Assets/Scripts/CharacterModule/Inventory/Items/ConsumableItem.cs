@@ -1,7 +1,7 @@
 using System;
-using BattleModule.Actions.BattleActions.Interfaces;
-using BattleModule.Actions.BattleActions.Processors;
-using BattleModule.Actions.BattleActions.Transformer.Transformers;
+using BattleModule.Actions.Interfaces;
+using BattleModule.Actions.Processors;
+using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Utility;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.StatModifier;
@@ -12,11 +12,11 @@ namespace CharacterModule.Inventory.Items
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
     public class ConsumableItem : ItemBase, IActionProvider, IBattleObject
     {
-        [field: SerializeReference] 
-        private OutcomeTransformers _outcomeTransformers = new DynamicTransformers();
+        [field: SerializeField] 
+        private DynamicTransformers _outcomeTransformers;
 
-        [field: SerializeReference]
-        public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
+        [field: SerializeField]
+        public DynamicStatModifiers TargetModifiers { get; private set; }
 
         [field: SerializeField]
         public float BattlePoints { get; private set; }

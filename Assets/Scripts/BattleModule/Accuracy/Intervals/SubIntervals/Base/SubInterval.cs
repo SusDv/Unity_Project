@@ -1,4 +1,4 @@
-using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.Outcome;
 using BattleModule.Utility;
 
 namespace BattleModule.Accuracy.Intervals.SubIntervals.Base

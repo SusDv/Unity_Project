@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Actions.BattleActions.Context;
+using BattleModule.Actions.Context;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Targeting.Processor;
 using BattleModule.Utility;

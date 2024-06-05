@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
-using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.Outcome;
 using BattleModule.Utility;
 using UnityEngine;
 using Utility;

@@ -1,4 +1,4 @@
-using BattleModule.Actions.BattleActions.Transformer.Transformers;
+using BattleModule.Actions.Transformer.Transformers;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Inventory.Processor;
@@ -9,11 +9,11 @@ namespace CharacterModule.Inventory.Items
 {
     public abstract class EquipmentItem : ItemBase, IEquipmentProvider
     {
-        [field: SerializeReference] 
-        public OutcomeTransformers OutcomeTransformers = new HybridTransformers();
+        [field: SerializeField] 
+        public HybridTransformers OutcomeTransformers;
 
-        [field: SerializeReference]
-        public StatModifiers WearerModifiers { get; private set; } = new EquipmentStatModifiers();
+        [field: SerializeField]
+        public EquipmentStatModifiers WearerModifiers { get; private set; }
 
         public IEquipment GetEquipment()
         {

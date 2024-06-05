@@ -1,0 +1,96 @@
+using System;
+using BattleModule.Actions.Outcome;
+using BattleModule.Utility;
+using UnityEngine;
+
+namespace BattleModule.Actions.Transformer
+{
+    [Serializable]
+    public abstract class OutcomeTransformer
+    {
+        [field: SerializeField]
+        public SubIntervalType TransformFrom { get; protected set; }
+        
+        [field: SerializeField]
+        public SubIntervalType TransformTo { get; protected set; }
+        
+        [field: SerializeField]
+        public int Cooldown { get; protected set; }
+
+        [field: NonSerialized]
+        public bool IsAvailable { get; protected set; } = true;
+
+        [field: NonSerialized] 
+        public bool Initialized { get; protected set; }
+
+        protected BattleTimer BattleTimer { get; set; }
+
+        private Func<int, BattleTimer> _battleTimerFactory;
+
+        protected OutcomeTransformer(SubIntervalType from,
+            SubIntervalType to, int cooldown)
+        {
+            TransformFrom = from;
+            
+            TransformTo = to;
+            
+            Cooldown = cooldown;
+        }
+
+        private bool IsApplicable(SubIntervalType givenType, 
+            SubIntervalType expectedType)
+        {
+            if (givenType != expectedType || !IsAvailable)
+            {
+                return false;
+            }
+
+            IsAvailable = false;
+            
+            return true;
+        }
+
+        private void SetupTimer()
+        {
+            BattleTimer = _battleTimerFactory.Invoke(0);
+            
+            BattleTimer.OnExpired += OnTimerExpired;
+            
+            BattleTimer.StartTimer();
+        }
+
+        public void SetTimerFactory(Func<int, BattleTimer> timerFactory)
+        {
+            if (Initialized)
+            {
+                return;
+            }
+            
+            _battleTimerFactory = timerFactory;
+            
+            Initialized = true;
+        }
+
+        public BattleActionOutcome TransformOutcome(BattleActionOutcome battleActionOutcome)
+        {
+            if (!IsApplicable(battleActionOutcome.SubIntervalType, 
+                    TransformFrom))
+            {
+                return battleActionOutcome;
+            }
+            
+            SetupTimer();
+            
+            return BattleOutcomeFactory.GetBattleActionOutcome(TransformTo);
+        }
+
+        public abstract OutcomeTransformer Clone();
+
+        protected virtual void OnTimerExpired()
+        {
+            IsAvailable = true;
+            
+            BattleTimer.StopTimer();
+        }
+    }
+}

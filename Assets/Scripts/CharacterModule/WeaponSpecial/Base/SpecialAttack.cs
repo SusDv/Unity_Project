@@ -1,6 +1,6 @@
-using BattleModule.Actions.BattleActions.Interfaces;
-using BattleModule.Actions.BattleActions.Processors;
-using BattleModule.Actions.BattleActions.Transformer.Transformers;
+using BattleModule.Actions.Interfaces;
+using BattleModule.Actions.Processors;
+using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Utility;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Interfaces;
@@ -32,12 +32,11 @@ namespace CharacterModule.WeaponSpecial.Base
         [field: SerializeField, Header("Special Attack Data"), Space]
         public float MaxEnergy { get; private set; }
 
-        [field: SerializeReference, Space]
-        public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
+        [field: SerializeField, Space]
+        public DynamicStatModifiers TargetModifiers { get; private set; }
         
-        [field: SerializeReference] 
-        private OutcomeTransformers _outcomeTransformers = new HybridTransformers();
-
+        [field: SerializeField] 
+        private HybridTransformers _outcomeTransformers;
         
         public ISpecialAttack GetAttack()
         {

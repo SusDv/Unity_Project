@@ -18,24 +18,15 @@ MonoBehaviour:
     <Icon>k__BackingField: {fileID: 0}
   <IsStackable>k__BackingField: 0
   OutcomeTransformers:
-    rid: 2083448214006267944
+    rid: -2
   <WearerModifiers>k__BackingField:
     rid: 5038420363637161990
   <ArmorType>k__BackingField: 0
   references:
     version: 2
     RefIds:
-    - rid: 2083448214006267944
-      type: {class: HybridTransformers, ns: BattleModule.Actions.BattleActions.Transformer.Transformers, asm: Assembly-CSharp}
-      data:
-        _staticOutcomeTransformers:
-        - <TransformFrom>k__BackingField: 2
-          <TransformTo>k__BackingField: 0
-          <Cooldown>k__BackingField: 2
-        - <TransformFrom>k__BackingField: 0
-          <TransformTo>k__BackingField: 2
-          <Cooldown>k__BackingField: 2
-        _temporaryOutcomeTransformers: []
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 5038420363637161990
       type: {class: EquipmentStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
       data:
