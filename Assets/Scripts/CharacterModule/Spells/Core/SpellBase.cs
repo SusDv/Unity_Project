@@ -2,6 +2,7 @@
 using Utility.Information;
 using BattleModule.Utility;
 using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Actions.BattleActions.Transformer.Transformers;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core
@@ -23,6 +24,9 @@ namespace CharacterModule.Spells.Core
         [field: SerializeField]
         [field: Range(BattleTargetingConstants.SpellMin, BattleTargetingConstants.SpellMax)]
         public int MaxTargetsCount { get; set; }
+        
+        [field: SerializeReference] 
+        protected OutcomeTransformers OutcomeTransformers = new DynamicTransformers();
 
         public abstract IAction GetAction();
     }

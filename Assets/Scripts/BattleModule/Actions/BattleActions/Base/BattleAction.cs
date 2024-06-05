@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
-using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Context;
 using BattleModule.Actions.BattleActions.Interfaces;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.BattleActions.Transformer;
+using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
 using Cysharp.Threading.Tasks;
 
@@ -34,54 +34,47 @@ namespace BattleModule.Actions.BattleActions.Base
             return _battleActionContext;
         }
         
-        private void ApplyHitModifiers(Character source, IReadOnlyList<Character> targets,
-            IReadOnlyList<BattleActionOutcome> accuracyResult)
+        private Dictionary<Character, List<OutcomeTransformer>> ApplyHitModifiers(
+            Character source, 
+            IReadOnlyList<Character> targets,
+            List<BattleActionOutcome> accuracyResult,
+            BattleOutcomeController battleOutcomeController)
         {
+            var result = new Dictionary<Character, List<OutcomeTransformer>>();
+            
             for (var i = 0; i < accuracyResult.Count; i++)
             {
-                _actionObject.ApplyModifiers(targets[i].Stats, 
-                    accuracyResult[i], _battleDamage);
+                var operation = _actionObject
+                    .ApplyModifiers(targets[i].Stats, 
+                    accuracyResult[i], _battleDamage, battleOutcomeController);
+
+                accuracyResult[i] = operation.result;
+                
+                result.Add(targets[i], operation.toAdd);
             }
             
             source.EquipmentController.WeaponController.GetSpecialAttack().Charge(5f);
             
             source.Stats.ApplyInstantModifier(StatType.BATTLE_POINTS, _battleActionContext.BattleObject.BattlePoints);
-        }
-
-        private IReadOnlyList<BattleActionOutcome> EvaluateAccuracies(
-            IEnumerable<Character> targets,
-            IReadOnlyDictionary<Character, BattleAccuracy> accuracies)
-        {
-            var accuracyResult = new List<BattleActionOutcome>();
             
-            foreach (var target in targets)
-            {
-                var initialOutcome = accuracies[target].Evaluate();
-
-                initialOutcome = target.EquipmentController.GetTransformers().Aggregate(initialOutcome, (current, transformer) => transformer.TransformOutcome(accuracies[target], current));
-
-                accuracyResult.Add(initialOutcome);
-            }
-
-            return accuracyResult;
+            return result;
         }
         
         protected virtual async UniTask PlayActionAnimation(Character source, List<Character> targets)
         {
             await source.AnimationManager.PlayAnimation(ActionAnimationName);
         }
-        
-        public async UniTask<IReadOnlyList<BattleActionOutcome>> PerformAction(Character source,
+
+        public async UniTask<(Dictionary<Character, List<OutcomeTransformer>> toAdd, List<BattleActionOutcome> result)> PerformAction(
+            Character source,
             List<Character> targets,
-            Dictionary<Character, BattleAccuracy> accuracies)
+            BattleOutcomeController battleOutcomeController)
         {
-            var accuracyResult = EvaluateAccuracies(targets, accuracies);
+            var accuracyResult = battleOutcomeController.EvaluateAccuracies(targets);
             
             await PlayActionAnimation(source, targets);
             
-            ApplyHitModifiers(source, targets, accuracyResult);
-            
-            return accuracyResult;
+            return (ApplyHitModifiers(source, targets, accuracyResult, battleOutcomeController), accuracyResult);
         }
 
         protected virtual BattleDamage GetDamageCalculator(StatManager statManager)

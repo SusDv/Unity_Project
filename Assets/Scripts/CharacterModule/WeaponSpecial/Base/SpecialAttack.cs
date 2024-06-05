@@ -1,5 +1,6 @@
 using BattleModule.Actions.BattleActions.Interfaces;
 using BattleModule.Actions.BattleActions.Processors;
+using BattleModule.Actions.BattleActions.Transformer.Transformers;
 using BattleModule.Utility;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Interfaces;
@@ -34,6 +35,10 @@ namespace CharacterModule.WeaponSpecial.Base
         [field: SerializeReference, Space]
         public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
         
+        [field: SerializeReference] 
+        private OutcomeTransformers _outcomeTransformers = new HybridTransformers();
+
+        
         public ISpecialAttack GetAttack()
         {
             return new DefaultSpecialAttack(MaxEnergy);
@@ -41,7 +46,8 @@ namespace CharacterModule.WeaponSpecial.Base
 
         public IAction GetAction()
         {
-            return new SpecialActionProcessor(GetInstanceID(), TargetModifiers, GetAttack());
+            return new SpecialActionProcessor(GetInstanceID(), 
+                TargetModifiers, GetAttack(), _outcomeTransformers);
         }
     }
 }

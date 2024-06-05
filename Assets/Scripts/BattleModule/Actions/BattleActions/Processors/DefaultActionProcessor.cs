@@ -1,5 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.BattleActions.Transformer;
+using BattleModule.Actions.BattleActions.Transformer.Transformers;
+using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Modifiers;
@@ -9,14 +13,20 @@ namespace BattleModule.Actions.BattleActions.Processors
 {
     public class DefaultActionProcessor : ActionProcessor
     {
-        public DefaultActionProcessor(int sourceID, StatModifiers statModifiers) 
-            : base(sourceID, statModifiers)
+        public DefaultActionProcessor(int sourceID,
+            StatModifiers statModifiers,
+            OutcomeTransformers outcomeTransformers) 
+            : base(sourceID, statModifiers, outcomeTransformers)
         { }
         
-        public override void ApplyModifiers(StatManager target,
-            BattleActionOutcome battleActionOutcome, BattleDamage battleDamage)
+        public override (List<OutcomeTransformer> toAdd, BattleActionOutcome result) ApplyModifiers(StatManager target,
+            BattleActionOutcome battleActionOutcome, 
+            BattleDamage battleDamage,
+            BattleOutcomeController battleOutcomeController)
         {
-            ProcessDamageModifiers(target, battleActionOutcome, battleDamage);
+            var processed = ProcessTransformers(battleActionOutcome, battleOutcomeController);
+            
+            ProcessDamageModifiers(target, processed.result, battleDamage);
             
             foreach (var modifier in TargetModifiers.GetModifiers().modifiers.Where(m => m is not InstantStatModifier))
             {
@@ -24,6 +34,8 @@ namespace BattleModule.Actions.BattleActions.Processors
             }
             
             ApplyTemporaryModifiers(target);
+
+            return processed;
         }
     }
 }

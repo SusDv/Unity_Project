@@ -4,7 +4,7 @@ namespace BattleModule.Actions.BattleActions.Outcome.Outcomes
 {
     public class HalfDamage : BattleActionOutcome
     {
-        public override SubIntervalType SubIntervalType => SubIntervalType.FULL;
+        public override SubIntervalType SubIntervalType => SubIntervalType.HALF;
         
         public override bool Success => false;
 

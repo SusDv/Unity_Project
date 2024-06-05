@@ -13,7 +13,7 @@ namespace CharacterModule.Spells.Core.Spells
 
         public override IAction GetAction()
         {
-            return new DefaultActionProcessor(GetInstanceID(), TargetModifiers);
+            return new DefaultActionProcessor(GetInstanceID(), TargetModifiers, OutcomeTransformers);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace BattleModule.Controllers.Modules
             _battleTimers.RemoveAll(t => t.Expired);
             
             _battleTimers.ForEach(t => t.AdvanceTimer());
+            
         }
 
         public UniTask Load()

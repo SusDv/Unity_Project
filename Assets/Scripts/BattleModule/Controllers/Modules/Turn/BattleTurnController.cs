@@ -105,8 +105,6 @@ namespace BattleModule.Controllers.Modules.Turn
             {
                 character.Stats.SetBattleTimerFactory(_battleTimerController.CreateTimer);
                 
-                character.EquipmentController.SetBattleTimerFactory(_battleTimerController.CreateTimer);
-                
                 character.HealthManager.OnCharacterDied += OnCharacterDied;
             });
             

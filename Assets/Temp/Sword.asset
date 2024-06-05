@@ -17,6 +17,8 @@ MonoBehaviour:
     <Description>k__BackingField: 
     <Icon>k__BackingField: {fileID: 21300000, guid: 2e3108108ccbb7b4ca2e01225bd64a24, type: 3}
   <IsStackable>k__BackingField: 0
+  OutcomeTransformers:
+    rid: 2083448214006267948
   <WearerModifiers>k__BackingField:
     rid: 5038420363637161991
   <BattlePoints>k__BackingField: 10
@@ -27,6 +29,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 2083448214006267948
+      type: {class: HybridTransformers, ns: BattleModule.Actions.BattleActions.Transformer.Transformers, asm: Assembly-CSharp}
+      data:
+        _staticOutcomeTransformers:
+        - <TransformFrom>k__BackingField: 2
+          <TransformTo>k__BackingField: 3
+          <Cooldown>k__BackingField: 1
+        _temporaryOutcomeTransformers: []
     - rid: 5038420363637161987
       type: {class: DynamicStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
       data:

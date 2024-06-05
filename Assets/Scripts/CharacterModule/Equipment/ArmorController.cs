@@ -27,7 +27,7 @@ namespace CharacterModule.Equipment
             
             _armorList[armor.ArmorType].Equip(_statManager);
             
-            _outcomeTransformers.AddRange(armor.StaticOutcomeTransformers);
+            _outcomeTransformers.AddRange(armor.OutcomeTransformers.GetTransformers());
         }
 
         public void Unequip(ArmorType armorType)
@@ -40,6 +40,8 @@ namespace CharacterModule.Equipment
             armor.Unequip(_statManager);
 
             _armorList.Remove(armorType);
+            
+            _outcomeTransformers.Clear();
         }
 
         public void Equip(List<Armor> armorList)

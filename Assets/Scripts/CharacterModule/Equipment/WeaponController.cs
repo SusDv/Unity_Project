@@ -16,19 +16,19 @@ namespace CharacterModule.Equipment
         private ISpecialAttack _specialAttack;
 
         private readonly StatManager _statModifierManager;
-
+        
         public WeaponController (Character character)
         {
             _statModifierManager = character.Stats;
         }
 
-        public void Equip(Weapon equipment) 
+        public void Equip(Weapon weapon) 
         {
-            _weapon = equipment.GetEquipment();
+            _weapon = weapon.GetEquipment();
 
-            _battleObject = equipment;
+            _battleObject = weapon;
 
-            _specialAttack = equipment.SpecialAttack.GetAttack();
+            _specialAttack = weapon.SpecialAttack.GetAttack();
             
             _weapon.Equip(_statModifierManager);
         }
