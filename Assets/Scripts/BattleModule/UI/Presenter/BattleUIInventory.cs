@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using BattleModule.Actions.Types;
 using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
-using BattleModule.Actions.BattleActions.Types;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneReferences.Inventory;
 using BattleModule.UI.View;

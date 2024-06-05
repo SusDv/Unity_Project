@@ -1,4 +1,4 @@
-using BattleModule.Actions.BattleActions.Interfaces;
+using BattleModule.Actions.Interfaces;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Equipment;
 using CharacterModule.Stats.Managers;

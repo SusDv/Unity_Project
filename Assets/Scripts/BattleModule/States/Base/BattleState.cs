@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.Outcome;
 using BattleModule.States.StateMachine;
 using CharacterModule.StateMachine;
 using CharacterModule.Types.Base;

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BattleModule.Actions.BattleActions.Outcome;
+using BattleModule.Actions.Outcome;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.View;
 using BattleModule.Utility;

@@ -18,31 +18,17 @@ MonoBehaviour:
     <Icon>k__BackingField: {fileID: 21300000, guid: 2e3108108ccbb7b4ca2e01225bd64a24, type: 3}
   <IsStackable>k__BackingField: 0
   OutcomeTransformers:
-    rid: 2083448214006267948
+    _staticOutcomeTransformers: []
+    _temporaryOutcomeTransformers:
+    - <TransformFrom>k__BackingField: 2
+      <TransformTo>k__BackingField: 3
+      <Cooldown>k__BackingField: 1
+      <Duration>k__BackingField: 1
   <WearerModifiers>k__BackingField:
-    rid: 5038420363637161991
+    _permanentStatModifiers: []
   <BattlePoints>k__BackingField: 10
   <TargetType>k__BackingField: 1
   <SpecialAttack>k__BackingField: {fileID: 11400000, guid: 0a1465a34e5d27144bd5529c668658ac, type: 2}
   <HitModifiers>k__BackingField:
-    rid: 5038420363637161987
-  references:
-    version: 2
-    RefIds:
-    - rid: 2083448214006267948
-      type: {class: HybridTransformers, ns: BattleModule.Actions.BattleActions.Transformer.Transformers, asm: Assembly-CSharp}
-      data:
-        _staticOutcomeTransformers:
-        - <TransformFrom>k__BackingField: 2
-          <TransformTo>k__BackingField: 3
-          <Cooldown>k__BackingField: 1
-        _temporaryOutcomeTransformers: []
-    - rid: 5038420363637161987
-      type: {class: DynamicStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
-      data:
-        _instantStatModifiers: []
-        _temporaryStatModifiers: []
-    - rid: 5038420363637161991
-      type: {class: EquipmentStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
-      data:
-        _permanentStatModifiers: []
+    _instantStatModifiers: []
+    _temporaryStatModifiers: []

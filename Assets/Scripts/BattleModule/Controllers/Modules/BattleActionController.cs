@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleModule.Actions.BattleActions.Base;
-using BattleModule.Actions.BattleActions.Context;
-using BattleModule.Actions.BattleActions.Outcome;
-using BattleModule.Actions.BattleActions.Types;
+using BattleModule.Actions.Base;
+using BattleModule.Actions.Context;
+using BattleModule.Actions.Outcome;
+using BattleModule.Actions.Types;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Types.Base;

@@ -1,6 +1,6 @@
 using BattleModule.Accuracy.Intervals.SubIntervals.Base;
-using BattleModule.Actions.BattleActions.Outcome;
-using BattleModule.Actions.BattleActions.Outcome.Outcomes;
+using BattleModule.Actions.Outcome;
+using BattleModule.Actions.Outcome.Outcomes;
 using BattleModule.Utility;
 using Utility.Constants;
 

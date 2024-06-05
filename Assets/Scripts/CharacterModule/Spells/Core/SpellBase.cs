@@ -1,8 +1,8 @@
-﻿using Utility.Constants;
+﻿using BattleModule.Actions.Interfaces;
+using BattleModule.Actions.Transformer.Transformers;
+using Utility.Constants;
 using Utility.Information;
 using BattleModule.Utility;
-using BattleModule.Actions.BattleActions.Interfaces;
-using BattleModule.Actions.BattleActions.Transformer.Transformers;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core

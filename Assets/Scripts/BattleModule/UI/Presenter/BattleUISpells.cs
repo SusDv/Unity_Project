@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using BattleModule.Actions.Types;
 using BattleModule.UI.View;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
-using BattleModule.Actions.BattleActions.Types;
 using BattleModule.UI.Presenter.SceneReferences.Spells;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;

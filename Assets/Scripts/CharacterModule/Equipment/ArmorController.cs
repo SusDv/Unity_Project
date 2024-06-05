@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BattleModule.Actions.BattleActions.Transformer;
+using BattleModule.Actions.Transformer;
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Equipment;
 using CharacterModule.Stats.Managers;

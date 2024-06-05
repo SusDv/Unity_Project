@@ -1,5 +1,5 @@
-﻿using BattleModule.Actions.BattleActions.Interfaces;
-using BattleModule.Actions.BattleActions.Processors;
+﻿using BattleModule.Actions.Interfaces;
+using BattleModule.Actions.Processors;
 using CharacterModule.Stats.StatModifier;
 using UnityEngine;
 
@@ -8,8 +8,8 @@ namespace CharacterModule.Spells.Core.Spells
     [CreateAssetMenu(fileName = "Spell", menuName = "Character/Spells/Basic Spell")]
     public class BasicSpell : SpellBase
     {
-        [field: SerializeReference]
-        public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
+        [field: SerializeField]
+        public DynamicStatModifiers TargetModifiers { get; private set; }
 
         public override IAction GetAction()
         {
