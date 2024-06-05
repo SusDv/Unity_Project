@@ -1,6 +1,7 @@
 using System;
 using BattleModule.Actions.BattleActions.Interfaces;
 using BattleModule.Actions.BattleActions.Processors;
+using BattleModule.Actions.BattleActions.Transformer.Transformers;
 using BattleModule.Utility;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Stats.StatModifier;
@@ -11,6 +12,9 @@ namespace CharacterModule.Inventory.Items
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Character/Items/Consumable")]
     public class ConsumableItem : ItemBase, IActionProvider, IBattleObject
     {
+        [field: SerializeReference] 
+        private OutcomeTransformers _outcomeTransformers = new DynamicTransformers();
+
         [field: SerializeReference]
         public StatModifiers TargetModifiers { get; private set; } = new DynamicStatModifiers();
 
@@ -28,7 +32,7 @@ namespace CharacterModule.Inventory.Items
 
         public IAction GetAction()
         {
-            return new ItemActionProcessor(ID, TargetModifiers, this);
+            return new ItemActionProcessor(ID, TargetModifiers, this, _outcomeTransformers);
         }
     }
 }

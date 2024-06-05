@@ -1,5 +1,4 @@
 using System;
-using BattleModule.Accuracy;
 using BattleModule.Actions.BattleActions.Outcome;
 using BattleModule.Utility;
 using UnityEngine;
@@ -39,13 +38,17 @@ namespace BattleModule.Actions.BattleActions.Transformer
 
         public void SetTimer(BattleTimer timer)
         {
+            if (BattleTimer != null)
+            {
+                return;
+            }
+
             BattleTimer = timer;
             
             BattleTimer.OnExpired += OnTimerExpired;
         }
 
-        public BattleActionOutcome TransformOutcome(BattleAccuracy battleAccuracy,
-            BattleActionOutcome battleActionOutcome)
+        public BattleActionOutcome TransformOutcome(BattleActionOutcome battleActionOutcome)
         {
             if (!IsApplicable(TransformFrom,
                     battleActionOutcome.SubIntervalType))
@@ -55,7 +58,7 @@ namespace BattleModule.Actions.BattleActions.Transformer
             
             BattleTimer.StartTimer();
             
-            return battleAccuracy.GetOutcomeByType(TransformTo);
+            return BattleOutcomeFactory.GetBattleActionOutcome(TransformTo);
         }
 
         protected virtual void OnTimerExpired()

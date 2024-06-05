@@ -51,6 +51,5 @@ namespace BattleModule.Targeting.Base
         {
             return SelectedCharacters;
         }
-
     }
 }

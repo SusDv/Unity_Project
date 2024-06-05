@@ -26,7 +26,8 @@ namespace BattleModule.Scopes
         private readonly BattleTargetingController _battleTargetingController;
         private readonly BattleActionController _battleActionController;
         private readonly BattleAccuracyController _battleAccuracyController;
-
+        private readonly BattleOutcomeController _battleOutcomeController;
+        
         private readonly UILoadingScreen _uiLoadingScreen;
         private readonly BattleUIInventory _battleUIInventory;
         private readonly BattleUIItemDescription _battleUIItemDescription;
@@ -52,6 +53,7 @@ namespace BattleModule.Scopes
             BattleTargetingController battleTargetingController,
             BattleActionController battleActionController,
             BattleAccuracyController battleAccuracyController,
+            BattleOutcomeController battleOutcomeController,
             UILoadingScreen uiLoadingScreen,
             BattleUIInventory battleUIInventory,
             BattleUIItemDescription battleUIItemDescription,
@@ -77,6 +79,7 @@ namespace BattleModule.Scopes
             _battleTargetingController = battleTargetingController;
             _battleActionController = battleActionController;
             _battleAccuracyController = battleAccuracyController;
+            _battleOutcomeController = battleOutcomeController;
 
             _uiLoadingScreen = uiLoadingScreen;
             _battleUIAccuracy = battleUIAccuracy;
@@ -115,6 +118,7 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleTargetingController, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleActionController);
             await _loadingService.BeginLoading(_battleAccuracyController);
+            await _loadingService.BeginLoading(_battleOutcomeController, _battleSpawner.GetSpawnedCharacters());
             
             await _loadingService.BeginLoading(_battleUIInventory);
             await _loadingService.BeginLoading(_battleUIItemDescription);

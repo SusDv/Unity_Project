@@ -19,8 +19,8 @@ namespace BattleModule.Controllers.Modules
         private readonly BattleCancelableController _battleCancelableController;
         
         private readonly BattleTurnController _battleTurnController;
-        
-        private readonly BattleAccuracyController _battleAccuracyController;
+
+        private readonly BattleOutcomeController _battleOutcomeController;
         
         private BattleAction _currentBattleAction;
 
@@ -33,13 +33,13 @@ namespace BattleModule.Controllers.Modules
         [Inject]
         private BattleActionController(BattleCancelableController battleCancelableController,
             BattleTurnController battleTurnController,
-            BattleAccuracyController battleAccuracyController)
+            BattleOutcomeController battleOutcomeController)
         {
             _battleCancelableController = battleCancelableController;
 
             _battleTurnController = battleTurnController;
             
-            _battleAccuracyController = battleAccuracyController;
+            _battleOutcomeController = battleOutcomeController;
         }
         
         public void SetBattleAction<T>(object actionObject)
@@ -53,10 +53,12 @@ namespace BattleModule.Controllers.Modules
 
         public async UniTask ExecuteBattleAction(List<Character> targets)
         {
-            var result = await _currentBattleAction.PerformAction(_characterToHaveTurn, targets,
-                _battleAccuracyController.GetAccuracies());
+            var operation = await _currentBattleAction.PerformAction(_characterToHaveTurn, 
+                targets, _battleOutcomeController);
             
-            OnBattleActionFinished?.Invoke(targets, result);
+            _battleOutcomeController.AddTransformer(operation.toAdd);
+            
+            OnBattleActionFinished?.Invoke(targets, operation.result);
         }
 
         public bool Cancel()
