@@ -6,13 +6,13 @@ using UnityEngine;
 namespace BattleModule.Actions.Transformer
 {
     [Serializable]
-    public abstract class OutcomeTransformer
+    public abstract class OutcomeTransformer : IEquatable<OutcomeTransformer>
     {
         [field: SerializeField]
-        public SubIntervalType TransformFrom { get; protected set; }
+        public SubIntervalType TransformFrom { get; private set; }
         
         [field: SerializeField]
-        public SubIntervalType TransformTo { get; protected set; }
+        public SubIntervalType TransformTo { get; private set; }
         
         [field: SerializeField]
         public int Cooldown { get; protected set; }
@@ -37,10 +37,9 @@ namespace BattleModule.Actions.Transformer
             Cooldown = cooldown;
         }
 
-        private bool IsApplicable(SubIntervalType givenType, 
-            SubIntervalType expectedType)
+        public bool IsApplicable(SubIntervalType givenType)
         {
-            if (givenType != expectedType || !IsAvailable)
+            if (givenType != TransformFrom || !IsAvailable)
             {
                 return false;
             }
@@ -71,17 +70,16 @@ namespace BattleModule.Actions.Transformer
             Initialized = true;
         }
 
-        public BattleActionOutcome TransformOutcome(BattleActionOutcome battleActionOutcome)
+        public SubIntervalType GetTransformTo(BattleActionOutcome battleActionOutcome)
         {
-            if (!IsApplicable(battleActionOutcome.SubIntervalType, 
-                    TransformFrom))
+            if (!IsApplicable(battleActionOutcome.SubIntervalType))
             {
-                return battleActionOutcome;
+                return battleActionOutcome.SubIntervalType;
             }
             
             SetupTimer();
             
-            return BattleOutcomeFactory.GetBattleActionOutcome(TransformTo);
+            return TransformTo;
         }
 
         public abstract OutcomeTransformer Clone();
@@ -91,6 +89,13 @@ namespace BattleModule.Actions.Transformer
             IsAvailable = true;
             
             BattleTimer.StopTimer();
+        }
+
+        public bool Equals(OutcomeTransformer other)
+        {
+            return other != null
+                   && TransformFrom == other.TransformFrom
+                   && TransformTo == other.TransformTo;
         }
     }
 }

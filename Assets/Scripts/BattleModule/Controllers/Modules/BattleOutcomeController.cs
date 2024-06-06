@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.Outcome;
+using BattleModule.Actions.Outcome.Outcomes;
 using BattleModule.Actions.Transformer;
+using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using Utility;
@@ -43,22 +45,54 @@ namespace BattleModule.Controllers.Modules
             return outcomeTransformers.Select(transformer => transformer.Clone()).ToList();
         }
 
-        public List<BattleActionOutcome> EvaluateAccuracies(List<Character> targets)
+        public List<BattleActionOutcome> ProcessAccuracyResult(IEnumerable<Character> targets)
         {
             var accuracyResult = new List<BattleActionOutcome>();
-
-            var accuracies = _battleAccuracyController.GetAccuracies();
             
+            var accuracies = _battleAccuracyController.GetAccuracies();
+
             foreach (var target in targets)
             {
                 var initialOutcome = accuracies[target].Evaluate();
 
-                initialOutcome = _outcomeTransformers[target].Aggregate(initialOutcome, (current, outcomeTransformer) => outcomeTransformer.TransformOutcome(current));
-
+                foreach (var transformer in _outcomeTransformers[target].Where(t => t.IsApplicable(initialOutcome.SubIntervalType)))
+                {
+                    initialOutcome = GetTransformedOutcome(transformer.GetTransformTo(initialOutcome));
+                }
+                
                 accuracyResult.Add(initialOutcome);
             }
-            
+
             return accuracyResult;
+        }
+
+        public (List<OutcomeTransformer> toAdd, BattleActionOutcome result) ProcessHitTransformers(BattleActionOutcome battleActionOutcome, 
+            List<OutcomeTransformer> outcomeTransformers)
+        {
+            var initialOutcome = battleActionOutcome;
+            
+            SetOutcomeTimers(outcomeTransformers);
+            
+            outcomeTransformers.OfType<StaticOutcomeTransformer>().ToList().Where(t => t.IsApplicable(battleActionOutcome.SubIntervalType)).ToList().ForEach(o =>
+            {
+                initialOutcome = GetTransformedOutcome(o.GetTransformTo(initialOutcome));
+            });
+            
+            return (outcomeTransformers.OfType<TemporaryOutcomeTransformer>().Cast<OutcomeTransformer>().ToList(), initialOutcome);
+        }
+
+        public BattleActionOutcome GetTransformedOutcome(SubIntervalType subIntervalType)
+        {
+            BattleActionOutcome battleActionOutcome = 
+                subIntervalType switch
+                {
+                    SubIntervalType.CRIT => new CritDamage(),
+                    SubIntervalType.FULL => new FullDamage(),
+                    SubIntervalType.HALF => new HalfDamage(),
+                    _ => new TrueMiss()
+                };
+
+            return battleActionOutcome;
         }
 
         public void SetOutcomeTimers(IEnumerable<OutcomeTransformer> outcomeTransformers)
@@ -74,8 +108,11 @@ namespace BattleModule.Controllers.Modules
                 var cloned = CloneTransformers(transformer.Value);
 
                 SetOutcomeTimers(cloned);
-                
-                _outcomeTransformers[transformer.Key].AddRange(cloned);
+
+                foreach (var outcomeTransformer in cloned.Where(outcomeTransformer => !_outcomeTransformers[transformer.Key].Contains(outcomeTransformer)))
+                {
+                    _outcomeTransformers[transformer.Key].Add(outcomeTransformer);
+                }
             }
         }
 
