@@ -34,20 +34,7 @@ namespace BattleModule.Actions.Processors
             BattleActionOutcome battleActionOutcome, 
             BattleDamage battleDamage,
             BattleOutcomeController battleOutcomeController);
-
-        protected (List<OutcomeTransformer> toAdd, BattleActionOutcome result) ProcessTransformers(BattleActionOutcome battleActionOutcome, BattleOutcomeController battleOutcomeController)
-        {
-            var initialOutcome = battleActionOutcome;
-            
-            battleOutcomeController.SetOutcomeTimers(OutcomeTransformers.GetTransformers());
-            
-            OutcomeTransformers.GetTransformers().OfType<StaticOutcomeTransformer>().ToList().ForEach(o =>
-            {
-                initialOutcome = o.TransformOutcome(initialOutcome);
-            });
-
-            return (OutcomeTransformers.GetTransformers().OfType<TemporaryOutcomeTransformer>().Cast<OutcomeTransformer>().ToList(), initialOutcome);
-        }
+        
 
         protected void ApplyTemporaryModifiers(StatManager target)
         {

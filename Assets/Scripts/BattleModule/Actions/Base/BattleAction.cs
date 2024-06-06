@@ -70,7 +70,7 @@ namespace BattleModule.Actions.Base
             List<Character> targets,
             BattleOutcomeController battleOutcomeController)
         {
-            var accuracyResult = battleOutcomeController.EvaluateAccuracies(targets);
+            var accuracyResult = battleOutcomeController.ProcessAccuracyResult(targets);
             
             await PlayActionAnimation(source, targets);
             

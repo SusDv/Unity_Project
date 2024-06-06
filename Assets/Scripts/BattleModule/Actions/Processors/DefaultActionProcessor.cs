@@ -24,7 +24,7 @@ namespace BattleModule.Actions.Processors
             BattleDamage battleDamage,
             BattleOutcomeController battleOutcomeController)
         {
-            var processed = ProcessTransformers(battleActionOutcome, battleOutcomeController);
+            var processed = battleOutcomeController.ProcessHitTransformers(battleActionOutcome, OutcomeTransformers.GetTransformers());
             
             ProcessDamageModifiers(target, processed.result, battleDamage);
             
