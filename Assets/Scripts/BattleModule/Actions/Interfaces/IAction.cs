@@ -1,15 +1,13 @@
-using System.Collections.Generic;
 using BattleModule.Actions.Outcome;
-using BattleModule.Actions.Transformer;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
-using CharacterModule.Stats.Managers;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.Interfaces
 {
     public interface IAction
     {
-        public (List<OutcomeTransformer> toAdd, BattleActionOutcome result) ProcessAction(StatManager target, 
+        public BattleActionOutcome ProcessAction(Character target, 
             BattleActionOutcome battleActionOutcome,
             BattleDamage battleDamage,
             BattleOutcomeController battleOutcomeController);

@@ -55,10 +55,8 @@ namespace BattleModule.Controllers.Modules
         {
             var operation = await _currentBattleAction.PerformAction(_characterToHaveTurn, 
                 targets, _battleOutcomeController);
-            
-            _battleOutcomeController.AddTransformer(operation.toAdd);
-            
-            OnBattleActionFinished?.Invoke(targets, operation.result);
+   
+            OnBattleActionFinished?.Invoke(targets, operation);
         }
 
         public bool Cancel()

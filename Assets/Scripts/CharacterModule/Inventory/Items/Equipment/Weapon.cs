@@ -1,5 +1,6 @@
 ﻿using BattleModule.Actions.Interfaces;
 using BattleModule.Actions.Processors;
+using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Utility;
 using CharacterModule.Stats.StatModifier;
 using CharacterModule.WeaponSpecial.Base;
@@ -10,6 +11,9 @@ namespace CharacterModule.Inventory.Items.Equipment
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Character/Items/Equipment/Weapon")]
     public class Weapon : EquipmentItem, IBattleObject, IActionProvider
     {
+        [field: SerializeField] 
+        public HybridTransformers OutcomeTransformers;
+        
         [field: SerializeField]
         public float BattlePoints { get; private set; }
         

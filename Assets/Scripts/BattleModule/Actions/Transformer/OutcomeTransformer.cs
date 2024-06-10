@@ -9,13 +9,13 @@ namespace BattleModule.Actions.Transformer
     public abstract class OutcomeTransformer : IEquatable<OutcomeTransformer>
     {
         [field: SerializeField]
-        public SubIntervalType TransformFrom { get; private set; }
+        protected SubIntervalType TransformFrom { get; private set; }
         
         [field: SerializeField]
-        public SubIntervalType TransformTo { get; private set; }
+        protected SubIntervalType TransformTo { get; private set; }
         
         [field: SerializeField]
-        public int Cooldown { get; protected set; }
+        protected int Cooldown { get; set; }
 
         [field: NonSerialized]
         public bool IsAvailable { get; protected set; } = true;
@@ -70,7 +70,7 @@ namespace BattleModule.Actions.Transformer
             Initialized = true;
         }
 
-        public SubIntervalType GetTransformTo(BattleActionOutcome battleActionOutcome)
+        public SubIntervalType GetTransformedType(BattleActionOutcome battleActionOutcome)
         {
             if (!IsApplicable(battleActionOutcome.SubIntervalType))
             {
@@ -96,6 +96,20 @@ namespace BattleModule.Actions.Transformer
             return other != null
                    && TransformFrom == other.TransformFrom
                    && TransformTo == other.TransformTo;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as OutcomeTransformer);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (17 * 23 + TransformFrom.GetHashCode()) 
+                    * 23 + TransformTo.GetHashCode();
+            }
         }
     }
 }

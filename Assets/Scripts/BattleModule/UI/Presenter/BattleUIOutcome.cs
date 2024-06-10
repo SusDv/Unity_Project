@@ -34,7 +34,8 @@ namespace BattleModule.UI.Presenter
             _battleActionController = battleActionController;
         }
 
-        private void ShowActionOutcomes(List<Character> targets, IReadOnlyList<BattleActionOutcome> battleActionOutcomes)
+        private void ShowActionOutcomes(List<Character> targets, 
+            IReadOnlyList<BattleActionOutcome> battleActionOutcomes)
         {
             for (var i = 0; i < targets.Count; i++)
             {

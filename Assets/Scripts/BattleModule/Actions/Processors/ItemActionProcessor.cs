@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using BattleModule.Actions.Outcome;
-using BattleModule.Actions.Transformer;
 using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Inventory.Items;
-using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.StatModifier;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.Processors
 {
@@ -23,23 +21,23 @@ namespace BattleModule.Actions.Processors
             _consumableItem = consumableItem;
         }
 
-        public override (List<OutcomeTransformer> toAdd, BattleActionOutcome result) ProcessAction(StatManager target,
+        public override BattleActionOutcome ProcessAction(Character target,
             BattleActionOutcome battleActionOutcome, 
             BattleDamage battleDamage,
             BattleOutcomeController battleOutcomeController)
         {
-            var processed = battleOutcomeController.ProcessHitTransformers(battleActionOutcome, OutcomeTransformers.GetTransformers());
+            var processed = battleOutcomeController.ProcessHitTransformers(target, battleActionOutcome, OutcomeTransformers.GetTransformers());
             
             _consumableItem.OnConsumableUsed?.Invoke(_consumableItem);
             
-            if (!processed.result.Success)
+            if (!processed.Success)
             {
                 return processed;
             }
 
-            ApplyModifiers(target);
+            ApplyModifiers(target.Stats);
             
-            ApplyTemporaryModifiers(target);
+            ApplyTemporaryModifiers(target.Stats);
 
             return processed;
         }
