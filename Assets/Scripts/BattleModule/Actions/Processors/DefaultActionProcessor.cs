@@ -1,13 +1,11 @@
-using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.Outcome;
-using BattleModule.Actions.Transformer;
 using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
-using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Modifiers;
 using CharacterModule.Stats.StatModifier;
+using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.Processors
 {
@@ -19,23 +17,23 @@ namespace BattleModule.Actions.Processors
             : base(sourceID, statModifiers, outcomeTransformers)
         { }
         
-        public override (List<OutcomeTransformer> toAdd, BattleActionOutcome result) ProcessAction(StatManager target,
+        public override BattleActionOutcome ProcessAction(Character target,
             BattleActionOutcome battleActionOutcome, 
             BattleDamage battleDamage,
             BattleOutcomeController battleOutcomeController)
         {
-            var processed = battleOutcomeController.ProcessHitTransformers(battleActionOutcome, OutcomeTransformers.GetTransformers());
+            var transformedOutcome = battleOutcomeController.ProcessHitTransformers(target, battleActionOutcome, OutcomeTransformers.GetTransformers());
             
-            ProcessDamageModifiers(target, processed.result, battleDamage);
+            ProcessDamageModifiers(target.Stats, transformedOutcome, battleDamage);
             
             foreach (var modifier in TargetModifiers.GetModifiers().modifiers.Where(m => m is not InstantStatModifier))
             {
-                target.AddModifier(modifier);
+                target.Stats.AddModifier(modifier);
             }
             
-            ApplyTemporaryModifiers(target);
+            ApplyTemporaryModifiers(target.Stats);
 
-            return processed;
+            return transformedOutcome;
         }
     }
 }

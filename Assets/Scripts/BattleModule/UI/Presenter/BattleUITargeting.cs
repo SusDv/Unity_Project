@@ -43,8 +43,11 @@ namespace BattleModule.UI.Presenter
         {
             for (var i = 0; i < count; i++)
             {
-                _battleTargetGroups.Add(Instantiate(_targetGroupPrefab, 
-                    _battleUIHelper.WorldCanvas.transform));
+                _battleTargetGroups.Add(
+                    Instantiate(_targetGroupPrefab,
+                        Vector3.zero,
+                        Quaternion.identity,
+                        _battleUIHelper.WorldCanvas.transform));
             }
         }
 
@@ -52,7 +55,8 @@ namespace BattleModule.UI.Presenter
         {
             for (var i = 0; i < count; i++)
             {
-                _battleTargetImages.Add(Instantiate(_targetImagePrefab, 
+                _battleTargetImages.Add(
+                    Instantiate(_targetImagePrefab, 
                     _battleUIHelper.WorldCanvas.transform));
             }
         }

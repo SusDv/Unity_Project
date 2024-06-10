@@ -13,10 +13,10 @@ namespace BattleModule.UI.View
 
         public void AddTarget(RectTransform target)
         {
-            target.transform.SetParent(transform);
+            target.SetParent(transform);
 
             target.anchoredPosition3D = Vector3.zero;
-
+            
             target.gameObject.SetActive(_targetImages.Count < 1);
             
             _targetImages.Add(target);
@@ -26,11 +26,6 @@ namespace BattleModule.UI.View
 
         public void ClearTargets(Transform baseParent)
         {
-            if (_targetImages.Count == 0)
-            {
-                return;
-            }
-
             foreach (var target in _targetImages)
             {
                 target.SetParent(baseParent);

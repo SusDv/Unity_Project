@@ -17,22 +17,14 @@ MonoBehaviour:
     <Description>k__BackingField: 
     <Icon>k__BackingField: {fileID: 0}
   <IsStackable>k__BackingField: 0
-  OutcomeTransformers:
-    rid: -2
   <WearerModifiers>k__BackingField:
-    rid: 5038420363637161990
+    _permanentStatModifiers: []
+  OutcomeTransformers:
+    _staticOutcomeTransformers:
+    - <TransformFrom>k__BackingField: 0
+      <TransformTo>k__BackingField: 1
+      <Cooldown>k__BackingField: 1
+    - <TransformFrom>k__BackingField: 0
+      <TransformTo>k__BackingField: 1
+      <Cooldown>k__BackingField: 1
   <ArmorType>k__BackingField: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 5038420363637161990
-      type: {class: EquipmentStatModifiers, ns: CharacterModule.Stats.StatModifier, asm: Assembly-CSharp}
-      data:
-        _permanentStatModifiers:
-        - <Type>k__BackingField: 0
-          <ModifierData>k__BackingField:
-            <ValueModifierType>k__BackingField: 0
-            <ModifiedValueType>k__BackingField: 1
-            <Value>k__BackingField: 200
