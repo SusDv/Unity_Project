@@ -55,8 +55,13 @@ namespace BattleModule.Controllers.Modules
         {
             var operation = await _currentBattleAction.PerformAction(_characterToHaveTurn, 
                 targets, _battleOutcomeController);
-   
-            OnBattleActionFinished?.Invoke(targets, operation);
+            
+            if (!operation.status)
+            {
+                return;
+            }
+
+            OnBattleActionFinished?.Invoke(targets, operation.result);
         }
 
         public bool Cancel()
