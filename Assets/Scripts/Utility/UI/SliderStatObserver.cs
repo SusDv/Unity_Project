@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using CharacterModule.Utility.Stats;
 using TMPro;
@@ -26,16 +27,23 @@ namespace Utility.UI
 
         public override void UpdateValue(StatInfo statInfo, bool negativeChange)
         {
-            if (AnimationInProgress)
+            try
             {
-                StopCoroutine(AnimateSlider());
-            }
+                if (AnimationInProgress)
+                {
+                    StopCoroutine(AnimateSlider());
+                }
             
-            _statSliderImage.fillAmount = statInfo.FinalValue / statInfo.MaxValue;
+                _statSliderImage.fillAmount = statInfo.FinalValue / statInfo.MaxValue;
             
-            _sliderText.text = $"{Mathf.Round(statInfo.FinalValue)}";
+                _sliderText.text = $"{Mathf.Round(statInfo.FinalValue)}";
 
-            StartCoroutine(AnimateSlider());
+                StartCoroutine(AnimateSlider());
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private IEnumerator AnimateSlider()

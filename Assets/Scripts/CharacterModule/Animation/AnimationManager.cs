@@ -20,13 +20,13 @@ namespace CharacterModule.Animation
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
-        public async UniTask PlayAnimation(string animationName, 
+        public async UniTask<bool> PlayAnimation(string animationName, 
             float triggerPercentage = 0.5f)
         {
             try
             {
                 _cancellationToken.ThrowIfCancellationRequested();
-                
+
                 _characterAnimator.SetTrigger(animationName);
 
                 var animatorStateInfo = _characterAnimator.GetCurrentAnimatorStateInfo(0);
@@ -35,13 +35,18 @@ namespace CharacterModule.Animation
                        animatorStateInfo.normalizedTime < triggerPercentage)
                 {
                     await UniTask.Yield();
-                
+
                     _cancellationToken.ThrowIfCancellationRequested();
-                
+
                     animatorStateInfo = _characterAnimator.GetCurrentAnimatorStateInfo(0);
                 }
             }
-            catch (OperationCanceledException) { }
+            catch (OperationCanceledException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void OnApplicationQuit()
