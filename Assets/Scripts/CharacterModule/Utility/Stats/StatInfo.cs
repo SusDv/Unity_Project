@@ -8,7 +8,7 @@ namespace CharacterModule.Utility.Stats
         {
             BaseValue = stat.BaseValue;
             
-            FinalValue = stat.FinalValue;
+            FinalValue = stat.CurrentValue;
             
             MaxValue = stat.MaxValue;
         }

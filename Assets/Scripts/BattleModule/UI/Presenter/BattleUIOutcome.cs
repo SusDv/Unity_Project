@@ -14,7 +14,7 @@ namespace BattleModule.UI.Presenter
 {
     public class BattleUIOutcome : MonoBehaviour, ILoadingUnit
     {
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private BattleUIHelper _battleUIHelper;
         
@@ -23,11 +23,11 @@ namespace BattleModule.UI.Presenter
         private BattleUIOutcomeView _battleUIOutcomeView;
         
         [Inject]
-        private void Init(AssetLoader assetLoader,
+        private void Init(AssetProvider assetProvider,
             BattleUIHelper battleUIHelper,
             BattleActionController battleActionController)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
 
             _battleUIHelper = battleUIHelper;
             
@@ -50,7 +50,7 @@ namespace BattleModule.UI.Presenter
         public UniTask Load()
         {
             _battleUIOutcomeView =
-                _assetLoader.GetLoadedAsset<BattleUIOutcomeView>(RuntimeConstants.AssetsName.OutcomeView);
+                _assetProvider.GetAssetByName<BattleUIOutcomeView>(RuntimeConstants.AssetsName.OutcomeView);
             
             _battleActionController.OnBattleActionFinished += ShowActionOutcomes;
             

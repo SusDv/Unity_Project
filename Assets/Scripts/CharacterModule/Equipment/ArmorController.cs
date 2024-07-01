@@ -14,18 +14,18 @@ namespace CharacterModule.Equipment
 
         private readonly List<OutcomeTransformer> _outcomeTransformers = new ();
         
-        private readonly StatManager _statManager;
+        private readonly StatsController _statsController;
         
         public ArmorController(Character belongTo)
         {
-            _statManager = belongTo.Stats;
+            _statsController = belongTo.Stats;
         }
 
         public void Equip(Armor armor)
         {
             _armorList.TryAdd(armor.ArmorType, armor.GetEquipment());
             
-            _armorList[armor.ArmorType].Equip(_statManager);
+            _armorList[armor.ArmorType].Equip(_statsController);
             
             _outcomeTransformers.AddRange(armor.OutcomeTransformers.GetTransformers());
         }
@@ -37,7 +37,7 @@ namespace CharacterModule.Equipment
                 return;
             }
             
-            armor.Unequip(_statManager);
+            armor.Unequip(_statsController);
 
             _armorList.Remove(armorType);
             

@@ -17,7 +17,7 @@ namespace BattleModule.Transition
             
             builder.Register<LoadingService>(Lifetime.Scoped);
 
-            builder.Register<AssetLoader>(Lifetime.Singleton);
+            builder.Register<AssetProvider>(Lifetime.Singleton);
 
             builder.RegisterEntryPoint<BattleTransitionFlow>();
         }

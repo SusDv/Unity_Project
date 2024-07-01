@@ -16,6 +16,8 @@ namespace BattleModule.Controllers.Modules.Turn
         private readonly BattleTimerController _battleTimerController;
 
         private readonly BattleTurnEvents _battleTurnEvents;
+
+        private readonly BattleDeathController _battleDeathController;
         
         private List<Character> _spawnedCharacters;
 
@@ -25,11 +27,14 @@ namespace BattleModule.Controllers.Modules.Turn
         
         [Inject]
         public BattleTurnController(BattleTimerController battleTimerController,
-            BattleTurnEvents battleTurnEvents)
+            BattleTurnEvents battleTurnEvents,
+            BattleDeathController battleDeathController)
         {
             _battleTimerController = battleTimerController;
 
             _battleTurnEvents = battleTurnEvents;
+
+            _battleDeathController = battleDeathController;
         }
         
         private void UpdateCharactersBattlePoints()
@@ -61,9 +66,9 @@ namespace BattleModule.Controllers.Modules.Turn
             OnCharactersInTurnChanged?.Invoke(GetBattleTurnContext());
         }
 
-        private void OnCharacterDied(Character deadCharacter)
+        private void OnCharacterDied(GameObject deadCharacter)
         {
-            _spawnedCharacters.Remove(deadCharacter);
+            _spawnedCharacters.Select(c => c.gameObject).ToList().Remove(deadCharacter);
 
             _battleTimerController.SetLocalCycle(_spawnedCharacters.Count);
 
@@ -104,8 +109,6 @@ namespace BattleModule.Controllers.Modules.Turn
             _spawnedCharacters.ForEach(character =>
             {
                 character.Stats.SetBattleTimerFactory(_battleTimerController.CreateTimer);
-                
-                character.HealthManager.OnCharacterDied += OnCharacterDied;
             });
             
             _battleTimerController.SetLocalCycle(characters.Count);
@@ -113,6 +116,8 @@ namespace BattleModule.Controllers.Modules.Turn
             _battleTurnEvents.OnTurnEnd += UpdateCharactersBattlePoints;
 
             _battleTurnEvents.OnBattleInit += OnBattleInit;
+
+            _battleDeathController.OnCharacterDied += OnCharacterDied;
             
             return UniTask.CompletedTask;
         }

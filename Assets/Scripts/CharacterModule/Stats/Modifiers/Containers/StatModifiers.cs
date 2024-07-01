@@ -4,7 +4,7 @@ using System.Linq;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Utility;
 
-namespace CharacterModule.Stats.StatModifier
+namespace CharacterModule.Stats.Modifiers.Containers
 {
     [Serializable]
     public abstract class StatModifiers

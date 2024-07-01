@@ -1,6 +1,6 @@
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Stats.Managers;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 
 namespace CharacterModule.Inventory.Processor
 {
@@ -18,7 +18,7 @@ namespace CharacterModule.Inventory.Processor
             _statModifiers = statModifiers;
         }
 
-        public void Equip(StatManager character)
+        public void Equip(StatsController character)
         {
             foreach (var modifier in _statModifiers.GetModifiers().modifiers)
             {
@@ -31,7 +31,7 @@ namespace CharacterModule.Inventory.Processor
             }
         }
 
-        public void Unequip(StatManager character)
+        public void Unequip(StatsController character)
         {
             character.RemoveModifiersOnCondition((statModifier) => statModifier.ModifierData.SourceID == _sourceID);
         }

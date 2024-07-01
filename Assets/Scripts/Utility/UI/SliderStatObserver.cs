@@ -17,6 +17,8 @@ namespace Utility.UI
 
         private float _animationVelocity;
 
+        private bool AnimationInProgress => Mathf.Abs(Mathf.RoundToInt(_animationSliderImage.fillAmount - _statSliderImage.fillAmount)) != 0;
+
         private void OnEnable()
         {
             _sliderText.gameObject.SetActive(_displayText);
@@ -24,7 +26,10 @@ namespace Utility.UI
 
         public override void UpdateValue(StatInfo statInfo, bool negativeChange)
         {
-            StopCoroutine(AnimateSlider());
+            if (AnimationInProgress)
+            {
+                StopCoroutine(AnimateSlider());
+            }
             
             _statSliderImage.fillAmount = statInfo.FinalValue / statInfo.MaxValue;
             
@@ -37,17 +42,27 @@ namespace Utility.UI
         {
             yield return new WaitForSeconds(0.2f);
             
-            while (Mathf.Abs(_animationSliderImage.fillAmount - _statSliderImage.fillAmount) > 0.001f)
+            while (AnimationInProgress)
             {
-                _animationSliderImage.fillAmount =
-                    Mathf.SmoothDamp(_animationSliderImage.fillAmount, _statSliderImage.fillAmount, ref _animationVelocity, 0.4f);
+                try
+                {
+                    _animationSliderImage.fillAmount =
+                        Mathf.SmoothDamp(_animationSliderImage.fillAmount, _statSliderImage.fillAmount, ref _animationVelocity, 0.4f);
+                }
+                catch
+                {
+                    break;
+                }
                 
                 yield return new WaitForSeconds(0.016f);
             }
-
+            
             _animationSliderImage.fillAmount = _statSliderImage.fillAmount;
-
-            _animationVelocity = 0;
+        }
+        
+        private void OnApplicationQuit()
+        {
+            StopCoroutine(AnimateSlider());
         }
     }
 }

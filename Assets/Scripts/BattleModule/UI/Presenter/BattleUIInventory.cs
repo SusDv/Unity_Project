@@ -19,7 +19,7 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleInventorySceneReference _battleInventorySceneReference;
 
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private BattleActionController _battleActionController;
 
@@ -35,12 +35,12 @@ namespace BattleModule.UI.Presenter
         private BattleUIItemView _battleUIItemView;
 
         [Inject]
-        private void Init(AssetLoader assetLoader,
+        private void Init(AssetProvider assetProvider,
             BattleUIItemDescription battleUIItemDescription,
             BattleActionController battleActionController,
             BattleTransitionData battleTransitionData)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
             
             _battleUIItemDescription = battleUIItemDescription;
 
@@ -51,7 +51,7 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load()
         {
-            _battleUIItemView = _assetLoader.GetLoadedAsset<BattleUIItemView>(RuntimeConstants.AssetsName.ItemView);
+            _battleUIItemView = _assetProvider.GetAssetByName<BattleUIItemView>(RuntimeConstants.AssetsName.ItemView);
 
             _battleInventorySceneReference.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
 

@@ -27,10 +27,10 @@ namespace Utility
                await UniTask.SwitchToMainThread();
             }
         }
-
+        
         public async UniTask BeginLoading(ILoadingUnit loadingUnit)
         {
-            try 
+            try
             {
                 await loadingUnit.Load();
             }

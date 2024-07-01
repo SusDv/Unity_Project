@@ -25,8 +25,8 @@ namespace CharacterModule.Spells.Core
         [field: Range(BattleTargetingConstants.SpellMin, BattleTargetingConstants.SpellMax)]
         public int MaxTargetsCount { get; set; }
         
-        [field: SerializeReference] 
-        protected OutcomeTransformers OutcomeTransformers = new DynamicTransformers();
+        [field: SerializeField] 
+        protected DynamicTransformers OutcomeTransformers;
 
         public abstract IAction GetAction();
     }

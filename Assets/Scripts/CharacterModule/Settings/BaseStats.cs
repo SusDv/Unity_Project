@@ -10,18 +10,11 @@ namespace CharacterModule.Settings
     public class BaseStats : ScriptableObject 
     {
         [field: SerializeField]
-        private List<Stat> StatList { get; set; } = new();
+        private List<StatWrapper> StatList { get; set; } = new();
         
         public Dictionary<StatType, Stat> GetStats() 
         {
-            foreach (var stat in StatList)
-            {
-                stat.MaxValue = stat.BaseValue;
-                
-                stat.FinalValue = stat.BaseValue;
-            }
-            
-            return StatList.ToDictionary(stat => stat.StatType, stat => stat.Clone() as Stat);
+            return StatList.ToDictionary(stat => stat.StatType, stat => stat.Stat.Clone(stat.StatType is StatType.HEALTH or StatType.MANA, true));
         }
     }
 }

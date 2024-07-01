@@ -18,14 +18,14 @@ namespace CharacterModule.Stats.Modifiers.Base
         protected TemporaryModifier(
             T type,
             ModifierData modifierData,
-            TemporaryEffectType temporaryEffectType,
+            StatusEffectType statusEffectType,
             int duration)
         {
             Type = type;
             
             ModifierData = modifierData;
             
-            TemporaryEffectType = temporaryEffectType;
+            StatusEffectType = statusEffectType;
 
             Duration = duration;
         }
@@ -34,7 +34,7 @@ namespace CharacterModule.Stats.Modifiers.Base
         public T Type { get; private set; }
 
         [field: SerializeField]
-        public TemporaryEffectType TemporaryEffectType { get; private set; }
+        public StatusEffectType StatusEffectType { get; private set; }
         
         [field: SerializeField]
         public int Duration { get; set; }
@@ -49,7 +49,7 @@ namespace CharacterModule.Stats.Modifiers.Base
 
         public virtual void OnAdded()
         {
-            TemporaryEffect = TemporaryEffectProcessor.GetEffect(TemporaryEffectType);
+            TemporaryEffect = TemporaryEffectProcessor.GetEffect(StatusEffectType);
             
             TemporaryEffect.Init(ModifierData, BattleTimer, 
                     new Ref<int>(() => Duration, 
@@ -65,7 +65,7 @@ namespace CharacterModule.Stats.Modifiers.Base
         
         protected virtual bool Equals(TemporaryModifier<T> other)
         {
-            return TemporaryEffectType == other.TemporaryEffectType &&
+            return StatusEffectType == other.StatusEffectType &&
                    ModifierData.SourceID == other.ModifierData.SourceID &&
                    Mathf.RoundToInt(ModifierData.Value - other.ModifierData.Value) == 0;
         }

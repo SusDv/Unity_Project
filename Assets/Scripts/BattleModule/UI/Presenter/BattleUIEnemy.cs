@@ -17,7 +17,7 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleEnemySceneReference _battleEnemySceneReference;
         
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private BattleUIEnemyView _battleUIEnemyView;
         
@@ -26,14 +26,14 @@ namespace BattleModule.UI.Presenter
         private List<BattleUIEnemyView> _battleUIEnemies = new();
         
         [Inject]
-        private void Init(AssetLoader assetLoader)
+        private void Init(AssetProvider assetProvider)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
         }
 
         public UniTask Load(List<Character> characters)
         {
-            _battleUIEnemyView = _assetLoader.GetLoadedAsset<BattleUIEnemyView>(RuntimeConstants.AssetsName.EnemyView);
+            _battleUIEnemyView = _assetProvider.GetAssetByName<BattleUIEnemyView>(RuntimeConstants.AssetsName.EnemyView);
             
             CreateBattleUIEnemies(characters.Where(c => c is Enemy));
             

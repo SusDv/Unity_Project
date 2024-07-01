@@ -19,7 +19,7 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleTurnSceneReference _battleTurnSceneReference;
 
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private BattleTurnController _battleTurnController;
 
@@ -28,17 +28,17 @@ namespace BattleModule.UI.Presenter
         private readonly List<BattleUITurnView> _battleUITurnViews = new();
         
         [Inject]
-        private void Init(AssetLoader assetLoader,
+        private void Init(AssetProvider assetProvider,
             BattleTurnController battleTurnController)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
             
             _battleTurnController = battleTurnController;
         }
 
         public UniTask Load(List<Character> characters)
         {
-            _battleUITurnView = _assetLoader.GetLoadedAsset<BattleUITurnView>(RuntimeConstants.AssetsName.TurnView);
+            _battleUITurnView = _assetProvider.GetAssetByName<BattleUITurnView>(RuntimeConstants.AssetsName.TurnView);
 
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
 

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.Modifiers;
 using CharacterModule.Utility;
 using UnityEngine;
 
-namespace CharacterModule.Stats.StatModifier
+namespace CharacterModule.Stats.Modifiers.Containers
 {
     [Serializable]
     public class DynamicStatModifiers : StatModifiers

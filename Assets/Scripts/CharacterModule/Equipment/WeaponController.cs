@@ -15,7 +15,7 @@ namespace CharacterModule.Equipment
 
         private ISpecialAttack _specialAttack;
 
-        private readonly StatManager _statModifierManager;
+        private readonly StatsController _statModifierManager;
         
         public WeaponController (Character character)
         {

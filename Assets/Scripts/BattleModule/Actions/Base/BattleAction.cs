@@ -33,8 +33,7 @@ namespace BattleModule.Actions.Base
             return _battleActionContext;
         }
         
-        private void ApplyHitModifiers(
-            Character source, 
+        private void AttackTargets(
             IReadOnlyList<Character> targets,
             IList<BattleActionOutcome> accuracyResult,
             BattleOutcomeController battleOutcomeController)
@@ -43,19 +42,18 @@ namespace BattleModule.Actions.Base
             {
                 var operation = _actionObject
                     .ProcessAction(targets[i], 
-                    accuracyResult[i], _battleDamage, battleOutcomeController);
+                    accuracyResult[i], _battleDamage, 
+                    battleOutcomeController);
 
                 accuracyResult[i] = operation;
             }
-            
+        }
+
+        private void EndAction(Character source)
+        {
             source.EquipmentController.WeaponController.GetSpecialAttack().Charge(5f);
             
             source.Stats.ApplyInstantModifier(StatType.BATTLE_POINTS, _battleActionContext.BattleObject.BattlePoints);
-        }
-        
-        protected virtual async UniTask PlayActionAnimation(Character source, List<Character> targets)
-        {
-            await source.AnimationManager.PlayAnimation(ActionAnimationName);
         }
 
         public async UniTask<List<BattleActionOutcome>> PerformAction(
@@ -63,18 +61,25 @@ namespace BattleModule.Actions.Base
             List<Character> targets,
             BattleOutcomeController battleOutcomeController)
         {
-            var accuracyResult = battleOutcomeController.CalculateStaticTransformers(targets);
-            
+            var attackResults = battleOutcomeController.CalculateActiveTransformers(targets);
+
             await PlayActionAnimation(source, targets);
             
-            ApplyHitModifiers(source, targets, accuracyResult, battleOutcomeController);
-
-            return accuracyResult;
+            AttackTargets(targets, attackResults, battleOutcomeController);
+            
+            EndAction(source);
+            
+            return attackResults;
+        }
+        
+        protected virtual async UniTask PlayActionAnimation(Character source, IEnumerable<Character> targets)
+        {
+            await source.AnimationManager.PlayAnimation(ActionAnimationName);
         }
 
-        protected virtual BattleDamage GetDamageCalculator(StatManager statManager)
+        protected virtual BattleDamage GetDamageCalculator(StatsController statsController)
         {
-            return new PhysicalDamage(statManager);
+            return new PhysicalDamage(statsController);
         }
     }
 }

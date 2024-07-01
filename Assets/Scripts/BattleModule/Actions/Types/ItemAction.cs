@@ -11,7 +11,7 @@ namespace BattleModule.Actions.Types
     {
         protected override string ActionAnimationName => RuntimeConstants.AnimationConstants.ItemActionName;
 
-        protected override async UniTask PlayActionAnimation(Character source, List<Character> targets)
+        protected override async UniTask PlayActionAnimation(Character source, IEnumerable<Character> targets)
         {
             await targets.First().AnimationManager.PlayAnimation(ActionAnimationName);
         }

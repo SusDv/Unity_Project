@@ -1,6 +1,6 @@
 using System;
 using CharacterModule.Stats.Interfaces;
-using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
+using CharacterModule.Stats.ValueModifier.Processor;
 using CharacterModule.Utility.Stats;
 using UnityEngine;
 

@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using CharacterModule.Stats.StatModifier.ValueModifier.Base;
+using CharacterModule.Stats.ValueModifier.Base;
 using CharacterModule.Utility;
 using CharacterModule.Utility.Stats;
 using Utility;
 
-namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
+namespace CharacterModule.Stats.ValueModifier.Processor
 {
     public static class ValueModifierProcessor
     {
-        private static readonly Dictionary<ValueModifierType, BaseValueModifier> ValueModifiers = new Dictionary<ValueModifierType, BaseValueModifier>();
+        private static readonly Dictionary<ModifierType, BaseValueModifier> ValueModifiers = new Dictionary<ModifierType, BaseValueModifier>();
         
         private static bool _initialized;
 
@@ -16,7 +16,7 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
         {
             foreach(var valueModifier in  ReflectionUtils.GetConcreteInstances<BaseValueModifier>()) 
             {
-                ValueModifiers.Add(valueModifier.ValueModifierType, valueModifier);
+                ValueModifiers.Add(valueModifier.ModifierType, valueModifier);
             }
 
             _initialized = true;
@@ -29,9 +29,9 @@ namespace CharacterModule.Stats.StatModifier.ValueModifier.Processor
                 Init();
             }
 
-            var valueModifier = ValueModifiers[data.ValueModifierType];
+            var valueModifier = ValueModifiers[data.ModifierType];
 
-            valueModifier.ModifyValue(data.ValueToModify, data.Value);
+            valueModifier.ModifyValue(data.ValueToModify, data.Value, data.CalculateFromValue);
         }
     }
 }

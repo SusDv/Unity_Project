@@ -23,7 +23,7 @@ namespace BattleModule.UI.Presenter
         
         private BattleActionController _battleActionController;
         
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private List<BattleUISpellView> _battleUISpells;
         
@@ -32,11 +32,11 @@ namespace BattleModule.UI.Presenter
         private Character _characterInAction;
 
         [Inject]
-        private void Init(AssetLoader assetLoader,
+        private void Init(AssetProvider assetProvider,
             BattleActionController battleActionController,
             BattleTurnController battleTurnController)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
             
             _battleActionController = battleActionController;
 
@@ -45,7 +45,7 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load()
         {
-            _battleUISpellView = _assetLoader.GetLoadedAsset<BattleUISpellView>(RuntimeConstants.AssetsName.SpellView);
+            _battleUISpellView = _assetProvider.GetAssetByName<BattleUISpellView>(RuntimeConstants.AssetsName.SpellView);
             
             _battleSpellsSceneReference.BattleSpellsMenuButton.OnButtonClick += OnSpellsButtonClick;
 
@@ -80,7 +80,7 @@ namespace BattleModule.UI.Presenter
         {
             BattleSpellsClear();
 
-            foreach (var spell in _characterInAction.SpellContainer.GetSpells()) 
+            foreach (var spell in _characterInAction.SpellsController.GetSpells()) 
             {
                 var battleUISpellView = Instantiate(_battleUISpellView,
                     _battleSpellsSceneReference.BattleUISpellsParent.transform.position,
@@ -97,7 +97,7 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            var selectedSpell = _characterInAction.SpellContainer.GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            var selectedSpell = _characterInAction.SpellsController.GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
 
             _battleActionController.SetBattleAction<SpellAction>(selectedSpell);
         }

@@ -17,21 +17,21 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattlePlayerSceneReference _battlePlayerSceneReference;
 
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private List<BattleUIPlayerView> _battleUIPlayers = new();
         
         private BattleUIPlayerView _battleUIPlayerView;
         
         [Inject]
-        private void Init(AssetLoader assetLoader)
+        private void Init(AssetProvider assetProvider)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
         }
         
         public UniTask Load(List<Character> characters)
         {
-            _battleUIPlayerView = _assetLoader.GetLoadedAsset<BattleUIPlayerView>(RuntimeConstants.AssetsName.PlayerView);
+            _battleUIPlayerView = _assetProvider.GetAssetByName<BattleUIPlayerView>(RuntimeConstants.AssetsName.PlayerView);
             
             CreateBattleUICharacters(characters.Where((character) => (character is Player)));
 

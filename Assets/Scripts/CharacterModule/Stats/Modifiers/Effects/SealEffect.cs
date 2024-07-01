@@ -1,5 +1,5 @@
 using CharacterModule.Stats.Modifiers.Effects.Base;
-using CharacterModule.Stats.StatModifier.ValueModifier.Processor;
+using CharacterModule.Stats.ValueModifier.Processor;
 
 namespace CharacterModule.Stats.Modifiers.Effects
 {

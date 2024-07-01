@@ -7,16 +7,16 @@ namespace CharacterModule.Stats.Modifiers.Effects.Processor
 {
     public static class TemporaryEffectProcessor
     {
-        private static readonly Dictionary<TemporaryEffectType, Func<TemporaryEffect>> TemporaryModifiers = new()
+        private static readonly Dictionary<StatusEffectType, Func<TemporaryEffect>> TemporaryModifiers = new()
         {
-            { TemporaryEffectType.STATIC_EFFECT , () => new StaticEffect()},
-            { TemporaryEffectType.SEAL_EFFECT , () => new SealEffect()},
-            { TemporaryEffectType.TIME_EFFECT , () => new TimeEffect()}
+            { StatusEffectType.STATIC_EFFECT , () => new StaticEffect()},
+            { StatusEffectType.SEAL_EFFECT , () => new SealEffect()},
+            { StatusEffectType.TIME_EFFECT , () => new TimeEffect()}
         };
         
-        public static TemporaryEffect GetEffect(TemporaryEffectType temporaryEffectType)
+        public static TemporaryEffect GetEffect(StatusEffectType statusEffectType)
         {
-            return TemporaryModifiers[temporaryEffectType].Invoke();
+            return TemporaryModifiers[statusEffectType].Invoke();
         }
     }
 }

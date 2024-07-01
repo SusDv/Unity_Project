@@ -3,11 +3,11 @@ using CharacterModule.Settings;
 
 namespace CharacterModule.Spells.Core
 {
-    public class SpellContainer
+    public class SpellsController
     {
         private readonly List<SpellBase> _spells;
 
-        public SpellContainer(BaseSpells baseSpells) 
+        public SpellsController(BaseSpells baseSpells) 
         {
             _spells = new List<SpellBase>(baseSpells.GetSpells());
         }

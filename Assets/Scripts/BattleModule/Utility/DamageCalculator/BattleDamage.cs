@@ -5,11 +5,11 @@ namespace BattleModule.Utility.DamageCalculator
 {
     public abstract class BattleDamage
     {
-        protected readonly StatManager SourceStats;
+        protected readonly StatsController SourceStats;
 
         protected float DamageSource;
         
-        protected BattleDamage(StatManager source)
+        protected BattleDamage(StatsController source)
         {
             SourceStats = source;
         }
@@ -19,18 +19,18 @@ namespace BattleModule.Utility.DamageCalculator
             DamageSource = damage;
         }
 
-        public abstract float CalculateAttackDamage(StatManager target, float multiplier);
+        public abstract float CalculateAttackDamage(StatsController target, float multiplier);
     }
 
     public class PhysicalDamage : BattleDamage
     {
-        public PhysicalDamage(StatManager source)
+        public PhysicalDamage(StatsController source)
             : base(source)
         {
             DamageSource = SourceStats.GetStatInfo(StatType.ATTACK).FinalValue;
         }
         
-        public override float CalculateAttackDamage(StatManager target, float multiplier)
+        public override float CalculateAttackDamage(StatsController target, float multiplier)
         {
             return -DamageSource * multiplier * (100f / (100f + target.GetStatInfo(StatType.DEFENSE).FinalValue));
         }
@@ -38,13 +38,13 @@ namespace BattleModule.Utility.DamageCalculator
 
     public class MagicDamage : BattleDamage
     {
-        public MagicDamage(StatManager source)
+        public MagicDamage(StatsController source)
             : base(source)
         {
             DamageSource = SourceStats.GetStatInfo(StatType.MAGIC_ATTACK).FinalValue;
         }
         
-        public override float CalculateAttackDamage(StatManager target, float multiplier)
+        public override float CalculateAttackDamage(StatsController target, float multiplier)
         {
             return -DamageSource * multiplier * (100f / (100f + target.GetStatInfo(StatType.MAGIC_DEFENSE).FinalValue));
         }
