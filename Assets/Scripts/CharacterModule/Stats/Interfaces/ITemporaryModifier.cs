@@ -5,7 +5,7 @@ namespace CharacterModule.Stats.Interfaces
 {
     public interface ITemporaryModifier<T> : IModifier<T>
     {
-        public TemporaryEffectType TemporaryEffectType { get; }
+        public StatusEffectType StatusEffectType { get; }
         
         public int Duration { get; set; }
         

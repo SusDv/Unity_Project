@@ -1,91 +1,111 @@
-﻿﻿using System;
- using CharacterModule.Utility;
- using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace CharacterModule.Stats.Base 
+ namespace CharacterModule.Stats.Base 
 {
     [Serializable]
-    public class Stat : ICloneable
+    public class Stat
     {
-        public Stat(StatType statType)
-        {
-            StatType = statType;
-        }
-
-        private Stat(
-            StatType statType, 
+        protected Stat(
             float baseValue, 
-            float baseValueScaleFactor, 
-            bool isCapped, 
-            float finalValue,
+            float baseValueScaleFactor,
+            float currentValue,
             float maxValue) 
         {
-            StatType = statType;
             BaseValue = baseValue;
+            
             BaseValueScaleFactor = baseValueScaleFactor;
-            IsCapped = isCapped;
-            MaxValue = maxValue;
-            FinalValue = finalValue;
+            
+            _currentValue = maxValue;
+            
+            _maxValue = currentValue;
         }
         
-        private float _finalValue;
+        private float _currentValue;
         
         private float _maxValue;
-
-        [field: SerializeField]    
-        public StatType StatType { get; set; }
-
+        
         [field: SerializeField]
         public float BaseValue { get; set; }
 
         [field: SerializeField]
         public float BaseValueScaleFactor { get; set; }
 
-        [field: SerializeField]
-        public bool IsCapped { get; set; }
-
-        public float FinalValue
+        public virtual float CurrentValue
         {
-            get => _finalValue;
-            set
-            {
-                if (!IsCapped)
-                {
-                    _finalValue = _maxValue = Mathf.Clamp(value, 0f, value);
-                    
-                    return;
-                }
-                
-                _finalValue = Mathf.Clamp(value, 0f, _maxValue);
-            }
+            get => _currentValue;
+            
+            set => _currentValue = _maxValue = Mathf.Clamp(value, 0f, value);
         }
 
-        public float MaxValue
+        public virtual float MaxValue
         {
             get => _maxValue;
+
+            set => _currentValue = _maxValue = Mathf.Clamp(value, 0f, value);
+        }
+
+        private void InitClone(bool initClone)
+        {
+            if (!initClone)
+            {
+                return;
+            }
+            
+            MaxValue = BaseValue;
+
+            CurrentValue = MaxValue;
+        }
+
+        public Stat Clone(bool isCapped, bool initClone = false)
+        {
+            InitClone(initClone);
+
+            if (isCapped)
+            {
+                return new MaxStat(BaseValue, BaseValueScaleFactor, CurrentValue, MaxValue);
+            }
+            
+            return new Stat(BaseValue, BaseValueScaleFactor, CurrentValue, MaxValue);
+        }
+    }
+    
+    public class MaxStat : Stat
+    {
+        private float _currentValue;
+        
+        private float _maxValue;
+
+        public MaxStat(float baseValue, float baseValueScaleFactor, float currentValue, float maxValue)
+            : base(baseValue, baseValueScaleFactor, currentValue, maxValue)
+        {
+            _currentValue = currentValue;
+            
+            _maxValue = maxValue;
+        }
+
+        public override float MaxValue
+        {
+            get => _maxValue;
+            
             set
             {
-                if (!IsCapped)
-                {
-                    _maxValue = Mathf.Clamp(value, 0f, value);
-
-                    return;
-                }
+                _currentValue = value * CalculateFinalValuePercentage();
                 
-                if (_maxValue != 0)
-                {
-                    float valuePercentage = _finalValue / _maxValue;
-                    
-                    _finalValue = value * valuePercentage;
-                }
-
                 _maxValue = Mathf.Clamp(value, 0f, value);
             }
         }
-        
-        public object Clone()
+
+        public override float CurrentValue
         {
-            return new Stat(StatType, BaseValue, BaseValueScaleFactor, IsCapped, FinalValue, MaxValue);
+            get => _currentValue; 
+            
+            set => _currentValue = Mathf.Clamp(value, 0f, _maxValue);
+        }
+
+        private float CalculateFinalValuePercentage()
+        {
+            return _maxValue == 0 ? 0 : _currentValue / _maxValue;
         }
     }
 }

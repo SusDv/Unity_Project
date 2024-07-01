@@ -2,7 +2,7 @@
 using BattleModule.Actions.Processors;
 using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Utility;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using CharacterModule.WeaponSpecial.Base;
 using UnityEngine;
 

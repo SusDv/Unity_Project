@@ -14,19 +14,19 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleItemDescriptionSceneReference _battleItemDescriptionSceneReference;
 
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private BattleUIItemDescriptionView _battleUIItemDescriptionView;
         
         [Inject]
-        private void Init(AssetLoader assetLoader)
+        private void Init(AssetProvider assetProvider)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
         }
 
         public UniTask Load()
         {
-            _battleUIItemDescriptionView = Instantiate(_assetLoader.GetLoadedAsset<BattleUIItemDescriptionView>(RuntimeConstants.AssetsName.ItemDescriptionView),
+            _battleUIItemDescriptionView = Instantiate(_assetProvider.GetAssetByName<BattleUIItemDescriptionView>(RuntimeConstants.AssetsName.ItemDescriptionView),
                _battleItemDescriptionSceneReference.BattleItemDescriptionWindow.transform);
            
             return UniTask.CompletedTask;

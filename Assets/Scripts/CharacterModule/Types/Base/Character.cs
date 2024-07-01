@@ -1,16 +1,14 @@
-using System;
 using CharacterModule.Animation;
 using CharacterModule.Equipment;
 using CharacterModule.Settings;
 using CharacterModule.Spells.Core;
 using CharacterModule.Stats.Managers;
-using CharacterModule.Stats.Managers.SingleStat;
 using CharacterModule.Utility;
 using UnityEngine;
 
 namespace CharacterModule.Types.Base
 {
-    public class Character : MonoBehaviour, IDisposable
+    public class Character : MonoBehaviour
     {
         [SerializeField] 
         private BaseSettings _baseSettings;
@@ -21,32 +19,24 @@ namespace CharacterModule.Types.Base
         [field: SerializeField] 
         public SizeHelper SizeHelper { get; private set; }
 
-        public StatManager Stats { get; private set; }
+        public StatsController Stats { get; private set; }
 
         public EquipmentController EquipmentController { get; private set; }
 
-        public SpellContainer SpellContainer { get; private set; }
+        public SpellsController SpellsController { get; private set; }
 
         public BaseInformation BaseInformation { get; private set; }
 
-        public HealthManager HealthManager{  get; private set; }
 
         public void Init()
         {
-            Stats = new StatManager(_baseSettings.BaseStats);
+            Stats = new StatsController(_baseSettings.BaseStats);
 
-            SpellContainer = new SpellContainer(_baseSettings.BaseSpells);
+            SpellsController = new SpellsController(_baseSettings.BaseSpells);
 
             EquipmentController = new EquipmentController(this, _baseSettings.BaseEquipment);
 
-            HealthManager = new HealthManager(this);
-
             BaseInformation = _baseSettings.BaseInformation;
-        }
-
-        public void Dispose()
-        {
-            Destroy(gameObject);
         }
     }
 }

@@ -27,19 +27,26 @@ namespace CharacterModule.Utility
         BATTLE_POINTS
     }
 
-    public enum ModifiedValueType
+    public enum ModifiedParam
     {
-        FINAL_VALUE,
+        CURRENT_VALUE,
         MAX_VALUE
     }
 
-    public enum ValueModifierType
+    public enum ModifierType
     {
         ADDITIVE,
         PERCENTAGE
     }
 
-    public enum TemporaryEffectType 
+    public enum DerivedFrom
+    {
+        BASE_VALUE,
+        CURRENT_VALUE,
+        MAX_VALUE
+    }
+
+    public enum StatusEffectType 
     {
         [Description(StatNames.StaticEffectName)]
         STATIC_EFFECT,

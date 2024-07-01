@@ -4,7 +4,7 @@ using BattleModule.Actions.Processors;
 using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Utility;
 using CharacterModule.Inventory.Items.Base;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using UnityEngine;
 
 namespace CharacterModule.Inventory.Items 

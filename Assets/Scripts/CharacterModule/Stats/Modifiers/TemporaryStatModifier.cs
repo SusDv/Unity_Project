@@ -12,13 +12,13 @@ namespace CharacterModule.Stats.Modifiers
         private TemporaryStatModifier(
             StatType statType,
             ModifierData modifierData,
-            TemporaryEffectType temporaryEffectType,
-            int duration) : base(statType, modifierData, temporaryEffectType, duration)
+            StatusEffectType statusEffectType,
+            int duration) : base(statType, modifierData, statusEffectType, duration)
         { }
 
         public override IModifier<StatType> Clone()
         {
-            return new TemporaryStatModifier(Type, ModifierData.Clone(), TemporaryEffectType, Duration);
+            return new TemporaryStatModifier(Type, ModifierData.Clone(), StatusEffectType, Duration);
         }
 
         protected override bool Equals(TemporaryModifier<StatType> other)

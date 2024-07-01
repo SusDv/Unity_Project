@@ -37,6 +37,8 @@ namespace BattleModule.Scopes.Services
 
             builder.Register<BattleOutcomeController>(Lifetime.Scoped);
 
+            builder.Register<BattleDeathController>(Lifetime.Scoped);
+
             builder.Register<BattleCamera>(Lifetime.Scoped);
             
             builder.Register<BattleController>(Lifetime.Scoped);

@@ -15,7 +15,7 @@ namespace BattleModule.UI.Presenter
 {
     public class BattleUITargeting : MonoBehaviour, ILoadingUnit<List<Character>>
     {
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
 
         private BattleUIHelper _battleUIHelper;
         
@@ -30,10 +30,10 @@ namespace BattleModule.UI.Presenter
         private readonly List<RectTransform> _battleTargetImages = new ();
         
         [Inject]
-        private void Init(AssetLoader assetLoader, BattleUIHelper battleUIHelper,
+        private void Init(AssetProvider assetProvider, BattleUIHelper battleUIHelper,
             BattleTargetingController battleTargetingController)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
 
             _battleUIHelper = battleUIHelper;
             
@@ -104,9 +104,9 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load(List<Character> spawnedCharacters)
         {
-            _targetGroupPrefab = _assetLoader.GetLoadedAsset<BattleUITargetView>(RuntimeConstants.AssetsName.TargetGroupView);
+            _targetGroupPrefab = _assetProvider.GetAssetByName<BattleUITargetView>(RuntimeConstants.AssetsName.TargetGroupView);
 
-            _targetImagePrefab = _assetLoader.GetLoadedAsset<RectTransform>(RuntimeConstants.AssetsName.TargetImageView);
+            _targetImagePrefab = _assetProvider.GetAssetByName<RectTransform>(RuntimeConstants.AssetsName.TargetImageView);
             
             _battleTargetingController.OnTargetsChanged += BattleTargets;
 

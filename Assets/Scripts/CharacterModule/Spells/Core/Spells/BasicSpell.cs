@@ -1,6 +1,6 @@
 ﻿using BattleModule.Actions.Interfaces;
 using BattleModule.Actions.Processors;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using UnityEngine;
 
 namespace CharacterModule.Spells.Core.Spells

@@ -7,7 +7,7 @@ using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Stats.Interfaces;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Stats.Modifiers;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
 
@@ -36,7 +36,7 @@ namespace BattleModule.Actions.Processors
             BattleOutcomeController battleOutcomeController);
         
 
-        protected void ApplyTemporaryModifiers(StatManager target)
+        protected void ApplyTemporaryModifiers(StatsController target)
         {
             foreach (var modifier in TargetModifiers.GetModifiers().temporaryModifiers)
             {
@@ -44,7 +44,7 @@ namespace BattleModule.Actions.Processors
             }
         }
 
-        protected void ApplyModifiers(StatManager target)
+        protected void ApplyModifiers(StatsController target)
         {
             foreach (var modifier in TargetModifiers.GetModifiers().modifiers)
             {
@@ -52,7 +52,7 @@ namespace BattleModule.Actions.Processors
             }
         }
 
-        protected void ProcessDamageModifiers(StatManager target, 
+        protected void ProcessDamageModifiers(StatsController target, 
             BattleActionOutcome battleActionOutcome,
             BattleDamage battleDamage)
         {
@@ -66,7 +66,7 @@ namespace BattleModule.Actions.Processors
             target.AddModifier(InstantStatModifier.GetInstance(StatType.HEALTH, battleDamage.CalculateAttackDamage(target, battleActionOutcome.DamageMultiplier)));
         }
 
-        private static bool DamageSourceFound(StatManager target, BattleActionOutcome battleActionOutcome,
+        private static bool DamageSourceFound(StatsController target, BattleActionOutcome battleActionOutcome,
             BattleDamage battleDamage, IModifier<StatType> damageSource)
         {
             if (damageSource == default)

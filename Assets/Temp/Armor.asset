@@ -18,12 +18,21 @@ MonoBehaviour:
     <Icon>k__BackingField: {fileID: 0}
   <IsStackable>k__BackingField: 0
   <WearerModifiers>k__BackingField:
-    _permanentStatModifiers: []
+    _permanentStatModifiers:
+    - <Type>k__BackingField: 0
+      <ModifierData>k__BackingField:
+        <ModifierType>k__BackingField: 0
+        <ModifiedParam>k__BackingField: 1
+        <CalculateFrom>k__BackingField: 0
+        <Value>k__BackingField: 5
+    - <Type>k__BackingField: 0
+      <ModifierData>k__BackingField:
+        <ModifierType>k__BackingField: 0
+        <ModifiedParam>k__BackingField: 0
+        <CalculateFrom>k__BackingField: 0
+        <Value>k__BackingField: 10
   OutcomeTransformers:
     _staticOutcomeTransformers:
-    - <TransformFrom>k__BackingField: 0
-      <TransformTo>k__BackingField: 1
-      <Cooldown>k__BackingField: 1
     - <TransformFrom>k__BackingField: 0
       <TransformTo>k__BackingField: 1
       <Cooldown>k__BackingField: 1

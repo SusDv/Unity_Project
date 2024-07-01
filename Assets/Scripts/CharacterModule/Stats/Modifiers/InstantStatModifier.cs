@@ -23,10 +23,7 @@ namespace CharacterModule.Stats.Modifiers
             StatType statType, 
             float value)
         {
-            var modifierData = new ModifierData
-            {
-                Value = value
-            };
+            var modifierData = new ModifierData(value);
 
             return new InstantStatModifier(statType, modifierData);
         }

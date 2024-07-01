@@ -19,7 +19,7 @@ namespace BattleModule.UI.Presenter
         [SerializeField]
         private BattleAccuracySceneReference _battleAccuracySceneReference;
         
-        private AssetLoader _assetLoader;
+        private AssetProvider _assetProvider;
         
         private BattleAccuracyController _battleAccuracyController;
 
@@ -33,11 +33,11 @@ namespace BattleModule.UI.Presenter
         
         
         [Inject]
-        private void Init(AssetLoader assetLoader,
+        private void Init(AssetProvider assetProvider,
             BattleAccuracyController battleAccuracyController,
             BattleTargetingController battleTargetingController)
         {
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
             
             _battleAccuracyController = battleAccuracyController;
 
@@ -92,7 +92,7 @@ namespace BattleModule.UI.Presenter
 
         public UniTask Load(List<Character> characters)
         {
-            _accuracyViewPrefab = _assetLoader.GetLoadedAsset<BattleUIAccuracyView>(RuntimeConstants.AssetsName.AccuracyView);
+            _accuracyViewPrefab = _assetProvider.GetAssetByName<BattleUIAccuracyView>(RuntimeConstants.AssetsName.AccuracyView);
             
             _battleAccuracyController.OnAccuraciesChanged += OnAccuraciesChanged;
 

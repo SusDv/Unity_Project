@@ -5,7 +5,7 @@ namespace Utility.ObserverPattern
 {
     public interface IStatObserver : IObserver<StatInfo>
     {
-        public StatType StatType { get; set; }
+        public StatType StatType { get; }
     }
 
     public interface IObserver
@@ -15,6 +15,6 @@ namespace Utility.ObserverPattern
 
     public interface IObserver<in T>
     {
-        public void UpdateValue(T value, bool negativeChange);
+        public void UpdateValue(T value, bool negativeChange = false);
     }
 }

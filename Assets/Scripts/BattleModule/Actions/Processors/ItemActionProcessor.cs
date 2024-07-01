@@ -3,7 +3,7 @@ using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Inventory.Items;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using CharacterModule.Types.Base;
 
 namespace BattleModule.Actions.Processors

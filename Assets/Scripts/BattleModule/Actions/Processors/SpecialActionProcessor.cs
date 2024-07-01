@@ -2,7 +2,7 @@ using BattleModule.Actions.Outcome;
 using BattleModule.Actions.Transformer.Transformers;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility.DamageCalculator;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using CharacterModule.Types.Base;
 using CharacterModule.WeaponSpecial.Interfaces;
 

@@ -1,7 +1,7 @@
 using CharacterModule.Inventory.Interfaces;
 using CharacterModule.Inventory.Items.Base;
 using CharacterModule.Inventory.Processor;
-using CharacterModule.Stats.StatModifier;
+using CharacterModule.Stats.Modifiers.Containers;
 using UnityEngine;
 
 namespace CharacterModule.Inventory.Items

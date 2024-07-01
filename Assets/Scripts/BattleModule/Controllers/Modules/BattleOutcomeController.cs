@@ -15,9 +15,9 @@ namespace BattleModule.Controllers.Modules
         private readonly BattleTimerController _battleTimerController;
 
         private readonly BattleAccuracyController _battleAccuracyController;
-        
+
         private readonly Dictionary<Character, List<OutcomeTransformer>> _outcomeTransformers = new();
-        
+
         private BattleOutcomeController(BattleTimerController battleTimerController,
             BattleAccuracyController battleAccuracyController)
         {
@@ -41,10 +41,10 @@ namespace BattleModule.Controllers.Modules
         {
             return outcomeTransformers.Select(transformer => transformer.Clone()).ToList();
         }
-        
+
         private static BattleActionOutcome GetOutcomeByType(SubIntervalType subIntervalType)
         {
-            BattleActionOutcome battleActionOutcome = 
+            BattleActionOutcome battleActionOutcome =
                 subIntervalType switch
                 {
                     SubIntervalType.CRIT => new CritDamage(),
@@ -56,80 +56,83 @@ namespace BattleModule.Controllers.Modules
             return battleActionOutcome;
         }
 
-        private void SetOutcomeTimers(IEnumerable<OutcomeTransformer> outcomeTransformers)
+        private void SetTimerFactory(IEnumerable<OutcomeTransformer> outcomeTransformers)
         {
             outcomeTransformers.Where(t => !t.Initialized).ToList()
                 .ForEach(t => t.SetTimerFactory(_battleTimerController.CreateTimer));
         }
-        
+
         private void AddDistinctOutcomes(Character character, IEnumerable<OutcomeTransformer> outcomeTransformers)
         {
             var clonedTransformers = CloneTransformers(outcomeTransformers);
-            
-            SetOutcomeTimers(clonedTransformers);
 
-            if (!_outcomeTransformers.TryGetValue(character, out _))
+            SetTimerFactory(clonedTransformers);
+
+            if (!_outcomeTransformers.ContainsKey(character))
             {
-                _outcomeTransformers.Add(character, clonedTransformers.Distinct().ToList());
-                
+                _outcomeTransformers[character] = clonedTransformers.Distinct().ToList();
+
                 return;
             }
 
-            foreach (var transformer in clonedTransformers.Where(outcomeTransformer =>
-                         !_outcomeTransformers[character].Contains(outcomeTransformer)))
-            {
-                _outcomeTransformers[character].Add(transformer);
-            }
+            var distinctTransformer = clonedTransformers.Except(_outcomeTransformers[character]).ToList();
+
+            _outcomeTransformers[character].AddRange(distinctTransformer);
         }
 
-        public List<BattleActionOutcome> CalculateStaticTransformers(
+        public BattleActionOutcome ProcessHitTransformers(Character target,
+            BattleActionOutcome battleActionOutcome,
+            List<OutcomeTransformer> outcomeTransformers)
+        {
+            SetTimerFactory(outcomeTransformers);
+
+            var staticTransformers = outcomeTransformers
+                .OfType<StaticOutcomeTransformer>()
+                .Where(t => t.IsApplicable(battleActionOutcome.SubIntervalType))
+                .ToList();
+
+            var outcomeToTransform = staticTransformers
+                .Aggregate(battleActionOutcome, (currentOutcome, transformer) =>
+                    GetOutcomeByType(transformer.GetTransformedType(currentOutcome))
+                );
+
+            var temporaryTransformers = outcomeTransformers
+                .OfType<TemporaryOutcomeTransformer>()
+                .Cast<OutcomeTransformer>()
+                .ToList();
+
+            AddDistinctOutcomes(target, temporaryTransformers);
+
+            return outcomeToTransform;
+        }
+
+        public List<BattleActionOutcome> CalculateActiveTransformers(
             IEnumerable<Character> targets)
         {
             var accuracyResult = new List<BattleActionOutcome>();
-            
+
             var accuracies = _battleAccuracyController.GetAccuracies();
 
             foreach (var target in targets)
             {
                 var outcomeToTransform = accuracies[target].Evaluate();
 
-                foreach (var transformer in _outcomeTransformers[target].Where(t => t.IsApplicable(outcomeToTransform.SubIntervalType)))
+                foreach (var transformer in _outcomeTransformers[target]
+                             .Where(t => t.IsApplicable(outcomeToTransform.SubIntervalType)))
                 {
                     outcomeToTransform = GetOutcomeByType(transformer.GetTransformedType(outcomeToTransform));
                 }
-                
+
                 accuracyResult.Add(outcomeToTransform);
             }
 
             return accuracyResult;
         }
-        
 
-        public BattleActionOutcome ProcessHitTransformers(Character target,
-            BattleActionOutcome battleActionOutcome, 
-            List<OutcomeTransformer> outcomeTransformers)
-        {
-            var outcomeToTransform = battleActionOutcome;
-            
-            SetOutcomeTimers(outcomeTransformers);
-            
-            outcomeTransformers.OfType<StaticOutcomeTransformer>()
-                .Where(t => t.IsApplicable(battleActionOutcome.SubIntervalType))
-                .ToList()
-                .ForEach(o =>
-            {
-                outcomeToTransform = GetOutcomeByType(o.GetTransformedType(outcomeToTransform));
-            });
-            
-            AddDistinctOutcomes(target, outcomeTransformers.OfType<TemporaryOutcomeTransformer>().Cast<OutcomeTransformer>().ToList());
-            
-            return outcomeToTransform;
-        }
-        
         public UniTask Load(List<Character> characters)
         {
             ProcessEquipmentTransformers(characters);
-            
+
             return UniTask.CompletedTask;
         }
     }

@@ -25,11 +25,6 @@ namespace BattleModule.Utility
 
             _defaultSpawnPointPosition = CharacterSpawnPoint.position;
             
-            _charactersInSpawnPoint.ForEach(c =>
-            {
-                c.HealthManager.OnCharacterDied += OnCharacterDied;
-            });
-            
             AdjustPosition();
         }
 

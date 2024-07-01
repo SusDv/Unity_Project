@@ -14,7 +14,7 @@ namespace BattleModule.Scopes
     public class BattleFlow : IStartable
     {
         private readonly LoadingService _loadingService;
-        private readonly AssetLoader _assetLoader;
+        private readonly AssetProvider _assetProvider;
 
         private readonly BattleCamera _battleCamera;
         private readonly BattleInput _battleInput;
@@ -27,6 +27,7 @@ namespace BattleModule.Scopes
         private readonly BattleActionController _battleActionController;
         private readonly BattleAccuracyController _battleAccuracyController;
         private readonly BattleOutcomeController _battleOutcomeController;
+        private readonly BattleDeathController _battleDeathController;
         
         private readonly UILoadingScreen _uiLoadingScreen;
         private readonly BattleUIInventory _battleUIInventory;
@@ -42,7 +43,7 @@ namespace BattleModule.Scopes
         
         [Inject]
         private BattleFlow(LoadingService loadingService,
-            AssetLoader assetLoader,
+            AssetProvider assetProvider,
             BattleCamera battleCamera,
             BattleInput battleInput,
             BattleSpawner battleSpawner,
@@ -54,6 +55,8 @@ namespace BattleModule.Scopes
             BattleActionController battleActionController,
             BattleAccuracyController battleAccuracyController,
             BattleOutcomeController battleOutcomeController,
+            BattleDeathController battleDeathController,
+            
             UILoadingScreen uiLoadingScreen,
             BattleUIInventory battleUIInventory,
             BattleUIItemDescription battleUIItemDescription,
@@ -67,7 +70,7 @@ namespace BattleModule.Scopes
             BattleUIOutcome battleUIOutcome)
         {
             _loadingService = loadingService;
-            _assetLoader = assetLoader;
+            _assetProvider = assetProvider;
 
             _battleCamera = battleCamera;
             _battleInput = battleInput;
@@ -80,7 +83,8 @@ namespace BattleModule.Scopes
             _battleActionController = battleActionController;
             _battleAccuracyController = battleAccuracyController;
             _battleOutcomeController = battleOutcomeController;
-
+            _battleDeathController = battleDeathController;
+            
             _uiLoadingScreen = uiLoadingScreen;
             _battleUIAccuracy = battleUIAccuracy;
             _battleUIAction = battleUIAction;
@@ -106,8 +110,8 @@ namespace BattleModule.Scopes
         private async UniTask LoadBattle()
         {
             _uiLoadingScreen.SetVisibility(true);
-            
-            await _assetLoader.LoadBattleAssets();
+
+            await _assetProvider.Load();
             
             await _loadingService.BeginLoading(_battleCamera);
             await _loadingService.BeginLoading(_battleInput);
@@ -119,6 +123,7 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleActionController);
             await _loadingService.BeginLoading(_battleAccuracyController);
             await _loadingService.BeginLoading(_battleOutcomeController, _battleSpawner.GetSpawnedCharacters());
+            await _loadingService.BeginLoading(_battleDeathController, _battleSpawner.GetSpawnedCharacters());
             
             await _loadingService.BeginLoading(_battleUIInventory);
             await _loadingService.BeginLoading(_battleUIItemDescription);

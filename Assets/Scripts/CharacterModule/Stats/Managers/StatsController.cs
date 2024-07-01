@@ -12,13 +12,13 @@ using Utility.ObserverPattern;
 
 namespace CharacterModule.Stats.Managers
 {
-    public class StatManager : IStatSubject
+    public class StatsController : IStatSubject
     {
         private readonly List<IModifier<StatType>> _modifiersInUse = new ();
         
         private readonly List<IStatObserver> _statObservers = new ();
         
-        private readonly Dictionary<StatType, Stat> _stats = new ();
+        private readonly Dictionary<StatType, Stat> _stats;
 
         private Func<int, BattleTimer> _battleTimerFactory;
         
@@ -66,19 +66,16 @@ namespace CharacterModule.Stats.Managers
 
         private void InitializeModifier(IModifier<StatType> modifier)
         {
-            modifier.SetValueToModify(_stats[modifier.Type]);
+            modifier.ModifierData.SetupModifierData(_stats[modifier.Type]);
 
             modifier.OnAdded();
             
             NotifyObservers(modifier.Type, modifier.IsNegative);
         }
 
-        public StatManager(BaseStats baseStats)
+        public StatsController(BaseStats baseStats)
         {
-            foreach (var stat in baseStats.GetStats())
-            {
-                _stats.Add(stat.Key, stat.Value);
-            }
+            _stats = baseStats.GetStats();
         }
 
         public void SetBattleTimerFactory(Func<int, BattleTimer> battleTimerFactory)
@@ -124,7 +121,7 @@ namespace CharacterModule.Stats.Managers
 
         public void TriggerSealEffects()
         {
-            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier<StatType>>().Where(modifier => modifier.TemporaryEffectType is TemporaryEffectType.SEAL_EFFECT))
+            foreach (var temporaryModifier in _modifiersInUse.OfType<ITemporaryModifier<StatType>>().Where(modifier => modifier.StatusEffectType is StatusEffectType.SEAL_EFFECT))
             {
                 temporaryModifier.BattleTimer.EndTimer();
                 
@@ -164,7 +161,7 @@ namespace CharacterModule.Stats.Managers
         {
             _statObservers.Add(statObserver);
             
-            statObserver.UpdateValue(GetStatInfo(statObserver.StatType), false);
+            statObserver.UpdateValue(GetStatInfo(statObserver.StatType));
         }
 
         public void DetachObserver(IStatObserver statObserver)
