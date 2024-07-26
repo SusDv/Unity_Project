@@ -153,7 +153,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PlayerCharacters>k__BackingField:
   - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
-  - {fileID: 5625005941891779630, guid: b82a12b7c7ed39d43bcf5e38491a0a9c, type: 3}
   - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
   - {fileID: 2676119997256727920, guid: e6f69d2e59eafb74eb54121486f187d7, type: 3}
   <EnemyCharacters>k__BackingField:
