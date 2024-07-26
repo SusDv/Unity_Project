@@ -8,6 +8,8 @@ namespace Editor.AssetHelper
 {
     public static class ShaderMapReferences
     {
+        public const string ShaderName = "Autodesk Interactive";
+        
         public const string MetallicMap = "_MetallicGlossMap";
             
         public const string RoughnessMap = "_SpecGlossMap";
@@ -18,15 +20,16 @@ namespace Editor.AssetHelper
     public class ImportAssetEditor : AssetPostprocessor
     {
         private const string TEXTURE_DIRECTORY = "Assets/Models/Battle/Bar/Textures/";
+
+        private const string MODEL_DIRECTORY = "Assets/Models/Battle/";
         
         private void OnPostprocessModel(GameObject model)
         {
-            if (string.IsNullOrEmpty(assetPath) || !assetPath.EndsWith(".fbx"))
+            if (string.IsNullOrEmpty(assetPath) 
+                || !assetPath.EndsWith(".fbx") || !assetPath.Contains(MODEL_DIRECTORY))
             {
                 return;
             }
-            
-            string objectName = model.GetComponent<Mesh>().name;
             
             foreach (var renderer in model.GetComponentsInChildren<Renderer>())
             {
@@ -34,7 +37,9 @@ namespace Editor.AssetHelper
                 
                 foreach (var material in materials)
                 {
-                    if (!AssignTexturesToMaterial(material, objectName, TEXTURE_DIRECTORY))
+                    material.shader = Shader.Find(ShaderMapReferences.ShaderName);
+                    
+                    if (!AssignTexturesToMaterial(material, TEXTURE_DIRECTORY))
                     {
                         break;
                     }
@@ -42,7 +47,7 @@ namespace Editor.AssetHelper
             }
         }
         
-        private bool AssignTexturesToMaterial(Material material, string objectName, string textureDirectory)
+        private bool AssignTexturesToMaterial(Material material, string textureDirectory)
         {
             string[] files = Directory.GetFiles(textureDirectory);
             
@@ -53,11 +58,11 @@ namespace Editor.AssetHelper
                 return false;
             }
             
-            string metallicPath = Path.Combine(textureDirectory, objectName + "_" + "Metalness.png");
+            string metallicPath = Path.Combine(textureDirectory, material.name + "_" + "Metalness.png");
             
-            string roughnessPath = Path.Combine(textureDirectory, objectName + "_" + "Roughness.png");
+            string roughnessPath = Path.Combine(textureDirectory, material.name + "_" + "Roughness.png");
 
-            string heightPath = Path.Combine(textureDirectory, objectName + "_" + "Height");
+            string heightPath = Path.Combine(textureDirectory, material.name + "_" + "Height");
             
             
             var metallicTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(metallicPath);
@@ -65,13 +70,15 @@ namespace Editor.AssetHelper
             var roughnessTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(roughnessPath);
 
             var heightTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(heightPath);
+
+            if(metallicTexture)
+                material.SetTexture(Shader.PropertyToID(ShaderMapReferences.MetallicMap), metallicTexture);
             
+            if(roughnessTexture)
+                material.SetTexture(Shader.PropertyToID(ShaderMapReferences.RoughnessMap), roughnessTexture);
             
-            material.SetTexture(Shader.PropertyToID(ShaderMapReferences.MetallicMap), metallicTexture);
-            
-            material.SetTexture(Shader.PropertyToID(ShaderMapReferences.RoughnessMap), roughnessTexture);
-            
-            material.SetTexture(Shader.PropertyToID(ShaderMapReferences.HeightMap), heightTexture);
+            if(heightTexture)
+                material.SetTexture(Shader.PropertyToID(ShaderMapReferences.HeightMap), heightTexture);
 
             return true;
         }
