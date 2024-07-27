@@ -6,15 +6,53 @@ using UnityEngine;
 
 namespace Editor.AssetHelper
 {
-    public static class ShaderMapReferences
+    [Serializable]
+    public class ShaderReferences
     {
-        public const string ShaderName = "Autodesk Interactive";
+        public const string SavePath = "Assets/EditorData/Texture Fixer/ShaderReferences.json";
+
+        public string ShaderName;
         
-        public const string MetallicMap = "_MetallicGlossMap";
+        public ShaderMapsData ShaderMaps;
+        
+        public ShaderTexturesData ShaderTextures;
+
+        [Serializable]
+        public class ShaderMapsData
+        {
+            public string[] Names;
+        }
+
+        [Serializable]
+        public class ShaderTexturesData
+        {
+            public string[] Names;
+        }
+
+        public static ShaderReferences Current;
+
+        public static bool SaveToFile()
+        {
+            string json = JsonUtility.ToJson(Current, true);
             
-        public const string RoughnessMap = "_SpecGlossMap";
+            File.WriteAllText(SavePath, json);
+
+            return true;
+        }
+
+        public static bool LoadFromFile()
+        {
+            if (!File.Exists(SavePath))
+            {
+                return false;
+            }
             
-        public const string HeightMap = "_ParallaxMap";
+            string json = File.ReadAllText(SavePath);
+            
+            Current = JsonUtility.FromJson<ShaderReferences>(json);
+            
+            return true;
+        }
     }
     
     public class ImportAssetEditor : AssetPostprocessor
@@ -22,32 +60,60 @@ namespace Editor.AssetHelper
         private const string TEXTURE_DIRECTORY = "Assets/Models/Battle/Bar/Textures/";
 
         private const string MODEL_DIRECTORY = "Assets/Models/Battle/";
+
+        private static bool _isChecking;
+
+        [MenuItem("Tools/Texture Fixer/Toggle Missing Texture Check")]
+        private static void ToggleChecking()
+        {
+            _isChecking = !_isChecking;
+
+            if (_isChecking)
+            {
+                ShaderReferences.LoadFromFile();
+            }
+        }
         
+        [MenuItem("Tools/Texture Fixer/Toggle Missing Texture Check", true)]
+        private static bool ToggleCheckingValidate()
+        {
+            Menu.SetChecked("Tools/Texture Fixer/Toggle Missing Texture Check", _isChecking);
+            
+            return true;
+        }
+
         private void OnPostprocessModel(GameObject model)
         {
+            if (!_isChecking)
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(assetPath) 
                 || !assetPath.EndsWith(".fbx") || !assetPath.Contains(MODEL_DIRECTORY))
             {
                 return;
             }
-            
+
             foreach (var renderer in model.GetComponentsInChildren<Renderer>())
             {
                 var materials = renderer.sharedMaterials;
-                
+
                 foreach (var material in materials)
                 {
-                    material.shader = Shader.Find(ShaderMapReferences.ShaderName);
-                    
+                    material.shader = Shader.Find(ShaderReferences.Current.ShaderName);
+
                     if (!AssignTexturesToMaterial(material, TEXTURE_DIRECTORY))
                     {
                         break;
                     }
                 }
             }
+
+            _isChecking = false;
         }
         
-        private bool AssignTexturesToMaterial(Material material, string textureDirectory)
+        private static bool AssignTexturesToMaterial(Material material, string textureDirectory)
         {
             string[] files = Directory.GetFiles(textureDirectory);
             
@@ -57,29 +123,22 @@ namespace Editor.AssetHelper
             {
                 return false;
             }
-            
-            string metallicPath = Path.Combine(textureDirectory, material.name + "_" + "Metalness.png");
-            
-            string roughnessPath = Path.Combine(textureDirectory, material.name + "_" + "Roughness.png");
 
-            string heightPath = Path.Combine(textureDirectory, material.name + "_" + "Height");
-            
-            
-            var metallicTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(metallicPath);
-            
-            var roughnessTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(roughnessPath);
+            for (var i = 0; i < ShaderReferences.Current.ShaderMaps.Names.Length; i++)
+            {
+                string pathToTexture = Path.Combine(textureDirectory,
+                    material.name + "_" + ShaderReferences.Current.ShaderTextures.Names[i]);
 
-            var heightTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(heightPath);
-
-            if(metallicTexture)
-                material.SetTexture(Shader.PropertyToID(ShaderMapReferences.MetallicMap), metallicTexture);
+                var loadedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(pathToTexture);
+                
+                if (!loadedTexture)
+                {
+                    continue;
+                }
+                
+                material.SetTexture(Shader.PropertyToID(ShaderReferences.Current.ShaderMaps.Names[i]), loadedTexture);
+            }
             
-            if(roughnessTexture)
-                material.SetTexture(Shader.PropertyToID(ShaderMapReferences.RoughnessMap), roughnessTexture);
-            
-            if(heightTexture)
-                material.SetTexture(Shader.PropertyToID(ShaderMapReferences.HeightMap), heightTexture);
-
             return true;
         }
     }

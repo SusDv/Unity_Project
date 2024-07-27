@@ -1,0 +1,17 @@
+{
+    "ShaderName": "Autodesk Interactive",
+    "ShaderMaps": {
+        "Names": [
+            "_MetallicGlossMap",
+            "_SpecGlossMap",
+            "_ParallaxMap"
+        ]
+    },
+    "ShaderTextures": {
+        "Names": [
+            "Metalness.png",
+            "Roughness.png",
+            "Height.png"
+        ]
+    }
+}
