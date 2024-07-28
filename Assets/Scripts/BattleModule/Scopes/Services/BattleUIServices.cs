@@ -9,6 +9,7 @@ namespace BattleModule.Scopes.Services
 {
     public class BattleUIServices : MonoBehaviour
     {
+        [SerializeField] private BattleCameraHelper _battleCameraHelper;
         [SerializeField] private BattleUIHelper _battleUIHelper;
         [SerializeField] private UILoadingScreen _uiLoadingScreen;
         
@@ -25,6 +26,7 @@ namespace BattleModule.Scopes.Services
             
         public void Configure(IContainerBuilder builder)
         {
+            builder.RegisterComponent(_battleCameraHelper);
             builder.RegisterComponent(_battleUIHelper);
             builder.RegisterComponent(_uiLoadingScreen);
             

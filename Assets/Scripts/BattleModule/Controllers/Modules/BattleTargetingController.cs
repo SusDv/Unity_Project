@@ -106,7 +106,7 @@ namespace BattleModule.Controllers.Modules
         
         private void SetTargetingData(BattleActionContext context)
         {
-            SetPossibleTargets(context.CharacterInTurnType,
+            SetPossibleTargets(context.CharacterInAction.GetType(),
                 context.BattleObject.TargetType);
             
             _battleTargetingProcessor.SetTargetingData(

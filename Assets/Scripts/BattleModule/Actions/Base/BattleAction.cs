@@ -22,13 +22,13 @@ namespace BattleModule.Actions.Base
         protected abstract string ActionAnimationName { get; }
 
         public BattleActionContext Init(object actionObject, 
-            Character character)
+            Character characterInAction)
         {
-            _battleActionContext = new BattleActionContext(actionObject, character.GetType());
+            _battleActionContext = new BattleActionContext(actionObject, characterInAction);
 
             _actionObject = (actionObject as IActionProvider)?.GetAction();
 
-            _battleDamage = GetDamageCalculator(character.Stats);
+            _battleDamage = GetDamageCalculator(characterInAction.Stats);
 
             return _battleActionContext;
         }

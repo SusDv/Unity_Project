@@ -1,5 +1,5 @@
-﻿using System;
-using BattleModule.Actions.Interfaces;
+﻿using BattleModule.Actions.Interfaces;
+using CharacterModule.Types.Base;
 using Utility.Information;
 
 namespace BattleModule.Actions.Context
@@ -7,16 +7,16 @@ namespace BattleModule.Actions.Context
     public class BattleActionContext
     {
         public BattleActionContext(object actionObject, 
-            Type currentCharacterType)
+            Character characterInAction)
         {
-            CharacterInTurnType = currentCharacterType;
+            CharacterInAction = characterInAction;
             
             ObjectInformation = (actionObject as IObjectInformation)?.ObjectInformation;
 
             BattleObject = actionObject as IBattleObject;
         }
 
-        public Type CharacterInTurnType { get; }
+        public Character CharacterInAction { get; }
 
         public ObjectInformation ObjectInformation { get; }
         

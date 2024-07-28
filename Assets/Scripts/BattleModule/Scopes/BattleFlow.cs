@@ -113,10 +113,10 @@ namespace BattleModule.Scopes
 
             await _assetProvider.Load();
             
-            await _loadingService.BeginLoading(_battleCamera);
             await _loadingService.BeginLoading(_battleInput);
             await _loadingService.BeginLoading(_battleTimerController);
             await _loadingService.BeginLoading(_battleSpawner);
+            await _loadingService.BeginLoading(_battleCamera, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleCancelableController);
             await _loadingService.BeginLoading(_battleTurnController, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleTargetingController, _battleSpawner.GetSpawnedCharacters());
