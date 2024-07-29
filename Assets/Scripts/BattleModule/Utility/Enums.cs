@@ -6,6 +6,14 @@
         ENEMY
     }
 
+    public enum ActionType
+    {
+        ITEM,
+        SPELL,
+        DEFAULT,
+        SPECIAL
+    }
+
     public enum TargetSearchType 
     {
         MULTIPLE_TARGET,

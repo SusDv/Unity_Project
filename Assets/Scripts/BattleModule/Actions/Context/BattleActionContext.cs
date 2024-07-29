@@ -1,4 +1,5 @@
 ﻿using BattleModule.Actions.Interfaces;
+using BattleModule.Utility;
 using CharacterModule.Types.Base;
 using Utility.Information;
 
@@ -6,17 +7,16 @@ namespace BattleModule.Actions.Context
 {
     public class BattleActionContext
     {
-        public BattleActionContext(object actionObject, 
-            Character characterInAction)
+        public BattleActionContext(object actionObject, ActionType actionType)
         {
-            CharacterInAction = characterInAction;
-            
             ObjectInformation = (actionObject as IObjectInformation)?.ObjectInformation;
 
             BattleObject = actionObject as IBattleObject;
-        }
 
-        public Character CharacterInAction { get; }
+            ActionType = actionType;
+        }
+        
+        public ActionType ActionType { get; }
 
         public ObjectInformation ObjectInformation { get; }
         

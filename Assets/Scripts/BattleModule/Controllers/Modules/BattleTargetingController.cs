@@ -29,6 +29,8 @@ namespace BattleModule.Controllers.Modules
         private List<Character> _possibleTargets;
         
         private List<Character> _charactersOnScene;
+
+        private Type _currentCharacterInActionType;
         
 
         private int _mainTargetIndex = -1;
@@ -39,6 +41,8 @@ namespace BattleModule.Controllers.Modules
             BattleActionController battleActionController)
         {
             _battleCancelableController = battleCancelableController;
+
+            _battleTurnController = battleTurnController;
 
             _battleActionController = battleActionController;
         }
@@ -96,6 +100,8 @@ namespace BattleModule.Controllers.Modules
             _charactersOnScene = characters;
             
             _battleActionController.OnBattleActionChanged += SetTargetingData;
+
+            _battleTurnController.OnCharactersInTurnChanged += (c) => _currentCharacterInActionType = c.GetType(); 
             
             _battleCancelableController.AppendCancelable(this);
             
@@ -106,8 +112,7 @@ namespace BattleModule.Controllers.Modules
         
         private void SetTargetingData(BattleActionContext context)
         {
-            SetPossibleTargets(context.CharacterInAction.GetType(),
-                context.BattleObject.TargetType);
+            SetPossibleTargets(context.BattleObject.TargetType);
             
             _battleTargetingProcessor.SetTargetingData(
                 context.BattleObject.TargetSearchType, 
@@ -128,9 +133,9 @@ namespace BattleModule.Controllers.Modules
                 selectedCharacterType == characterType : selectedCharacterType != characterType;
         }
 
-        private void SetPossibleTargets(Type characterType, TargetType targetType)
+        private void SetPossibleTargets(TargetType targetType)
         {
-            _possibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(characterType, targetType).Invoke(character.GetType())).ToList();
+            _possibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(_currentCharacterInActionType, targetType).Invoke(character.GetType())).ToList();
 
             _mainTargetIndex = _mainTargetIndex == -1 ? _possibleTargets.Count / 2 : _mainTargetIndex;
         }

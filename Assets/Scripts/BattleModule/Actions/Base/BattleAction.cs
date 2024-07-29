@@ -3,6 +3,7 @@ using BattleModule.Actions.Context;
 using BattleModule.Actions.Interfaces;
 using BattleModule.Actions.Outcome;
 using BattleModule.Controllers.Modules;
+using BattleModule.Utility;
 using BattleModule.Utility.DamageCalculator;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Types.Base;
@@ -21,10 +22,12 @@ namespace BattleModule.Actions.Base
 
         protected abstract string ActionAnimationName { get; }
 
+        protected abstract ActionType ActionType { get; }
+
         public BattleActionContext Init(object actionObject, 
             Character characterInAction)
         {
-            _battleActionContext = new BattleActionContext(actionObject, characterInAction);
+            _battleActionContext = new BattleActionContext(actionObject, ActionType);
 
             _actionObject = (actionObject as IActionProvider)?.GetAction();
 

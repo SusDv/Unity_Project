@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using BattleModule.Actions.Context;
 using BattleModule.Input;
 using BattleModule.Utility;
-using CharacterModule.Types;
 using CharacterModule.Types.Base;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
@@ -15,28 +11,16 @@ using VContainer;
 
 namespace BattleModule.Controllers.Modules 
 {
-    public class BattleCamera : ILoadingUnit<List<Character>>
+    public class BattleCamera : ILoadingUnit
     {
         private readonly BattleCameraHelper _battleCameraHelper;
 
         private readonly BattleActionController _battleActionController;
 
-        private readonly BattleTargetingController _battleTargetingController;
-
         private readonly BattleInput _battleInput;
 
-        private CancellationTokenSource _cancellationTokenSource;
-
-        private Vector3 _initialCameraPosition;
+        private CinemachineVirtualCamera _currentCamera, _previousCamera;
         
-        private float _initialCameraOrbitRotation;
-
-        private List<Character> _charactersOnScene;
-
-        private Vector3 _centerPosition;
-
-        private const float ROTATION_OFFSET = -2.671f;
-
         [Inject]
         public BattleCamera(BattleCameraHelper battleCameraHelper,
             BattleActionController battleActionController,
@@ -46,63 +30,36 @@ namespace BattleModule.Controllers.Modules
             _battleCameraHelper = battleCameraHelper;
 
             _battleActionController = battleActionController;
-
-            _battleTargetingController = battleTargetingController;
             
             _battleInput = battleInput;
         }
-
-        private void OnBattleActionChanged(BattleActionContext battleActionContext)
+        
+        private void OnBattleActionChanged(BattleActionContext context)
         {
-            _initialCameraPosition = _battleCameraHelper.Cameras[BattleCameraHelper.CameraType.PLAYER_DEFAULT_ACTION]
-                .transform.position;
-        }
+            _previousCamera.gameObject.SetActive(false);
 
-        private void OnTargetsChanged(List<Character> targets)
-        {
-            var cameraTransform = _battleCameraHelper.Cameras[BattleCameraHelper.CameraType.PLAYER_DEFAULT_ACTION].transform;
+            _previousCamera = _currentCamera;
+
+            if (!_battleCameraHelper.BattleCameras.TryGetValue(context.ActionType, out var newCamera))
+            {
+                return; 
+            }
+
+            _currentCamera = newCamera;
             
-            var targetTransform = targets[targets.Count / 2].transform;
-
-            SmoothRotateTowardsAsync(cameraTransform, targetTransform);
+            _currentCamera.gameObject.SetActive(true);
         }
         
-        private void SmoothRotateTowardsAsync(Transform cameraTransform, Transform targetTransform)
-        {
-            var targetRotation = CalculateTargetRotation(cameraTransform);
-
-            targetRotation.eulerAngles = new Vector3(targetRotation.eulerAngles.x,
-                targetRotation.eulerAngles.y + ROTATION_OFFSET, targetRotation.eulerAngles.z);
-                
-            cameraTransform.rotation = targetRotation;
-        }
-
-        private Quaternion CalculateTargetRotation(Component cameraTransform)
-        {
-            var difference =  -_initialCameraPosition + _centerPosition;
-            
-            var targetRotation = Quaternion.LookRotation(difference);
-            
-            var eulerAngles = cameraTransform.transform.eulerAngles;
-            
-            targetRotation = Quaternion.Euler(eulerAngles.x, targetRotation.eulerAngles.y, eulerAngles.z);
-            
-            return targetRotation;
-        }
-
-        public UniTask Load(List<Character> characters)
+        public UniTask Load()
         {
             _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
 
-            _battleTargetingController.OnTargetsChanged += OnTargetsChanged;
-
-            var enemyCharacters = characters.Where(c => c is Enemy).ToList();
-            
-            _centerPosition = (enemyCharacters[0].transform.position + enemyCharacters[^1].transform.position) * 0.5f;
+            _currentCamera = _previousCamera = _battleCameraHelper.BattleCameras[ActionType.DEFAULT];
             
             return UniTask.CompletedTask;
         }
         
+
         [CanBeNull]
         public Character GetCharacterWithRaycast()
         {
