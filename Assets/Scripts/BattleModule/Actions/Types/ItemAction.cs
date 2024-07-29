@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.Base;
 using BattleModule.Utility;
@@ -14,9 +15,9 @@ namespace BattleModule.Actions.Types
 
         protected override ActionType ActionType => ActionType.ITEM;
         
-        protected override async UniTask<bool> PlayActionAnimation(Character source, IEnumerable<Character> targets)
+        protected override async UniTask<bool> PlayActionAnimation(Character source, IEnumerable<Character> targets, Action triggerCallback)
         {
-            return await targets.First().AnimationManager.PlayAnimation(ActionAnimationName);
+            return await targets.First().AnimationManager.PlayAnimation(ActionAnimationName, 0.5f, triggerCallback);
         }
     }
 }

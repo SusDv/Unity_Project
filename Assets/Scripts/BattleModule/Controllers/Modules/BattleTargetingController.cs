@@ -31,7 +31,6 @@ namespace BattleModule.Controllers.Modules
         private List<Character> _charactersOnScene;
 
         private Type _currentCharacterInActionType;
-        
 
         private int _mainTargetIndex = -1;
         

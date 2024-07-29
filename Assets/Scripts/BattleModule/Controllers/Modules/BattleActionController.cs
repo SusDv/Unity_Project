@@ -48,7 +48,7 @@ namespace BattleModule.Controllers.Modules
             _currentBattleAction = Activator.CreateInstance<T>();
 
             OnBattleActionChanged?.Invoke(
-                _currentBattleAction.Init(actionObject, _characterToHaveTurn));
+                _currentBattleAction.Init(actionObject, _characterToHaveTurn.Stats));
         }
 
         public async UniTask ExecuteBattleAction(List<Character> targets)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BattleModule.Actions.Context;
 using BattleModule.Actions.Interfaces;
 using BattleModule.Actions.Outcome;
@@ -25,13 +26,13 @@ namespace BattleModule.Actions.Base
         protected abstract ActionType ActionType { get; }
 
         public BattleActionContext Init(object actionObject, 
-            Character characterInAction)
+            StatsController statsController)
         {
             _battleActionContext = new BattleActionContext(actionObject, ActionType);
 
             _actionObject = (actionObject as IActionProvider)?.GetAction();
 
-            _battleDamage = GetDamageCalculator(characterInAction.Stats);
+            _battleDamage = GetDamageCalculator(statsController);
 
             return _battleActionContext;
         }
@@ -66,21 +67,20 @@ namespace BattleModule.Actions.Base
         {
             var attackResults = battleOutcomeController.CalculateActiveTransformers(targets);
 
-            bool animationStatus = await PlayActionAnimation(source, targets);
-
-            if (animationStatus)
+            bool animationStatus = await PlayActionAnimation(source, targets, () =>
             {
                 AttackTargets(targets, attackResults, battleOutcomeController);
             
                 EndAction(source);
-            }
+            });
             
             return (animationStatus, attackResults);
         }
         
-        protected virtual async UniTask<bool> PlayActionAnimation(Character source, IEnumerable<Character> targets)
+        protected virtual async UniTask<bool> PlayActionAnimation(Character source, 
+            IEnumerable<Character> targets, Action triggerCallback)
         {
-            return await source.AnimationManager.PlayAnimation(ActionAnimationName);
+            return await source.AnimationManager.PlayAnimation(ActionAnimationName, 0.5f, triggerCallback);
         }
 
         protected virtual BattleDamage GetDamageCalculator(StatsController statsController)

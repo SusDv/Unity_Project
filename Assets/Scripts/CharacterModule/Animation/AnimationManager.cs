@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace CharacterModule.Animation
         }
 
         public async UniTask<bool> PlayAnimation(string animationName, 
-            float triggerPercentage = 0.5f)
+            float triggerPercentage = 0.5f, Action triggerCallback = null)
         {
             try
             {
@@ -31,8 +32,23 @@ namespace CharacterModule.Animation
 
                 var animatorStateInfo = _characterAnimator.GetCurrentAnimatorStateInfo(0);
 
-                while (_characterAnimator != null && !animatorStateInfo.IsName(animationName) ||
-                       animatorStateInfo.normalizedTime < triggerPercentage)
+                // Wait until the animation reaches the trigger percentage
+                while (_characterAnimator != null && (!animatorStateInfo.IsName(animationName) ||
+                                                      animatorStateInfo.normalizedTime < triggerPercentage))
+                {
+                    await UniTask.Yield();
+
+                    _cancellationToken.ThrowIfCancellationRequested();
+
+                    animatorStateInfo = _characterAnimator.GetCurrentAnimatorStateInfo(0);
+                }
+
+                // Invoke the callback
+                triggerCallback?.Invoke();
+
+                // Wait until the animation finishes
+                while (_characterAnimator != null && animatorStateInfo.IsName(animationName) &&
+                       animatorStateInfo.normalizedTime < 1.0f)
                 {
                     await UniTask.Yield();
 

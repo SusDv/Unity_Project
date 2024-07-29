@@ -1,6 +1,5 @@
 ﻿using BattleModule.Actions.Interfaces;
 using BattleModule.Utility;
-using CharacterModule.Types.Base;
 using Utility.Information;
 
 namespace BattleModule.Actions.Context
