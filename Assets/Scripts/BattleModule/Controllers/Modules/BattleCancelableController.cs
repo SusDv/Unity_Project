@@ -20,26 +20,49 @@ namespace BattleModule.Controllers.Modules
 
         private List<IBattleCancelable> _cancelableList = new();
         
-        private void HandleCancelAction()
+
+        private void CancelAction()
         {
-            for (int i = _cancelableList.Count - 1; i >= 0; i--)
+            for (var i = _cancelableList.Count - 1; i >= 0; i--)
             {
-                if (!_cancelableList[i].Cancel())
+                if (!_cancelableList[i].TryCancel())
                 {
-                    break;
+                    continue;
                 }
+
+                TryRemoveCancelable(_cancelableList[i]);
+
+                break;
             }
+        }
+
+        private bool TryRemoveCancelable(IBattleCancelable battleCancelable)
+        {
+            if (_cancelableList.IndexOf(battleCancelable) == 0
+                || !_cancelableList.Contains(battleCancelable))
+            {
+                return false;
+            }
+            
+            _cancelableList.Remove(battleCancelable);
+
+            return true;
         }
 
         public UniTask Load()
         {
-            _battleInput.OnCancelButtonPressed += HandleCancelAction;
+            _battleInput.OnCancelButtonPressed += CancelAction;
             
             return UniTask.CompletedTask;
         }
 
-        public void AppendCancelable(IBattleCancelable battleCancelable)
+        public void TryAppendCancelable(IBattleCancelable battleCancelable)
         {
+            if (TryRemoveCancelable(battleCancelable))
+            {
+                return;
+            }
+
             _cancelableList.Add(battleCancelable);
         }
         

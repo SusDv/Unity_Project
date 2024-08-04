@@ -19,7 +19,7 @@ namespace BattleModule.Controllers.Modules
 
         private readonly BattleInput _battleInput;
 
-        private CinemachineVirtualCamera _currentCamera, _previousCamera;
+        private CinemachineVirtualCamera _currentCamera;
         
         [Inject]
         public BattleCamera(BattleCameraHelper battleCameraHelper,
@@ -36,9 +36,7 @@ namespace BattleModule.Controllers.Modules
         
         private void OnBattleActionChanged(BattleActionContext context)
         {
-            _previousCamera.gameObject.SetActive(false);
-
-            _previousCamera = _currentCamera;
+            _currentCamera.gameObject.SetActive(false);
 
             if (!_battleCameraHelper.BattleCameras.TryGetValue(context.ActionType, out var newCamera))
             {
@@ -54,7 +52,7 @@ namespace BattleModule.Controllers.Modules
         {
             _battleActionController.OnBattleActionChanged += OnBattleActionChanged;
 
-            _currentCamera = _previousCamera = _battleCameraHelper.BattleCameras[ActionType.DEFAULT];
+            _currentCamera = _battleCameraHelper.BattleCameras[ActionType.DEFAULT];
             
             return UniTask.CompletedTask;
         }
@@ -65,7 +63,7 @@ namespace BattleModule.Controllers.Modules
         {
             var mouseRaycast = _battleCameraHelper.MainCamera.ScreenPointToRay(_battleInput.MousePosition);
 
-            if (!Physics.Raycast(mouseRaycast, out var hit, 1000f, LayerMask.GetMask("Character")))
+            if (!Physics.Raycast(mouseRaycast, out var hit, 1000f, LayerMask.GetMask("Enemy")))
             {
                 return null;
             }

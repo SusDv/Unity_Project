@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.Base;
 using BattleModule.Actions.Context;
+using BattleModule.Actions.Interfaces;
 using BattleModule.Actions.Outcome;
 using BattleModule.Actions.Types;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility.Interfaces;
+using CharacterModule.Animation;
+using CharacterModule.Stats.Managers;
 using CharacterModule.Types.Base;
+using CharacterModule.WeaponSpecial.Interfaces;
 using Cysharp.Threading.Tasks;
 using Utility;
 using VContainer;
@@ -24,8 +28,10 @@ namespace BattleModule.Controllers.Modules
         
         private BattleAction _currentBattleAction;
 
-        private Character _characterToHaveTurn;
-        
+        private ActionData _actionData;
+
+        public event Action OnBattleActionStarted = delegate { };
+
         public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
 
         public event Action<List<Character>, IReadOnlyList<BattleActionOutcome>> OnBattleActionFinished = delegate { };
@@ -41,20 +47,21 @@ namespace BattleModule.Controllers.Modules
             
             _battleOutcomeController = battleOutcomeController;
         }
-        
+
         public void SetBattleAction<T>(object actionObject)
             where T : BattleAction
         {
             _currentBattleAction = Activator.CreateInstance<T>();
 
             OnBattleActionChanged?.Invoke(
-                _currentBattleAction.Init(actionObject, _characterToHaveTurn.Stats));
+                _currentBattleAction.Init(actionObject, _actionData));
         }
 
         public async UniTask ExecuteBattleAction(List<Character> targets)
         {
-            var operation = await _currentBattleAction.PerformAction(_characterToHaveTurn, 
-                targets, _battleOutcomeController);
+            OnBattleActionStarted?.Invoke();
+            
+            var operation = await _currentBattleAction.PerformAction(targets, _battleOutcomeController);
             
             if (!operation.status)
             {
@@ -64,11 +71,11 @@ namespace BattleModule.Controllers.Modules
             OnBattleActionFinished?.Invoke(targets, operation.result);
         }
 
-        public bool Cancel()
+        public bool TryCancel()
         {
             if (_currentBattleAction is DefaultAction)
             {
-                return true;
+                return false;
             }
             
             SetDefaultBattleAction();
@@ -87,12 +94,38 @@ namespace BattleModule.Controllers.Modules
         
         public void SetDefaultBattleAction() 
         {
-            SetBattleAction<DefaultAction>(_characterToHaveTurn.EquipmentController.WeaponController.GetWeapon());
+            SetBattleAction<DefaultAction>(_actionData.DefaultBattleObject);
         }
 
-        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext) 
+        private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            _characterToHaveTurn = battleTurnContext.CharactersInTurn.First();
+            var characterInTurn = battleTurnContext.CharactersInTurn.First();
+            
+            _actionData = new ActionData()
+            {
+                CharacterType = characterInTurn.GetType(),
+                
+                DefaultBattleObject = characterInTurn.EquipmentController.WeaponController.GetWeapon(),
+                
+                SpecialAttack = characterInTurn.EquipmentController.WeaponController.GetSpecialAttack(),
+                
+                StatsController = characterInTurn.Stats,
+                
+                AnimationManager = characterInTurn.AnimationManager
+            };
+        }
+
+        public struct ActionData
+        {
+            public Type CharacterType;
+            
+            public IBattleObject DefaultBattleObject;
+
+            public ISpecialAttack SpecialAttack;
+
+            public StatsController StatsController;
+
+            public AnimationManager AnimationManager;
         }
     }
 }

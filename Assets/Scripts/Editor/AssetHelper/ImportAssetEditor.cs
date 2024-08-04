@@ -47,7 +47,7 @@ namespace Editor.AssetHelper
                 return false;
             }
             
-            string json = File.ReadAllText(SavePath);
+            var json = File.ReadAllText(SavePath);
             
             Current = JsonUtility.FromJson<ShaderReferences>(json);
             
@@ -57,9 +57,9 @@ namespace Editor.AssetHelper
     
     public class ImportAssetEditor : AssetPostprocessor
     {
-        private const string TEXTURE_DIRECTORY = "Assets/Models/Battle/Bar/Textures/";
+        private const string TextureDirectory = "Assets/Models/Battle/Bar/Textures/";
 
-        private const string MODEL_DIRECTORY = "Assets/Models/Battle/";
+        private const string ModelDirectory = "Assets/Models/Battle/";
 
         private static bool _isChecking;
 
@@ -90,7 +90,7 @@ namespace Editor.AssetHelper
             }
 
             if (string.IsNullOrEmpty(assetPath) 
-                || !assetPath.EndsWith(".fbx") || !assetPath.Contains(MODEL_DIRECTORY))
+                || !assetPath.EndsWith(".fbx") || !assetPath.Contains(ModelDirectory))
             {
                 return;
             }
@@ -103,7 +103,7 @@ namespace Editor.AssetHelper
                 {
                     material.shader = Shader.Find(ShaderReferences.Current.ShaderName);
 
-                    if (!AssignTexturesToMaterial(material, TEXTURE_DIRECTORY))
+                    if (!AssignTexturesToMaterial(material, TextureDirectory))
                     {
                         break;
                     }

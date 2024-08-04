@@ -40,6 +40,8 @@ namespace BattleModule.Scopes.Services
             builder.RegisterComponent(_battleUITargeting);
             builder.RegisterComponent(_battleUITurn);
             builder.RegisterComponent(_battleUIOutcome);
+
+            builder.Register<BattleUIController>(Lifetime.Scoped);
         }
     }
 }

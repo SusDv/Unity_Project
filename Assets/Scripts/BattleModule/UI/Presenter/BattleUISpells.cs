@@ -5,7 +5,8 @@ using BattleModule.UI.View;
 using BattleModule.Controllers.Modules;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.UI.Presenter.SceneReferences.Spells;
-using CharacterModule.Types.Base;
+using BattleModule.Utility.Interfaces;
+using CharacterModule.Spells.Core;
 using Cysharp.Threading.Tasks;
 using Utility;
 using Utility.Constants;
@@ -14,7 +15,7 @@ using VContainer;
 
 namespace BattleModule.UI.Presenter
 {
-    public class BattleUISpells : MonoBehaviour, ILoadingUnit
+    public class BattleUISpells : MonoBehaviour, ILoadingUnit, IUIElement, IBattleCancelable
     {
         [SerializeField]
         private BattleSpellsSceneReference _battleSpellsSceneReference;
@@ -22,6 +23,10 @@ namespace BattleModule.UI.Presenter
         private BattleTurnController _battleTurnController;
         
         private BattleActionController _battleActionController;
+
+        private BattleUIController _battleUIController;
+
+        private BattleCancelableController _battleCancelableController;
         
         private AssetProvider _assetProvider;
         
@@ -29,41 +34,58 @@ namespace BattleModule.UI.Presenter
         
         private BattleUISpellView _battleUISpellView;
         
-        private Character _characterInAction;
+        private List<SpellBase> _currentSpells;
 
         [Inject]
         private void Init(AssetProvider assetProvider,
             BattleActionController battleActionController,
-            BattleTurnController battleTurnController)
+            BattleUIController battleUIController,
+            BattleTurnController battleTurnController,
+            BattleCancelableController battleCancelableController)
         {
             _assetProvider = assetProvider;
             
             _battleActionController = battleActionController;
 
             _battleTurnController = battleTurnController;
+
+            _battleUIController = battleUIController;
+
+            _battleCancelableController = battleCancelableController;
         }
 
         public UniTask Load()
         {
             _battleUISpellView = _assetProvider.GetAssetByName<BattleUISpellView>(RuntimeConstants.AssetsName.SpellView);
             
-            _battleSpellsSceneReference.BattleSpellsMenuButton.OnButtonClick += OnSpellsButtonClick;
+            _battleSpellsSceneReference.BattleSpellsMenuButton.OnButtonClick += SpellsButtonClick;
 
             _battleTurnController.OnCharactersInTurnChanged += OnCharactersInTurnChanged;
 
+            _battleUIController.AddAsUIElement(this);
+            
             return UniTask.CompletedTask;
+        }
+
+        public void ToggleVisibility()
+        {
+            _battleSpellsSceneReference.BattleSpellsMenuButton.ToggleVisibility();
+            
+            _battleSpellsSceneReference.BattleUISpellsPanel.SetActive(false);
         }
 
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
-            _characterInAction = battleTurnContext.CharactersInTurn.First();
+            _currentSpells = battleTurnContext.CharactersInTurn.First().SpellsController.GetSpells();
 
             DisplayCharacterSpells();
         }
 
-        private void OnSpellsButtonClick()
+        private void SpellsButtonClick()
         {
             _battleSpellsSceneReference.BattleUISpellsPanel.SetActive(!_battleSpellsSceneReference.BattleUISpellsPanel.activeSelf);
+
+            _battleCancelableController.TryAppendCancelable(this);
         }
 
         private void BattleSpellsClear()
@@ -80,7 +102,7 @@ namespace BattleModule.UI.Presenter
         {
             BattleSpellsClear();
 
-            foreach (var spell in _characterInAction.SpellsController.GetSpells()) 
+            foreach (var spell in _currentSpells) 
             {
                 var battleUISpellView = Instantiate(_battleUISpellView,
                     _battleSpellsSceneReference.BattleUISpellsParent.transform.position,
@@ -97,9 +119,30 @@ namespace BattleModule.UI.Presenter
 
         private void OnSpellClick(BattleUISpellView clickedSpell) 
         {
-            var selectedSpell = _characterInAction.SpellsController.GetSpells()[_battleUISpells.IndexOf(clickedSpell)];
+            SetupBattleAction(clickedSpell);
 
-            _battleActionController.SetBattleAction<SpellAction>(selectedSpell);
+            SpellsButtonClick();
+        }
+
+        private void SetupBattleAction(BattleUISpellView clickedSpell)
+        {
+            _battleActionController.SetBattleAction<SpellAction>(GetSelectedSpell(clickedSpell));
+        }
+
+        private SpellBase GetSelectedSpell(BattleUISpellView clickedSpell)
+        {
+            return _currentSpells[_battleUISpells.IndexOf(clickedSpell)];
+        }
+
+        public bool TryCancel()
+        {
+            if (!_battleSpellsSceneReference.BattleUISpellsPanel.activeSelf)
+            {
+                return false;
+            }
+            _battleSpellsSceneReference.BattleUISpellsPanel.SetActive(false);
+            
+            return true;
         }
     }
 }

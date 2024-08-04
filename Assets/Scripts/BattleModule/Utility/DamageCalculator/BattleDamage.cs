@@ -1,17 +1,18 @@
-﻿using CharacterModule.Stats.Managers;
+﻿using System.Collections.Generic;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 
 namespace BattleModule.Utility.DamageCalculator
 {
     public abstract class BattleDamage
     {
-        protected readonly StatsController SourceStats;
+        protected readonly Dictionary<StatType, StatInfo> SourceStats;
 
         protected float DamageSource;
         
-        protected BattleDamage(StatsController source)
+        protected BattleDamage(Dictionary<StatType, StatInfo> sourceStats)
         {
-            SourceStats = source;
+            SourceStats = sourceStats;
         }
 
         public void SetDamageSource(float damage)
@@ -19,34 +20,34 @@ namespace BattleModule.Utility.DamageCalculator
             DamageSource = damage;
         }
 
-        public abstract float CalculateAttackDamage(StatsController target, float multiplier);
+        public abstract float CalculateAttackDamage(Dictionary<StatType, StatInfo> targetStats, float multiplier);
     }
 
     public class PhysicalDamage : BattleDamage
     {
-        public PhysicalDamage(StatsController source)
-            : base(source)
+        public PhysicalDamage(Dictionary<StatType, StatInfo> sourceStats)
+            : base(sourceStats)
         {
-            DamageSource = SourceStats.GetStatInfo(StatType.ATTACK).FinalValue;
+            DamageSource = SourceStats[StatType.ATTACK].FinalValue;
         }
         
-        public override float CalculateAttackDamage(StatsController target, float multiplier)
+        public override float CalculateAttackDamage(Dictionary<StatType, StatInfo> targetStats, float multiplier)
         {
-            return -DamageSource * multiplier * (100f / (100f + target.GetStatInfo(StatType.DEFENSE).FinalValue));
+            return -DamageSource * multiplier * (100f / (100f + targetStats[StatType.DEFENSE].FinalValue));
         }
     }
 
     public class MagicDamage : BattleDamage
     {
-        public MagicDamage(StatsController source)
-            : base(source)
+        public MagicDamage(Dictionary<StatType, StatInfo> sourceStats)
+            : base(sourceStats)
         {
-            DamageSource = SourceStats.GetStatInfo(StatType.MAGIC_ATTACK).FinalValue;
+            DamageSource = SourceStats[StatType.MAGIC_ATTACK].FinalValue;
         }
         
-        public override float CalculateAttackDamage(StatsController target, float multiplier)
+        public override float CalculateAttackDamage(Dictionary<StatType, StatInfo> targetStats, float multiplier)
         {
-            return -DamageSource * multiplier * (100f / (100f + target.GetStatInfo(StatType.MAGIC_DEFENSE).FinalValue));
+            return -DamageSource * multiplier * (100f / (100f + targetStats[StatType.MAGIC_DEFENSE].FinalValue));
         }
     }
 }

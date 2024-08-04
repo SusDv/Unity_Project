@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using BattleModule.Actions.Types;
-using CharacterModule.Inventory;
 using CharacterModule.Inventory.Items.Base;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.Presenter.SceneReferences.Inventory;
 using BattleModule.UI.View;
 using BattleModule.Utility;
+using BattleModule.Utility.Interfaces;
 using Cysharp.Threading.Tasks;
 using Utility;
 using Utility.Constants;
@@ -14,7 +14,8 @@ using UnityEngine;
 
 namespace BattleModule.UI.Presenter 
 {
-    public class BattleUIInventory : MonoBehaviour, ILoadingUnit
+    public class BattleUIInventory : MonoBehaviour, ILoadingUnit, 
+        IUIElement, IBattleCancelable
     {
         [SerializeField]
         private BattleInventorySceneReference _battleInventorySceneReference;
@@ -23,22 +24,27 @@ namespace BattleModule.UI.Presenter
         
         private BattleActionController _battleActionController;
 
+        private BattleUIController _battleUIController;
+
         private BattleUIItemDescription _battleUIItemDescription;
         
         private BattleTransitionData _battleTransitionData;
 
-        private InventoryBase _battleInventory;
+        private BattleCancelableController _battleCancelableController;
         
         
         private List<BattleUIItemView> _battleUIItems = new ();
         
         private BattleUIItemView _battleUIItemView;
 
+        
         [Inject]
         private void Init(AssetProvider assetProvider,
             BattleUIItemDescription battleUIItemDescription,
             BattleActionController battleActionController,
-            BattleTransitionData battleTransitionData)
+            BattleTransitionData battleTransitionData,
+            BattleUIController battleUIController,
+            BattleCancelableController battleCancelableController)
         {
             _assetProvider = assetProvider;
             
@@ -47,6 +53,10 @@ namespace BattleModule.UI.Presenter
             _battleActionController = battleActionController;
             
             _battleTransitionData = battleTransitionData;
+
+            _battleUIController = battleUIController;
+
+            _battleCancelableController = battleCancelableController;
         }
 
         public UniTask Load()
@@ -54,26 +64,26 @@ namespace BattleModule.UI.Presenter
             _battleUIItemView = _assetProvider.GetAssetByName<BattleUIItemView>(RuntimeConstants.AssetsName.ItemView);
 
             _battleInventorySceneReference.BattleInventoryButton.OnButtonClick += BattleInventoryButtonClicked;
-
-            _battleInventory = _battleTransitionData.PlayerInventory;
             
-            _battleTransitionData.PlayerInventory.OnInventoryChanged += OnInventoryChanged;
-
+            _battleTransitionData.PlayerInventory.OnInventoryChanged += UpdateBattleInventory;
+            
+            _battleUIController.AddAsUIElement(this);
+            
             UpdateBattleInventory();
 
             return UniTask.CompletedTask;
         }
 
-        private void OnInventoryChanged(InventoryBase playerInventory)
+        public void ToggleVisibility()
         {
-            UpdateBattleInventory();
+            _battleInventorySceneReference.BattleInventoryButton.gameObject.SetActive(!_battleInventorySceneReference.BattleInventoryButton.gameObject.activeSelf);
         }
-
+        
         private void UpdateBattleInventory()
         { 
             BattleUIInventoryClear();
 
-            foreach (var inventoryItem in _battleInventory.GetBattleInventory())
+            foreach (var inventoryItem in _battleTransitionData.PlayerInventory.GetBattleInventory())
             {
                 var battleUIItem =
                     _battleUIItemView.CreateInstance(_battleInventorySceneReference
@@ -99,6 +109,13 @@ namespace BattleModule.UI.Presenter
             }
         }
 
+        private void SetInventoryVisibility(bool items)
+        {
+            _battleInventorySceneReference.BattleInventoryWindow.SetActive(items);
+            
+            _battleUIItemDescription.SetDescriptionPanelVisibility(!items);
+        }
+
         private void BattleItemPointerOver(BattleUIItemView battleUIItem)
         {
             _battleUIItemDescription.SetItemDescription(GetSelectedItem(battleUIItem));
@@ -107,6 +124,8 @@ namespace BattleModule.UI.Presenter
         private void BattleItemPointerClick(BattleUIItemView battleUIItem) 
         {
             SetupBattleAction(battleUIItem);
+            
+            BattleInventoryButtonClicked();
         }
 
         private void SetupBattleAction(BattleUIItemView battleUIItem) 
@@ -116,14 +135,26 @@ namespace BattleModule.UI.Presenter
 
         private void BattleInventoryButtonClicked()
         {
-            _battleInventorySceneReference.BattleInventoryWindow.SetActive(!_battleInventorySceneReference.BattleInventoryWindow.activeSelf);
-            
-            _battleUIItemDescription.SetDescriptionPanelVisibility(_battleInventorySceneReference.BattleInventoryWindow.activeSelf);
+            SetInventoryVisibility(!_battleInventorySceneReference.BattleInventoryWindow.activeSelf);
+
+            _battleCancelableController.TryAppendCancelable(this);
         }
 
         private ItemBase GetSelectedItem(BattleUIItemView battleUIItem) 
         {
-            return _battleInventory.GetItem(_battleUIItems.IndexOf(battleUIItem)).Item;
+            return _battleTransitionData.PlayerInventory.GetItem(_battleUIItems.IndexOf(battleUIItem)).Item;
+        }
+
+        public bool TryCancel()
+        {
+            if (!_battleInventorySceneReference.BattleInventoryWindow.activeSelf)
+            {
+                return false;
+            }
+
+            SetInventoryVisibility(false);
+            
+            return true;
         }
     }
 }

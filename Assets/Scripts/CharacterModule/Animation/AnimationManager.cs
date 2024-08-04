@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -21,8 +20,8 @@ namespace CharacterModule.Animation
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
-        public async UniTask<bool> PlayAnimation(string animationName, 
-            float triggerPercentage = 0.5f, Action triggerCallback = null)
+        public async UniTask<bool> PlayAnimation(string animationName,
+            Action triggerCallback = null, float triggerPercentage = 0.5f)
         {
             try
             {

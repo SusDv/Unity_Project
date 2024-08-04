@@ -30,8 +30,6 @@ namespace BattleModule.Controllers.Modules
         
         private List<Character> _charactersOnScene;
 
-        private Type _currentCharacterInActionType;
-
         private int _mainTargetIndex = -1;
         
         [Inject]
@@ -40,8 +38,6 @@ namespace BattleModule.Controllers.Modules
             BattleActionController battleActionController)
         {
             _battleCancelableController = battleCancelableController;
-
-            _battleTurnController = battleTurnController;
 
             _battleActionController = battleActionController;
         }
@@ -62,7 +58,7 @@ namespace BattleModule.Controllers.Modules
 
         public void SetMainTargetWithInput(Character character)
         {
-            if (!character || !_possibleTargets.Contains(character))
+            if (!character)
             {
                 return;
             }
@@ -89,7 +85,7 @@ namespace BattleModule.Controllers.Modules
             return _battleTargetingProcessor.GetSelectedTargets();
         }
 
-        public bool Cancel()
+        public bool TryCancel()
         {
             return _battleTargetingProcessor.CancelAction();
         }
@@ -99,10 +95,8 @@ namespace BattleModule.Controllers.Modules
             _charactersOnScene = characters;
             
             _battleActionController.OnBattleActionChanged += SetTargetingData;
-
-            _battleTurnController.OnCharactersInTurnChanged += (c) => _currentCharacterInActionType = c.GetType(); 
             
-            _battleCancelableController.AppendCancelable(this);
+            _battleCancelableController.TryAppendCancelable(this);
             
             _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
             
@@ -111,7 +105,8 @@ namespace BattleModule.Controllers.Modules
         
         private void SetTargetingData(BattleActionContext context)
         {
-            SetPossibleTargets(context.BattleObject.TargetType);
+            SetPossibleTargets(context.BattleObject.TargetType,
+                context.CharacterInActionType);
             
             _battleTargetingProcessor.SetTargetingData(
                 context.BattleObject.TargetSearchType, 
@@ -132,9 +127,9 @@ namespace BattleModule.Controllers.Modules
                 selectedCharacterType == characterType : selectedCharacterType != characterType;
         }
 
-        private void SetPossibleTargets(TargetType targetType)
+        private void SetPossibleTargets(TargetType targetType, Type characterInActionType)
         {
-            _possibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(_currentCharacterInActionType, targetType).Invoke(character.GetType())).ToList();
+            _possibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(characterInActionType, targetType).Invoke(character.GetType())).ToList();
 
             _mainTargetIndex = _mainTargetIndex == -1 ? _possibleTargets.Count / 2 : _mainTargetIndex;
         }

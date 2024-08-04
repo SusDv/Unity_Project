@@ -87,7 +87,12 @@ namespace CharacterModule.Stats.Managers
         {
             return StatInfo.GetInstance(_stats[statType]);
         }
-        
+
+        public Dictionary<StatType, StatInfo> GetStatsInfo()
+        {
+            return _stats.Keys.ToDictionary(statType => statType, GetStatInfo);
+        }
+
         public void AddModifier(IModifier<StatType> statModifier)
         {
             InitializeModifier(statModifier);

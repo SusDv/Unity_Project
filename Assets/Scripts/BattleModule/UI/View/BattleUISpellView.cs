@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace BattleModule.UI.View 
 {
     public class BattleUISpellView 
-        : BattleUIButton<BattleUISpellView>
+        : BattleUIInteractable<BattleUISpellView>
     {
         [SerializeField] private Image _spellImage;
 

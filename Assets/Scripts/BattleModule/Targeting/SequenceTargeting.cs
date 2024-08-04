@@ -54,14 +54,14 @@ namespace BattleModule.Targeting
         {
             if (SelectedCharacters.Count == 0)
             {
-                return true;
+                return false;
             }
 
             SelectedCharacters.RemoveAt(SelectedCharacters.Count - 1);
 
             targetChangedCallback?.Invoke(PreviewTargetList());
             
-            return false;
+            return true;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace BattleModule.Targeting.Base
         {
             targetChangedCallback?.Invoke(PreviewTargetList());
             
-            return true;
+            return false;
         }
         
         protected virtual List<Character> PreviewTargetList()

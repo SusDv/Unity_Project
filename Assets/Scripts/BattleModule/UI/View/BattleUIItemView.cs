@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace BattleModule.UI.View 
 {
-    public class BattleUIItemView : BattleUIButton<BattleUIItemView>
+    public class BattleUIItemView : BattleUIInteractable<BattleUIItemView>
     {
         [SerializeField] private Image _battleItemImage;
         
@@ -20,7 +20,10 @@ namespace BattleModule.UI.View
         }
         public BattleUIItemView CreateInstance(Transform parent)
         {
-            return Instantiate(this, parent.transform.position, gameObject.transform.rotation, parent);
+            return Instantiate(this, 
+                parent.transform.position, 
+                gameObject.transform.rotation, 
+                parent);
         }
     }
 }

@@ -23,9 +23,14 @@ namespace BattleModule.UI.BattleButton
         {
             OnButtonOver?.Invoke();
         }
+
+        public void ToggleVisibility()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
+        }
     }
 
-    public abstract class BattleUIButton<T> : MonoBehaviour
+    public abstract class BattleUIInteractable<T> : MonoBehaviour
         where T : class
     {
         public event Action<T> OnButtonClick;

@@ -30,6 +30,7 @@ namespace BattleModule.Scopes
         private readonly BattleDeathController _battleDeathController;
         
         private readonly UILoadingScreen _uiLoadingScreen;
+        private readonly BattleUIController _battleUIController;
         private readonly BattleUIInventory _battleUIInventory;
         private readonly BattleUIItemDescription _battleUIItemDescription;
         private readonly BattleUIAccuracy _battleUIAccuracy;
@@ -58,6 +59,7 @@ namespace BattleModule.Scopes
             BattleDeathController battleDeathController,
             
             UILoadingScreen uiLoadingScreen,
+            BattleUIController battleUIController,
             BattleUIInventory battleUIInventory,
             BattleUIItemDescription battleUIItemDescription,
             BattleUIAccuracy battleUIAccuracy,
@@ -86,6 +88,7 @@ namespace BattleModule.Scopes
             _battleDeathController = battleDeathController;
             
             _uiLoadingScreen = uiLoadingScreen;
+            _battleUIController = battleUIController;
             _battleUIAccuracy = battleUIAccuracy;
             _battleUIAction = battleUIAction;
             _battleUIInventory = battleUIInventory;
@@ -125,6 +128,7 @@ namespace BattleModule.Scopes
             await _loadingService.BeginLoading(_battleOutcomeController, _battleSpawner.GetSpawnedCharacters());
             await _loadingService.BeginLoading(_battleDeathController, _battleSpawner.GetSpawnedCharacters());
             
+            await _loadingService.BeginLoading(_battleUIController);
             await _loadingService.BeginLoading(_battleUIInventory);
             await _loadingService.BeginLoading(_battleUIItemDescription);
             await _loadingService.BeginLoading(_battleUIAccuracy, _battleSpawner.GetSpawnedCharacters());

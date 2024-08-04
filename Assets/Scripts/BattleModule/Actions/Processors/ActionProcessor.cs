@@ -63,7 +63,8 @@ namespace BattleModule.Actions.Processors
                 return;
             }
 
-            target.AddModifier(InstantStatModifier.GetInstance(StatType.HEALTH, battleDamage.CalculateAttackDamage(target, battleActionOutcome.DamageMultiplier)));
+            target.AddModifier(InstantStatModifier.GetInstance(StatType.HEALTH, 
+                battleDamage.CalculateAttackDamage(target.GetStatsInfo(), battleActionOutcome.DamageMultiplier)));
         }
 
         private static bool DamageSourceFound(StatsController target, BattleActionOutcome battleActionOutcome,
@@ -77,7 +78,7 @@ namespace BattleModule.Actions.Processors
             battleDamage.SetDamageSource(damageSource.ModifierData.Value);
                 
             damageSource.ModifierData.Value =
-                battleDamage.CalculateAttackDamage(target, battleActionOutcome.DamageMultiplier);
+                battleDamage.CalculateAttackDamage(target.GetStatsInfo(), battleActionOutcome.DamageMultiplier);
                 
             target.AddModifier(damageSource);
                 

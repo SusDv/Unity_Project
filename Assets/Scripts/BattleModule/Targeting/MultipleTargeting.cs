@@ -30,7 +30,7 @@ namespace BattleModule.Targeting
 
             var rightBound = (int) Mathf.Clamp(mainTargetIndex + charactersToPick, 0f, TargetPool.Count - 1);
             
-            for (int i = leftBound; i <= rightBound; i++)
+            for (var i = leftBound; i <= rightBound; i++)
             {
                 SelectedCharacters.Add(TargetPool[i]);
             }

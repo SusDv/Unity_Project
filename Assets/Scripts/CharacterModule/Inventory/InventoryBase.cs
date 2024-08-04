@@ -11,7 +11,7 @@ namespace CharacterModule.Inventory
     [CreateAssetMenu(fileName = "New Inventory", menuName = "Character/Inventory/Inventory")]
     public class InventoryBase : ScriptableObject
     {
-        public Action<InventoryBase> OnInventoryChanged { get; set; } = delegate { };
+        public Action OnInventoryChanged = delegate { };
 
         private List<InventoryItem> _inventoryItems;
 
@@ -22,7 +22,7 @@ namespace CharacterModule.Inventory
 
         public void AddItem(ItemBase item, int amount)
         {
-            (int index, var existingItem) = FindItem(item);
+            var (index, existingItem) = FindItem(item);
 
             if (existingItem.Equals(InventoryItem.GetEmptyItem()))
             {
@@ -53,14 +53,14 @@ namespace CharacterModule.Inventory
                 }
             }
 
-            OnInventoryChanged?.Invoke(this);
+            OnInventoryChanged?.Invoke();
         }
 
         public void RemoveItem(InventoryItem item)
         {
             _inventoryItems.RemoveAt(_inventoryItems.IndexOf(item));
 
-            OnInventoryChanged?.Invoke(this);
+            OnInventoryChanged?.Invoke();
         }
         
         public (int index, InventoryItem item) FindItem(ItemBase itemBase)
@@ -89,7 +89,7 @@ namespace CharacterModule.Inventory
 
         private void ConsumableItemUsed(ItemBase inventoryItem)
         {
-            (int index, var item) = FindItem(inventoryItem);
+            var (index, item) = FindItem(inventoryItem);
 
             if (item.Item.IsStackable)
             {
@@ -103,7 +103,7 @@ namespace CharacterModule.Inventory
                 _inventoryItems[index] = item.ChangeAmount(_inventoryItems[index].Amount - 1);
             }
 
-            OnInventoryChanged?.Invoke(this);
+            OnInventoryChanged?.Invoke();
         }
     }
 }

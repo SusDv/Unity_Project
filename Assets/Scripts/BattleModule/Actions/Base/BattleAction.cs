@@ -6,9 +6,10 @@ using BattleModule.Actions.Outcome;
 using BattleModule.Controllers.Modules;
 using BattleModule.Utility;
 using BattleModule.Utility.DamageCalculator;
-using CharacterModule.Stats.Managers;
+using CharacterModule.Animation;
 using CharacterModule.Types.Base;
 using CharacterModule.Utility;
+using CharacterModule.Utility.Stats;
 using Cysharp.Threading.Tasks;
 
 namespace BattleModule.Actions.Base
@@ -21,18 +22,22 @@ namespace BattleModule.Actions.Base
 
         private BattleDamage _battleDamage;
 
+        private BattleActionController.ActionData _actionData;
+
         protected abstract string ActionAnimationName { get; }
 
         protected abstract ActionType ActionType { get; }
 
         public BattleActionContext Init(object actionObject, 
-            StatsController statsController)
+            BattleActionController.ActionData actionData)
         {
-            _battleActionContext = new BattleActionContext(actionObject, ActionType);
+            _actionData = actionData;
+            
+            _battleActionContext = new BattleActionContext(actionObject, _actionData.CharacterType, ActionType);
 
             _actionObject = (actionObject as IActionProvider)?.GetAction();
 
-            _battleDamage = GetDamageCalculator(statsController);
+            _battleDamage = GetDamageCalculator(_actionData.StatsController.GetStatsInfo());
 
             return _battleActionContext;
         }
@@ -53,37 +58,36 @@ namespace BattleModule.Actions.Base
             }
         }
 
-        private void EndAction(Character source)
+        private void EndAction()
         {
-            source.EquipmentController.WeaponController.GetSpecialAttack().Charge(5f);
+            _actionData.SpecialAttack.Charge(5f);
             
-            source.Stats.ApplyInstantModifier(StatType.BATTLE_POINTS, _battleActionContext.BattleObject.BattlePoints);
+            _actionData.StatsController.ApplyInstantModifier(StatType.BATTLE_POINTS, _battleActionContext.BattleObject.BattlePoints);
         }
 
         public async UniTask<(bool status, List<BattleActionOutcome> result)> PerformAction(
-            Character source,
             List<Character> targets,
             BattleOutcomeController battleOutcomeController)
         {
             var attackResults = battleOutcomeController.CalculateActiveTransformers(targets);
 
-            bool animationStatus = await PlayActionAnimation(source, targets, () =>
+            var animationStatus = await PlayActionAnimation(_actionData.AnimationManager, targets, () =>
             {
                 AttackTargets(targets, attackResults, battleOutcomeController);
             
-                EndAction(source);
+                EndAction();
             });
             
             return (animationStatus, attackResults);
         }
         
-        protected virtual async UniTask<bool> PlayActionAnimation(Character source, 
+        protected virtual async UniTask<bool> PlayActionAnimation(AnimationManager source, 
             IEnumerable<Character> targets, Action triggerCallback)
         {
-            return await source.AnimationManager.PlayAnimation(ActionAnimationName, 0.5f, triggerCallback);
+            return await source.PlayAnimation(ActionAnimationName, triggerCallback);
         }
 
-        protected virtual BattleDamage GetDamageCalculator(StatsController statsController)
+        protected virtual BattleDamage GetDamageCalculator(Dictionary<StatType, StatInfo> statsController)
         {
             return new PhysicalDamage(statsController);
         }
