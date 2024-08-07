@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using BattleModule.States.StateMachine;
 using BattleModule.States.Base;
@@ -19,8 +18,6 @@ namespace BattleModule.States
             StartTurn();
 
             SetupBattleEvents();
-
-            base.OnEnter();
         }
 
         private void SelectCharacterUsingMouse()
@@ -65,10 +62,10 @@ namespace BattleModule.States
             {
                 return;
             }
-
+            
             ClearBattleEvents();
             
-            await BattleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets.ToList());
+            await BattleStateMachine.BattleController.BattleActionController.ExecuteBattleAction(_currentTargets);
         }
     }
 }

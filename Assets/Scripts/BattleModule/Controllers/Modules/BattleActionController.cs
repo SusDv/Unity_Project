@@ -11,6 +11,7 @@ using BattleModule.Utility.Interfaces;
 using CharacterModule.Animation;
 using CharacterModule.Stats.Managers;
 using CharacterModule.Types.Base;
+using CharacterModule.Utility;
 using CharacterModule.WeaponSpecial.Interfaces;
 using Cysharp.Threading.Tasks;
 using Utility;
@@ -28,13 +29,17 @@ namespace BattleModule.Controllers.Modules
         
         private BattleAction _currentBattleAction;
 
+        private BattleActionContext _currentBattleActionContext;
+
         private ActionData _actionData;
+
+        private List<Character> _charactersOnScene;
 
         public event Action OnBattleActionStarted = delegate { };
 
         public event Action<BattleActionContext> OnBattleActionChanged = delegate { };
 
-        public event Action<List<Character>, IReadOnlyList<BattleActionOutcome>> OnBattleActionFinished = delegate { };
+        public event Action<ActionResult> OnBattleActionFinished = delegate { };
 
         [Inject]
         private BattleActionController(BattleCancelableController battleCancelableController,
@@ -53,22 +58,27 @@ namespace BattleModule.Controllers.Modules
         {
             _currentBattleAction = Activator.CreateInstance<T>();
 
-            OnBattleActionChanged?.Invoke(
-                _currentBattleAction.Init(actionObject, _actionData));
+            _currentBattleActionContext = _currentBattleAction.Init(actionObject, _actionData);
+         
+            OnBattleActionChanged?.Invoke(_currentBattleActionContext);
         }
 
         public async UniTask ExecuteBattleAction(List<Character> targets)
         {
             OnBattleActionStarted?.Invoke();
             
-            var operation = await _currentBattleAction.PerformAction(targets, _battleOutcomeController);
-            
-            if (!operation.status)
+            try
             {
-                return;
+                var outcomes = await _currentBattleAction.PerformAction(targets, _battleOutcomeController);
+                
+                var actionResult = GetActionResult(targets, outcomes);
+                
+                OnBattleActionFinished?.Invoke(actionResult);
             }
-
-            OnBattleActionFinished?.Invoke(targets, operation.result);
+            catch 
+            {
+                // Battle Action interrupted;
+            }
         }
 
         public bool TryCancel()
@@ -97,8 +107,21 @@ namespace BattleModule.Controllers.Modules
             SetBattleAction<DefaultAction>(_actionData.DefaultBattleObject);
         }
 
+        private ActionResult GetActionResult(List<Character> affectedTargets,
+            List<BattleActionOutcome> affectedTargetsOutcome)
+        {
+            return new ActionResult()
+            {
+                AffectedTargets = affectedTargets,
+                
+                AffectedTargetsOutcome = affectedTargetsOutcome
+            };
+        }
+
         private void OnCharactersInTurnChanged(BattleTurnContext battleTurnContext)
         {
+            _charactersOnScene = battleTurnContext.CharactersInTurn;
+            
             var characterInTurn = battleTurnContext.CharactersInTurn.First();
             
             _actionData = new ActionData()
@@ -115,6 +138,28 @@ namespace BattleModule.Controllers.Modules
             };
         }
 
+        private int CalculatePositionAfterAction()
+        {
+            var battlePointsAfterAction = _currentBattleActionContext.BattleObject.BattlePoints;
+
+            var indexAfterAction = -1;
+            
+            for (var i = 1; i < _charactersOnScene.Count; i++)
+            {
+                if (_charactersOnScene[i].Stats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue <
+                      battlePointsAfterAction)
+                {
+                    continue;
+                }
+
+                indexAfterAction = i - 1;
+                    
+                break;
+            }
+
+            return indexAfterAction < 0 ? _charactersOnScene.Count - 1 : indexAfterAction;
+        }
+
         public struct ActionData
         {
             public Type CharacterType;
@@ -126,6 +171,13 @@ namespace BattleModule.Controllers.Modules
             public StatsController StatsController;
 
             public AnimationManager AnimationManager;
+        }
+
+        public struct ActionResult
+        {
+            public List<Character> AffectedTargets;
+
+            public List<BattleActionOutcome> AffectedTargetsOutcome;
         }
     }
 }

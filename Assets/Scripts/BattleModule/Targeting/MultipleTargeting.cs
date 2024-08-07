@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BattleModule.Targeting.Base;
 using BattleModule.Utility;
 using CharacterModule.Types.Base;
@@ -12,12 +11,11 @@ namespace BattleModule.Targeting
         public override TargetSearchType TargetSearchType => TargetSearchType.MULTIPLE_TARGET;
         
         public override void PrepareTargets(
-            int mainTargetIndex,
-            Action<List<Character>> targetChangedCallback)
+            int mainTargetIndex)
         {
             GetNeighboursTarget(mainTargetIndex, NumberOfCharactersToSelect / 2);
             
-            targetChangedCallback?.Invoke(PreviewTargetList());
+            TargetChangedCallback?.Invoke(PreviewTargetList());
         }
 
         private void GetNeighboursTarget(

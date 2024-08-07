@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using BattleModule.Actions.Outcome;
 using BattleModule.Controllers.Modules;
 using BattleModule.UI.View;
 using BattleModule.Utility;
-using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utility;
@@ -34,16 +31,15 @@ namespace BattleModule.UI.Presenter
             _battleActionController = battleActionController;
         }
 
-        private void ShowActionOutcomes(List<Character> targets, 
-            IReadOnlyList<BattleActionOutcome> battleActionOutcomes)
+        private void ShowActionOutcomes(BattleActionController.ActionResult actionResult)
         {
-            for (var i = 0; i < targets.Count; i++)
+            for (var i = 0; i < actionResult.AffectedTargets.Count; i++)
             {
                 var outcomeView = Instantiate(_battleUIOutcomeView, 
-                    targets[i].SizeHelper.GetCharacterTop() + Vector3.up, 
+                    actionResult.AffectedTargets[i].SizeHelper.GetCharacterTop() + Vector3.up, 
                     Quaternion.identity, _battleUIHelper.WorldCanvas.transform);
                 
-                outcomeView.SetData(battleActionOutcomes[i]);
+                outcomeView.SetData(actionResult.AffectedTargetsOutcome[i]);
             }
         }
 

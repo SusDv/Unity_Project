@@ -16,8 +16,6 @@ namespace BattleModule.States
         
         public override void OnEnter()
         {
-            base.OnEnter();
-            
             PrepareBattle();
 
             BattleStateMachine.ChangeState(BattleStateMachine.BattleDeciderState);

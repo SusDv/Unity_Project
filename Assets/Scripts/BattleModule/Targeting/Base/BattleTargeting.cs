@@ -12,25 +12,29 @@ namespace BattleModule.Targeting.Base
         protected List<Character> SelectedCharacters;
 
         protected int NumberOfCharactersToSelect;
+
+        protected Action<List<Character>> TargetChangedCallback = delegate { };
         
         public abstract TargetSearchType TargetSearchType { get; }
 
         public void Init(List<Character> targetPool,
-            int numberOfCharactersToSelect)
+            int numberOfCharactersToSelect,
+            Action<List<Character>> targetChangedCallback)
         {
             TargetPool = targetPool;
             
             NumberOfCharactersToSelect = numberOfCharactersToSelect;
             
             SelectedCharacters = new List<Character>();
+
+            TargetChangedCallback = targetChangedCallback;
         }
         
-        public abstract void PrepareTargets(int mainTargetIndex,
-            Action<List<Character>> targetChangedCallback);
+        public abstract void PrepareTargets(int mainTargetIndex);
 
-        public virtual List<Character> GetSelectedTargets(Action<List<Character>> targetChangedCallback)
+        public virtual List<Character> GetSelectedTargets()
         {
-            targetChangedCallback?.Invoke(PreviewTargetList());
+            TargetChangedCallback?.Invoke(PreviewTargetList());
             
             return SelectedCharacters;
         }
@@ -40,9 +44,9 @@ namespace BattleModule.Targeting.Base
             return true;
         }
 
-        public virtual bool OnCancelAction(Action<List<Character>> targetChangedCallback)
+        public virtual bool OnCancelAction()
         {
-            targetChangedCallback?.Invoke(PreviewTargetList());
+            TargetChangedCallback?.Invoke(PreviewTargetList());
             
             return false;
         }

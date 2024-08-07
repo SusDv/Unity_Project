@@ -7,6 +7,9 @@ namespace BattleModule.UI.Presenter.SceneReferences.Turn
     public class BattleTurnSceneReference
     {
         [Header("Panel")]
+        [SerializeField] public GameObject BattleTurnPanel;
+        
+        [Header("Parent")]
         [SerializeField] public GameObject BattleTurnParent;
     }
 }

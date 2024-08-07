@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using BattleModule.States.Base;
 using BattleModule.States.StateMachine;
 using CharacterModule.Types.Base;
+using UnityEngine;
 
 namespace BattleModule.States
 {
@@ -19,15 +20,16 @@ namespace BattleModule.States
 
         private void PrepareRandomTargets()
         {
-            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput();
+            _currentTargets = new List<Character>();
+            
+            BattleStateMachine.BattleController.BattleTargetingController.SetMainTargetWithInput(Random.Range(-5, 5));
 
             _currentTargets = BattleStateMachine.BattleController.BattleTargetingController.GetSelectedTargets();
         }
+        
 
         public override void OnEnter()
         {
-            base.OnEnter();
-            
             PrepareRandomTargets();
             
             AttackRandomTarget();

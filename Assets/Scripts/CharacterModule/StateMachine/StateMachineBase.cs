@@ -9,16 +9,8 @@
             currentState?.OnExit();
 
             currentState = state;
+            
             currentState.OnEnter();
-        }
-
-        public void OnUpdate() 
-        {
-            currentState?.OnUpdate();
-        }
-        public void OnFixedUpdate() 
-        {
-            currentState?.OnFixedUpdate();
         }
     }
 }

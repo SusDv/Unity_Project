@@ -12,6 +12,8 @@ namespace BattleModule.UI.Presenter
         private readonly BattleActionController _battleActionController;
 
         private readonly List<IUIElement> _uiElements = new ();
+
+        private bool _visibility = true;
         
         [Inject]
         public BattleUIController(BattleActionController battleActionController)
@@ -21,7 +23,14 @@ namespace BattleModule.UI.Presenter
 
         private void ToggleUIElements()
         {
-            _uiElements.ForEach(u => u.ToggleVisibility());
+            ToggleVisibility();
+        }
+
+        private void ToggleVisibility()
+        {
+            _uiElements.ForEach(u => u.ToggleVisibility(_visibility));
+
+            _visibility = !_visibility;
         }
 
 
@@ -29,7 +38,7 @@ namespace BattleModule.UI.Presenter
         {
             _battleActionController.OnBattleActionStarted += ToggleUIElements;
 
-            _battleActionController.OnBattleActionFinished += (_, _) => ToggleUIElements();
+            _battleActionController.OnBattleActionFinished += _ => ToggleUIElements();
             
             return UniTask.CompletedTask;
         }

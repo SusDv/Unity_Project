@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using BattleModule.Actions.Outcome;
+using BattleModule.Controllers.Modules;
 using BattleModule.States.StateMachine;
 using CharacterModule.StateMachine;
-using CharacterModule.Types.Base;
 
 namespace BattleModule.States.Base
 {
@@ -14,6 +12,15 @@ namespace BattleModule.States.Base
         {
             BattleStateMachine = battleStateMachine;
         }
+        
+        private void OnBattleActionFinished(BattleActionController.ActionResult actionResult)
+        {
+            BattleStateMachine.BattleController.BattleTurnEvents.AdvanceTurn();
+            
+            BattleStateMachine.BattleController.BattleActionController.OnBattleActionFinished -= OnBattleActionFinished;
+            
+            BattleStateMachine.ChangeState(BattleStateMachine.BattleDeciderState);
+        }
 
         public virtual void OnEnter()
         {
@@ -22,18 +29,7 @@ namespace BattleModule.States.Base
 
         public virtual void OnExit()
         {
-            BattleStateMachine.BattleController.BattleActionController.OnBattleActionFinished -= OnBattleActionFinished;
-        }
-
-        public virtual void OnFixedUpdate() { }
-
-        public virtual void OnUpdate() { }
-
-        private void OnBattleActionFinished(List<Character> targets, IReadOnlyList<BattleActionOutcome> outcomes)
-        {
-            BattleStateMachine.BattleController.BattleTurnEvents.AdvanceTurn();
             
-            BattleStateMachine.ChangeState(BattleStateMachine.BattleDeciderState);
         }
     }
 }

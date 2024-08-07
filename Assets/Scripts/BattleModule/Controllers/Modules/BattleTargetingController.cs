@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Actions.Context;
-using BattleModule.Controllers.Modules.Turn;
-using BattleModule.Targeting.Processor;
+using BattleModule.Targeting.Base;
 using BattleModule.Utility;
 using BattleModule.Utility.Interfaces;
 using CharacterModule.Types.Base;
@@ -11,7 +10,6 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Utility;
 using VContainer;
-using Random = UnityEngine.Random;
 
 namespace BattleModule.Controllers.Modules
 {
@@ -19,13 +17,13 @@ namespace BattleModule.Controllers.Modules
     {
         private readonly BattleCancelableController _battleCancelableController;
 
-        private readonly BattleTurnController _battleTurnController;
-
         private readonly BattleActionController _battleActionController;
-        
-        private BattleTargetingProcessor _battleTargetingProcessor;
-        
 
+        private BattleTargeting _battleTargeting;
+        
+        
+        private readonly Dictionary<TargetSearchType, BattleTargeting> _targetingTypes = new();
+        
         private List<Character> _possibleTargets;
         
         private List<Character> _charactersOnScene;
@@ -34,7 +32,6 @@ namespace BattleModule.Controllers.Modules
         
         [Inject]
         private BattleTargetingController(BattleCancelableController battleCancelableController,
-            BattleTurnController battleTurnController,
             BattleActionController battleActionController)
         {
             _battleCancelableController = battleCancelableController;
@@ -68,26 +65,19 @@ namespace BattleModule.Controllers.Modules
             SetMainTarget();
         }
 
-        public void SetMainTargetWithInput()
-        {
-            _mainTargetIndex = Random.Range(0, _possibleTargets.Count);
-            
-            SetMainTarget();
-        }
-
         public bool IsReadyForAction()
         {
-            return _battleTargetingProcessor.TargetingComplete();
+            return _battleTargeting.TargetingComplete();
         }
 
         public List<Character> GetSelectedTargets()
         {
-            return _battleTargetingProcessor.GetSelectedTargets();
+            return _battleTargeting.GetSelectedTargets();
         }
 
         public bool TryCancel()
         {
-            return _battleTargetingProcessor.CancelAction();
+            return _battleTargeting.OnCancelAction();
         }
         
         public UniTask Load(List<Character> characters)
@@ -98,19 +88,27 @@ namespace BattleModule.Controllers.Modules
             
             _battleCancelableController.TryAppendCancelable(this);
             
-            _battleTargetingProcessor = new BattleTargetingProcessor(CharacterTargetChanged);
+            InitTargetingTypes();
             
             return UniTask.CompletedTask;
         }
-        
+
+        private void InitTargetingTypes()
+        {
+            _targetingTypes.Clear();
+            
+            foreach(var targeting in ReflectionUtils.GetConcreteInstances<BattleTargeting>()) 
+            {
+                _targetingTypes.Add(targeting.TargetSearchType, targeting);
+            }
+        }
+
         private void SetTargetingData(BattleActionContext context)
         {
             SetPossibleTargets(context.BattleObject.TargetType,
                 context.CharacterInActionType);
             
-            _battleTargetingProcessor.SetTargetingData(
-                context.BattleObject.TargetSearchType, 
-                _possibleTargets, 
+            SetTargetingType(context.BattleObject.TargetSearchType,
                 context.BattleObject.MaxTargetsCount);
             
             SetMainTarget();
@@ -131,12 +129,25 @@ namespace BattleModule.Controllers.Modules
         {
             _possibleTargets = _charactersOnScene.Where((character) => GetSearchFunction(characterInActionType, targetType).Invoke(character.GetType())).ToList();
 
-            _mainTargetIndex = _mainTargetIndex == -1 ? _possibleTargets.Count / 2 : _mainTargetIndex;
+            _mainTargetIndex = GetMainTargetIndex();
+        }
+
+        private void SetTargetingType(TargetSearchType targetSearchType,
+            int maxTargetsCount)
+        {
+            _battleTargeting = _targetingTypes[targetSearchType];
+            
+            _battleTargeting.Init(_possibleTargets, maxTargetsCount, CharacterTargetChanged);
+        }
+
+        private int GetMainTargetIndex()
+        {
+            return _mainTargetIndex == -1 ? _possibleTargets.Count / 2 : _mainTargetIndex;
         }
 
         private void SetMainTarget()
         {
-            _battleTargetingProcessor.PrepareTargets(_mainTargetIndex);
+            _battleTargeting.PrepareTargets(_mainTargetIndex);
         }
 
         private void CharacterTargetChanged(List<Character> selectedCharacters)

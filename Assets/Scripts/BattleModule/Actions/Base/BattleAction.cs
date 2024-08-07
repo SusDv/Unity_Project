@@ -65,20 +65,25 @@ namespace BattleModule.Actions.Base
             _actionData.StatsController.ApplyInstantModifier(StatType.BATTLE_POINTS, _battleActionContext.BattleObject.BattlePoints);
         }
 
-        public async UniTask<(bool status, List<BattleActionOutcome> result)> PerformAction(
+        public async UniTask<List<BattleActionOutcome>> PerformAction(
             List<Character> targets,
             BattleOutcomeController battleOutcomeController)
         {
             var attackResults = battleOutcomeController.CalculateActiveTransformers(targets);
 
-            var animationStatus = await PlayActionAnimation(_actionData.AnimationManager, targets, () =>
+            var animationResult = await PlayActionAnimation(_actionData.AnimationManager, targets, () =>
             {
                 AttackTargets(targets, attackResults, battleOutcomeController);
-            
+
                 EndAction();
             });
             
-            return (animationStatus, attackResults);
+            if (!animationResult)
+            {
+                throw new Exception();
+            }
+
+            return attackResults;
         }
         
         protected virtual async UniTask<bool> PlayActionAnimation(AnimationManager source, 

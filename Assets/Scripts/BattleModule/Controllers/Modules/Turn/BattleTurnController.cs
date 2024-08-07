@@ -41,7 +41,7 @@ namespace BattleModule.Controllers.Modules.Turn
         {
             foreach (var character in _spawnedCharacters)
             {
-                float battlePoints = character.Stats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
+                var battlePoints = character.Stats.GetStatInfo(StatType.BATTLE_POINTS).FinalValue;
                 
                 character.Stats.ApplyInstantModifier(StatType.BATTLE_POINTS, CalculateDeduction(battlePoints));
             }
@@ -105,13 +105,6 @@ namespace BattleModule.Controllers.Modules.Turn
         public UniTask Load(List<Character> characters)
         {
             _spawnedCharacters = characters;
-            
-            _spawnedCharacters.ForEach(character =>
-            {
-                character.Stats.SetBattleTimerFactory(_battleTimerController.CreateTimer);
-            });
-            
-            _battleTimerController.SetLocalCycle(characters.Count);
 
             _battleTurnEvents.OnTurnEnd += UpdateCharactersBattlePoints;
 

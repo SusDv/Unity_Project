@@ -30,8 +30,11 @@ namespace Utility.Constants
         public static class AnimationConstants
         {
             public const string DefaultActionName = "Attack";
+            
             public const string ItemActionName = "Potion";
-            public const string SpellActionName = "";
+            
+            public const string SpellActionName = "Spell";
+            
             public const string SpecialActionName = "";
         }
     }

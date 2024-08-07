@@ -74,7 +74,7 @@ namespace BattleModule.UI.Presenter
             return UniTask.CompletedTask;
         }
 
-        public void ToggleVisibility()
+        public void ToggleVisibility(bool visibility)
         {
             _battleInventorySceneReference.BattleInventoryButton.gameObject.SetActive(!_battleInventorySceneReference.BattleInventoryButton.gameObject.activeSelf);
         }

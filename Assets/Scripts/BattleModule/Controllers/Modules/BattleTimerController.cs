@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using BattleModule.Controllers.Modules.Turn;
 using BattleModule.Utility;
+using CharacterModule.Types.Base;
 using Cysharp.Threading.Tasks;
 using Utility;
 using VContainer;
 
 namespace BattleModule.Controllers.Modules
 {
-    public class BattleTimerController : ILoadingUnit
+    public class BattleTimerController : ILoadingUnit<List<Character>>
     {
         private readonly List<BattleTimer> _battleTimers = new();
 
@@ -29,11 +30,23 @@ namespace BattleModule.Controllers.Modules
             
         }
 
-        public UniTask Load()
+        public UniTask Load(List<Character> characters)
         {
             _battleTurnEvents.OnTurnEnd += ProcessTimers;
             
+            SetLocalCycle(characters.Count);
+            
+            SetTimerFactory(characters);
+            
             return UniTask.CompletedTask;
+        }
+
+        private void SetTimerFactory(List<Character> characters)
+        {
+            foreach (var character in characters)
+            {
+                character.Stats.SetBattleTimerFactory(CreateTimer);
+            }
         }
 
         public void SetLocalCycle(int localCycle)

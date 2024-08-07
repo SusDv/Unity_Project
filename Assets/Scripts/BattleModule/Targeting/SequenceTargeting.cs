@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleModule.Targeting.Base;
 using BattleModule.Utility;
@@ -12,12 +11,11 @@ namespace BattleModule.Targeting
         private int _mainTargetIndex;
         public override TargetSearchType TargetSearchType => TargetSearchType.SEQUENCE;
 
-        public override void PrepareTargets(int mainTargetIndex,
-            Action<List<Character>> targetChangedCallback)
+        public override void PrepareTargets(int mainTargetIndex)
         {
             _mainTargetIndex = mainTargetIndex;
             
-            targetChangedCallback?.Invoke(PreviewTargetList());
+            TargetChangedCallback?.Invoke(PreviewTargetList());
         }
 
         protected override List<Character> PreviewTargetList()
@@ -36,11 +34,11 @@ namespace BattleModule.Targeting
             return previewList;
         }
 
-        public override List<Character> GetSelectedTargets(Action<List<Character>> targetChangedCallback)
+        public override List<Character> GetSelectedTargets()
         {
             SelectedCharacters.Add(TargetPool[_mainTargetIndex]);
             
-            targetChangedCallback?.Invoke(PreviewTargetList());
+            TargetChangedCallback?.Invoke(PreviewTargetList());
             
             return SelectedCharacters;
         }
@@ -50,7 +48,7 @@ namespace BattleModule.Targeting
             return SelectedCharacters.Count == NumberOfCharactersToSelect;
         }
 
-        public override bool OnCancelAction(Action<List<Character>> targetChangedCallback)
+        public override bool OnCancelAction()
         {
             if (SelectedCharacters.Count == 0)
             {
@@ -59,7 +57,7 @@ namespace BattleModule.Targeting
 
             SelectedCharacters.RemoveAt(SelectedCharacters.Count - 1);
 
-            targetChangedCallback?.Invoke(PreviewTargetList());
+            TargetChangedCallback?.Invoke(PreviewTargetList());
             
             return true;
         }
